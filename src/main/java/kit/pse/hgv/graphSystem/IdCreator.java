@@ -1,4 +1,4 @@
-package com.pse.hgv.graphSystem;
+package kit.pse.hgv.graphSystem;
 
 public class IdCreator {
     protected int nextId = 0;

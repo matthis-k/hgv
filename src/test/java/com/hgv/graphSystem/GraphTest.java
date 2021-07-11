@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Vector;
 
-import com.pse.hgv.graphSystem.Edge;
-import com.pse.hgv.graphSystem.Graph;
-import com.pse.hgv.graphSystem.GraphElement;
-import com.pse.hgv.graphSystem.Node;
-
 import org.junit.Test;
+
+import kit.pse.hgv.graphSystem.Edge;
+import kit.pse.hgv.graphSystem.Graph;
+import kit.pse.hgv.graphSystem.GraphElement;
+import kit.pse.hgv.graphSystem.Node;
 
 public class GraphTest {
     @Test

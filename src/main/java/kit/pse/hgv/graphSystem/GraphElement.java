@@ -1,4 +1,4 @@
-package com.pse.hgv.graphSystem;
+package kit.pse.hgv.graphSystem;
 
 import java.util.HashMap;
 
