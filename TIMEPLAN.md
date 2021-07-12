@@ -1,0 +1,65 @@
+# PSE-HGV
+
+## Milestones
+ - UI layout
+ - View dummy Graphy
+ - View generated Graph
+ - Interact with Graph via predefined `Command`s
+ - Interact with Graph via Extensions
+ - Manage Extension from within HGV
+ - Interact with Graph via UI (manual edit)
+ - Persistant storing/loading
+ - Persistant settings
+
+## Outline
+- [ ] View
+  - [ ] UI layout (first)
+  - [ ] display a fake graph (begins after `UI layout` has ended)
+    - [ ] Drawables
+  - [ ] DrawManager (begins after `UI layout` begins, ends before `display graph` has ended)
+    - [ ] native model
+    - [ ] EdgeModes
+  - [ ] display graph (ends after `DrawManager`, `GraphSystem create Graph`, `GraphSystem access Graph` has ended)
+  - [ ] show graph metadata (ends after `GraphElement Metadata` has ends)
+  - [ ] allow edit of metadata (ends after `show graph metadata` has ended)
+- [ ] Model
+  - [ ] GraphSystem
+    - [ ] create Graph (begins after `Graph creation` has ended, ends before `View display graph` has ended)
+    - [ ] access Graph (ends before `View display graph` has ended)
+    - [ ] remove Graph
+    - [ ] load/save Graph from/to file (begins after `DataGateWay` has begun)
+    - [ ] Graph
+      - [ ] creation (ends before `create Graph` has ended)
+      - [ ] access GraphElements (ends before `access Graph` has ended)
+        - [ ] add Node/Edge
+        - [ ] remove Node/Edge
+    - [ ] GraphElement
+      - [ ] Metadata
+        - [ ] set metadata
+        - [ ] get metadata
+      - [ ] Node (ends before `Edge` has begun)
+      - [ ] Edge (begins after `Node` has ended)
+- [ ] Controller
+  - [ ] CommandController
+    - [ ] queue Commands
+    - [ ] execute Commands
+      - [ ] scheduling (optional)
+      - [ ] undo Commands
+      - [ ] redo Commands (begins after `undo Commands` has ended)
+    - [ ] Command
+      - [ ] CommandComposite
+      - [ ] GraphSystemCommand (begins after `GraphSystem` and `Command` have begun)
+      - [ ] ExtensionCommand (begins after `ExtensionServer`, `Extension` and `Command` have begun)
+      - [ ] FileSystemCommand (begins after `DataGateWay` and `Command` have begun)
+        - [ ] Load-/SaveGraphCommand (begins after `GrapySystem load/save` has ended)
+        - [ ] save Extension triggers (begins after `Extension triggers` has ended)
+  - [ ] Extension-System
+    - [ ] ExtensionServer
+      - [ ] always accept Commands (first dummy for interaction)
+      - [ ] multiple ClientHandlers
+        - [ ] ClientState
+    - [ ] Extension
+      - [ ] PyScript
+      - [ ] Extension triggers
+- [ ] Data
+  - [ ] DataGateWay
