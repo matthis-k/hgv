@@ -2,9 +2,13 @@
 
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
 
 <Menu mnemonicParsing="false" text="Erweiterungen" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
   <items>
-    <MenuItem mnemonicParsing="false" text="Action 1" />
+    <MenuItem mnemonicParsing="false" text="Erweiterungen verwalten">
+         <accelerator>
+            <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+         </accelerator></MenuItem>
   </items>
 </Menu>
