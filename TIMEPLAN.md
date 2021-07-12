@@ -53,9 +53,15 @@
       - [ ] FileSystemCommand (begins after `DataGateWay` and `Command` have begun)
         - [ ] Load-/SaveGraphCommand (begins after `GrapySystem load/save` has ended)
         - [ ] save Extension triggers (begins after `Extension triggers` has ended)
+  - [ ] CommandProcessor
+   - [ ] ExtensionCommandProcessor
+   - [ ] FileSystemCommandProcessor
+   - [ ] HyperModelCommandProcessor
+   - [ ] GraphCommandProcessor
+   - [ ] MetaDataProcessor
   - [ ] Extension-System
     - [ ] ExtensionServer
-      - [ ] always accept Commands (first dummy for interaction)
+      - [ ] always accept Commands (first dummy for interaction, ends after `ExtensionCommandProccesor` has ended)
       - [ ] multiple ClientHandlers
         - [ ] ClientState
     - [ ] Extension
