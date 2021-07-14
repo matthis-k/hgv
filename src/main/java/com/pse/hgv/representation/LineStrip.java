@@ -4,10 +4,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+import java.util.List;
+
 public class LineStrip extends Drawable {
 
     private CircleNode start;
     private CircleNode end;
+    private List<Coordinate> coordinates;
     private Line representation;
 
     public LineStrip(CircleNode start, CircleNode end, int id, Color color) {
@@ -20,6 +23,11 @@ public class LineStrip extends Drawable {
 
         representation.endXProperty().bind(end.getRepresentation().centerXProperty());
         representation.endYProperty().bind(end.getRepresentation().centerYProperty());
+    }
+
+    public LineStrip(List<Coordinate> coordinates, int id, Color color) {
+        super(id, color);
+        this.coordinates = coordinates;
     }
 
     @Override

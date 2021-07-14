@@ -12,6 +12,7 @@ public abstract class Drawable {
         this.color = color;
     }
 
+
     public int getID() {
         return this.id;
     }
