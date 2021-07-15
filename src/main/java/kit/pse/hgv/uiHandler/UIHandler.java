@@ -1,4 +1,4 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.uiHandler;
 
 public interface UIHandler {
 

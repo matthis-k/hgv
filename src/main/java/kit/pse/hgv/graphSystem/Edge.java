@@ -4,6 +4,7 @@ public class Edge extends GraphElement {
     private Node start;
     private Node end;
     public Edge(Node start, Node end) {
+        super();
         this.start = start;
         this.end = end;
     }

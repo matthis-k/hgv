@@ -1,6 +1,7 @@
-package com.pse.hgv.view.hyperbolicModel;
+package kit.pse.hgv.view.hyperbolicModel;
 
-import com.pse.hgv.representation.LineStrip;
+import kit.pse.hgv.graphSystem.Edge;
+import kit.pse.hgv.representation.LineStrip;
 
 public class EdgeModeShortest implements EdgeMode{
     private Representation representation;

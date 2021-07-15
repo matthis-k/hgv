@@ -2,7 +2,7 @@ package kit.pse.hgv.graphSystem;
 
 import java.util.HashMap;
 
-public class GraphElement {
+public abstract class GraphElement {
     private int id = -1;
     // TODO: Metadata
     private HashMap<String, String> metadata = new HashMap<>();

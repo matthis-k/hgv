@@ -1,4 +1,4 @@
-package com.pse.hgv.representation;
+package kit.pse.hgv.representation;
 
 public class CartesianCoordinate implements Coordinate {
 
@@ -12,7 +12,14 @@ public class CartesianCoordinate implements Coordinate {
 
     @Override
     public CartesianCoordinate toCartesian() {
-        return null;
+        return this;
+    }
+
+    @Override
+    public PolarCoordinate toPolar() {
+        double distance = Math.sqrt(x*x + y*y);
+        double angle = Math.atan(y/x);
+        return new PolarCoordinate(angle, distance);
     }
 
     @Override

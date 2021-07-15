@@ -1,9 +1,9 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.uiHandler;
 
-import com.pse.hgv.representation.CartesianCoordinate;
-import com.pse.hgv.representation.CircleNode;
-import com.pse.hgv.representation.Drawable;
-import com.pse.hgv.representation.LineStrip;
+import kit.pse.hgv.representation.CartesianCoordinate;
+import kit.pse.hgv.representation.CircleNode;
+import kit.pse.hgv.representation.Drawable;
+import kit.pse.hgv.representation.LineStrip;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;

@@ -1,4 +1,4 @@
-package com.pse.hgv;
+package kit.pse.hgv;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
