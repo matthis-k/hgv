@@ -41,10 +41,16 @@ public class RenderHandler implements UIHandler, Initializable {
         Random random = new Random();
         double radius = 3;
 
-        for(int i = 0; i < 5000; i ++){
-            CircleNode start = new CircleNode(new CartesianCoordinate(random.nextInt((int)renderPane.getWidth()), random.nextInt((int)renderPane.getHeight())), radius, i, Color.CYAN);
-            CircleNode end = new CircleNode(new CartesianCoordinate(random.nextInt(1280), random.nextInt(720)), radius, i, Color.CYAN);
+        for(int i = 0; i < 350; i ++){
+            CircleNode start = new CircleNode(new CartesianCoordinate(renderCircle.getCenterX() + (random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), renderCircle.getCenterY() + random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), radius, i, Color.CYAN);
+            CircleNode end = new CircleNode(new CartesianCoordinate(renderCircle.getCenterX() + (random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), renderCircle.getCenterY() + random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), radius, i, Color.GOLD);
             LineStrip line = new LineStrip(start, end, i, Color.BLACK);
+
+            //NICHT VERWERFEN!!!!!!!!!!!
+            start.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(start.getCenter().getX() - renderCircle.getCenterX())));
+            start.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(start.getCenter().getY() - renderCircle.getCenterY())));
+            end.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(end.getCenter().getX() - renderCircle.getCenterX())));
+            end.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(end.getCenter().getY() - renderCircle.getCenterY())));
 
             boolean firstNode = false;
             boolean secondNode = false;
