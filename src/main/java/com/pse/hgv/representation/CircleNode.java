@@ -14,6 +14,7 @@ public class CircleNode extends Drawable{
         this.center = center;
         this.radius = radius;
         representation = new Circle(center.getX(), center.getY(), radius, color);
+        representation.setStroke(color); //nur um rand zu togglen
     }
 
     @Override

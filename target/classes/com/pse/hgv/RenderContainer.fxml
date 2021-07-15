@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane fx:id="renderPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #E5E9F0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.RenderHandler">
+
+<Pane fx:id="renderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e5e59f0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.RenderHandler">
    <children>
-      <Circle fx:id="renderCircle" fill="#eceff4" layoutX="640.0" layoutY="360.0" onMouseClicked="#generateGraph" radius="320.0" stroke="#eceff4" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="50.0" />
+      <Circle fx:id="renderCircle" fill="#eceff4" onMouseClicked="#generateGraph" radius="320.0" stroke="#eceff4" strokeType="INSIDE" strokeWidth="0.0" />
    </children>
-</AnchorPane>
+</Pane>

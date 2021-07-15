@@ -2,11 +2,11 @@
 
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="primaryAnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e5e9f0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.MainViewHandler">
    <children>
-      <fx:include source="RenderContainer.fxml" />
-      <fx:include source="EditContainer.fxml" AnchorPane.leftAnchor="0.0" />
-      <fx:include source="DetailContainer.fxml" AnchorPane.rightAnchor="0.0" />
-      <fx:include source="MenuContainer.fxml" />
+      <fx:include fx:id="renderPane" source="RenderContainer.fxml" />
+      <fx:include fx:id="editPane" minHeight="-Infinity" minWidth="-Infinity" source="EditContainer.fxml" AnchorPane.leftAnchor="0.0" />
+      <fx:include fx:id="detailPane" source="DetailContainer.fxml" AnchorPane.rightAnchor="0.0" />
+      <fx:include fx:id="viewMenuBar" source="MenuContainer.fxml" />
    </children>
 </AnchorPane>
