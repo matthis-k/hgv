@@ -71,4 +71,18 @@ public class Graph extends IdCreator {
         return res;
     }
 
+    public HashSet<GraphElement> getEdges(int id) {
+        Node node = nodes.get(id);
+        if(node == null) {
+            return null;
+        }
+        HashSet<GraphElement> res = new HashSet<>();
+        for (Edge edge: edges.values()) {
+            if(edge.getStart().equals(node) || edge.getEnd().equals(node)) {
+                res.add(edge);
+            }
+        }
+        return res;
+    }
+
 }
