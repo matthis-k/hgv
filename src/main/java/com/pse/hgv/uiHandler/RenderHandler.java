@@ -7,8 +7,6 @@ import com.pse.hgv.representation.LineStrip;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -24,14 +22,17 @@ public class RenderHandler implements UIHandler, Initializable {
     @FXML
     private Circle renderCircle;
 
+    private static final int MIDDLE_FACTOR = 2;
+    private static final int DOUBLE_HEIGHT_MENU = 50;
+
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) { //??????????????
-        renderCircle.centerXProperty().bind(renderPane.widthProperty().divide(2));
-        renderCircle.centerYProperty().bind(renderPane.prefHeightProperty().divide(2));
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        renderCircle.centerXProperty().bind(renderPane.widthProperty().divide(MIDDLE_FACTOR));
+        renderCircle.centerYProperty().bind(renderPane.prefHeightProperty().divide(MIDDLE_FACTOR));
 
-
-        renderCircle.radiusProperty().bind(Bindings.min(renderPane.widthProperty().divide(2), renderPane.heightProperty().subtract(50).divide(2)));
+        renderCircle.radiusProperty().bind(Bindings.min(renderPane.widthProperty().divide(MIDDLE_FACTOR),
+                renderPane.heightProperty().subtract(DOUBLE_HEIGHT_MENU).divide(MIDDLE_FACTOR)));
     }
 
     @FXML
@@ -39,18 +40,41 @@ public class RenderHandler implements UIHandler, Initializable {
         renderPane.getChildren().clear(); //temporär
         renderPane.getChildren().add(renderCircle); //Temporär
         Random random = new Random();
-        double radius = 3;
+        double radius = 5;
 
-        for(int i = 0; i < 350; i ++){
-            CircleNode start = new CircleNode(new CartesianCoordinate(renderCircle.getCenterX() + (random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), renderCircle.getCenterY() + random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), radius, i, Color.CYAN);
-            CircleNode end = new CircleNode(new CartesianCoordinate(renderCircle.getCenterX() + (random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), renderCircle.getCenterY() + random.nextInt((int)renderCircle.getRadius() * 2) - renderCircle.getRadius()), radius, i, Color.GOLD);
+        double startX = renderCircle.getCenterX()
+                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+        double startY = renderCircle.getCenterY()
+                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+
+        double endX = renderCircle.getCenterX()
+                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+        double endY = renderCircle.getCenterY()
+                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+
+        for(int i = 0; i < 3000; i ++){
+            CircleNode start = new CircleNode(new CartesianCoordinate(startX, startY), radius, i, Color.CYAN);
+            CircleNode end = new CircleNode(new CartesianCoordinate(endX, endY), radius, i, Color.GOLD);
             LineStrip line = new LineStrip(start, end, i, Color.BLACK);
 
             //NICHT VERWERFEN!!!!!!!!!!!
-            start.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(start.getCenter().getX() - renderCircle.getCenterX())));
-            start.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(start.getCenter().getY() - renderCircle.getCenterY())));
-            end.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(end.getCenter().getX() - renderCircle.getCenterX())));
-            end.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty().add(renderCircle.radiusProperty().divide(renderCircle.getRadius()).multiply(end.getCenter().getY() - renderCircle.getCenterY())));
+            start.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty()
+                    .add(renderCircle.radiusProperty().divide(renderCircle.getRadius())
+                            .multiply(start.getCenter().getX() - renderCircle.getCenterX())));
+
+            start.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty().
+                    add(renderCircle.radiusProperty().divide(renderCircle.getRadius())
+                            .multiply(start.getCenter().getY() - renderCircle.getCenterY())));
+
+            end.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty()
+                    .add(renderCircle.radiusProperty().divide(renderCircle.getRadius())
+                            .multiply(end.getCenter().getX() - renderCircle.getCenterX())));
+
+            end.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty()
+                    .add(renderCircle.radiusProperty().divide(renderCircle.getRadius())
+                            .multiply(end.getCenter().getY() - renderCircle.getCenterY())));
+            //NICHT VERWERFEN!!!!!!!
+
 
             boolean firstNode = false;
             boolean secondNode = false;
