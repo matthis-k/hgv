@@ -6,10 +6,10 @@ import java.util.Vector;
 
 import org.junit.Test;
 
-import kit.pse.hgv.graphSystem.Edge;
+import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.Graph;
-import kit.pse.hgv.graphSystem.GraphElement;
-import kit.pse.hgv.graphSystem.Node;
+import kit.pse.hgv.graphSystem.element.GraphElement;
+import kit.pse.hgv.graphSystem.element.Node;
 
 public class GraphTest {
     @Test

@@ -1,5 +1,9 @@
 package kit.pse.hgv.graphSystem;
 
+import kit.pse.hgv.graphSystem.element.Edge;
+import kit.pse.hgv.graphSystem.element.GraphElement;
+import kit.pse.hgv.graphSystem.element.Node;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
