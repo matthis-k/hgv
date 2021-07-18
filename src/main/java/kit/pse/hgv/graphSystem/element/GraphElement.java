@@ -26,7 +26,7 @@ public abstract class GraphElement {
      */
     public GraphElement() throws OverflowException {
         if(idCounter == Integer.MIN_VALUE) {
-            throw new OverflowException(GraphSystemMessages.TO_MANY_ELEMENTS.getMessage());
+            throw new OverflowException(GraphSystemMessages.TO_MANY_ELEMENTS.DE());
         }
         id = idCounter++;
     }
