@@ -40,6 +40,19 @@ public class Graph {
         return null;
     }
 
+    public List<Edge> getEdgesOfNode(Node node) {
+        List<Edge> edges = new ArrayList<>();
+        for (GraphElement element : elements) {
+            if (element instanceof  Edge) {
+                Edge edge = (Edge) element;
+                if(edge.getNodes()[0].getId() == node.getId() || edge.getNodes()[1].getId() == node.getId()) {
+                    edges.add(edge);
+                }
+            }
+        }
+        return edges;
+    }
+
     /**
      * This method removes an element with the given id.
      *
@@ -49,6 +62,12 @@ public class Graph {
     protected boolean removeElement(int elementID) {
         GraphElement ge = getElementById(elementID);
         if(ge != null) {
+            if(ge instanceof Node) {
+                for(Edge edge : getEdgesOfNode((Node) ge)) {
+                    elements.remove(edge);
+                }
+            }
+
             elements.remove(ge);
             return true;
         }
