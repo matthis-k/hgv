@@ -1,16 +1,36 @@
-package kit.pse.hgv.graphSystem;
+package kit.pse.hgv.graphSystem.element;
+import kit.pse.hgv.graphSystem.exception.OverflowException;
 
+/**
+ * Edge is an element of the graph representing the connection between 2 nodes.
+ * It has a unique id and 2 connecting nodes.
+ */
 public class Edge extends GraphElement {
-    private Node start;
-    private Node end;
-    public Edge(Node start, Node end) {
-        this.start = start;
-        this.end = end;
+
+    public static final int MAX_EDGE_NODES = 2;
+    private Node[] nodes = new Node[MAX_EDGE_NODES];
+
+    /**
+     * Create edge with the 2 nodes as an array.
+     * The Element will automaticly have an unique id.
+     *
+     * @param nodes array which contains the nodes the edge should be connected to.
+     * @throws OverflowException When there are to many elements and the id is overflowing.
+     * @throws IllegalArgumentException When the array with the edges is less or higher than two.
+     */
+    public Edge(Node[] nodes) throws OverflowException, IllegalArgumentException {
+        super();
+        if(nodes.length != MAX_EDGE_NODES) {
+            throw new IllegalArgumentException("Eine Kante kann nur mit 2 Knoten verbunden werden!");
+        }
+        this.nodes = nodes;
     }
-    public Node getStart() {
-        return start;
-    }
-    public Node getEnd() {
-        return end;
+
+    /**
+     * Gets youthe nodes which the edge is connected to.
+     * @return Returns an array of length 2 with the nodes.
+     */
+    public Node[] getNodes() {
+        return nodes;
     }
 }
