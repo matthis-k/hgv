@@ -1,4 +1,5 @@
 package kit.pse.hgv.graphSystem.element;
+import kit.pse.hgv.graphSystem.GraphSystemMessages;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
 /**
@@ -21,7 +22,7 @@ public class Edge extends GraphElement {
     public Edge(Node[] nodes) throws OverflowException, IllegalArgumentException {
         super();
         if(nodes.length != MAX_EDGE_NODES) {
-            throw new IllegalArgumentException("Eine Kante kann nur mit 2 Knoten verbunden werden!");
+            throw new IllegalArgumentException(GraphSystemMessages.MAX_NODES_EDGE.DE());
         }
         this.nodes = nodes;
     }
