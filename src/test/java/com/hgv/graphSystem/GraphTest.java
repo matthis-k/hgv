@@ -1,9 +1,11 @@
 package com.hgv.graphSystem;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Vector;
 
+import kit.pse.hgv.graphSystem.Coordinate;
+import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.OverflowException;
+import org.junit.Before;
 import org.junit.Test;
 
 import kit.pse.hgv.graphSystem.element.Edge;
@@ -11,44 +13,46 @@ import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 
+import static org.junit.Assert.*;
+
 public class GraphTest {
+
+    private GraphSystem g;
+    @Before
+    public void init() {
+        g = GraphSystem.getInstance();
+    }
+
+
     @Test
-    public void getElementById() {
-        Graph g = new Graph();
-        Node a = new Node();
-        Node b = new Node();
-        Edge ab = new Edge(a, b);
-        
-        g.addGraphElement(a);
-        g.addGraphElement(b);
-        g.addGraphElement(ab);
+    public void accessGraph() {
+        g.loadGraph("");
+        assertNotNull(g.getGraphElementByID(1));
+    }
 
-        assertEquals(a, g.getElementById(a.getId()));
-        assertEquals(b, g.getElementById(b.getId()));
-        assertEquals(ab, g.getElementById(ab.getId()));
-        assertEquals(g.getIds().size(), 3);
-        assertEquals(null, g.getElementById(7));
-    }    
     @Test
-    public void metadata() {
-        Graph g = new Graph();
-        for (int i = 0; i < 300; i++) {
-            g.addGraphElement(new Node());
-        }
-        Vector<Node> nodes = g.getNodes();
-        for (int i = 0; i < nodes.size(); i++) {
-            g.addGraphElement(new Edge(nodes.elementAt(i), nodes.elementAt((i+1)%nodes.size())));
-        }
-        assertEquals(g.getIds().size(), 600);
+    public void addNode() throws OverflowException {
+        g.loadGraph("");
+        g.addElement(1, new Coordinate());
+        assertNotNull(g.getGraphElementByID(1));
+    }
 
-        for (GraphElement e : g.getGraphElements()) {
-            e.setMetadata("metadata", Integer.toString(e.getId()));
-        }
+    @Test
+    public void addEdge() throws OverflowException {
+        g.loadGraph("");
+        g.addElement(1, new Coordinate());
+        g.addElement(1,new Coordinate());
+        int[] nodes = {1,2};
+        g.addElement(1, nodes);
 
-        for (GraphElement e : g.getGraphElements()) {
-            String val = e.getMetadata("metadata");
-            assertEquals(e.getId(), Integer.parseInt(val));
-            assertEquals(null, e.getMetadata("unknown"));
-        }
+        assertNotNull(g.getGraphElementByID(3));
+    }
+
+    @Test
+    public void removeElement() throws OverflowException {
+        g.loadGraph("");
+        g.addElement(1, new Coordinate());
+        g.removeElement(1);
+        assertNull(g.getGraphElementByID(1));
     }
 }

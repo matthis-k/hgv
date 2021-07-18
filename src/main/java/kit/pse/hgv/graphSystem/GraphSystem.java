@@ -4,6 +4,7 @@ import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
+import kit.pse.hgv.graphSystem.stub.DataGateway;
 
 import java.util.HashMap;
 
@@ -67,7 +68,7 @@ public class GraphSystem {
      * @param path is the pat where the graph should be loaded from.
      * @return Returns the graphID of the loaded graph. The graph can be get by this id in future.
      */
-    public int addGraph(String path) {
+    public int loadGraph(String path) {
         int graphID = graphIDCounter++;
         Graph g = DataGateway.loadGraph(path);
         if(g == null) {
