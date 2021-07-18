@@ -7,6 +7,10 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 
 import java.util.HashMap;
 
+/**
+ * Manages the creation an removal of graphs and elements.
+ * Also has getter for graphs and elements (not dependend on the graph!)
+ */
 public class GraphSystem {
     /** Singleton instance */
     private static GraphSystem instance;
@@ -121,4 +125,20 @@ public class GraphSystem {
         graphs.get(graphID).addGraphElement(node);
         return node.getId();
     }
+
+    /**
+     * Removes an element out of the graphsystem.
+     *
+     * @param elementID is the element ID that should be deleted.
+     * @return Returns true is successful deleted.
+     */
+    public boolean removeElement(int elementID) {
+        boolean deleted = false;
+        for(Graph g : graphs.values()) {
+            deleted = g.removeElement(elementID);
+        }
+        return deleted;
+    }
+
+
 }
