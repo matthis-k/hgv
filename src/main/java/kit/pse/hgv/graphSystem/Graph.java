@@ -45,7 +45,7 @@ public class Graph {
         for (GraphElement element : elements) {
             if (element instanceof  Edge) {
                 Edge edge = (Edge) element;
-                if(edge.getNodes()[0].getId() == node.getId() || edge.getNodes()[1].getId() == node.getId()) {
+                if(edge.getNodes()[0].getId() == node.getId() | edge.getNodes()[1].getId() == node.getId()) {
                     edges.add(edge);
                 }
             }
@@ -64,6 +64,7 @@ public class Graph {
         if(ge != null) {
             if(ge instanceof Node) {
                 for(Edge edge : getEdgesOfNode((Node) ge)) {
+                    System.out.println(edge.getId());
                     elements.remove(edge);
                 }
             }

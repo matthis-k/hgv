@@ -5,6 +5,7 @@ import java.util.Vector;
 import kit.pse.hgv.graphSystem.Coordinate;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class GraphTest {
     public void addEdge() throws OverflowException {
         g.loadGraph("");
         g.addElement(1, new Coordinate());
-        g.addElement(1,new Coordinate());
+        g.addElement(1, new Coordinate());
         int[] nodes = {1,2};
         g.addElement(1, nodes);
 
@@ -54,5 +55,21 @@ public class GraphTest {
         g.addElement(1, new Coordinate());
         g.removeElement(1);
         assertNull(g.getGraphElementByID(1));
+    }
+
+    @Test
+    public void removeNodeDelEdges() throws OverflowException {
+        g.loadGraph("");
+        g.addElement(1, new Coordinate());
+        g.addElement(1, new Coordinate());
+        int[] nodes = {1,2};
+        g.addElement(1, nodes);
+        g.removeElement(3);
+        assertNull(g.getGraphElementByID(2));
+    }
+
+    @After
+    public void destroy() {
+        g.removeGraph(0);
     }
 }
