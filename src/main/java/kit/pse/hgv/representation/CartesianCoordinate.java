@@ -23,8 +23,19 @@ public class CartesianCoordinate implements Coordinate {
     }
 
     @Override
-    public double euklidianDistance() {
-        return 0;
+    public double euclideanDistance(Coordinate coordinate) {
+        double tempX = x - coordinate.toCartesian().getX();
+        double tempY = y - coordinate.toCartesian().getY();
+        return Math.sqrt(tempX * tempX + tempY + tempY);
+    }
+
+    @Override
+    public double hyperbolicDistance(Coordinate coordinate) {
+        return toPolar().hyperbolicDistance(coordinate);
+    }
+
+    public CartesianCoordinate mirroredThroughCenter() {
+        return new CartesianCoordinate(-x,-y);
     }
 
     public double getX() {

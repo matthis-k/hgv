@@ -4,5 +4,7 @@ public interface Coordinate {
 
     public CartesianCoordinate toCartesian();
     public PolarCoordinate toPolar();
-    public double euklidianDistance();
+    public double euclideanDistance(Coordinate coordinate);
+    public double hyperbolicDistance(Coordinate coordinate);
+    public Coordinate mirroredThroughCenter();
 }

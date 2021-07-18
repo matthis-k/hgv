@@ -1,4 +1,4 @@
-package com.hgv.graphSystem;
+package kit.hgv.graphSystem;
 
 import static org.junit.Assert.assertEquals;
 

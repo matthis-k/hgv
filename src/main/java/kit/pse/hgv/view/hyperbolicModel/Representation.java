@@ -4,6 +4,7 @@ import kit.pse.hgv.graphSystem.Edge;
 import kit.pse.hgv.graphSystem.GraphElement;
 import kit.pse.hgv.graphSystem.Node;
 import kit.pse.hgv.representation.CircleNode;
+import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.LineStrip;
 
 public interface Representation {
@@ -12,5 +13,7 @@ public interface Representation {
     CircleNode calculate(Node node);
     LineStrip calculate(Edge edge);
     LineStrip calculate(GraphElement graphElement);
+    EdgeMode getEdgeMode();
     void setEdgeMode(EdgeMode edgeMode);
+    void setCenter(Coordinate center);
 }
