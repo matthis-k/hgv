@@ -29,6 +29,4 @@ public class Node extends GraphElement {
     public void move(Coordinate coord) {
         this.coord = coord;
     }
-
-
 }

@@ -59,6 +59,4 @@ public abstract class GraphElement {
     public String getMetadata(String key) {
         return metadata.get(key);
     }
-
-
 }
