@@ -1,31 +1,94 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.Edge;
 import kit.pse.hgv.graphSystem.GraphElement;
 import kit.pse.hgv.graphSystem.Node;
 import kit.pse.hgv.representation.*;
 
-public class NativeRepresentation implements Representation{
+import java.util.ArrayList;
+import java.util.List;
+
+public class NativeRepresentation implements Representation {
 
     private EdgeMode edgeMode = new EdgeModeDirect();
-    private Coordinate center;
+    private Coordinate center = new PolarCoordinate(0, 0);
+    private double nodeSize = 0.1;
+    private int accuracy = 100;
 
-    public NativeRepresentation() {
-        center = new PolarCoordinate(0,0);
+    public NativeRepresentation(double nodeSize) {
+        this.nodeSize = nodeSize;
     }
 
     public NativeRepresentation(Coordinate center) {
         this.center = center;
     }
 
+    //TODO constructors needed
+
     @Override
     public LineStrip calculateEdge(Edge edge) {
-        return null;
+        //calculation based on the calculation of Hipe
+        PolarCoordinate firstNode = edge.getStart().getCoordinate().toPolar();
+        firstNode.moveCoordinate(center.mirroredThroughCenter());
+        PolarCoordinate secondNode = edge.getEnd().getCoordinate().toPolar();
+        secondNode.moveCoordinate(center.mirroredThroughCenter());
+        List<Coordinate> line = new ArrayList<>();
+        if (firstNode.getDistance() == 0 || secondNode.getDistance() == 0 || firstNode.getAngle() ==
+                secondNode.getAngle()) {
+            line.add(firstNode);
+            line.add(secondNode);
+            return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
+        }
+        double angularDistance = firstNode.getAngle() - secondNode.getAngle();
+        if ((angularDistance > 0.0 && angularDistance < Math.PI) || (angularDistance < -Math.PI)) {
+            PolarCoordinate temp = firstNode;
+            firstNode = secondNode;
+            secondNode = temp;
+        }
+
+        double distance = firstNode.hyperbolicDistance(secondNode);
+
+        double cosGamma2 = 0.0;
+
+        if (Math.sinh(secondNode.getDistance()) * Math.sinh(distance) != 0) {
+            cosGamma2 = (((Math.cosh(secondNode.getDistance() * Math.cosh(distance)) -
+                    Math.cosh(firstNode.getDistance()) / (Math.sinh(secondNode.getDistance()) * Math.sinh(distance)))));
+        }
+
+        for (int i = 0; i <= accuracy; i++) {
+            double partial_distance = distance * (i / (double) accuracy);
+            double temp = Math.cosh(secondNode.getDistance() * Math.cosh(partial_distance) -
+                    (Math.sinh(secondNode.getDistance() * Math.sinh(partial_distance) * cosGamma2)));
+            double radius = acosh(temp) != -1 ? acosh(temp) : 0.0;
+            temp = Math.sinh(radius) * Math.sinh(secondNode.getDistance()) != 0 ? (Math.cosh(radius) *
+                    Math.cosh(secondNode.getDistance()) - Math.cosh(partial_distance)) /
+                    (Math.sinh(radius) * Math.sinh(secondNode.getDistance())) : -1.0;
+            double gammaPrime = acosh(temp) != -1 ? acosh(temp) : 0.0;
+            double phi = secondNode.getAngle() + gammaPrime;
+            PolarCoordinate nativeLinePoint = (new PolarCoordinate(phi, radius));
+            nativeLinePoint.moveCoordinate(center);
+            line.add(nativeLinePoint);
+        }
+
+        return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
+    }
+
+    private double acosh(double x) {
+        //TODO
+        //check whether x is valid, else return -1(invalid result)
+        if (x < 1) {
+            return -1;
+        }
+        double res = Math.log(x + Math.sqrt(x * x - 1));
+        //check whether the result is valid if so, return the result, else return -1
+        return res < 0 ? -1 : res;
     }
 
     @Override
     public CircleNode calculate(Node node) {
-        return null;
+        return new CircleNode(node.getCoordinate().toCartesian(), nodeSize, node.getId(),
+                Color.valueOf(node.getMetadata("Color").toUpperCase()));
     }
 
     @Override
@@ -37,12 +100,22 @@ public class NativeRepresentation implements Representation{
 
     @Override
     public LineStrip calculate(GraphElement graphElement) {
-        System.out.println("Edge");
+        System.out.println("Graph");
         return null;
+    }
+
+    @Override
+    public void setCenter(Coordinate center) {
+        this.center = center;
     }
 
     @Override
     public void setEdgeMode(EdgeMode edgeMode) {
         this.edgeMode = edgeMode;
+    }
+
+    @Override
+    public EdgeMode getEdgeMode() {
+        return edgeMode;
     }
 }
