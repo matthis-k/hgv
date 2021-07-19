@@ -75,18 +75,17 @@ public class DrawManager {
         return res;
     }
 
-    public void setEdgeMode(EdgeMode edgeMode) {
-        representation.setEdgeMode(edgeMode);
-    }
-
     public Representation getRepresentation() {
         return representation;
     }
 
     public void setRepresentation(Representation representation) {
-        EdgeMode edgeMode = representation.getEdgeMode();
+
         this.representation = representation;
-        representation.setEdgeMode(edgeMode);
+
     }
 
+    public void setAccuracy(int accuracy) {
+        representation.setAccuracy(accuracy);
+    }
 }

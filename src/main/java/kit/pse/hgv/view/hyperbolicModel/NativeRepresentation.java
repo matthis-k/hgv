@@ -11,10 +11,17 @@ import java.util.List;
 
 public class NativeRepresentation implements Representation {
 
-    private EdgeMode edgeMode = new EdgeModeDirect();
     private Coordinate center = new PolarCoordinate(0, 0);
     private double nodeSize = 0.1;
+    /**
+     * this is the number of lines that is used to demonstrate one edge,
+     * any value below 1 is invalid, the value 1 is for a direct line
+     */
     private int accuracy = 100;
+
+    public NativeRepresentation() {
+
+    }
 
     public NativeRepresentation(double nodeSize) {
         this.nodeSize = nodeSize;
@@ -24,11 +31,43 @@ public class NativeRepresentation implements Representation {
         this.center = center;
     }
 
+    public NativeRepresentation(int accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public NativeRepresentation(int accuracy, Coordinate center) {
+        this.accuracy = accuracy;
+        this.center = center;
+    }
+
+    public NativeRepresentation(double nodeSize, int accuracy) {
+        this.nodeSize = nodeSize;
+        this.accuracy = accuracy;
+    }
+
+    public NativeRepresentation(double nodeSize, Coordinate center) {
+        this.nodeSize = nodeSize;
+        this.center = center;
+    }
+
+    public NativeRepresentation(double nodeSize, int accuracy, Coordinate center) {
+        this.nodeSize = nodeSize;
+        this.accuracy = accuracy;
+        this.center = center;
+    }
+
     //TODO constructors needed
 
     @Override
-    public LineStrip calculateEdge(Edge edge) {
-        //calculation based on the calculation of Hipe
+    public CircleNode calculate(Node node) {
+        System.out.println("node");
+        return new CircleNode(node.getCoordinate().toCartesian(), nodeSize, node.getId(),
+                Color.valueOf(node.getMetadata("Color").toUpperCase()));
+    }
+
+    @Override
+    public LineStrip calculate(Edge edge) {
+        System.out.println("edge");
         PolarCoordinate firstNode = edge.getStart().getCoordinate().toPolar();
         firstNode.moveCoordinate(center.mirroredThroughCenter());
         PolarCoordinate secondNode = edge.getEnd().getCoordinate().toPolar();
@@ -74,6 +113,23 @@ public class NativeRepresentation implements Representation {
         return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
     }
 
+
+    @Override
+    public LineStrip calculate(GraphElement graphElement) {
+        System.out.println("element");
+        return null;
+    }
+
+    @Override
+    public void setCenter(Coordinate center) {
+        this.center = center;
+    }
+
+   @Override
+    public void setAccuracy(int accuracy) {
+        this.accuracy = accuracy;
+   }
+
     private double acosh(double x) {
         //TODO
         //check whether x is valid, else return -1(invalid result)
@@ -83,39 +139,5 @@ public class NativeRepresentation implements Representation {
         double res = Math.log(x + Math.sqrt(x * x - 1));
         //check whether the result is valid if so, return the result, else return -1
         return res < 0 ? -1 : res;
-    }
-
-    @Override
-    public CircleNode calculate(Node node) {
-        return new CircleNode(node.getCoordinate().toCartesian(), nodeSize, node.getId(),
-                Color.valueOf(node.getMetadata("Color").toUpperCase()));
-    }
-
-    @Override
-    public LineStrip calculate(Edge edge) {
-        System.out.println("Edge");
-        return edgeMode.calculateEdge(edge);
-    }
-
-
-    @Override
-    public LineStrip calculate(GraphElement graphElement) {
-        System.out.println("Graph");
-        return null;
-    }
-
-    @Override
-    public void setCenter(Coordinate center) {
-        this.center = center;
-    }
-
-    @Override
-    public void setEdgeMode(EdgeMode edgeMode) {
-        this.edgeMode = edgeMode;
-    }
-
-    @Override
-    public EdgeMode getEdgeMode() {
-        return edgeMode;
     }
 }

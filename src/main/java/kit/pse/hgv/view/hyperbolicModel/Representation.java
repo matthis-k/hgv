@@ -8,12 +8,10 @@ import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.LineStrip;
 
 public interface Representation {
-    LineStrip calculateEdge(Edge edge);
 
     CircleNode calculate(Node node);
     LineStrip calculate(Edge edge);
     LineStrip calculate(GraphElement graphElement);
-    EdgeMode getEdgeMode();
-    void setEdgeMode(EdgeMode edgeMode);
+    void setAccuracy(int accuracy);
     void setCenter(Coordinate center);
 }
