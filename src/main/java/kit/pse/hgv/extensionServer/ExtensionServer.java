@@ -36,7 +36,6 @@ public class ExtensionServer extends Thread {
             ClientHandler handler = new ClientHandler(client);
             handlers.put(++nextId, handler);
             handler.start();
-            System.out.println("New Connection" + client.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,16 +58,5 @@ public class ExtensionServer extends Thread {
         ClientHandler handler = handlers.get(clientId);
         if (handler == null) { return; }
         handler.send(msg);
-    }
-
-    public static void main(String[] args) {
-        ExtensionServer server;
-        try {
-            server = new ExtensionServer(12345);
-            server.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Server Creation failed");
-        }
     }
 }

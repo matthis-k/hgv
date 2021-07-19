@@ -16,6 +16,7 @@ public class ClientHandler extends Thread {
 
     @Override
     public void run() {
+        System.out.println("New Connection: " + socket.toString());
         while (!socket.isClosed()) {
             state.work(this);
             state = state.nextState();
