@@ -1,3 +1,4 @@
+package kit.pse.hgv.extensionServer;
 
 
 public interface ClientState {

@@ -1,3 +1,5 @@
+package kit.pse.hgv.extensionServer;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

@@ -1,3 +1,4 @@
+package kit.pse.hgv.extensionServer;
 public class RecieveCommandState implements ClientState {
     private String last_msg = null;
 

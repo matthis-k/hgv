@@ -1,3 +1,4 @@
+package kit.pse.hgv.extensionServer;
 import java.io.IOException;
 
 public class EndState implements ClientState {
