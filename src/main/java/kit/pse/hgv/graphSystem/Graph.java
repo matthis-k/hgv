@@ -43,7 +43,12 @@ public class Graph {
      * @return Returns the element if found, else null.
      */
     protected GraphElement getElementById(int elementID) {
-        for (GraphElement ge : elements) {
+        for (GraphElement ge : edges) {
+            if (elementID == ge.getId()) {
+                return ge;
+            }
+        }
+        for (GraphElement ge : nodes) {
             if (elementID == ge.getId()) {
                 return ge;
             }
