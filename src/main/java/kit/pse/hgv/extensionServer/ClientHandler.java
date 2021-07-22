@@ -6,14 +6,36 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
+/**
+ * An instance of this class manages the communication with one specific client.
+ */
 public class ClientHandler extends Thread {
+    /**
+     * Some information about the client.
+     */
     private ClientInfo clientInfo;
+    /**
+     * The socket of the client communicats with.
+     */
     private Socket socket;
+    /**
+     * OutputStream of the socket.
+     */
     private BufferedWriter out;
+    /**
+     * InputStream of the socket.
+     */
     private BufferedReader in;
+    /**
+     * State of the client.
+     */
     private ClientState state;
 
+    /**
+     * Starts the communication loop.
+     */
     @Override
     public void run() {
         System.out.println("New Connection: " + socket.toString());
@@ -24,14 +46,30 @@ public class ClientHandler extends Thread {
         System.out.println("Connection closed: " + socket.toString());
     }
 
-    public ClientHandler(Socket clientSocket) throws IOException {
+    /**
+     * Creates a new ClientHandler for a specific Socket.
+     * @param clientSocket the socket of the client.
+     */
+    public ClientHandler(Socket clientSocket) {
         socket = clientSocket;
-        socket.setSoTimeout(1000);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        try {
+            socket.setSoTimeout(1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         state = new RecieveCommandState();
     }
 
+    /**
+     * Reads a String from the Socket. Waits until something is recieved if nothing new was sent.
+     * @return the next message recieved
+     */
     String recieve() {
         try {
             String res = in.readLine();
@@ -47,6 +85,10 @@ public class ClientHandler extends Thread {
         return new String();
     }
 
+    /**
+     * Sends a message to the client.
+     * @param msg is the message to be send.
+     */
     void send(String msg) {
         try {
             out.write(msg);
@@ -56,10 +98,16 @@ public class ClientHandler extends Thread {
         }
     }
 
+    /**
+     * @return information about the client
+     */
     public ClientInfo getInfo() {
         return clientInfo;
     }
 
+    /**
+     * @return Socket of the client
+     */
     Socket getSocket() {
         return socket;
     }
