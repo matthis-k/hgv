@@ -76,14 +76,12 @@ public class Graph {
     protected boolean removeElement(int elementID) {
         GraphElement ge = getElementById(elementID);
         if(ge != null) {
-            if(ge instanceof Node) {
+            if(nodes.contains(ge)) {
                 for(Edge edge : getEdgesOfNode((Node) ge)) {
-                    System.out.println(edge.getId());
-                    elements.remove(edge);
+                    edges.remove(edge);
                 }
             }
-
-            elements.remove(ge);
+            nodes.remove(ge);
             return true;
         }
         return false;
@@ -95,12 +93,6 @@ public class Graph {
      * @return Returns a list of nodes the graph consists of.
      */
     public List<Node> getNodes() {
-        List<Node> nodes = new ArrayList<>();
-        for(GraphElement ge : elements) {
-            if(ge instanceof Node) {
-                nodes.add((Node) ge);
-            }
-        }
         return nodes;
     }
 
@@ -110,12 +102,6 @@ public class Graph {
      * @return Returns a list of edges the graph consists of.
      */
     public List<Edge> getEdges() {
-        List<Edge> edges = new ArrayList<>();
-        for(GraphElement ge : elements) {
-            if(ge instanceof Edge) {
-                edges.add((Edge) ge);
-            }
-        }
         return edges;
     }
 
@@ -124,7 +110,10 @@ public class Graph {
      *
      * @return Returns list fo GraphElements
      */
-    public List<GraphElement> getGraphElements() { ;
+    public List<GraphElement> getGraphElements() {
+        List<GraphElement> elements = new ArrayList<>();
+        elements.addAll(nodes);
+        elements.addAll(edges);
         return elements;
     }
 }
