@@ -62,10 +62,13 @@ public class GraphTest {
         g.loadGraph("");
         g.addElement(1, new Coordinate());
         g.addElement(1, new Coordinate());
-        int[] nodes = {1,2};
+        System.out.println(g.getNodeByID(1));
+        System.out.println(g.getNodeByID(2));
+        int[] nodes = {1, 2};
         g.addElement(1, nodes);
+        System.out.println(g.getEdgeByID(3));
         g.removeElement(3);
-        assertNull(g.getGraphElementByID(2));
+        assertNull(g.getGraphElementByID(3));
     }
 
     @After
