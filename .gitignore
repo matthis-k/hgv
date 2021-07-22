@@ -45,4 +45,8 @@ target/
 __MACOSX/
 
 # Windows
+<<<<<<< HEAD
 Thumbs.db
+=======
+Thumbs.db
+>>>>>>> origin/CommandController
