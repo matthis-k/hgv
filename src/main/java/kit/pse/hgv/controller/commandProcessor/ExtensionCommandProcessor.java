@@ -25,4 +25,12 @@ public class ExtensionCommandProcessor implements CommandProcessor{
             return null;
         }
     }
+
+    public void registerExtension(String path){
+        RegisterExtensionCommand command = new RegisterExtensionCommand(path);
+    }
+
+    public void startExtension(int id){
+        StartExtensionCommand command = new StartExtensionCommand(id);
+    }
 }
