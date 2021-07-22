@@ -58,12 +58,10 @@ public class Graph {
 
     public List<Edge> getEdgesOfNode(Node node) {
         List<Edge> edges = new ArrayList<>();
-        for (GraphElement element : elements) {
-            if (element instanceof  Edge) {
-                Edge edge = (Edge) element;
-                if(edge.getNodes()[0].getId() == node.getId() | edge.getNodes()[1].getId() == node.getId()) {
-                    edges.add(edge);
-                }
+        for (GraphElement element : edges) {
+            Edge edge = (Edge) element;
+            if(edge.getNodes()[0].equals(node) | edge.getNodes()[1].equals(node)) {
+                edges.add(edge);
             }
         }
         return edges;
