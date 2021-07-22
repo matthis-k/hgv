@@ -14,16 +14,27 @@ import java.util.*;
  */
 public class Graph {
 
-    private List<GraphElement> elements = new ArrayList<GraphElement>();
+    private List<Edge> edges = new ArrayList<Edge>();
+    private List<Node> nodes = new ArrayList<Node>();
 
     /**
      * This methods adds an element to the elements list of the graph.
      *
-     * @param ge is the element that should be added.
+     * @param node is the element that should be added.
      */
-    protected void addGraphElement(GraphElement ge) {
-        elements.add(ge);
+    protected void addGraphElement(Node node) {
+        nodes.add(node);
     }
+
+    /**
+     * This methods adds an element to the elements list of the graph.
+     *
+     * @param edge is the element that should be added.
+     */
+    protected void addGraphElement(Edge edge) {
+        edges.add(edge);
+    }
+
 
     /**
      * This method gets you the element with the given id.
