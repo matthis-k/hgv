@@ -124,16 +124,12 @@ public class GraphSystem {
      * @param nodeIDs is an array of 2 node ids which the Edge should be connected to.
      */
     public int addElement(int graphID, int[] nodeIDs) throws OverflowException {
-
-        Node[] nodes = new Node[Edge.MAX_EDGE_NODES];
-
-        nodes[0] = (Node) getGraphElementByID(nodeIDs[0]);
-        nodes[1] = (Node) getGraphElementByID(nodeIDs[1]);
-
-        //Param check.
-        if(!(nodes[0] instanceof Node) || !(nodes[1] instanceof Node)) {
+        if(nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
+        Node[] nodes = new Node[2];
+        nodes[0] = getNodeByID(nodeIDs[0]);
+        nodes[1] = getNodeByID(nodeIDs[1]);
 
         Edge edge = new Edge(nodes);
         graphs.get(graphID).addGraphElement(edge);

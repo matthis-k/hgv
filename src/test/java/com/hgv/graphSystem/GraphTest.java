@@ -1,18 +1,11 @@
 package com.hgv.graphSystem;
 
-import java.util.Vector;
-
 import kit.pse.hgv.graphSystem.Coordinate;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import kit.pse.hgv.graphSystem.element.Edge;
-import kit.pse.hgv.graphSystem.Graph;
-import kit.pse.hgv.graphSystem.element.GraphElement;
-import kit.pse.hgv.graphSystem.element.Node;
 
 import static org.junit.Assert.*;
 
@@ -60,14 +53,15 @@ public class GraphTest {
     @Test
     public void removeNodeDelEdges() throws OverflowException {
         g.loadGraph("");
-        g.addElement(1, new Coordinate());
-        g.addElement(1, new Coordinate());
-        System.out.println(g.getNodeByID(1));
-        System.out.println(g.getNodeByID(2));
-        int[] nodes = {1, 2};
-        g.addElement(1, nodes);
-        System.out.println(g.getEdgeByID(3));
-        g.removeElement(3);
+        int id1 = g.addElement(1, new Coordinate());
+        int id2 = g.addElement(1, new Coordinate());
+        System.out.println(id1);
+        System.out.println(id2);
+        int[] nodes = {id1, id2};
+        int id3 = g.addElement(1, nodes);
+        System.out.println(id3);
+        g.removeElement(id2);
+        System.out.println(g.getGraphElementByID(3));
         assertNull(g.getGraphElementByID(3));
     }
 

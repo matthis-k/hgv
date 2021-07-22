@@ -7,15 +7,15 @@ import kit.pse.hgv.graphSystem.element.Node;
 import java.util.*;
 
 /**
- * This class is for accessing information about an graph.
- * You can get element groups which belong to this particular graph.
+ * This class is for accessing information about an graph. You can get element
+ * groups which belong to this particular graph.
  *
  * It also manages intern creation of elements.
  */
 public class Graph {
 
-    private List<Edge> edges = new ArrayList<Edge>();
-    private List<Node> nodes = new ArrayList<Node>();
+    private HashMap<Integer, Edge> edges = new HashMap<Integer, Edge>();
+    private HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
 
     /**
      * This methods adds an element to the elements list of the graph.
@@ -23,7 +23,7 @@ public class Graph {
      * @param node is the element that should be added.
      */
     protected void addGraphElement(Node node) {
-        nodes.add(node);
+        nodes.put(node.getId(), node);
     }
 
     /**
@@ -32,9 +32,10 @@ public class Graph {
      * @param edge is the element that should be added.
      */
     protected void addGraphElement(Edge edge) {
-        edges.add(edge);
+        if (getNodeById(edge.getNodes()[0].getId()) != null && getNodeById(edge.getNodes()[1].getId()) != null) {
+            edges.put(edge.getId(), edge);
+        }
     }
-
 
     /**
      * This method gets you the element with the given id.
@@ -43,28 +44,21 @@ public class Graph {
      * @return Returns the element if found, else null.
      */
     protected GraphElement getElementById(int elementID) {
-        for (GraphElement ge : edges) {
-            if (elementID == ge.getId()) {
-                return ge;
-            }
+        if (nodes.get(elementID) != null) {
+            return nodes.get(elementID);
+        } else {
+            return edges.get(elementID);
         }
-        for (GraphElement ge : nodes) {
-            if (elementID == ge.getId()) {
-                return ge;
-            }
-        }
-        return null;
     }
 
     public List<Edge> getEdgesOfNode(Node node) {
-        List<Edge> edges = new ArrayList<>();
-        for (GraphElement element : edges) {
-            Edge edge = (Edge) element;
-            if(edge.getNodes()[0].equals(node) | edge.getNodes()[1].equals(node)) {
-                edges.add(edge);
+        List<Edge> res = new ArrayList<>();
+        for (Edge edge : edges.values()) {
+            if (edge.getNodes()[0].getId() == node.getId() || edge.getNodes()[1].getId() == node.getId()) {
+                res.add(edge);
             }
         }
-        return edges;
+        return res;
     }
 
     /**
@@ -74,17 +68,18 @@ public class Graph {
      * @return Return true is successfully deleted.
      */
     protected boolean removeElement(int elementID) {
-        GraphElement ge = getElementById(elementID);
-        if(ge != null) {
-            if(nodes.contains(ge)) {
-                for(Edge edge : getEdgesOfNode((Node) ge)) {
-                    edges.remove(edge);
-                }
+        if (getEdgeById(elementID) != null) {
+            edges.remove(elementID);
+        } else if (getNodeById(elementID) != null) {
+
+            for (Edge adj : getEdgesOfNode(getNodeById(elementID))) {
+                removeElement(adj.getId());
             }
-            nodes.remove(ge);
-            return true;
+            nodes.remove(elementID);
+        } else {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -92,8 +87,16 @@ public class Graph {
      *
      * @return Returns a list of nodes the graph consists of.
      */
-    public List<Node> getNodes() {
-        return nodes;
+    public Collection<Node> getNodes() {
+        return nodes.values();
+    }
+
+    public Edge getEdgeById(int id) {
+        return edges.get(id);
+    }
+
+    public Node getNodeById(int id) {
+        return nodes.get(id);
     }
 
     /**
@@ -101,8 +104,8 @@ public class Graph {
      *
      * @return Returns a list of edges the graph consists of.
      */
-    public List<Edge> getEdges() {
-        return edges;
+    public Collection<Edge> getEdges() {
+        return edges.values();
     }
 
     /**
@@ -112,8 +115,8 @@ public class Graph {
      */
     public List<GraphElement> getGraphElements() {
         List<GraphElement> elements = new ArrayList<>();
-        elements.addAll(nodes);
-        elements.addAll(edges);
+        elements.addAll(getNodes());
+        elements.addAll(getEdges());
         return elements;
     }
 }
