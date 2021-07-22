@@ -7,7 +7,11 @@ public class GraphElementDeleteCommand extends GraphElementCommand {
         this.elementId = elementId;
     }
 
+    @Override
     public void execute(){
-        
+    }
+
+    @Override
+    public void undo() {
     }
 }

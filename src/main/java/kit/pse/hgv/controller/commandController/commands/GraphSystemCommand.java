@@ -1,5 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-public abstract class GraphSystemCommand {
+public abstract class GraphSystemCommand implements Command {
     
 }

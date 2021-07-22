@@ -9,7 +9,14 @@ public class GraphElementCreateCommand extends GraphElementCommand {
         this.graphId = graphId;
     }
 
+    @Override
     public void execute(){
 
+    }
+
+    @Override
+    public void undo() {
+        // TODO Auto-generated method stub
+        
     }
 }

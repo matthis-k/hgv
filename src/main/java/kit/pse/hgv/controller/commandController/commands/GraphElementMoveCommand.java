@@ -8,7 +8,14 @@ public class GraphElementMoveCommand extends GraphElementCommand{
         this.elementId = elementId;
     }
 
+    @Override
     public void execute(){
+        
+    }
+
+    @Override
+    public void undo() {
+        // TODO Auto-generated method stub
         
     }
 }

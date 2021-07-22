@@ -28,7 +28,13 @@ public class ExtensionCommandTypeTest {
             "{ \"type\": \"MoveNode\", \"coordiante\": \"-2.333,1434\"}"
         ));
     }
-    @org.junit.Test(expected = IllegalArgumentException.class)
+    @Test
+    public void testComposite() {
+        assertEquals(ExtensionCommandType.COMMAND_COMPOSITE, ExtensionCommandType.processCommandString(
+            "{ \"type\": \"CommandComposite\", \"commands\": [ { \"type\": \"MoveNode\", \"coordiante\": \"-2.333,1434\"} ]}"
+        ));
+    }
+    @Test(expected = IllegalArgumentException.class)
     public void testMissingField() {
         ExtensionCommandType.processCommandString(
             "{ \"type\": \"CreateNode\" }"
