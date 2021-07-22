@@ -61,6 +61,31 @@ public class GraphSystem {
         return null;
     }
 
+    /**
+     * Gets you the Node with the id, if possible.
+     * @param nodeID is the id of the node you will get.
+     * @return Returns the node if found, else null.
+     */
+    public Node getNodeByID(int nodeID) {
+        GraphElement element = getGraphElementByID(nodeID);
+        if (element instanceof Node) {
+            return (Node) element;
+        }
+        return null;
+    }
+
+    /**
+     * Gets you the Edge with the id, if possible.
+     * @param edgeID is the id of the edge you will get.
+     * @return Returns the edge if found, else null.
+     */
+    public Edge getEdgeByID(int edgeID) {
+        GraphElement element = getGraphElementByID(edgeID);
+        if (element instanceof Edge) {
+            return (Edge) element;
+        }
+        return null;
+    }
 
     /**
      * Loads graph from the path to the memory and stores it in GraphSystem.

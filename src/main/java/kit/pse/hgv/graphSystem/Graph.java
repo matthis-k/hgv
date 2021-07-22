@@ -14,16 +14,27 @@ import java.util.*;
  */
 public class Graph {
 
-    private List<GraphElement> elements = new ArrayList<GraphElement>();
+    private List<Edge> edges = new ArrayList<Edge>();
+    private List<Node> nodes = new ArrayList<Node>();
 
     /**
      * This methods adds an element to the elements list of the graph.
      *
-     * @param ge is the element that should be added.
+     * @param node is the element that should be added.
      */
-    protected void addGraphElement(GraphElement ge) {
-        elements.add(ge);
+    protected void addGraphElement(Node node) {
+        nodes.add(node);
     }
+
+    /**
+     * This methods adds an element to the elements list of the graph.
+     *
+     * @param edge is the element that should be added.
+     */
+    protected void addGraphElement(Edge edge) {
+        edges.add(edge);
+    }
+
 
     /**
      * This method gets you the element with the given id.
@@ -32,7 +43,12 @@ public class Graph {
      * @return Returns the element if found, else null.
      */
     protected GraphElement getElementById(int elementID) {
-        for (GraphElement ge : elements) {
+        for (GraphElement ge : edges) {
+            if (elementID == ge.getId()) {
+                return ge;
+            }
+        }
+        for (GraphElement ge : nodes) {
             if (elementID == ge.getId()) {
                 return ge;
             }
@@ -42,12 +58,10 @@ public class Graph {
 
     public List<Edge> getEdgesOfNode(Node node) {
         List<Edge> edges = new ArrayList<>();
-        for (GraphElement element : elements) {
-            if (element instanceof  Edge) {
-                Edge edge = (Edge) element;
-                if(edge.getNodes()[0].getId() == node.getId() || edge.getNodes()[1].getId() == node.getId()) {
-                    edges.add(edge);
-                }
+        for (GraphElement element : edges) {
+            Edge edge = (Edge) element;
+            if(edge.getNodes()[0].equals(node) | edge.getNodes()[1].equals(node)) {
+                edges.add(edge);
             }
         }
         return edges;
@@ -62,13 +76,12 @@ public class Graph {
     protected boolean removeElement(int elementID) {
         GraphElement ge = getElementById(elementID);
         if(ge != null) {
-            if(ge instanceof Node) {
+            if(nodes.contains(ge)) {
                 for(Edge edge : getEdgesOfNode((Node) ge)) {
-                    elements.remove(edge);
+                    edges.remove(edge);
                 }
             }
-
-            elements.remove(ge);
+            nodes.remove(ge);
             return true;
         }
         return false;
@@ -80,12 +93,6 @@ public class Graph {
      * @return Returns a list of nodes the graph consists of.
      */
     public List<Node> getNodes() {
-        List<Node> nodes = new ArrayList<>();
-        for(GraphElement ge : elements) {
-            if(ge instanceof Node) {
-                nodes.add((Node) ge);
-            }
-        }
         return nodes;
     }
 
@@ -95,12 +102,6 @@ public class Graph {
      * @return Returns a list of edges the graph consists of.
      */
     public List<Edge> getEdges() {
-        List<Edge> edges = new ArrayList<>();
-        for(GraphElement ge : elements) {
-            if(ge instanceof Edge) {
-                edges.add((Edge) ge);
-            }
-        }
         return edges;
     }
 
@@ -109,7 +110,10 @@ public class Graph {
      *
      * @return Returns list fo GraphElements
      */
-    public List<GraphElement> getGraphElements() { ;
+    public List<GraphElement> getGraphElements() {
+        List<GraphElement> elements = new ArrayList<>();
+        elements.addAll(nodes);
+        elements.addAll(edges);
         return elements;
     }
 }
