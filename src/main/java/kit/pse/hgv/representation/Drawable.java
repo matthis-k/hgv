@@ -1,4 +1,4 @@
-package com.pse.hgv.representation;
+package kit.pse.hgv.representation;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,6 +11,7 @@ public abstract class Drawable {
         this.id = id;
         this.color = color;
     }
+
 
     public int getID() {
         return this.id;
