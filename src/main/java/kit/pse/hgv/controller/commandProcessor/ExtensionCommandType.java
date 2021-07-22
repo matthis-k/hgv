@@ -1,9 +1,12 @@
 package kit.pse.hgv.controller.commandProcessor;
 
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.json.JSONException;
+import kit.pse.hgv.controller.commandController.commands.*;
 
 /**
  * This class processes the string command from the extension server and
@@ -17,10 +20,12 @@ public enum ExtensionCommandType {
     CREATE_NODE(ExtensionCommandType.START + "CreateNode" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
+            int graphId = inputAsJson.getInt("graphId");
             String coordinate = inputAsJson.getString("coordinate");
             String[] eachCoordinate = coordinate.split(",");
             double coord1 = Double.valueOf(eachCoordinate[0]);
             double coord2 = Double.valueOf(eachCoordinate[1]);
+            GraphElementCreateCommand command = new GraphElementCreateCommand(graphId);
         }
     },
 
@@ -30,8 +35,10 @@ public enum ExtensionCommandType {
     CREATE_EDGE(ExtensionCommandType.START + "CreateEdge" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
+            int graphId = inputAsJson.getInt("graphId");
             int firstNode = inputAsJson.getInt("id1");
             int secondNode = inputAsJson.getInt("id2");
+            GraphElementCreateCommand command = new GraphElementCreateCommand(graphId);
         }
     },
 
@@ -42,6 +49,7 @@ public enum ExtensionCommandType {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
             int elementId = inputAsJson.getInt("id");
+            GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId);
         }
     },
 
@@ -56,6 +64,7 @@ public enum ExtensionCommandType {
             String[] eachCoordinate = coordinate.split(",");
             double coord1 = Double.valueOf(eachCoordinate[0]);
             double coord2 = Double.valueOf(eachCoordinate[1]);
+            GraphElementMoveCommand command = new GraphElementMoveCommand(id);
         }
     },
 
@@ -65,8 +74,11 @@ public enum ExtensionCommandType {
     CHANGE_COLOR(ExtensionCommandType.START + "ChangeColor" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
-            int elementID = inputAsJson.getInt("elementId");
+            int elementId = inputAsJson.getInt("elementId");
             // Hexazahl
+            String colorAsString = inputAsJson.getString("color");
+            // TODO try converting into color
+            EditColorCommand command = new EditColorCommand(elementId);
         }
     },
 
@@ -77,6 +89,20 @@ public enum ExtensionCommandType {
     CHANGE_METADATA(ExtensionCommandType.START + "ChangeMetadata" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
+            String metaVal = inputAsJson.getString("TODO");
+            String metaKey = inputAsJson.getString("TODO");
+            int elementId = inputAsJson.getInt("id");
+            EditUserMetaCommand command = new EditUserMetaCommand(metaKey, metaVal, elementId);
+        }
+    },
+
+    COMMAND_COMPOSITE(ExtensionCommandType.START + "CommandComposite" + ExtensionCommandType.END) {
+        @Override
+        protected void parseCommand(JSONObject inputAsJson) throws JSONException {
+            Vector<Command> commandComposite = new Vector<>();
+            JSONArray commandsAsArray = inputAsJson.getJSONArray("commands");
+                for (Object eachCommand : commandsAsArray){
+                }
 
         }
     },
@@ -88,7 +114,7 @@ public enum ExtensionCommandType {
     MOVE_CENTER(ExtensionCommandType.START + "MoveCenter" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
-
+            MoveCenterCommand command = new MoveCenterCommand();
         }
     },
     /**
@@ -97,7 +123,7 @@ public enum ExtensionCommandType {
     SET_MANUAL_EDIT(ExtensionCommandType.START + "SetManualEdit" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
-
+            SetManualExtensionCommand command = new SetManualExtensionCommand();
         }
     },
 
@@ -107,8 +133,19 @@ public enum ExtensionCommandType {
     PAUSE(ExtensionCommandType.START + "Pause" + ExtensionCommandType.END) {
         @Override
         protected void parseCommand(JSONObject inputAsJson) {
-
+            int id = inputAsJson.getInt("id");
+            PauseExtensionCommand command = new PauseExtensionCommand(id);
         }
+    },
+    
+    STOP(ExtensionCommandType.START + "Stop" + ExtensionCommandType.END){
+
+        @Override
+        protected void parseCommand(JSONObject inputAsJson) throws JSONException {
+            int id = inputAsJson.getInt("id");
+            StopExtensionCommand command = new StopExtensionCommand(id);
+        }
+        
     };
 
     private static final String START = "^";
