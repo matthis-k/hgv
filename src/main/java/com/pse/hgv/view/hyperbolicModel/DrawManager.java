@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DrawManager {
     private Coordinate center;
-    private Graph graph;
+    //private Graph graph;
     private List<Drawable> rendered;
     EdgeMode edgeMode;
     Representation representation;
@@ -23,7 +23,7 @@ public class DrawManager {
         return null;
     }
 
-    public List<Drawable> moveCenter(Coordinate) {
+    public List<Drawable> moveCenter(Coordinate coordinate) {
         return null;
     }
 

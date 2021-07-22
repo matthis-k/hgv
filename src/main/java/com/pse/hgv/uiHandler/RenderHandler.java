@@ -42,17 +42,18 @@ public class RenderHandler implements UIHandler, Initializable {
         Random random = new Random();
         double radius = 5;
 
-        double startX = renderCircle.getCenterX()
-                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
-        double startY = renderCircle.getCenterY()
-                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
-
-        double endX = renderCircle.getCenterX()
-                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
-        double endY = renderCircle.getCenterY()
-                + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
-
         for(int i = 0; i < 3000; i ++){
+
+            double startX = renderCircle.getCenterX()
+                    + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+            double startY = renderCircle.getCenterY()
+                    + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+
+            double endX = renderCircle.getCenterX()
+                    + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+            double endY = renderCircle.getCenterY()
+                    + (random.nextInt((int)renderCircle.getRadius() * MIDDLE_FACTOR) - renderCircle.getRadius());
+
             CircleNode start = new CircleNode(new CartesianCoordinate(startX, startY), radius, i, Color.CYAN);
             CircleNode end = new CircleNode(new CartesianCoordinate(endX, endY), radius, i, Color.GOLD);
             LineStrip line = new LineStrip(start, end, i, Color.BLACK);

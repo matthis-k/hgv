@@ -20,7 +20,6 @@ public class CircleNode extends Drawable{
     @Override
     public void draw(Pane pane) {
         pane.getChildren().add(representation);
-        representation.setVisible(true);
     }
 
     public Circle getRepresentation() {
