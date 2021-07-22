@@ -1,9 +1,9 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
 import javafx.scene.paint.Color;
-import kit.pse.hgv.graphSystem.Edge;
-import kit.pse.hgv.graphSystem.GraphElement;
-import kit.pse.hgv.graphSystem.Node;
+import kit.pse.hgv.graphSystem.element.Edge;
+import kit.pse.hgv.graphSystem.element.GraphElement;
+import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.*;
 
 import java.util.ArrayList;
@@ -56,11 +56,11 @@ public class NativeRepresentation implements Representation {
         this.center = center;
     }
 
-    //TODO constructors needed
 
     @Override
     public CircleNode calculate(Node node) {
         System.out.println("node");
+        //TODO Philipp Node.getCoordinate : Coordinate
         return new CircleNode(node.getCoordinate().toCartesian(), nodeSize, node.getId(),
                 Color.valueOf(node.getMetadata("Color").toUpperCase()));
     }
@@ -68,9 +68,11 @@ public class NativeRepresentation implements Representation {
     @Override
     public LineStrip calculate(Edge edge) {
         System.out.println("edge");
-        PolarCoordinate firstNode = edge.getStart().getCoordinate().toPolar();
+        //TODO Philipp
+        PolarCoordinate firstNode = edge.getNodes()[0].getCoordinate().toPolar();
         firstNode.moveCoordinate(center.mirroredThroughCenter());
-        PolarCoordinate secondNode = edge.getEnd().getCoordinate().toPolar();
+        //TODO Philipp
+        PolarCoordinate secondNode = edge.getNodes()[1].getCoordinate().toPolar();
         secondNode.moveCoordinate(center.mirroredThroughCenter());
         List<Coordinate> line = new ArrayList<>();
         if (firstNode.getDistance() == 0 || secondNode.getDistance() == 0 || firstNode.getAngle() ==
@@ -111,13 +113,6 @@ public class NativeRepresentation implements Representation {
         }
 
         return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
-    }
-
-
-    @Override
-    public LineStrip calculate(GraphElement graphElement) {
-        System.out.println("element");
-        return null;
     }
 
     @Override
