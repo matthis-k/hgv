@@ -61,7 +61,7 @@ public class NativeRepresentation implements Representation {
     public CircleNode calculate(Node node) {
         System.out.println("node");
         //TODO Philipp Node.getCoordinate : Coordinate
-        return new CircleNode(node.getCoordinate().toCartesian(), nodeSize, node.getId(),
+        return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(),
                 Color.valueOf(node.getMetadata("Color").toUpperCase()));
     }
 
@@ -69,10 +69,10 @@ public class NativeRepresentation implements Representation {
     public LineStrip calculate(Edge edge) {
         System.out.println("edge");
         //TODO Philipp
-        PolarCoordinate firstNode = edge.getNodes()[0].getCoordinate().toPolar();
+        PolarCoordinate firstNode = edge.getNodes()[0].getCoord().toPolar();
         firstNode.moveCoordinate(center.mirroredThroughCenter());
         //TODO Philipp
-        PolarCoordinate secondNode = edge.getNodes()[1].getCoordinate().toPolar();
+        PolarCoordinate secondNode = edge.getNodes()[1].getCoord().toPolar();
         secondNode.moveCoordinate(center.mirroredThroughCenter());
         List<Coordinate> line = new ArrayList<>();
         if (firstNode.getDistance() == 0 || secondNode.getDistance() == 0 || firstNode.getAngle() ==
