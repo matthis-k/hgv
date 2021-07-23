@@ -43,12 +43,12 @@ public class DrawManager {
 
     private Drawable changeElement(int id) {
         //TODO Philipp GraphSystem.getNodeById(int graphId, int id) : Node
-        Node node = graphSystem.getNodeById(graphId, id);
+        Node node = null; //graphSystem.getNodeById(graphId, id);
         if(node != null) {
             return getRepresentation().calculate(node);
         } else {
             //TODO Philipp GraphSystem.getEdgeById(int graphId, int id) : Edge
-            Edge edge = graphSystem.getEdgeById(graphId, id);
+            Edge edge = null; // graphSystem.getEdgeById(graphId, id);
             return getRepresentation().calculate(edge);
         }
     }
@@ -64,7 +64,7 @@ public class DrawManager {
         allChangedElements.addAll(changedElements);
         for(Integer id: allChangedElements) {
             //TODO Philipp
-            allChangedElements.addAll(graphSystem.getEdges(id));
+            //allChangedElements.addAll(graphSystem.getEdges(id));
         }
         return allChangedElements;
     }
@@ -75,10 +75,10 @@ public class DrawManager {
         //clear the list of rendered Elements, because every Element has to be rendered newly
         rendered.clear();
         //TODO Philipp GraphSystem.getIdsByGraph(int graphId) : Iterable<Integer>
-        for(Integer id: graphSystem.getIdsByGraph(graphId)) {
+       /* for(Integer id: graphSystem.getIdsByGraph(graphId)) {
             Drawable drawable = changeElement(id);
             rendered.put(drawable.getID(), drawable);
-        }
+        }*/
         res.addAll(rendered.values());
         return res;
     }

@@ -1,9 +1,10 @@
 package kit.pse.hgv.representation;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public abstract class Drawable {
+public abstract class Drawable extends Node {
     private int id;
     private Color color;
 
