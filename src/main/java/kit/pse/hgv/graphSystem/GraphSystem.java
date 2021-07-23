@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Manages the creation an removal of graphs and elements.
- * Also has getter for graphs and elements (not dependend on the graph!)
+ * Manages the creation an removal of graphs and elements. Also has getter for
+ * graphs and elements (not dependend on the graph!)
  */
 public class GraphSystem {
     /** Singleton instance */
@@ -23,10 +23,12 @@ public class GraphSystem {
 
     private static int graphIDCounter = 1;
 
-    private GraphSystem() {}
+    private GraphSystem() {
+    }
 
     /**
      * Creates or gets the only existing GraphSystem instance.
+     * 
      * @return Returns the only instance of the graphsystem.
      */
     public static GraphSystem getInstance() {
@@ -35,7 +37,6 @@ public class GraphSystem {
         }
         return instance;
     }
-
 
     /**
      * Gets the graph with the given id.
@@ -54,9 +55,9 @@ public class GraphSystem {
      * @return Returns the element im possible. Could be null if not found.
      */
     public GraphElement getGraphElementByID(int elementID) {
-        for(Graph graph : graphs.values()) {
+        for (Graph graph : graphs.values()) {
             GraphElement element = graph.getElementById(elementID);
-            if(element != null) {
+            if (element != null) {
                 return element;
             }
         }
@@ -75,6 +76,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Node with the id, if possible.
+     * 
      * @param nodeID is the id of the node you will get.
      * @return Returns the node if found, else null.
      */
@@ -88,6 +90,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Node with the id in the graph with the graphID, if possible.
+     * 
      * @param nodeID is the id of the node you will get.
      * @return Returns the node if found, else null.
      */
@@ -97,6 +100,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Edge with the id, if possible.
+     * 
      * @param edgeID is the id of the edge you will get.
      * @return Returns the edge if found, else null.
      */
@@ -110,6 +114,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Edge with the id in the graph with the graphID, if possible.
+     * 
      * @param edgeID is the id of the edge you will get.
      * @return Returns the edge if found, else null.
      */
@@ -121,12 +126,13 @@ public class GraphSystem {
      * Loads graph from the path to the memory and stores it in GraphSystem.
      *
      * @param path is the pat where the graph should be loaded from.
-     * @return Returns the graphID of the loaded graph. The graph can be get by this id in future.
+     * @return Returns the graphID of the loaded graph. The graph can be get by this
+     *         id in future.
      */
     public int loadGraph(String path) {
         int graphID = graphIDCounter++;
         Graph g = DataGateway.loadGraph(path);
-        if(g == null) {
+        if (g == null) {
             throw new IllegalArgumentException(GraphSystemMessages.PATH_ERROR.DE());
         }
         graphs.put(graphID, g);
@@ -140,7 +146,7 @@ public class GraphSystem {
      * @return Returns true, when graph was found and deleted, false when not.
      */
     public boolean removeGraph(int graphID) {
-        if(graphs.get(graphID) == null) {
+        if (graphs.get(graphID) == null) {
             return false;
         }
         graphs.remove(graphID);
@@ -151,10 +157,11 @@ public class GraphSystem {
      * Adds a new {@link kit.pse.hgv.graphSystem.element.Edge Edge} to the graph.
      *
      * @param graphID is the id of the graph where the new edge should be stored.
-     * @param nodeIDs is an array of 2 node ids which the Edge should be connected to.
+     * @param nodeIDs is an array of 2 node ids which the Edge should be connected
+     *                to.
      */
     public int addElement(int graphID, int[] nodeIDs) throws OverflowException {
-        if(nodeIDs.length != 2) {
+        if (nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
         Node[] nodes = new Node[2];
@@ -170,7 +177,7 @@ public class GraphSystem {
      * Adds a new {@link kit.pse.hgv.graphSystem.element.Node Node} to the graph.
      *
      * @param graphID is the id of the graph where the new edge should be stored.
-     * @param coord is the Coordinate of the node should be at.
+     * @param coord   is the Coordinate of the node should be at.
      */
     public int addElement(int graphID, Coordinate coord) throws OverflowException {
         Node node = new Node(coord);
@@ -186,19 +193,15 @@ public class GraphSystem {
      */
     public boolean removeElement(int elementID) {
         boolean deleted = false;
-        for(Graph g : graphs.values()) {
+        for (Graph g : graphs.values()) {
             deleted = g.removeElement(elementID);
         }
         return deleted;
     }
 
     public List<Integer> getIDs(int graphID) {
-        List<Integer> res = new Vector<>();
-            Graph g = getGraphByID(graphID);
-        if (g == null) {
-            return null;
-        }
-        return g.getIds();
+        Graph g = getGraphByID(graphID);
+        return g == null ? null : g.getIds();
     }
 
 }
