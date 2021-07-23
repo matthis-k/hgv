@@ -7,6 +7,7 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.graphSystem.stub.DataGateway;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Manages the creation an removal of graphs and elements.
@@ -62,6 +63,16 @@ public class GraphSystem {
     }
 
     /**
+     * This method gets an element by the id. It searches all graphs.
+     *
+     * @param elementID is the id of the element that should be searched for.
+     * @return Returns the element im possible. Could be null if not found.
+     */
+    public GraphElement getGraphElementByID(int graphID, int elementID) {
+        return getGraphByID(graphID).getElementById(elementID);
+    }
+
+    /**
      * Gets you the Node with the id, if possible.
      * @param nodeID is the id of the node you will get.
      * @return Returns the node if found, else null.
@@ -75,6 +86,15 @@ public class GraphSystem {
     }
 
     /**
+     * Gets you the Node with the id in the graph with the graphID, if possible.
+     * @param nodeID is the id of the node you will get.
+     * @return Returns the node if found, else null.
+     */
+    public Node getNodeByID(int graphID, int nodeID) {
+        return getGraphByID(graphID).getNodeById(nodeID);
+    }
+
+    /**
      * Gets you the Edge with the id, if possible.
      * @param edgeID is the id of the edge you will get.
      * @return Returns the edge if found, else null.
@@ -85,6 +105,15 @@ public class GraphSystem {
             return (Edge) element;
         }
         return null;
+    }
+
+    /**
+     * Gets you the Edge with the id in the graph with the graphID, if possible.
+     * @param edgeID is the id of the edge you will get.
+     * @return Returns the edge if found, else null.
+     */
+    public Edge getEdgeByID(int graphID, int edgeID) {
+        return getGraphByID(graphID).getEdgeById(edgeID);
     }
 
     /**
@@ -160,5 +189,9 @@ public class GraphSystem {
             deleted = g.removeElement(elementID);
         }
         return deleted;
+    }
+
+    public List<Integer> getIDs(int graphID) {
+        return null;
     }
 }
