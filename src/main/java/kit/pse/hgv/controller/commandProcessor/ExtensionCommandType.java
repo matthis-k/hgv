@@ -107,6 +107,9 @@ public enum ExtensionCommandType {
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
             CommandComposite command = new CommandComposite();
             JSONArray commandsAsArray = inputAsJson.getJSONArray("commands");
+            for (int i = 0; i < commandsAsArray.length();i++) {
+                command.addComamnd(parseCommand(commandsAsArray.getJSONObject(i)).cmd);
+            }            
             return new ParseResult(command, this);
         }
     },
