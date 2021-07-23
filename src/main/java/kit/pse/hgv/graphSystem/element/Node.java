@@ -22,6 +22,10 @@ public class Node extends GraphElement {
         this.coord = coord;
     }
 
+    public Coordinate getCoord() {
+        return coord;
+    }    
+
     /**
      * Moves the node coordinate to the new given coordinate.
      * @param coord is the coord the node should be moved to.
