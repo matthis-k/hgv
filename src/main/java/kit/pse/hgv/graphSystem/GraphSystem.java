@@ -8,6 +8,7 @@ import kit.pse.hgv.graphSystem.stub.DataGateway;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Manages the creation an removal of graphs and elements.
@@ -192,6 +193,12 @@ public class GraphSystem {
     }
 
     public List<Integer> getIDs(int graphID) {
-        return null;
+        List<Integer> res = new Vector<>();
+            Graph g = getGraphByID(graphID);
+        if (g == null) {
+            return null;
+        }
+        return g.getIds();
     }
+
 }
