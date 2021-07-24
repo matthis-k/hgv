@@ -7,13 +7,13 @@ public class ExtensionCommandTypeTest {
     @Test
     public void testCreateNode() {
         assertEquals(ExtensionCommandType.CREATE_NODE, ExtensionCommandType.processCommandString(
-            "{ \"type\": \"CreateNode\", \"coordinate\": \"12,23\"}"
+            "{ \"type\": \"CreateNode\", \"graphId\": 1, \"coordinate\": \"12,23\"}"
         ));
     }
     @Test
     public void testCreateEdge() {
         assertEquals(ExtensionCommandType.CREATE_EDGE, ExtensionCommandType.processCommandString(
-            "{ \"type\": \"CreateEdge\", \"id1\": \"2333\", \"id2\": \"22\"}"
+            "{ \"type\": \"CreateEdge\", \"graphId\": 1, \"id1\": \"2333\", \"id2\": \"22\"}"
         ));
     }
     @Test
@@ -25,13 +25,13 @@ public class ExtensionCommandTypeTest {
     @Test
     public void testMove() {
         assertEquals(ExtensionCommandType.MOVE_NODE, ExtensionCommandType.processCommandString(
-            "{ \"type\": \"MoveNode\", \"coordiante\": \"-2.333,1434\"}"
+            "{ \"type\": \"MoveNode\", \"id\": \"11234\", \"coordinate\": \"-2.333,1434\"}"
         ));
     }
     @Test
     public void testComposite() {
         assertEquals(ExtensionCommandType.COMMAND_COMPOSITE, ExtensionCommandType.processCommandString(
-            "{ \"type\": \"CommandComposite\", \"commands\": [ { \"type\": \"MoveNode\", \"coordiante\": \"-2.333,1434\"} ]}"
+            "{ \"type\": \"CommandComposite\", \"commands\": [ { \"type\": \"DeleteElement\", \"id\": \"2333\"} ] }"
         ));
     }
     @Test(expected = IllegalArgumentException.class)

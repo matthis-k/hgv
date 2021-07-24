@@ -1,8 +1,9 @@
 package kit.hgv.graphSystem;
 
-import kit.pse.hgv.graphSystem.Coordinate;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
+import kit.pse.hgv.representation.CartesianCoordinate;
+import kit.pse.hgv.representation.Coordinate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,15 +30,15 @@ public class GraphTest {
     @Test
     public void addNode() throws OverflowException {
         graphId = g.loadGraph("");
-        int id = g.addElement(graphId, new Coordinate());
+        int id = g.addElement(graphId, new CartesianCoordinate(0,0));
         assertNotNull(g.getGraphElementByID(id));
     }
 
     @Test
     public void addEdge() throws OverflowException {
         graphId = g.loadGraph("");
-        int id1 = g.addElement(graphId, new Coordinate());
-        int id2 = g.addElement(graphId, new Coordinate());
+        int id1 = g.addElement(graphId, new CartesianCoordinate(0,0));
+        int id2 = g.addElement(graphId, new CartesianCoordinate(0,0));
         int[] nodes = {id1, id2};
         int id3 = g.addElement(graphId, nodes);
 
@@ -47,7 +48,7 @@ public class GraphTest {
     @Test
     public void removeElement() throws OverflowException {
         graphId = g.loadGraph("");
-        int id = g.addElement(graphId, new Coordinate());
+        int id = g.addElement(graphId, new CartesianCoordinate(0,0));
         g.removeElement(id);
         assertNull(g.getGraphElementByID(id));
     }
@@ -55,8 +56,8 @@ public class GraphTest {
     @Test
     public void removeNodeDelEdges() throws OverflowException {
         graphId = g.loadGraph("");
-        int id1 = g.addElement(graphId, new Coordinate());
-        int id2 = g.addElement(graphId, new Coordinate());
+        int id1 = g.addElement(graphId, new CartesianCoordinate(0,0));
+        int id2 = g.addElement(graphId, new CartesianCoordinate(0,0));
         int[] nodes = {id1, id2};
         int id3 = g.addElement(graphId, nodes);
         g.removeElement(id2);

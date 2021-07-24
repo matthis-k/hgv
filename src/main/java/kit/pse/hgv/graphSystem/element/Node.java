@@ -1,7 +1,7 @@
 package kit.pse.hgv.graphSystem.element;
 
-import kit.pse.hgv.graphSystem.Coordinate;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
+import kit.pse.hgv.representation.Coordinate;
 
 /**
  * This class represents a node, which is a graphelement.

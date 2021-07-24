@@ -1,6 +1,7 @@
 module kit.pse.hgv {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.json;
 
     opens kit.pse.hgv.view.uiHandler to javafx.fxml;
     exports kit.pse.hgv.view.uiHandler;

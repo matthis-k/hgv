@@ -5,6 +5,7 @@ import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.graphSystem.stub.DataGateway;
+import kit.pse.hgv.representation.Coordinate;
 
 import java.util.HashMap;
 import java.util.List;

@@ -92,7 +92,7 @@ public class DrawManager {
         for(Integer id: graphSystem.getIDs(graphId)) {
             Drawable drawable = changeElement(id);
             rendered.put(drawable.getID(), drawable);
-        }*/
+        }
         res.addAll(rendered.values());
         return res;
     }

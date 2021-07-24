@@ -108,7 +108,8 @@ public enum ExtensionCommandType {
             CommandComposite command = new CommandComposite();
             JSONArray commandsAsArray = inputAsJson.getJSONArray("commands");
             for (int i = 0; i < commandsAsArray.length();i++) {
-                command.addComamnd(parseCommand(commandsAsArray.getJSONObject(i)).cmd);
+                Command c = ExtensionCommandType.parseJson(commandsAsArray.getJSONObject(i)).cmd;
+                command.addComamnd(c);
             }            
             return new ParseResult(command, this);
         }
