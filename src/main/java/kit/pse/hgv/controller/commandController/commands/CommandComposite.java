@@ -5,6 +5,10 @@ import java.util.Vector;
 public class CommandComposite implements Command {
     private Vector<Command> commands = new Vector<>();
 
+    public void addComamnd(Command c) {
+        commands.add(c);
+    }
+
     @Override
     public void execute() {
         for (Command c : commands) {
