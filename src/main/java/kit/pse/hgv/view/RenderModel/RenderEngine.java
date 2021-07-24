@@ -1,6 +1,6 @@
-package com.pse.hgv.RenderModel;
+package kit.pse.hgv.view.RenderModel;
 
-import com.pse.hgv.uiHandler.RenderHandler;
+import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 

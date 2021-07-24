@@ -1,6 +1,4 @@
-package com.pse.hgv.uiHandler;
-
-import javafx.fxml.Initializable;
+package kit.pse.hgv.view.uiHandler;
 
 import java.net.URL;
 import java.util.ResourceBundle;

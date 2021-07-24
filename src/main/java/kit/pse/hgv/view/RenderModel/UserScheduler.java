@@ -1,4 +1,4 @@
-package com.pse.hgv.RenderModel;
+package kit.pse.hgv.view.RenderModel;
 
 public class UserScheduler implements RenderScheduler{
     @Override

@@ -1,10 +1,7 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 

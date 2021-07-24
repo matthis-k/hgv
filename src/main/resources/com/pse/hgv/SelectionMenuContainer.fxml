@@ -4,7 +4,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu mnemonicParsing="false" text="Auswahl" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.SelectionMenuHandler">
+<Menu mnemonicParsing="false" text="Auswahl" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.SelectionMenuHandler">
   <items>
     <MenuItem fx:id="invertSelectionItem" mnemonicParsing="false" onAction="#invertSelection" text="Auswahl invertieren">
          <accelerator>

@@ -1,14 +1,9 @@
-package com.pse.hgv;
+package kit.pse.hgv;
 
-import com.pse.hgv.uiHandler.RenderHandler;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;

@@ -1,9 +1,7 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;

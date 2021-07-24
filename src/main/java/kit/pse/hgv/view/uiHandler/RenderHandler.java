@@ -1,12 +1,9 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.view.uiHandler;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.control.CheckBox;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;

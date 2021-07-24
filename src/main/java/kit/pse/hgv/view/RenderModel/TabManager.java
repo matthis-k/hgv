@@ -1,9 +1,8 @@
-package com.pse.hgv.RenderModel;
+package kit.pse.hgv.view.RenderModel;
 
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class TabManager {
 

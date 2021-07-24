@@ -1,10 +1,8 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.net.URL;
 import java.util.ResourceBundle;

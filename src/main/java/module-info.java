@@ -3,7 +3,8 @@ module com.pse.hgv {
     requires javafx.fxml;
 
     opens com.pse.hgv to javafx.fxml;
-    opens com.pse.hgv.uiHandler to javafx.fxml;
-    exports com.pse.hgv;
-    exports com.pse.hgv.uiHandler;
+    opens kit.pse.hgv.view.uiHandler to javafx.fxml;
+    exports kit.pse.hgv.view.uiHandler;
+    exports kit.pse.hgv;
+    opens kit.pse.hgv to javafx.fxml;
 }

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 
-<Menu mnemonicParsing="false" text="Hilfe" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.HelpMenuHandler">
+<Menu mnemonicParsing="false" text="Hilfe" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.HelpMenuHandler">
   <items>
     <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#popUp" text="Über..." />
   </items>

@@ -1,4 +1,4 @@
-package com.pse.hgv.uiHandler;
+package kit.pse.hgv.view.uiHandler;
 
 import java.net.URL;
 import java.util.ResourceBundle;

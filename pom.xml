@@ -38,7 +38,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>com.pse.hgv.App</mainClass>
+                    <mainClass>kit.pse.hgv.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
