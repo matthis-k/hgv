@@ -7,22 +7,34 @@ import kit.pse.hgv.graphSystem.element.Node;
 import java.util.*;
 
 /**
- * This class is for accessing information about an graph.
- * You can get element groups which belong to this particular graph.
+ * This class is for accessing information about an graph. You can get element
+ * groups which belong to this particular graph.
  *
  * It also manages intern creation of elements.
  */
 public class Graph {
 
-    private List<GraphElement> elements = new ArrayList<GraphElement>();
+    private HashMap<Integer, Edge> edges = new HashMap<Integer, Edge>();
+    private HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
 
     /**
      * This methods adds an element to the elements list of the graph.
      *
-     * @param ge is the element that should be added.
+     * @param node is the element that should be added.
      */
-    protected void addGraphElement(GraphElement ge) {
-        elements.add(ge);
+    protected void addGraphElement(Node node) {
+        nodes.put(node.getId(), node);
+    }
+
+    /**
+     * This methods adds an element to the elements list of the graph.
+     *
+     * @param edge is the element that should be added.
+     */
+    protected void addGraphElement(Edge edge) {
+        if (getNodeById(edge.getNodes()[0].getId()) != null && getNodeById(edge.getNodes()[1].getId()) != null) {
+            edges.put(edge.getId(), edge);
+        }
     }
 
     /**
@@ -32,25 +44,21 @@ public class Graph {
      * @return Returns the element if found, else null.
      */
     protected GraphElement getElementById(int elementID) {
-        for (GraphElement ge : elements) {
-            if (elementID == ge.getId()) {
-                return ge;
-            }
+        if (nodes.get(elementID) != null) {
+            return nodes.get(elementID);
+        } else {
+            return edges.get(elementID);
         }
-        return null;
     }
 
     public List<Edge> getEdgesOfNode(Node node) {
-        List<Edge> edges = new ArrayList<>();
-        for (GraphElement element : elements) {
-            if (element instanceof  Edge) {
-                Edge edge = (Edge) element;
-                if(edge.getNodes()[0].getId() == node.getId() || edge.getNodes()[1].getId() == node.getId()) {
-                    edges.add(edge);
-                }
+        List<Edge> res = new ArrayList<>();
+        for (Edge edge : edges.values()) {
+            if (edge.getNodes()[0].getId() == node.getId() || edge.getNodes()[1].getId() == node.getId()) {
+                res.add(edge);
             }
         }
-        return edges;
+        return res;
     }
 
     /**
@@ -60,18 +68,18 @@ public class Graph {
      * @return Return true is successfully deleted.
      */
     protected boolean removeElement(int elementID) {
-        GraphElement ge = getElementById(elementID);
-        if(ge != null) {
-            if(ge instanceof Node) {
-                for(Edge edge : getEdgesOfNode((Node) ge)) {
-                    elements.remove(edge);
-                }
-            }
+        if (getEdgeById(elementID) != null) {
+            edges.remove(elementID);
+        } else if (getNodeById(elementID) != null) {
 
-            elements.remove(ge);
-            return true;
+            for (Edge adj : getEdgesOfNode(getNodeById(elementID))) {
+                removeElement(adj.getId());
+            }
+            nodes.remove(elementID);
+        } else {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -79,14 +87,16 @@ public class Graph {
      *
      * @return Returns a list of nodes the graph consists of.
      */
-    public List<Node> getNodes() {
-        List<Node> nodes = new ArrayList<>();
-        for(GraphElement ge : elements) {
-            if(ge instanceof Node) {
-                nodes.add((Node) ge);
-            }
-        }
-        return nodes;
+    public Collection<Node> getNodes() {
+        return nodes.values();
+    }
+
+    public Edge getEdgeById(int id) {
+        return edges.get(id);
+    }
+
+    public Node getNodeById(int id) {
+        return nodes.get(id);
     }
 
     /**
@@ -94,14 +104,8 @@ public class Graph {
      *
      * @return Returns a list of edges the graph consists of.
      */
-    public List<Edge> getEdges() {
-        List<Edge> edges = new ArrayList<>();
-        for(GraphElement ge : elements) {
-            if(ge instanceof Edge) {
-                edges.add((Edge) ge);
-            }
-        }
-        return edges;
+    public Collection<Edge> getEdges() {
+        return edges.values();
     }
 
     /**
@@ -109,7 +113,10 @@ public class Graph {
      *
      * @return Returns list fo GraphElements
      */
-    public List<GraphElement> getGraphElements() { ;
+    public List<GraphElement> getGraphElements() {
+        List<GraphElement> elements = new ArrayList<>();
+        elements.addAll(getNodes());
+        elements.addAll(getEdges());
         return elements;
     }
 }

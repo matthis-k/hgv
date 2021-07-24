@@ -41,14 +41,24 @@ public class DrawManager {
         return res;
     }
 
+    public List<Drawable> getRenderData() {
+        rendered.clear();
+        for(Integer id : graphSystem.getIDs(graphId)) {
+            changeElement(id);
+        }
+        List<Drawable> res = new ArrayList<>();
+        res.addAll(rendered.values());
+        return res;
+    }
+
     private Drawable changeElement(int id) {
-        //TODO Philipp GraphSystem.getNodeById(int graphId, int id) : Node
-        Node node = null; //graphSystem.getNodeById(graphId, id);
+
+        Node node = graphSystem.getNodeByID(graphId, id);
         if(node != null) {
             return getRepresentation().calculate(node);
         } else {
-            //TODO Philipp GraphSystem.getEdgeById(int graphId, int id) : Edge
-            Edge edge = null; // graphSystem.getEdgeById(graphId, id);
+
+            Edge edge = graphSystem.getEdgeByID(graphId, id);
             return getRepresentation().calculate(edge);
         }
     }
@@ -64,8 +74,13 @@ public class DrawManager {
         allChangedElements.addAll(changedElements);
         for(Integer id: allChangedElements) {
             //TODO Philipp
-            //allChangedElements.addAll(graphSystem.getEdges(id));
+            if(graphSystem.getNodeByID(graphId, id) != null) {
+                for(Edge edge : graphSystem.getGraphByID(graphId).getEdgesOfNode(graphSystem.getNodeByID(graphId, id))) {
+                    allChangedElements.add(edge.getId());
+                }
+            }
         }
+
         return allChangedElements;
     }
 
@@ -74,8 +89,7 @@ public class DrawManager {
         getRepresentation().setCenter(center);
         //clear the list of rendered Elements, because every Element has to be rendered newly
         rendered.clear();
-        //TODO Philipp GraphSystem.getIdsByGraph(int graphId) : Iterable<Integer>
-       /* for(Integer id: graphSystem.getIdsByGraph(graphId)) {
+        for(Integer id: graphSystem.getIDs(graphId)) {
             Drawable drawable = changeElement(id);
             rendered.put(drawable.getID(), drawable);
         }*/
@@ -93,7 +107,7 @@ public class DrawManager {
 
     }
 
-    public void setAccuracy(int accuracy) {
+    public void setAccuracy(Accuracy accuracy) {
         representation.setAccuracy(accuracy);
     }
 }

@@ -17,7 +17,7 @@ public class NativeRepresentation implements Representation {
      * this is the number of lines that is used to demonstrate one edge,
      * any value below 1 is invalid, the value 1 is for a direct line
      */
-    private int accuracy = 100;
+    private Accuracy accuracy = Accuracy.DIRECT;
 
     public NativeRepresentation() {
 
@@ -31,16 +31,16 @@ public class NativeRepresentation implements Representation {
         this.center = center;
     }
 
-    public NativeRepresentation(int accuracy) {
+    public NativeRepresentation(Accuracy accuracy) {
         this.accuracy = accuracy;
     }
 
-    public NativeRepresentation(int accuracy, Coordinate center) {
+    public NativeRepresentation(Accuracy accuracy, Coordinate center) {
         this.accuracy = accuracy;
         this.center = center;
     }
 
-    public NativeRepresentation(double nodeSize, int accuracy) {
+    public NativeRepresentation(double nodeSize, Accuracy accuracy) {
         this.nodeSize = nodeSize;
         this.accuracy = accuracy;
     }
@@ -50,7 +50,7 @@ public class NativeRepresentation implements Representation {
         this.center = center;
     }
 
-    public NativeRepresentation(double nodeSize, int accuracy, Coordinate center) {
+    public NativeRepresentation(double nodeSize, Accuracy accuracy, Coordinate center) {
         this.nodeSize = nodeSize;
         this.accuracy = accuracy;
         this.center = center;
@@ -61,23 +61,22 @@ public class NativeRepresentation implements Representation {
     public CircleNode calculate(Node node) {
         System.out.println("node");
         //TODO Philipp Node.getCoordinate : Coordinate
-       /* return new CircleNode(node.getCoordinate().toCartesian(), nodeSize, node.getId(),
-                Color.valueOf(node.getMetadata("Color").toUpperCase()));*/
-        return null;
+        return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(),
+                Color.valueOf(node.getMetadata("Color").toUpperCase()));
     }
 
     @Override
     public LineStrip calculate(Edge edge) {
         System.out.println("edge");
         //TODO Philipp
-        PolarCoordinate firstNode = null; //edge.getNodes()[0].getCoordinate().toPolar();
+        PolarCoordinate firstNode = edge.getNodes()[0].getCoord().toPolar();
         firstNode.moveCoordinate(center.mirroredThroughCenter());
         //TODO Philipp
-        PolarCoordinate secondNode = null; //edge.getNodes()[1].getCoordinate().toPolar();
+        PolarCoordinate secondNode = edge.getNodes()[1].getCoord().toPolar();
         secondNode.moveCoordinate(center.mirroredThroughCenter());
         List<Coordinate> line = new ArrayList<>();
         if (firstNode.getDistance() == 0 || secondNode.getDistance() == 0 || firstNode.getAngle() ==
-                secondNode.getAngle()) {
+                secondNode.getAngle() || accuracy.getAccuracy() == 1) {
             line.add(firstNode);
             line.add(secondNode);
             return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
@@ -98,8 +97,8 @@ public class NativeRepresentation implements Representation {
                     Math.cosh(firstNode.getDistance()) / (Math.sinh(secondNode.getDistance()) * Math.sinh(distance)))));
         }
 
-        for (int i = 0; i <= accuracy; i++) {
-            double partial_distance = distance * (i / (double) accuracy);
+        for (int i = 0; i < accuracy.getAccuracy(); i++) {
+            double partial_distance = distance * (i / (double) accuracy.getAccuracy());
             double temp = Math.cosh(secondNode.getDistance() * Math.cosh(partial_distance) -
                     (Math.sinh(secondNode.getDistance() * Math.sinh(partial_distance) * cosGamma2)));
             double radius = acosh(temp) != -1 ? acosh(temp) : 0.0;
@@ -116,13 +115,32 @@ public class NativeRepresentation implements Representation {
         return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
     }
 
+    private List<Double> distribution(double rad1, double rad2) {
+        int factor = 100 / accuracy.getAccuracy();
+        List<Double> res = new ArrayList<>();
+        for(int i = 0; i < accuracy.getAccuracy(); i++) {
+            res.add(distributionValue(rad1,rad2,i * factor));
+        }
+        return res;
+    }
+
+    private double distributionValue(double rad1, double rad2, int part) {
+        if(rad2 == 0 || rad1 == 0) {
+            return 1/(part+1);
+        }
+        double moveCenter = rad1/rad2 > 1 ? -50*(1+rad2/rad1): 50*(1+rad1/rad2);
+        double toPower = (part/50.0) + moveCenter;
+        double res = (0.5*Math.pow(toPower,3)) + 0.5;
+        return res;
+    }
+
     @Override
     public void setCenter(Coordinate center) {
         this.center = center;
     }
 
    @Override
-    public void setAccuracy(int accuracy) {
+    public void setAccuracy(Accuracy accuracy) {
         this.accuracy = accuracy;
    }
 

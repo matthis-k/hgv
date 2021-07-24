@@ -7,6 +7,7 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.graphSystem.stub.DataGateway;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Manages the creation an removal of graphs and elements.
@@ -61,6 +62,59 @@ public class GraphSystem {
         return null;
     }
 
+    /**
+     * This method gets an element by the id. It searches all graphs.
+     *
+     * @param elementID is the id of the element that should be searched for.
+     * @return Returns the element im possible. Could be null if not found.
+     */
+    public GraphElement getGraphElementByID(int graphID, int elementID) {
+        return getGraphByID(graphID).getElementById(elementID);
+    }
+
+    /**
+     * Gets you the Node with the id, if possible.
+     * @param nodeID is the id of the node you will get.
+     * @return Returns the node if found, else null.
+     */
+    public Node getNodeByID(int nodeID) {
+        GraphElement element = getGraphElementByID(nodeID);
+        if (element instanceof Node) {
+            return (Node) element;
+        }
+        return null;
+    }
+
+    /**
+     * Gets you the Node with the id in the graph with the graphID, if possible.
+     * @param nodeID is the id of the node you will get.
+     * @return Returns the node if found, else null.
+     */
+    public Node getNodeByID(int graphID, int nodeID) {
+        return getGraphByID(graphID).getNodeById(nodeID);
+    }
+
+    /**
+     * Gets you the Edge with the id, if possible.
+     * @param edgeID is the id of the edge you will get.
+     * @return Returns the edge if found, else null.
+     */
+    public Edge getEdgeByID(int edgeID) {
+        GraphElement element = getGraphElementByID(edgeID);
+        if (element instanceof Edge) {
+            return (Edge) element;
+        }
+        return null;
+    }
+
+    /**
+     * Gets you the Edge with the id in the graph with the graphID, if possible.
+     * @param edgeID is the id of the edge you will get.
+     * @return Returns the edge if found, else null.
+     */
+    public Edge getEdgeByID(int graphID, int edgeID) {
+        return getGraphByID(graphID).getEdgeById(edgeID);
+    }
 
     /**
      * Loads graph from the path to the memory and stores it in GraphSystem.
@@ -99,16 +153,12 @@ public class GraphSystem {
      * @param nodeIDs is an array of 2 node ids which the Edge should be connected to.
      */
     public int addElement(int graphID, int[] nodeIDs) throws OverflowException {
-
-        Node[] nodes = new Node[Edge.MAX_EDGE_NODES];
-
-        nodes[0] = (Node) getGraphElementByID(nodeIDs[0]);
-        nodes[1] = (Node) getGraphElementByID(nodeIDs[1]);
-
-        //Param check.
-        if(!(nodes[0] instanceof Node) || !(nodes[1] instanceof Node)) {
+        if(nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
+        Node[] nodes = new Node[2];
+        nodes[0] = getNodeByID(nodeIDs[0]);
+        nodes[1] = getNodeByID(nodeIDs[1]);
 
         Edge edge = new Edge(nodes);
         graphs.get(graphID).addGraphElement(edge);
@@ -139,5 +189,9 @@ public class GraphSystem {
             deleted = g.removeElement(elementID);
         }
         return deleted;
+    }
+
+    public List<Integer> getIDs(int graphID) {
+        return null;
     }
 }

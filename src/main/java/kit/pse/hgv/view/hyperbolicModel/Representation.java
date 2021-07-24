@@ -23,6 +23,6 @@ public interface Representation {
      * @return The Drawable object representing the Edge
      */
     LineStrip calculate(Edge edge);
-    void setAccuracy(int accuracy);
+    void setAccuracy(Accuracy accuracy);
     void setCenter(Coordinate center);
 }
