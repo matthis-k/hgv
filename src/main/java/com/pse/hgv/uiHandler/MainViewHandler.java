@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainViewHandler implements UIHandler, Initializable {
+public class MainViewHandler implements UIHandler {
 
     @FXML
     private AnchorPane primaryAnchorPane;

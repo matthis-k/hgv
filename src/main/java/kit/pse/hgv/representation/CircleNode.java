@@ -10,7 +10,7 @@ public class CircleNode extends Drawable{
     private Circle representation;
 
     public CircleNode(CartesianCoordinate center, double radius, int id, Color color) {
-        super(id, color);
+        super(id, color, true);
         this.center = center;
         this.radius = radius;
         representation = new Circle(center.getX(), center.getY(), radius, color);
@@ -20,6 +20,11 @@ public class CircleNode extends Drawable{
     @Override
     public void draw(Pane pane) {
         pane.getChildren().add(representation);
+    }
+
+    @Override
+    public boolean isNode() {
+        return super.isNode();
     }
 
     public Circle getRepresentation() {

@@ -1,9 +1,14 @@
 package com.pse.hgv;
 
+import com.pse.hgv.uiHandler.RenderHandler;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,6 +25,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("MainView"), 1280, 720);
         stage.setScene(scene);
         stage.sizeToScene();
+        stage.setTitle("HGV");
         stage.show();
     }
 

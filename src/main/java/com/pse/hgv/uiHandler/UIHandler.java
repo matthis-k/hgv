@@ -1,6 +1,8 @@
 package com.pse.hgv.uiHandler;
 
-public interface UIHandler {
+import javafx.fxml.Initializable;
+
+public interface UIHandler extends Initializable {
 
    // public void pokeInputSystem();
 }

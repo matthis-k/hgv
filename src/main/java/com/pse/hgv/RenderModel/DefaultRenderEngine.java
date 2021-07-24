@@ -11,7 +11,7 @@ public class DefaultRenderEngine extends RenderEngine{
 
     @Override
     public void firstRender() {
-        getHandler().drawGraph(getDisplayedGraph());
+        //handler.drawGraph(this.displayedGraph);
     }
 
     @Override

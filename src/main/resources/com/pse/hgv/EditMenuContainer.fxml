@@ -4,13 +4,13 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu mnemonicParsing="false" text="Bearbeiten" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Menu mnemonicParsing="false" text="Bearbeiten" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.EditMenuHandler">
   <items>
-    <MenuItem mnemonicParsing="false" text="Rückgängig">
+    <MenuItem fx:id="redoItem" mnemonicParsing="false" onAction="#redo" text="Rückgängig">
          <accelerator>
             <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
          </accelerator></MenuItem>
-      <MenuItem mnemonicParsing="false" text="Wiederherstellen">
+      <MenuItem fx:id="undoItem" mnemonicParsing="false" onAction="#undo" text="Wiederherstellen">
          <accelerator>
             <KeyCodeCombination alt="DOWN" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
          </accelerator>

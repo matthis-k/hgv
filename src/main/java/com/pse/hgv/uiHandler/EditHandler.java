@@ -3,11 +3,12 @@ package com.pse.hgv.uiHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditMenuHandler implements UIHandler, Initializable {
+public class EditHandler implements UIHandler {
 
     @FXML
     private Button addNodeButton;

@@ -4,14 +4,18 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu mnemonicParsing="false" text="Datei" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Menu mnemonicParsing="false" text="Datei" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pse.hgv.uiHandler.FileMenuHandler">
   <items>
-    <MenuItem mnemonicParsing="false" text="Datei öffnen" />
-      <MenuItem mnemonicParsing="false" text="Datei speichern">
+    <MenuItem fx:id="fileOpenItem" mnemonicParsing="false" onAction="#openFile" text="Datei öffnen" />
+      <MenuItem fx:id="fileSaveItem" mnemonicParsing="false" onAction="#saveFile" text="Datei speichern">
          <accelerator>
             <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
          </accelerator></MenuItem>
-      <MenuItem mnemonicParsing="false" text="Zuletzt geöffnete Dateien..." />
-      <MenuItem mnemonicParsing="false" text="Neuen Graph erstellen" />
+      <Menu mnemonicParsing="false" text="Zuletzt geöffnete Dateien...">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+        </items>
+      </Menu>
+      <MenuItem fx:id="newGraphItem" mnemonicParsing="false" onAction="#createNewGraph" text="Neuen Graph erstellen" />
   </items>
 </Menu>

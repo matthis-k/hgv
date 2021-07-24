@@ -1,5 +1,6 @@
 package kit.pse.hgv.representation;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -14,7 +15,7 @@ public class LineStrip extends Drawable {
     private Line representation;
 
     public LineStrip(CircleNode start, CircleNode end, int id, Color color) {
-        super(id, color);
+        super(id, color, false);
         this.start = start;
         this.end = end;
         representation = new Line();
@@ -26,12 +27,22 @@ public class LineStrip extends Drawable {
     }
 
     public LineStrip(List<Coordinate> coordinates, int id, Color color) {
-        super(id, color);
+        super(id, color, false);
         this.coordinates = coordinates;
     }
 
     @Override
     public void draw(Pane pane) {
         pane.getChildren().add(representation);
+    }
+
+    @Override
+    public boolean isNode() {
+        return super.isNode();
+    }
+
+    @Override
+    public Node getRepresentation() {
+        return this.representation;
     }
 }

@@ -9,11 +9,11 @@ import java.util.List;
 
 public abstract class RenderEngine {
 
-    private final RenderHandler handler;
-    private DrawManager drawManager;
-    private List<Drawable> displayedGraph;
-    private final int tabID;
-    private final int graphID;
+    protected final RenderHandler handler;
+    protected DrawManager drawManager;
+    protected List<Drawable> displayedGraph;
+    protected final int tabID;
+    protected final int graphID;
 
     public RenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
         this.tabID = tab;
@@ -27,7 +27,7 @@ public abstract class RenderEngine {
     public abstract void rerender();
     public abstract void updateGraph();
 
-    public int getGraphID() {
+    /*public int getGraphID() {
         return this.graphID;
     }
 
@@ -45,5 +45,5 @@ public abstract class RenderEngine {
 
     public List<Drawable> getDisplayedGraph() {
         return this.displayedGraph;
-    }
+    }*/
 }
