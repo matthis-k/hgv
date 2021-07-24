@@ -1,5 +1,6 @@
 package kit.pse.hgv.controller.commandProcessor;
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.controller.commandController.commands.*;
 
 public class MetaDataProcessor implements CommandProcessor{
@@ -10,11 +11,12 @@ public class MetaDataProcessor implements CommandProcessor{
         
     }
     
-    public void changeColor(int elementId){
+    public void changeColor(int elementId, Color color){
         EditColorCommand command = new EditColorCommand(elementId);
     }
 
-    public void editMetaData(int elementId, String metaKey, String metaVal){
-        EditUserMetaCommand command = new EditUserMetaCommand(metaKey, metaVal, elementId);
+    public void editMetaData(int elementId, String radius, String angle, String weight){
+        //TODO anpassen
+        //EditUserMetaCommand command = new EditUserMetaCommand(metaKey, metaVal, elementId);
     }
 }

@@ -5,40 +5,46 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DetailHandler implements UIHandler {
 
+    private MetaDataProcessor processor;
+
     @FXML
-    ColorPicker colorPick;
+    private ColorPicker colorPick;
     @FXML
-    TextField radius;
+    private TextField radius;
     @FXML
-    TextField angle;
+    private TextField angle;
     @FXML
-    TextField weight;
+    private TextField weight;
     @FXML
     private Pane detailPane;
     @FXML
     private Button updateButton;
 
+    //public DetailHandler(MetaDataProcessor processor) {
+      //  this.processor = processor;
+    //}
+
     private static final int UPDATE_POSITION = 75;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        updateButton.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION));
-    }
+
 
     @FXML
     public void updateData() {
-        //TODO
-        System.out.println(colorPick.getValue());
-        System.out.println(radius.getText());
-        System.out.println(angle.getText());
-        System.out.println(weight.getText());
-
+        //TODO ID
+        processor.editMetaData(42, radius.getText(), angle.getText(), weight.getText());
+        processor.changeColor(42, colorPick.getValue());
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+            updateButton.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION));
+    }
 }
