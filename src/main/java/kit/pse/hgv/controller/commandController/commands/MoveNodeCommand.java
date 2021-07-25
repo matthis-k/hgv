@@ -1,10 +1,10 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-public class GraphElementMoveCommand extends GraphSystemCommand {
+public class MoveNodeCommand extends GraphSystemCommand {
     private int elementId;
     // TODO add coordinate when its available
 
-    public GraphElementMoveCommand(int elementId){
+    public MoveNodeCommand(int elementId){
         this.elementId = elementId;
     }
 

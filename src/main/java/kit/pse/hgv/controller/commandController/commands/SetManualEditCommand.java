@@ -1,6 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-public class SetManualExtensionCommand extends ExtensionCommand{
+public class SetManualEditCommand extends ExtensionCommand{
     @Override
     public void execute(){
         

@@ -73,7 +73,7 @@ public enum ExtensionCommandType {
             String[] eachCoordinate = coordinate.split(",");
             double coord1 = Double.valueOf(eachCoordinate[0]);
             double coord2 = Double.valueOf(eachCoordinate[1]);
-            GraphElementMoveCommand command = new GraphElementMoveCommand(id);
+            MoveNodeCommand command = new MoveNodeCommand(id);
             return new ParseResult(command, this);
         }
     },
@@ -138,7 +138,7 @@ public enum ExtensionCommandType {
     SET_MANUAL_EDIT(ExtensionCommandType.START + "SetManualEdit" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            SetManualExtensionCommand command = new SetManualExtensionCommand();
+            SetManualEditCommand command = new SetManualEditCommand();
             return new ParseResult(command, this);
         }
     },

@@ -12,15 +12,15 @@ public class GraphCommandProcessor implements CommandProcessor{
     }
 
     public void addEdge(int graphId, String coordinate1, String coordinate2){
-        GraphElementCreateCommand command = new GraphElementCreateCommand(graphId);
+
     }
 
     public void addNode(int graphId, String coordinate){
-        GraphElementCreateCommand command = new GraphElementCreateCommand(graphId);
+
     }
     
     public void moveNode(int elementId){
-        GraphElementMoveCommand command = new GraphElementMoveCommand(elementId);
+        MoveNodeCommand command = new MoveNodeCommand(elementId);
     }
 
     public void deleteElement(int elementId){
