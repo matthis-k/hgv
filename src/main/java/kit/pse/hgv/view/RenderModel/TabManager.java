@@ -1,5 +1,6 @@
 package kit.pse.hgv.view.RenderModel;
 
+import kit.pse.hgv.controller.commandController.commands.Command;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 import java.util.HashMap;
@@ -33,8 +34,8 @@ public class TabManager {
         tabs.remove(tabID);
     }
 
-    public void notifyEngine(){
-
+    public void notifyEngine(int tabID, Command command){
+        tabs.get(tabID).receiveCommand(command);
     }
 
 }

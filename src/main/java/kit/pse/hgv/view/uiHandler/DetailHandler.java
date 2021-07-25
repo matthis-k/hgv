@@ -28,9 +28,11 @@ public class DetailHandler implements UIHandler {
     @FXML
     private Button updateButton;
 
-    //public DetailHandler(MetaDataProcessor processor) {
-      //  this.processor = processor;
-    //}
+
+    //TODO pass argument
+    /*public DetailHandler(MetaDataProcessor processor) {
+        this.processor = processor;
+    }*/
 
     private static final int UPDATE_POSITION = 75;
 
