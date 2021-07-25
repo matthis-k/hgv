@@ -9,6 +9,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Drawable;
@@ -42,6 +44,7 @@ public class RenderHandler implements UIHandler{
             if(scrollEvent.isControlDown())
                 zoom(scrollEvent.getDeltaY());
         });
+
     }
 
     @FXML

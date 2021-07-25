@@ -33,8 +33,10 @@ public abstract class RenderEngine {
     public abstract void firstRender();
     public abstract void rerender();
 
-    public abstract void receiveCommand(HyperModelCommand command);
+    public abstract void receiveCommand(Command command);
+    public abstract void receiveCommand(MoveCenterCommand command);
     public abstract void receiveCommand(MetaSystemCommand command);
-    public abstract void receiveCommand(FileSystemCommand command);
     public abstract void receiveCommand(GraphElementCommand command);
+    public abstract void receiveCommand(LoadGraphCommand command);
+
 }

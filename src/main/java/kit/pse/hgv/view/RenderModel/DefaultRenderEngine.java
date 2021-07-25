@@ -1,7 +1,6 @@
 package kit.pse.hgv.view.RenderModel;
 
 import kit.pse.hgv.controller.commandController.commands.*;
-import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
@@ -15,7 +14,7 @@ public class DefaultRenderEngine extends RenderEngine {
 
     @Override
     public void firstRender() {
-        //this.displayedGraph = drawManager.getRenderData();
+        this.displayedGraph = drawManager.getRenderData();
         handler.renderGraph(this.displayedGraph);
     }
 
@@ -27,29 +26,6 @@ public class DefaultRenderEngine extends RenderEngine {
         this.toBeUpdated.clear();
     }
 
-    @Override
-    public void receiveCommand(HyperModelCommand command) {
-        //updateGraph();
-        //drawManager.moveCenter();
-    }
-
-    @Override
-    public void receiveCommand(MetaSystemCommand command) {
-        //drawManager.getRenderData();
-    }
-
-    @Override
-    public void receiveCommand(FileSystemCommand command) {
-        //firstRender();
-    }
-
-    @Override
-    public void receiveCommand(GraphElementCommand command) {
-        //updateGraph();
-        //rerender();
-    }
-
-
     private void render() {
         handler.renderGraph(this.displayedGraph);
     }
@@ -58,4 +34,31 @@ public class DefaultRenderEngine extends RenderEngine {
         this.displayedGraph = drawManager.getRenderData(toBeUpdated);
     }
 
+
+    @Override
+    public void receiveCommand(Command command) {
+        //TODO ERROR
+    }
+
+    @Override
+    public void receiveCommand(MoveCenterCommand command) {
+        drawManager.moveCenter(command.getTransform());
+        rerender();
+    }
+
+    @Override
+    public void receiveCommand(MetaSystemCommand command) {
+        toBeUpdated.add(command.getID());
+        rerender();
+    }
+
+    @Override
+    public void receiveCommand(GraphElementCommand command) {
+        rerender();
+    }
+
+    @Override
+    public void receiveCommand(LoadGraphCommand command) {
+
+    }
 }
