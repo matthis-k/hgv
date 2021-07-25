@@ -1,6 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-public class SendGraphCommand extends ExtensionCommand{
+public class SendGraphCommand extends ExtensionCommand {
     private int graphId;
     private int clientId;
 
@@ -9,7 +9,13 @@ public class SendGraphCommand extends ExtensionCommand{
         this.clientId = clientId;
     }
 
+    @Override
     public void execute() {
         
+    }
+
+    @Override
+    public void undo() {
+
     }
 }

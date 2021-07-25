@@ -12,7 +12,7 @@ public class MetaDataProcessor implements CommandProcessor{
     }
     
     public void changeColor(int elementId, Color color){
-        EditColorCommand command = new EditColorCommand(elementId);
+        EditColorCommand command = new EditColorCommand(elementId, color);
     }
 
     public void editMetaData(int elementId, String radius, String angle, String weight){

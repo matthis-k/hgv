@@ -7,7 +7,13 @@ public class StartExtensionCommand extends ExtensionCommand{
         this.id = id;
     }
 
+    @Override
     public void execute(){
         
+    }
+
+    @Override
+    public void undo() {
+
     }
 }
