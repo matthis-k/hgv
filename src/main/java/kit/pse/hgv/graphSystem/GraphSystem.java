@@ -7,6 +7,7 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.graphSystem.stub.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -117,6 +118,13 @@ public class GraphSystem {
         return getGraphByID(graphID).getEdgeById(edgeID);
     }
 
+    public int newGraph() {
+        Graph temp = new Graph();
+        int graphID = graphIDCounter++;
+        graphs.put(graphID, temp);
+        return graphID;
+    }
+
     /**
      * Loads graph from the path to the memory and stores it in GraphSystem.
      *
@@ -125,11 +133,13 @@ public class GraphSystem {
      */
     public int loadGraph(String path) {
         int graphID = graphIDCounter++;
-        Graph g = DataGateway.loadGraph(path);
-        if(g == null) {
-            throw new IllegalArgumentException(GraphSystemMessages.PATH_ERROR.DE());
+        try {
+            DataGateway.loadGraph(path, graphID);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (OverflowException e) {
+            e.printStackTrace();
         }
-        graphs.put(graphID, g);
         return graphID;
     }
 
