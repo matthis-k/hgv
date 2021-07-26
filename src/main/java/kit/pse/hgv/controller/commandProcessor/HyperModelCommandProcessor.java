@@ -11,7 +11,7 @@ public class HyperModelCommandProcessor implements CommandProcessor{
         
     }
 
-    public void moveCenter(){
+    public void moveCenter(double x, double y){
         MoveCenterCommand command = new MoveCenterCommand();
     }
 }
