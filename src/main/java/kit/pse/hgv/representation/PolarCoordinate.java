@@ -49,8 +49,7 @@ public class PolarCoordinate implements Coordinate{
     }
 
     public PolarCoordinate mirroredThroughCenter() {
-        double temp = angle % MAX_ANGLE;
-        return new PolarCoordinate(temp, distance);
+        return new PolarCoordinate(angle + Math.PI, distance);
     }
 
     public double getAngle() {

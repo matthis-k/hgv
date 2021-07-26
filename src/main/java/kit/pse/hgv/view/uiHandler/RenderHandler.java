@@ -62,6 +62,9 @@ public class RenderHandler implements UIHandler{
     @FXML
     public void renderGraph(List<Drawable> graph) {
 
+        ArrayList<Circle> nodes = new ArrayList<>();
+        ArrayList<Line> lines = new ArrayList<>();
+
         for (Drawable node : graph) {
             if(node.isNode()){
                 CircleNode currentNode = (CircleNode) node;
@@ -71,16 +74,18 @@ public class RenderHandler implements UIHandler{
                 bindNodeY(currentNode, renderCircle);
                 bindRadius(currentNode, renderCircle);
 
-                node.draw(renderPane);
+                nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentLine = (LineStrip) node;
                 bindLines(currentLine.getLines());
 
                 for (Line line : currentLine.getLines())
-                    renderPane.getChildren().add(line);
+                    lines.add(line);
             }
         }
-        System.out.println(renderPane.getChildren().size());
+
+        renderPane.getChildren().addAll(lines);
+        renderPane.getChildren().addAll(nodes);
     }
 
     private void zoom(double zoom) {
@@ -137,7 +142,8 @@ public class RenderHandler implements UIHandler{
         /*child.getRepresentation().centerYProperty().bind(parent.centerYProperty()
                 .add(parent.radiusProperty().divide(parent.getRadius())
                         .multiply(child.getCenter().getY() - parent.getCenterY())));*/
-        child.getRepresentation().radiusProperty().bind(parent.radiusProperty().divide(50));
+        //child.getRepresentation().radiusProperty().bind(parent.radiusProperty().divide(50));
+        child.getRepresentation().radiusProperty().setValue(5);
     }
 
 

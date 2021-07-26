@@ -5,9 +5,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public abstract class Drawable extends Node {
-    private int id;
-    private Color color;
-    private final boolean isNode;
+    protected int id;
+    protected Color color;
+    protected final boolean isNode;
 
     protected Drawable(int id, Color color, boolean isNode) {
         this.id = id;
