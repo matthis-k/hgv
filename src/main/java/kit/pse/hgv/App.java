@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import kit.pse.hgv.controller.commandController.CommandController;
+import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
 import kit.pse.hgv.extensionServer.ExtensionServer;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         CommandController.getInstance().start();
+        CommandController.getInstance().queueCommand(new LoadGraphCommand("src/resourcses/Vorlage.graphml"));
         ExtensionServer server = new ExtensionServer(12345);
         server.start();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
