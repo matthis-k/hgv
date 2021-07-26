@@ -30,22 +30,26 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     private void executeNext() {
-        Command c = commandQ.poll();
-        if (c != null) {
-            c.execute();
-            notifyAll(c);
-            System.out.println("command processed");
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        synchronized (this) {
+            Command c = commandQ.poll();
+            if (c != null) {
+                c.execute();
+                notifyAll(c);
+                System.out.println("command processed");
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     public void queueCommand(Command c) {
-        commandQ.add(c);
-        System.out.println(commandQ.size());
+        synchronized (this) {
+            commandQ.add(c);
+            System.out.println(commandQ.size());
+        }
     }
 
     @Override
