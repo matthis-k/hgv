@@ -38,6 +38,9 @@ public class DefaultRenderEngine extends RenderEngine {
     @Override
     public void receiveCommand(Command command) {
         //TODO ERROR
+        if (command instanceof LoadGraphCommand) {
+            firstRender();
+        }
     }
 
     @Override
@@ -53,12 +56,22 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void receiveCommand(GraphElementCommand command) {
+    public void receiveCommand(FileSystemCommand command) {
+        firstRender();
+    }
+
+    @Override
+    public void receiveCommand(GraphSystemCommand command) {
         rerender();
     }
 
     @Override
     public void receiveCommand(LoadGraphCommand command) {
         firstRender();
+    }
+
+    @Override
+    public void onNotify(Command c) {
+        receiveCommand(c);
     }
 }

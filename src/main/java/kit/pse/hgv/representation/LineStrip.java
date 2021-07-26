@@ -6,15 +6,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 import java.util.List;
+import java.util.Vector;
 
 public class LineStrip extends Drawable {
-
-    private CircleNode start;
-    private CircleNode end;
     private List<Coordinate> coordinates;
-    private Line representation;
+    private Vector<Line> lines = new Vector<>();
 
-    public LineStrip(CircleNode start, CircleNode end, int id, Color color) {
+    /*public LineStrip(CircleNode start, CircleNode end, int id, Color color) {
         super(id, color, false);
         this.start = start;
         this.end = end;
@@ -24,16 +22,30 @@ public class LineStrip extends Drawable {
 
         representation.endXProperty().bind(end.getRepresentation().centerXProperty());
         representation.endYProperty().bind(end.getRepresentation().centerYProperty());
+    }*/
+
+    private void addLine(int index) {
+        Line line = new Line();
+        line.setStartX(coordinates.get(index).toCartesian().getX());
+        line.setStartY(coordinates.get(index).toCartesian().getY());
+        line.setEndX(coordinates.get(index+1).toCartesian().getX());
+        line.setEndY(coordinates.get(index+1).toCartesian().getY());
+        lines.add(line);
     }
 
     public LineStrip(List<Coordinate> coordinates, int id, Color color) {
         super(id, color, false);
         this.coordinates = coordinates;
+        for (int i = 0; i < coordinates.size()-1; i++) {
+            addLine(i);
+        }
     }
 
     @Override
     public void draw(Pane pane) {
-        pane.getChildren().add(representation);
+        for (Line line : lines){
+            pane.getChildren().add(line);
+        }
     }
 
     @Override
@@ -41,8 +53,11 @@ public class LineStrip extends Drawable {
         return super.isNode();
     }
 
+    public Vector<Line> getLines() {
+        return this.lines;
+    }
     @Override
     public Node getRepresentation() {
-        return this.representation;
+        return null;
     }
 }

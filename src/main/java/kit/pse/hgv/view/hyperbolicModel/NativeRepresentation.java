@@ -65,7 +65,7 @@ public class NativeRepresentation implements Representation {
         System.out.println("node");
         //TODO Philipp Node.getCoordinate : Coordinate
         return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(),
-                Color.valueOf(node.getMetadata("Color").toUpperCase()));
+                Color.RED);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class NativeRepresentation implements Representation {
                 secondNode.getAngle() || accuracy.getAccuracy() == 1) {
             line.add(firstNode);
             line.add(secondNode);
-            return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
+            return new LineStrip(line, edge.getId(), Color.BLUE);
         }
         double angularDistance = firstNode.getAngle() - secondNode.getAngle();
         if ((angularDistance > 0.0 && angularDistance < Math.PI) || (angularDistance < -Math.PI)) {

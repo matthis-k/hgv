@@ -4,6 +4,7 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
+import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
 
 public class CommandController extends Thread implements CommandEventSource {
     //TODO: undo/redo
@@ -29,11 +30,26 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     private void executeNext() {
-        commandQ.poll().execute();
+        synchronized (this) {
+            Command c = commandQ.poll();
+            if (c != null) {
+                c.execute();
+                notifyAll(c);
+                System.out.println("command processed");
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void queueCommand(Command c) {
-        commandQ.add(c);
+        synchronized (this) {
+            commandQ.add(c);
+            System.out.println(commandQ.size());
+        }
     }
 
     @Override
@@ -46,5 +62,11 @@ public class CommandController extends Thread implements CommandEventSource {
     @Override
     public void register(CommandQListener listener) {
         listeners.add(listener);
+    }
+
+    public void dummy() {
+        LoadGraphCommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
+        c.execute();
+        notifyAll(c);
     }
 }

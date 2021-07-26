@@ -3,6 +3,7 @@ package kit.pse.hgv.graphSystem.element;
 import kit.pse.hgv.graphSystem.GraphSystemMessages;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -58,5 +59,9 @@ public abstract class GraphElement {
      */
     public String getMetadata(String key) {
         return metadata.get(key);
+    }
+
+    public Collection<String> getAllMetadata() {
+        return metadata.keySet();
     }
 }

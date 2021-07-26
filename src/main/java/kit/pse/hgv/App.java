@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import kit.pse.hgv.graphSystem.Graph;
+import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
@@ -26,8 +28,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        CommandController.getInstance().start();
-        CommandController.getInstance().queueCommand(new LoadGraphCommand("src/resourcses/Vorlage.graphml"));
+        CommandController cmdController = CommandController.getInstance();
+        cmdController.start();
         ExtensionServer server = new ExtensionServer(12345);
         server.start();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
@@ -36,9 +38,10 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
 
-        CommandController cmdController = CommandController.getInstance();
-        RenderHandler handler = new RenderHandler();
-        TabManager manager = new TabManager(1, new DefaultRenderEngine(1, 1, new DrawManager(1, new NativeRepresentation()), handler));
+        cmdController.dummy();
+        // cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
+
+
     }
 
     static void setRoot(String fxml) throws IOException {
