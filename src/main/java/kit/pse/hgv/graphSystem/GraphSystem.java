@@ -139,10 +139,6 @@ public class GraphSystem {
      *         id in future.
      */
     public int loadGraph(String path) {
-        int graphID = graphIDCounter++;
-        Graph g = DataGateway.loadGraph(path);
-        if (g == null) {
-            throw new IllegalArgumentException(GraphSystemMessages.PATH_ERROR.DE());
         int graphID = newGraph();
         try {
             DataGateway.loadGraph(path, graphID);
