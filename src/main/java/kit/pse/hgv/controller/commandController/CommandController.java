@@ -5,7 +5,7 @@ import java.util.concurrent.SynchronousQueue;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
 
-public class CommandController extends Thread implements CommandEventSourve {
+public class CommandController extends Thread implements CommandEventSource {
     //TODO: undo/redo
     private static CommandController instance;
 

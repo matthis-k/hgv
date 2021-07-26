@@ -22,7 +22,7 @@ public class EditMenuHandler implements UIHandler {
     public void undo() {
         System.out.println("Undo");
     }
-
+        //TODO ÄNDERN
     /**
      * This method reverts undo().
      */

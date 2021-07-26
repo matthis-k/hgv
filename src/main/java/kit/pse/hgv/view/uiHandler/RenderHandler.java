@@ -11,16 +11,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
 
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
 public class RenderHandler implements UIHandler{
 
+    List<Integer> selectedNodes;
 
     @FXML
     private Pane renderPane;
@@ -34,7 +37,7 @@ public class RenderHandler implements UIHandler{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        selectedNodes = new ArrayList<>();
         renderCircle.setRadius(START_RADIUS);
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
@@ -103,13 +106,11 @@ public class RenderHandler implements UIHandler{
         });
     }
 
+    //TODO moveCenter
     public void moveCenter(double x, double y) {
-        //TODO
+        new HyperModelCommandProcessor().moveCenter(x, y);
     }
 
-    public void moveArea() {
-        //TODO
-    }
 }
 
 class Delta { double x, y; }

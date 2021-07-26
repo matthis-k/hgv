@@ -13,15 +13,6 @@ import java.util.ResourceBundle;
  */
 public class FileMenuHandler implements UIHandler {
 
-    /**
-     * The CommandProcessor which will be called when the file menu receives user input.
-     */
-    private FileSystemCommandProcessor processor;
-
-    //public FileMenuHandler(FileSystemCommandProcessor processor) {
-      //  this.processor = processor;
-    //}
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -33,7 +24,7 @@ public class FileMenuHandler implements UIHandler {
     @FXML
     public void openFile() {
         FileChooser chooser = new FileChooser();
-        processor.loadGraph(chooser.showOpenDialog(new Stage()));
+        new FileSystemCommandProcessor().loadGraph(chooser.showOpenDialog(new Stage()));
     }
 
     /**
@@ -43,6 +34,7 @@ public class FileMenuHandler implements UIHandler {
     public void saveFile() {
         FileChooser chooser = new FileChooser();
         String path = chooser.showOpenDialog(new Stage()).getAbsolutePath();
+        new FileSystemCommandProcessor().saveGraph(path, 42);
         //TODO: ID bekommen processor.saveGraph(path, 42);
     }
 
@@ -51,7 +43,7 @@ public class FileMenuHandler implements UIHandler {
      */
     @FXML
     public void createNewGraph() {
-        processor.createNewGraph();
+        new FileSystemCommandProcessor().createNewGraph();
     }
 
 }

@@ -13,8 +13,6 @@ import java.util.ResourceBundle;
 
 public class DetailHandler implements UIHandler {
 
-    private MetaDataProcessor processor;
-
     @FXML
     private ColorPicker colorPick;
     @FXML
@@ -29,17 +27,12 @@ public class DetailHandler implements UIHandler {
     private Button updateButton;
 
 
-    //TODO pass argument
-    /*public DetailHandler(MetaDataProcessor processor) {
-        this.processor = processor;
-    }*/
-
     private static final int UPDATE_POSITION = 75;
-
 
 
     @FXML
     public void updateData() {
+        MetaDataProcessor processor = new MetaDataProcessor();
         //TODO ID
         processor.editMetaData(42, radius.getText(), angle.getText(), weight.getText());
         processor.changeColor(42, colorPick.getValue());

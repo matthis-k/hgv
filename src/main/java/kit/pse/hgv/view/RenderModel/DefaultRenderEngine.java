@@ -59,6 +59,6 @@ public class DefaultRenderEngine extends RenderEngine {
 
     @Override
     public void receiveCommand(LoadGraphCommand command) {
-
+        firstRender();
     }
 }
