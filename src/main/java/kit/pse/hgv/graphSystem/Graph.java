@@ -119,4 +119,11 @@ public class Graph {
         elements.addAll(getEdges());
         return elements;
     }
+
+    public List<Integer> getIds() {
+        List<Integer> res = new Vector<>();
+        res.addAll(nodes.keySet());
+        res.addAll(edges.keySet());
+        return res;
+    }
 }
