@@ -131,7 +131,12 @@ public enum ExtensionCommandType {
     MOVE_CENTER(ExtensionCommandType.START + "MoveCenter" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            MoveCenterCommand command = new MoveCenterCommand();
+            String coordinateAString = inputAsJson.getString("coordinate");
+            String[] eachCoordinate = coordinateAString.split(",");
+            double x = Double.valueOf(eachCoordinate[0]);
+            double y = Double.valueOf(eachCoordinate[1]);
+            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
+            MoveCenterCommand command = new MoveCenterCommand(coordinate);
             return new ParseResult(command, this);
         }
     },
@@ -153,8 +158,16 @@ public enum ExtensionCommandType {
     SET_MANUAL_EDIT(ExtensionCommandType.START + "SetManualEdit" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            SetManualEditCommand command = new SetManualEditCommand();
-            return new ParseResult(command, this);
+            String booleanString = inputAsJson.getString("manualedit");
+            if (booleanString.equals("enable")){
+                SetManualEditCommand command = new SetManualEditCommand(true);
+                return new ParseResult(command, this);
+            } else if (booleanString.equals("disable")) {
+                SetManualEditCommand command = new SetManualEditCommand(false);
+                return new ParseResult(command, this);
+            } else {
+                throw new IllegalArgumentException("The manualEdit can only be enabled or disabled");
+            }
         }
     },
 

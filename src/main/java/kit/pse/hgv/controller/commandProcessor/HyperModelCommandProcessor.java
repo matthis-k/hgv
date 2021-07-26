@@ -1,6 +1,7 @@
 package kit.pse.hgv.controller.commandProcessor;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
+import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 
@@ -23,7 +24,7 @@ public class HyperModelCommandProcessor implements CommandProcessor{
      * @param y y-coordinate where to move the center
      */
     public void moveCenter(double x, double y){
-        MoveCenterCommand command = new MoveCenterCommand();
+        MoveCenterCommand command = new MoveCenterCommand(new CartesianCoordinate(x, y));
         queueCommand(command);
     }
 }

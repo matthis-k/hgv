@@ -1,7 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
-import kit.pse.hgv.view.RenderModel.TabManager;
 
 /**
  * This class manages all commands that handle the first visualization of a graph

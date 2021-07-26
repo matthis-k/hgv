@@ -9,6 +9,10 @@ import kit.pse.hgv.representation.Coordinate;
 public class MoveCenterCommand extends HyperModelCommand {
     private Coordinate transform;
 
+    public MoveCenterCommand(Coordinate transform) {
+        this.transform = transform;
+    }
+
     @Override
     public void execute() {
         // TODO Auto-generated method stub
