@@ -10,25 +10,25 @@
 
 	<graph edgedefault="undirected">
 	<node id="0">
-		<data key="phi">1.5</data>
-		<data key="radius">5</data>
+		<data key="phi">0</data>
+		<data key="radius">0</data>
 		<data key="color">#0000FF</data>
 	</node>
 	<node id="1">
 		<data key="phi">1</data>
-		<data key="radius">5</data>
+		<data key="radius">1</data>
 	</node>
 	<node id="2">
 		<data key="phi">2</data>
-		<data key="radius">5</data>
+		<data key="radius">2</data>
 	</node>
 	<node id="3">
-		<data key="phi">0</data>
-		<data key="radius">5</data>
+		<data key="phi">3</data>
+		<data key="radius">3</data>
 	</node>
 	<node id="4">
-		<data key="phi">0.5</data>
-		<data key="radius">5</data>
+		<data key="phi">4</data>
+		<data key="radius">4</data>
 	</node>
 	<edge id="0" source="1" target="0">
     </edge>

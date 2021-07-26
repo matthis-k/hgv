@@ -37,9 +37,7 @@ public class App extends Application {
         stage.sizeToScene();
         stage.setTitle("HGV");
         stage.show();
-        RenderHandler handler = new RenderHandler();
-        RenderEngine engine = new DefaultRenderEngine(1, 1, new DrawManager(1, new NativeRepresentation()), handler);
-        cmdController.register(engine);
+
         cmdController.dummy();
         // cmdController.queueCommand(new LoadGraphCommand("C:/Users/memph/Documents/seadiags/hgv/src/main/resources/Vorlage.graphml"));
 
