@@ -1,11 +1,14 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import kit.pse.hgv.representation.Coordinate;
+
 public class MoveNodeCommand extends GraphSystemCommand {
     private int elementId;
-    // TODO add coordinate when its available
+    private Coordinate coordinate;
 
-    public MoveNodeCommand(int elementId){
+    public MoveNodeCommand(int elementId, Coordinate coordinate){
         this.elementId = elementId;
+        this.coordinate = coordinate;
     }
 
     @Override

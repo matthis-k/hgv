@@ -7,12 +7,12 @@ public class MetaDataProcessor implements CommandProcessor{
 
     @Override
     public void queueCommand(Command command) {
-        // TODO Auto-generated method stub
-        
+        //TODO CommandController.getInstance().queueCommand(command);
     }
     
     public void changeColor(int elementId, Color color){
         EditColorCommand command = new EditColorCommand(elementId, color);
+        queueCommand(command);
     }
 
     public void editMetaData(int elementId, String radius, String angle, String weight){

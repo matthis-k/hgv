@@ -5,7 +5,7 @@ import java.util.Vector;
 public class CommandComposite implements Command {
     private Vector<Command> commands = new Vector<>();
 
-    public void addComamnd(Command c) {
+    public void addCommand(Command c) {
         commands.add(c);
     }
 

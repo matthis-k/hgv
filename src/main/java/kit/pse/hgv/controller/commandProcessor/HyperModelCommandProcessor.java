@@ -7,11 +7,11 @@ public class HyperModelCommandProcessor implements CommandProcessor{
 
     @Override
     public void queueCommand(Command command) {
-        // TODO Auto-generated method stub
-        
+        //TODO CommandController.getInstance().queueCommand(command);
     }
 
     public void moveCenter(){
         MoveCenterCommand command = new MoveCenterCommand();
+        queueCommand(command);
     }
 }

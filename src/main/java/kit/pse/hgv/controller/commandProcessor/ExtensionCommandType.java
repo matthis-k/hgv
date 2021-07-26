@@ -69,11 +69,12 @@ public enum ExtensionCommandType {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             int id = inputAsJson.getInt("id");
-            String coordinate = inputAsJson.getString("coordinate");
-            String[] eachCoordinate = coordinate.split(",");
-            double coord1 = Double.valueOf(eachCoordinate[0]);
-            double coord2 = Double.valueOf(eachCoordinate[1]);
-            MoveNodeCommand command = new MoveNodeCommand(id);
+            String coordinateAString = inputAsJson.getString("coordinate");
+            String[] eachCoordinate = coordinateAString.split(",");
+            double x = Double.valueOf(eachCoordinate[0]);
+            double y = Double.valueOf(eachCoordinate[1]);
+            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
+            MoveNodeCommand command = new MoveNodeCommand(id, coordinate);
             return new ParseResult(command, this);
         }
     },
@@ -115,7 +116,7 @@ public enum ExtensionCommandType {
             JSONArray commandsAsArray = inputAsJson.getJSONArray("commands");
             for (int i = 0; i < commandsAsArray.length();i++) {
                 Command c = ExtensionCommandType.parseJson(commandsAsArray.getJSONObject(i)).cmd;
-                command.addComamnd(c);
+                command.addCommand(c);
             }            
             return new ParseResult(command, this);
         }

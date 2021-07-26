@@ -8,24 +8,28 @@ public class FileSystemCommandProcessor implements CommandProcessor{
 
     @Override
     public void queueCommand(Command command) {
-        // TODO Auto-generated method stub
+        //TODO CommandController.getInstance().queueCommand(command);
         
     }
 
-    //TODO: Du bekommst gleich eine file zurück
     public void loadGraph(File file){
-        //LoadGraphCommand command = new LoadGraphCommand(path);
+        String path = file.getPath();
+        LoadGraphCommand command = new LoadGraphCommand(path);
+        queueCommand(command);
     }
 
     public void saveGraph(String path, int id){
         SaveGraphCommand command = new SaveGraphCommand(id, path);
+        queueCommand(command);
     }
 
     public void createNewGraph() {
-        //TODO implement
+        CreateNewGraphCommand command = new CreateNewGraphCommand();
+        queueCommand(command);
     }
 
     public void shutdown(){
         ShutdownCommand command = new ShutdownCommand();
+        queueCommand(command);
     }
 }
