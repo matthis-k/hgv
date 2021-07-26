@@ -19,6 +19,9 @@ public class CartesianCoordinate implements Coordinate {
     public PolarCoordinate toPolar() {
         double distance = Math.sqrt(x*x + y*y);
         double angle = Math.atan(y/x);
+        if (x < 0) {
+            angle += Math.PI;
+        }
         return new PolarCoordinate(angle, distance);
     }
 

@@ -71,10 +71,8 @@ public class NativeRepresentation implements Representation {
     @Override
     public LineStrip calculate(Edge edge) {
         System.out.println("edge");
-        //TODO Philipp
         PolarCoordinate firstNode = edge.getNodes()[0].getCoord().toPolar();
         firstNode.moveCoordinate(center.mirroredThroughCenter());
-        //TODO Philipp
         PolarCoordinate secondNode = edge.getNodes()[1].getCoord().toPolar();
         secondNode.moveCoordinate(center.mirroredThroughCenter());
         List<Coordinate> line = new ArrayList<>();

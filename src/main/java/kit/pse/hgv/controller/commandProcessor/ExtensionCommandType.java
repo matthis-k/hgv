@@ -203,7 +203,7 @@ public enum ExtensionCommandType {
         try {
             JSONObject inputAsJson = new JSONObject(extensionInput);
             ParseResult res = parseJson(inputAsJson);
-            //TODO CommandController.getInstance().queueCommand(res.cmd);
+            CommandController.getInstance().queueCommand(res.cmd);
             return res.type;
         } catch (JSONException | NumberFormatException e) {
             throw new IllegalArgumentException("Command is not in the correct format.");

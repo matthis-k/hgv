@@ -2,12 +2,11 @@ package kit.pse.hgv.view.hyperbolicModel;
 
 
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Node;
-import kit.pse.hgv.representation.CartesianCoordinate;
-import kit.pse.hgv.representation.Coordinate;
-import kit.pse.hgv.representation.Drawable;
+import kit.pse.hgv.representation.*;
 
 import java.util.*;
 
