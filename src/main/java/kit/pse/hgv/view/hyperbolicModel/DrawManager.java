@@ -57,7 +57,6 @@ public class DrawManager {
         if(node != null) {
             return getRepresentation().calculate(node);
         } else {
-
             Edge edge = graphSystem.getEdgeByID(graphId, id);
             return getRepresentation().calculate(edge);
         }
