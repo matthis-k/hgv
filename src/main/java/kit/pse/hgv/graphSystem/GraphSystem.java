@@ -203,6 +203,6 @@ public class GraphSystem {
     }
 
     public List<Integer> getIDs(int graphID) {
-        return null;
+        return getGraphByID(graphID).getIds();
     }
 }

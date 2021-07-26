@@ -13,7 +13,7 @@ public class FileSystemCommandProcessor implements CommandProcessor{
     }
 
     public void loadGraph(File file){
-        String path = file.getPath();
+        String path = file.getAbsolutePath();
         LoadGraphCommand command = new LoadGraphCommand(path);
         queueCommand(command);
     }

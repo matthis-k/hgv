@@ -15,7 +15,7 @@ public class DrawManager {
     private Coordinate center;
     private GraphSystem graphSystem = GraphSystem.getInstance();
     private int graphId;
-    private HashMap<Integer, Drawable> rendered;
+    private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
 
     public DrawManager(int graphId, Coordinate center, Representation representation) {
