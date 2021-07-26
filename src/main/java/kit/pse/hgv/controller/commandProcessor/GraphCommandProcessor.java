@@ -2,15 +2,27 @@ package kit.pse.hgv.controller.commandProcessor;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
 import kit.pse.hgv.representation.CartesianCoordinate;
+import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 
+/**
+ * This class processes the input from the ui that affects the graph itself
+ */
 public class GraphCommandProcessor implements CommandProcessor{
 
     @Override
     public void queueCommand(Command command) {
-        //TODO CommandController.getInstance().queueCommand(command);
+        CommandController.getInstance().queueCommand(command);
+        CommandController.getInstance().queueCommand(new RenderCommand());
     }
 
+    /**
+     * This method creates an createEdgeCommand
+     * 
+     * @param graphId where to create an edge
+     * @param id1 first nodeId that should be connected
+     * @param id2 second nodeId that should be connected
+     */
     public void addEdge(int graphId, int id1, int id2){
         int[] nodeIds = new int[2];
         nodeIds[1] = id1;
@@ -19,19 +31,49 @@ public class GraphCommandProcessor implements CommandProcessor{
         queueCommand(command);
     }
 
-    public void addNode(int graphId, String coordinate){
-        //TODO
+    /**
+     * This method checks if the coordinate of the node is in the correct format and creates a createNodeCommand
+     * 
+     * @param graphId where to create a node
+     * @param xAsString x-Coordinate as string
+     * @param yAsString y-Coordinate as string
+     */
+    public void addNode(int graphId, String xAsString, String yAsString){
+        try{
+            Double x = Double.valueOf(xAsString);
+            Double y = Double.valueOf(yAsString);
+            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
+            CreateNodeCommand command = new CreateNodeCommand(graphId, coordinate);
+            queueCommand(command);
+        } catch (NumberFormatException e) {
+            //TODO
+        }
     }
     
-    public void moveNode(int elementId, String coordinateAsString){
-        //TODO how implemented in the UI?
-        //Double x;
-        //Double y;
-        //CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
-        //MoveNodeCommand command = new MoveNodeCommand(elementId, coordinate);
-        //queueCommand(command);
+    /**
+     * This method checks if the coordinate (where to move) is in the correct format and creates a moveNodeCommand
+     * 
+     * @param elementId id of the node
+     * @param xAsString x-Coordinate as string
+     * @param yAsString y-Coordinate as string
+     */
+    public void moveNode(int elementId, String xAsString, String yAsString){
+        try {
+            Double x = Double.valueOf(xAsString);
+            Double y = Double.valueOf(yAsString);
+            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
+            MoveNodeCommand command = new MoveNodeCommand(elementId, coordinate);
+            queueCommand(command);
+        } catch (NumberFormatException e) {
+            //TODO
+        }
     }
 
+    /**
+     * This method creates a deleteCommand
+     * 
+     * @param elementId id of the element that should be deleted
+     */
     public void deleteElement(int elementId){
         GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId);
         queueCommand(command);

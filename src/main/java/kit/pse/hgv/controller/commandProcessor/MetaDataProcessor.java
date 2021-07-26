@@ -1,13 +1,18 @@
 package kit.pse.hgv.controller.commandProcessor;
 
 import javafx.scene.paint.Color;
+import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 
+/**
+ * This class processes input from the ui that affect the metadata
+ */
 public class MetaDataProcessor implements CommandProcessor{
 
     @Override
     public void queueCommand(Command command) {
-        //TODO CommandController.getInstance().queueCommand(command);
+        CommandController.getInstance().queueCommand(command);
+        CommandController.getInstance().queueCommand(new RenderCommand());
     }
     
     public void changeColor(int elementId, Color color){

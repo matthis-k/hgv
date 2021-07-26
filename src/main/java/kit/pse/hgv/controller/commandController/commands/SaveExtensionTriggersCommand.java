@@ -3,6 +3,9 @@ package kit.pse.hgv.controller.commandController.commands;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * TODO 
+ */
 public class SaveExtensionTriggersCommand extends FileSystemCommand{
     private HashMap<Command, List> triggers;
     // TODO List<Extension>
