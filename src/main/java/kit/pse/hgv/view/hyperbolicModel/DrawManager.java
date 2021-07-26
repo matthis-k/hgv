@@ -44,7 +44,8 @@ public class DrawManager {
     public List<Drawable> getRenderData() {
         rendered.clear();
         for(Integer id : graphSystem.getIDs(graphId)) {
-            changeElement(id);
+            Drawable drawable = changeElement(id);
+            rendered.put(drawable.getID(), drawable);
         }
         List<Drawable> res = new ArrayList<>();
         res.addAll(rendered.values());
