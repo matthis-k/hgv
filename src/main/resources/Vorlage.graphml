@@ -30,6 +30,41 @@
 		<data key="phi">4</data>
 		<data key="radius">4</data>
 	</node>
+	<node id="0">
+		<data key="phi">5</data>
+		<data key="radius">5</data>
+		<data key="color">#0000FF</data>
+	</node>
+	<node id="0">
+		<data key="phi">6</data>
+		<data key="radius">6</data>
+		<data key="color">#0000FF</data>
+	</node>
+	<node id="0">
+		<data key="phi">7</data>
+		<data key="radius">7</data>
+		<data key="color">#0000FF</data>
+	</node>
+	<node id="0">
+		<data key="phi">8</data>
+		<data key="radius">8</data>
+		<data key="color">#0000FF</data>
+	</node>
+	<node id="0">
+		<data key="phi">9</data>
+		<data key="radius">9</data>
+		<data key="color">#0000FF</data>
+	</node>
+	<node id="0">
+		<data key="phi">10</data>
+		<data key="radius">10</data>
+		<data key="color">#0000FF</data>
+	</node>
+	<node id="0">
+		<data key="phi">11</data>
+		<data key="radius">11</data>
+		<data key="color">#0000FF</data>
+	</node>
 	<edge id="0" source="1" target="0">
     </edge>
 	<edge id="1" source="1" target="2">
