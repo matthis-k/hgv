@@ -21,8 +21,6 @@ public class EditUserMetaCommand extends MetaSystemCommand{
         this.key = key;
         this.meta = meta;
         this.elementId = elementId;
-        this.metaKey = metaKey;
-        this.metaVal = metaVal;
     }
 
     @Override
