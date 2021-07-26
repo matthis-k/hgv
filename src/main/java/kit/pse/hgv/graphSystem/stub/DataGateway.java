@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class DataGateway {
     public static final String PHI_REGEX = "[\\s|\\t]*<data\\skey=\"phi\">([0-9]*[.]?[0-9]+)</data>";
     public static final String RADIUS_REGEX = "[\\s|\\t]*<data\\skey=\"radius\">([0-9]*[.]?[0-9]+)</data>";
-    public static final String META_REGEX = "[\\s|\\t]*<data\\skey=\"([0-9a-zA-Z]+)\">([0-9a-zA-Z.,]+)</data>";
+    public static final String META_REGEX = "[\\s|\\t]*<data\\skey=\"([0-9a-zA-Z]+)\">([0-9a-zA-Z.,#]+)</data>";
     public static final String NODE_REGEX = "[\\s|\\t]*<node\\sid=\"(\\d+)\">";
     public static final String EDGE_REGEX  = "[\\s|\\t]*<edge\\sid=\"[0-9]+\"\ssource=\"([0-9]+)\" target=\"([0-9]+)\">";
     public static final Pattern PHI_PATTERN = Pattern.compile(PHI_REGEX);
@@ -38,13 +38,14 @@ public class DataGateway {
         while(!currentLine.matches("[\\s|\\t]*<graph\\sedgedefault=\"[a-zA-Z]+\">") && scanner.hasNext()) {
             currentLine = scanner.nextLine();
         }
+        currentLine = scanner.nextLine();
         while(!currentLine.matches("[\\s|\\t]*</graph>") && scanner.hasNext()) {
-            currentLine = scanner.nextLine();
             if(isNewNode(currentLine)) {
                 readNode(currentLine, graphID);
             } else {
                 readEdge(currentLine, graphID);
             }
+            currentLine = scanner.nextLine();
         }
     }
 
