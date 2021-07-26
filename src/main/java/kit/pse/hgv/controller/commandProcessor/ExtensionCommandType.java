@@ -3,6 +3,10 @@ package kit.pse.hgv.controller.commandProcessor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.scene.paint.Color;
+import kit.pse.hgv.controller.commandController.CommandController;
+import kit.pse.hgv.representation.CartesianCoordinate;
+import kit.pse.hgv.representation.Coordinate;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +29,8 @@ public enum ExtensionCommandType {
             String[] eachCoordinate = coordinate.split(",");
             double coord1 = Double.valueOf(eachCoordinate[0]);
             double coord2 = Double.valueOf(eachCoordinate[1]);
-            GraphElementCreateCommand command = new GraphElementCreateCommand(graphId);
+            Coordinate coord = new CartesianCoordinate(coord1, coord2);
+            CreateNodeCommand command = new CreateNodeCommand(graphId, coord);
             return new ParseResult(command, this);
         }
     },
@@ -39,7 +44,8 @@ public enum ExtensionCommandType {
             int graphId = inputAsJson.getInt("graphId");
             int firstNode = inputAsJson.getInt("id1");
             int secondNode = inputAsJson.getInt("id2");
-            GraphElementCreateCommand command = new GraphElementCreateCommand(graphId);
+            int[] nodeIds = {firstNode, secondNode};
+            CreateEdgeCommand command = new CreateEdgeCommand(graphId, nodeIds);
             return new ParseResult(command, this);
         }
     },
@@ -67,7 +73,7 @@ public enum ExtensionCommandType {
             String[] eachCoordinate = coordinate.split(",");
             double coord1 = Double.valueOf(eachCoordinate[0]);
             double coord2 = Double.valueOf(eachCoordinate[1]);
-            GraphElementMoveCommand command = new GraphElementMoveCommand(id);
+            MoveNodeCommand command = new MoveNodeCommand(id);
             return new ParseResult(command, this);
         }
     },
@@ -80,9 +86,9 @@ public enum ExtensionCommandType {
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             int elementId = inputAsJson.getInt("elementId");
             // Hexazahl
-            String colorAsString = inputAsJson.getString("color");
-            // TODO try converting into color
-            EditColorCommand command = new EditColorCommand(elementId);
+            String hexcolor = inputAsJson.getString("color");
+            Color color = Color.web(hexcolor);
+            EditColorCommand command = new EditColorCommand(elementId, color);
             return new ParseResult(command, this);
         }
     },
@@ -132,7 +138,7 @@ public enum ExtensionCommandType {
     SET_MANUAL_EDIT(ExtensionCommandType.START + "SetManualEdit" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            SetManualExtensionCommand command = new SetManualExtensionCommand();
+            SetManualEditCommand command = new SetManualEditCommand();
             return new ParseResult(command, this);
         }
     },
@@ -195,7 +201,9 @@ public enum ExtensionCommandType {
     public static ExtensionCommandType processCommandString(String extensionInput) {
         try {
             JSONObject inputAsJson = new JSONObject(extensionInput);
-            return parseJson(inputAsJson).type;
+            ParseResult res = parseJson(inputAsJson);
+            //TODO CommandController.getInstance().queueCommand(res.cmd);
+            return res.type;
         } catch (JSONException | NumberFormatException e) {
             throw new IllegalArgumentException("Command is not in the correct format.");
         }

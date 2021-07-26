@@ -1,5 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import kit.pse.hgv.graphSystem.GraphSystem;
+
 public class LoadGraphCommand extends FileSystemCommand{
     private String path;
 
@@ -9,8 +11,7 @@ public class LoadGraphCommand extends FileSystemCommand{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+        GraphSystem.getInstance().loadGraph(path);
     }
 
     @Override

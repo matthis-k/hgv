@@ -1,5 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import kit.pse.hgv.graphSystem.GraphSystem;
+
 public class EditUserMetaCommand extends MetaSystemCommand{
     private String metaKey;
     private String metaVal;
@@ -12,7 +14,7 @@ public class EditUserMetaCommand extends MetaSystemCommand{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
+        GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(metaKey, metaVal);
         
     }
 

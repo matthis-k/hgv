@@ -1,12 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-public class PauseExtensionCommand extends ExtensionCommand{
-    private int id;
-
-    public PauseExtensionCommand(int id){
-        this.id = id;
-    }
-
+public class SetManualEditCommand extends ExtensionCommand{
     @Override
     public void execute(){
         

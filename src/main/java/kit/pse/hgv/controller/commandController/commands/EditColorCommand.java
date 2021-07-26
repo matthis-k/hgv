@@ -1,12 +1,11 @@
 package kit.pse.hgv.controller.commandController.commands;
-//import javafx.scene.paint.Color;
-// TODO add color after dependency add
+import javafx.scene.paint.Color;
 
 public class EditColorCommand extends MetaSystemCommand{
-    //private Color color;
+    private Color color;
 
-    public EditColorCommand(int elementId){
-        // TODO add Color
+    public EditColorCommand(int elementId, Color color){
+        this.color = color;
         this.elementId = elementId;
     }
 

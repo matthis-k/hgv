@@ -7,7 +7,13 @@ public class RegisterExtensionCommand extends ExtensionCommand {
         this.path = path;
     }
 
-    public void execute() {
-        
+    @Override
+    public void execute(){
+
+    }
+
+    @Override
+    public void undo() {
+
     }
 }
