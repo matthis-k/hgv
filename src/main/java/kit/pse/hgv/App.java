@@ -26,8 +26,13 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        CommandController.getInstance().start();
-        CommandController.getInstance().queueCommand(new LoadGraphCommand("src/resourcses/Vorlage.graphml"));
+        CommandController cmdController = CommandController.getInstance();
+        RenderHandler handler = new RenderHandler();
+        RenderEngine engine = new DefaultRenderEngine(1, 1, new DrawManager(1, new NativeRepresentation()), handler);
+        cmdController.register(engine);
+        cmdController.start();
+        cmdController.queueCommand(new LoadGraphCommand("C:/Users/memph/Documents/seadiags/hgv/src/main/resources/Vorlage.graphml"));
+
         ExtensionServer server = new ExtensionServer(12345);
         server.start();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
@@ -36,9 +41,7 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
 
-        CommandController cmdController = CommandController.getInstance();
-        RenderHandler handler = new RenderHandler();
-        TabManager manager = new TabManager(1, new DefaultRenderEngine(1, 1, new DrawManager(1, new NativeRepresentation()), handler));
+
     }
 
     static void setRoot(String fxml) throws IOException {

@@ -29,7 +29,10 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     private void executeNext() {
-        commandQ.poll().execute();
+        Command c = commandQ.poll();
+        if (c != null) {
+            c.execute();
+        }
     }
 
     public void queueCommand(Command c) {

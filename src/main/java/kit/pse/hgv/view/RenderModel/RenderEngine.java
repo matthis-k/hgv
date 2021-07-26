@@ -1,6 +1,8 @@
 package kit.pse.hgv.view.RenderModel;
 
+import kit.pse.hgv.controller.commandController.CommandQListener;
 import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
@@ -8,7 +10,7 @@ import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class RenderEngine {
+public abstract class RenderEngine implements CommandQListener {
 
     protected List<Integer> toBeUpdated;
     protected final RenderHandler handler;
@@ -36,7 +38,7 @@ public abstract class RenderEngine {
     public abstract void receiveCommand(Command command);
     public abstract void receiveCommand(MoveCenterCommand command);
     public abstract void receiveCommand(MetaSystemCommand command);
-    public abstract void receiveCommand(GraphElementCommand command);
+    public abstract void receiveCommand(GraphSystemCommand command);
     public abstract void receiveCommand(LoadGraphCommand command);
 
 }

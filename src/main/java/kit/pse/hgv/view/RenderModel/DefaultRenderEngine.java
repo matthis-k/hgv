@@ -53,12 +53,17 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void receiveCommand(GraphElementCommand command) {
+    public void receiveCommand(GraphSystemCommand command) {
         rerender();
     }
 
     @Override
     public void receiveCommand(LoadGraphCommand command) {
         firstRender();
+    }
+
+    @Override
+    public void onNotify(Command c) {
+        receiveCommand(c);
     }
 }
