@@ -108,6 +108,17 @@ public class Graph {
         return edges.values();
     }
 
+    public Collection<String> getAllMetadata() {
+        HashSet<String> res = new HashSet<>();
+        for(Integer i : nodes.keySet()) {
+            res.addAll(nodes.get(i).getAllMetadata());
+        }
+        for(Integer i : edges.keySet()) {
+            res.addAll(edges.get(i).getAllMetadata());
+        }
+        return res;
+    }
+
     /**
      * Returns all GraphElements in a list.
      *

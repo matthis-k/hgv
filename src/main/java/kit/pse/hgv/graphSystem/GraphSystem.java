@@ -8,6 +8,7 @@ import kit.pse.hgv.graphSystem.stub.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
 
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -139,10 +140,6 @@ public class GraphSystem {
      *         id in future.
      */
     public int loadGraph(String path) {
-        int graphID = graphIDCounter++;
-        Graph g = DataGateway.loadGraph(path);
-        if (g == null) {
-            throw new IllegalArgumentException(GraphSystemMessages.PATH_ERROR.DE());
         int graphID = newGraph();
         try {
             DataGateway.loadGraph(path, graphID);
@@ -212,6 +209,10 @@ public class GraphSystem {
             deleted = g.removeElement(elementID);
         }
         return deleted;
+    }
+
+    public Collection<String> getAllMetadataByID(int graphID) {
+        return getGraphByID(graphID).getAllMetadata();
     }
 
     public List<Integer> getIDs(int graphID) {

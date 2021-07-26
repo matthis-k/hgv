@@ -4,11 +4,6 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.junit.Assert.assertTrue;
-
 public class LoadGraphTest {
 
     @Before
@@ -17,34 +12,21 @@ public class LoadGraphTest {
     }
 
     @Test
-    public void testRegex() {
-        String line = "     <node id=\"123\">";
-        String pattern = "([\\s|\\t]*<node\\sid=\")(\\d+)(\">)";
-        String pattern2 = "[\\s|\\t]*<node\\sid=\"(\\d+)\">";
-
-        // Create a Pattern object
-        Pattern r = Pattern.compile(pattern);
-
-        // Now create matcher object.
-        Matcher m = r.matcher(line);
-
-        if (m.find( )) {
-            System.out.println("Found value: " + m.group(0) );
-            System.out.println("Found value: " + m.group(1) );
-            System.out.println("Found value: " + m.group(2) );
-            System.out.println("Found value: " + m.group(3) );
-        } else {
-            System.out.println("NO MATCH");
+    public void saveGraph() {
+        String path = "src/test/resources/Vorlage.graphml";
+        String savePath = "src/test/resources/result.graphml";
+        int graphId = GraphSystem.getInstance().loadGraph(path);
+        try {
+            DataGateway.safeGraph(graphId, savePath);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
     }
-
 
     @Test
     public void loadGraph(){
         String path = "src/test/resources/Vorlage.graphml";
         GraphSystem.getInstance().loadGraph(path);
     }
-
 
 }
