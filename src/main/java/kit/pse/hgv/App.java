@@ -39,7 +39,7 @@ public class App extends Application {
         stage.show();
 
         cmdController.dummy();
-        // cmdController.queueCommand(new LoadGraphCommand("C:/Users/memph/Documents/seadiags/hgv/src/main/resources/Vorlage.graphml"));
+        // cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
 
 
     }

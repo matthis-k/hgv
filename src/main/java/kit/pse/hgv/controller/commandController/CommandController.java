@@ -65,7 +65,7 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     public void dummy() {
-        LoadGraphCommand c = new LoadGraphCommand("C:/Users/denis/Documents/PSE/hgv/src/main/resources/Vorlage.graphml");
+        LoadGraphCommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
         c.execute();
         notifyAll(c);
     }
