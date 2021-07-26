@@ -53,6 +53,9 @@ public class LineStrip extends Drawable {
         return super.isNode();
     }
 
+    public Vector<Line> getLines() {
+        return this.lines;
+    }
     @Override
     public Node getRepresentation() {
         return null;
