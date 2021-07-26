@@ -132,7 +132,7 @@ public class GraphSystem {
      * @return Returns the graphID of the loaded graph. The graph can be get by this id in future.
      */
     public int loadGraph(String path) {
-        int graphID = graphIDCounter++;
+        int graphID = newGraph();
         try {
             DataGateway.loadGraph(path, graphID);
         } catch (FileNotFoundException e) {
