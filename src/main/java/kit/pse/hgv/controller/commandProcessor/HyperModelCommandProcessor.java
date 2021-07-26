@@ -10,7 +10,7 @@ public class HyperModelCommandProcessor implements CommandProcessor{
         //TODO CommandController.getInstance().queueCommand(command);
     }
 
-    public void moveCenter(){
+    public void moveCenter(double x, double y){
         MoveCenterCommand command = new MoveCenterCommand();
         queueCommand(command);
     }

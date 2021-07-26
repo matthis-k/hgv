@@ -1,10 +1,13 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
+
 import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
-import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
-import kit.pse.hgv.representation.*;
+import kit.pse.hgv.representation.CircleNode;
+import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.LineStrip;
+import kit.pse.hgv.representation.PolarCoordinate;
 
 import java.util.ArrayList;
 import java.util.List;
