@@ -43,8 +43,7 @@ public class App extends Application {
         cmdController.dummy();
         // cmdController.queueCommand(new LoadGraphCommand("C:/Users/memph/Documents/seadiags/hgv/src/main/resources/Vorlage.graphml"));
 
-        Graph g = GraphSystem.getInstance().getGraphByID(1);
-        System.out.println("hello");
+
     }
 
     static void setRoot(String fxml) throws IOException {
