@@ -1,16 +1,16 @@
 package kit.pse.hgv.controller.commandController;
 
 import java.util.Vector;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
 
-public class CommandController extends Thread implements CommandEventSourve {
+public class CommandController extends Thread implements CommandEventSource {
     //TODO: undo/redo
     private static CommandController instance;
 
     private Vector<CommandQListener> listeners = new Vector<>();
-    private SynchronousQueue<Command> commandQ = new SynchronousQueue<Command>(true);
+    private ConcurrentLinkedQueue<Command> commandQ = new ConcurrentLinkedQueue<Command>();
 
     public static CommandController getInstance() {
         if (instance == null) {
@@ -29,11 +29,7 @@ public class CommandController extends Thread implements CommandEventSourve {
     }
 
     private void executeNext() {
-        try {
-            commandQ.take().execute();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        commandQ.poll().execute();
     }
 
     public void queueCommand(Command c) {
