@@ -1,5 +1,6 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -63,6 +64,8 @@ public class RenderHandler implements UIHandler{
 
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        renderPane.getChildren().clear();
+        renderPane.getChildren().add(renderCircle);
 
         ArrayList<Circle> nodes = new ArrayList<>();
         ArrayList<Line> lines = new ArrayList<>();
@@ -70,21 +73,25 @@ public class RenderHandler implements UIHandler{
         for (Drawable node : graph) {
             if(node.isNode()){
                 CircleNode currentNode = (CircleNode) node;
-                currentNode.getRepresentation().setCenterX(currentNode.getRepresentation().getCenterX() + START_CENTER_X);
-                currentNode.getRepresentation().setCenterY(currentNode.getRepresentation().getCenterY() + START_CENTER_Y);
-                currentNode.getRepresentation().setFill(node.getColor());
-                bindNodeX(currentNode, renderCircle);
-                bindNodeY(currentNode, renderCircle);
-                bindRadius(currentNode, renderCircle);
+                if(!currentNode.isCentered()) {
+                    currentNode.getRepresentation().setCenterX(currentNode.getRepresentation().getCenterX() + START_CENTER_X);
+                    currentNode.getRepresentation().setCenterY(currentNode.getRepresentation().getCenterY() + START_CENTER_Y);
+                    currentNode.setCentered();
+                    currentNode.getRepresentation().setFill(node.getColor());
+                    bindNodeX(currentNode, renderCircle);
+                    bindNodeY(currentNode, renderCircle);
+                    bindRadius(currentNode, renderCircle);
+                }
+
 
 
                 nodes.add(currentNode.getRepresentation());
             } else {
-                LineStrip currentLine = (LineStrip) node;
-                bindLines(currentLine.getLines());
+                LineStrip currentStrip = (LineStrip) node;
+                bindLines(currentStrip);
 
-                for (Line line : currentLine.getLines()) {
-                    line.setStroke(currentLine.getColor());
+                for (Line line : currentStrip.getLines()) {
+                    line.setStroke(currentStrip.getColor());
                     lines.add(line);
                 }
             }
@@ -98,36 +105,34 @@ public class RenderHandler implements UIHandler{
         renderCircle.setRadius(renderCircle.getRadius() + zoom);
     }
 
-    private void bindLines(Vector<Line> lines) {
-        for(Line line : lines) {
-            line.setStartY(line.getStartY() + START_CENTER_Y);
-            line.setEndY(line.getEndY() + START_CENTER_Y);
-            line.setStartX(line.getStartX() + START_CENTER_X);
-            line.setEndX(line.getEndX() + START_CENTER_X);
+    private void bindLines(LineStrip strip) {
+        for(Line line : strip.getLines()) {
 
-            line.startXProperty().bind(renderCircle.centerXProperty()
-                    .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                            .multiply(line.getStartX() - renderCircle.getCenterX())));
-            line.startYProperty().bind(renderCircle.centerYProperty()
-                    .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                            .multiply(line.getStartY() - renderCircle.getCenterY())));
-            line.endXProperty().bind(renderCircle.centerXProperty()
-                    .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                            .multiply(line.getEndX() - renderCircle.getCenterX())));
-            line.endYProperty().bind(renderCircle.centerYProperty()
-                    .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                            .multiply(line.getEndY() - renderCircle.getCenterY())));
+            if(!strip.isCentered()) {
+                line.setStartY(line.getStartY() + START_CENTER_Y);
+                line.setEndY(line.getEndY() + START_CENTER_Y);
+                line.setStartX(line.getStartX() + START_CENTER_X);
+                line.setEndX(line.getEndX() + START_CENTER_X);
+
+                line.startXProperty().bind(renderCircle.centerXProperty()
+                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                                .multiply(line.getStartX() - renderCircle.getCenterX())));
+                line.startYProperty().bind(renderCircle.centerYProperty()
+                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                                .multiply(line.getStartY() - renderCircle.getCenterY())));
+                line.endXProperty().bind(renderCircle.centerXProperty()
+                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                                .multiply(line.getEndX() - renderCircle.getCenterX())));
+                line.endYProperty().bind(renderCircle.centerYProperty()
+                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                                .multiply(line.getEndY() - renderCircle.getCenterY())));
+            }
+
         }
+        strip.setCentered();
     }
 
     private void bindNodeX(CircleNode child, Circle parent) {
-        /*child.getRepresentation().centerXProperty().bind(parent.centerXProperty()
-                .add(parent.radiusProperty().divide(START_RADIUS)
-                        .multiply(child.getRepresentation().getCenterX() - parent.getCenterX())));*/
-        //child.getRepresentation().centerXProperty().bind(parent.centerXProperty().add(child.getRepresentation().getCenterX() * 1000/START_RADIUS));
-
-        //child.getRepresentation().centerXProperty().bind(parent.centerXProperty().multiply(parent.radiusProperty().divide(START_RADIUS)).add((child.getRepresentation().getCenterX() * 10 * parent.getRadius()/START_RADIUS)));
-        //child.getRepresentation().centerXProperty().bind(parent.centerXProperty().multiply(parent.radiusProperty().divide(START_RADIUS)).add((child.getRepresentation().getCenterX() * 10)));
         child.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
                         .multiply(child.getRepresentation().getCenterX() - renderCircle.getCenterX())));
@@ -135,10 +140,6 @@ public class RenderHandler implements UIHandler{
     }
 
     private void bindNodeY(CircleNode child, Circle parent) {
-        /*child.getRepresentation().centerYProperty().bind(parent.centerYProperty()
-                .add(parent.radiusProperty().divide(START_RADIUS)
-                        .multiply(child.getRepresentation().getCenterY() - parent.getCenterY())));*/
-        //child.getRepresentation().centerYProperty().bind(parent.centerYProperty().add(child.getRepresentation().getCenterY() * 1000/START_RADIUS));
         child.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS)
                         .multiply(10).multiply(child.getRepresentation().getCenterY() - renderCircle.getCenterY())));
