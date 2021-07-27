@@ -1,21 +1,14 @@
 package kit.pse.hgv.view.uiHandler;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
-import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
@@ -25,7 +18,7 @@ import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
-import java.lang.reflect.Array;
+
 import java.net.URL;
 import java.util.*;
 
@@ -102,7 +95,8 @@ public class RenderHandler implements UIHandler{
     }
 
     private void zoom(double zoom) {
-        renderCircle.setRadius(renderCircle.getRadius() + zoom);
+        if(renderCircle.getRadius() + zoom >= 0)
+            renderCircle.setRadius(renderCircle.getRadius() + zoom);
     }
 
     private void bindLines(LineStrip strip) {
@@ -150,7 +144,7 @@ public class RenderHandler implements UIHandler{
                 .add(parent.radiusProperty().divide(parent.getRadius())
                         .multiply(child.getCenter().getY() - parent.getCenterY())));*/
         //child.getRepresentation().radiusProperty().bind(parent.radiusProperty().divide(50));
-        child.getRepresentation().radiusProperty().setValue(5);
+        child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(50));
     }
 
 
@@ -178,6 +172,7 @@ public class RenderHandler implements UIHandler{
                 circle.getScene().setCursor(Cursor.DEFAULT);
         });
     }
+
 
     //TODO moveCenter
     public void moveCenter(double x, double y) {
