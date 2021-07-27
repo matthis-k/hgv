@@ -4,6 +4,7 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DefaultRenderEngine extends RenderEngine {
@@ -22,16 +23,14 @@ public class DefaultRenderEngine extends RenderEngine {
     @Override
     public void rerender() {
         updateGraph();
-        render();
+        handler.renderGraph(this.displayedGraph);
         this.toBeUpdated.clear();
     }
 
-    private void render() {
-        handler.renderGraph(this.displayedGraph);
-    }
-
     private void updateGraph() {
-        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(19);
+        this.displayedGraph = drawManager.getRenderData(list);
     }
 
 
@@ -40,6 +39,8 @@ public class DefaultRenderEngine extends RenderEngine {
         //TODO ERROR
         if (command instanceof LoadGraphCommand) {
             firstRender();
+        } else if (command instanceof GraphSystemCommand) {
+            rerender();
         }
     }
 

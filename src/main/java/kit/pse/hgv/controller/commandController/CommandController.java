@@ -3,8 +3,11 @@ package kit.pse.hgv.controller.commandController;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.concurrent.Worker;
 import kit.pse.hgv.controller.commandController.commands.Command;
+import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
 import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
+import kit.pse.hgv.representation.PolarCoordinate;
 
 public class CommandController extends Thread implements CommandEventSource {
     //TODO: undo/redo
@@ -55,7 +58,7 @@ public class CommandController extends Thread implements CommandEventSource {
     @Override
     public void notifyAll(Command c) {
         for (CommandQListener listener : listeners) {
-            listener.onNotify(c);
+             listener.onNotify(c);
         }
     }
 
@@ -65,7 +68,10 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     public void dummy() {
-        LoadGraphCommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
+        Command c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
+        c.execute();
+        notifyAll(c);
+        c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
         c.execute();
         notifyAll(c);
     }
