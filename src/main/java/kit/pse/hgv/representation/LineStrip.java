@@ -30,7 +30,7 @@ public class LineStrip extends Drawable {
         line.setStartY(coordinates.get(index).toCartesian().getY());
         line.setEndX(coordinates.get(index+1).toCartesian().getX());
         line.setEndY(coordinates.get(index+1).toCartesian().getY());
-        line.setFill(color);
+        line.setStroke(color);
         lines.add(line);
     }
 

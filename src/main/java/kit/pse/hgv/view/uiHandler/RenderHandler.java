@@ -1,5 +1,6 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -115,13 +116,6 @@ public class RenderHandler implements UIHandler{
     }
 
     private void bindNodeX(CircleNode child, Circle parent) {
-        /*child.getRepresentation().centerXProperty().bind(parent.centerXProperty()
-                .add(parent.radiusProperty().divide(START_RADIUS)
-                        .multiply(child.getRepresentation().getCenterX() - parent.getCenterX())));*/
-        //child.getRepresentation().centerXProperty().bind(parent.centerXProperty().add(child.getRepresentation().getCenterX() * 1000/START_RADIUS));
-
-        //child.getRepresentation().centerXProperty().bind(parent.centerXProperty().multiply(parent.radiusProperty().divide(START_RADIUS)).add((child.getRepresentation().getCenterX() * 10 * parent.getRadius()/START_RADIUS)));
-        //child.getRepresentation().centerXProperty().bind(parent.centerXProperty().multiply(parent.radiusProperty().divide(START_RADIUS)).add((child.getRepresentation().getCenterX() * 10)));
         child.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
                         .multiply(child.getRepresentation().getCenterX() - renderCircle.getCenterX())));
@@ -129,10 +123,6 @@ public class RenderHandler implements UIHandler{
     }
 
     private void bindNodeY(CircleNode child, Circle parent) {
-        /*child.getRepresentation().centerYProperty().bind(parent.centerYProperty()
-                .add(parent.radiusProperty().divide(START_RADIUS)
-                        .multiply(child.getRepresentation().getCenterY() - parent.getCenterY())));*/
-        //child.getRepresentation().centerYProperty().bind(parent.centerYProperty().add(child.getRepresentation().getCenterY() * 1000/START_RADIUS));
         child.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS)
                         .multiply(10).multiply(child.getRepresentation().getCenterY() - renderCircle.getCenterY())));
