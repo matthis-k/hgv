@@ -42,7 +42,8 @@ public class RenderHandler implements UIHandler{
         renderCircle.setRadius(START_RADIUS);
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
-        enableDragMainCircle(renderCircle);
+       enableDragMainCircle(renderCircle);
+
 
         renderPane.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
             if(scrollEvent.isControlDown())
@@ -147,8 +148,9 @@ public class RenderHandler implements UIHandler{
         child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(50));
     }
 
+    //TODO ORIGINAL
 
-    private void enableDragMainCircle(final Circle circle) {
+    /*private void enableDragMainCircle(final Circle circle) {
         final Delta dragDelta = new Delta();
         circle.setOnMousePressed(mouseEvent -> {
             // record a delta distance for the drag and drop operation.
@@ -168,6 +170,31 @@ public class RenderHandler implements UIHandler{
                 circle.getScene().setCursor(Cursor.HAND);
         });
         circle.setOnMouseExited(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown())
+                circle.getScene().setCursor(Cursor.DEFAULT);
+        });
+    }*/
+
+    private void enableDragMainCircle(final Circle circle) {
+        final Delta dragDelta = new Delta();
+        renderPane.setOnMousePressed(mouseEvent -> {
+            // record a delta distance for the drag and drop operation.
+            dragDelta.x = circle.getCenterX() - mouseEvent.getX();
+            dragDelta.y = circle.getCenterY() - mouseEvent.getY();
+            circle.getScene().setCursor(Cursor.MOVE);
+        });
+        renderPane.setOnMouseReleased(mouseEvent -> circle.getScene().setCursor(Cursor.HAND));
+        renderPane.setOnMouseDragged(mouseEvent -> {
+            if(!mouseEvent.isAltDown() && !mouseEvent.isControlDown()) {
+                circle.setCenterX(mouseEvent.getX() + dragDelta.x);
+                circle.setCenterY(mouseEvent.getY() + dragDelta.y);
+            }
+        });
+        renderPane.setOnMouseEntered(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown())
+                circle.getScene().setCursor(Cursor.HAND);
+        });
+        renderPane.setOnMouseExited(mouseEvent -> {
             if (!mouseEvent.isPrimaryButtonDown())
                 circle.getScene().setCursor(Cursor.DEFAULT);
         });
