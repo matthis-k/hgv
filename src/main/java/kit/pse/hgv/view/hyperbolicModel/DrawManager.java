@@ -1,16 +1,17 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
-
-
 import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.*;
 
 import java.util.*;
 
 public class DrawManager {
+    private static Color DEFAULT_NODE_COLOR = Color.RED;
+    private static Color DEFAULT_EDGE_COLOR = Color.BLACK;
     private Coordinate center;
     private GraphSystem graphSystem = GraphSystem.getInstance();
     private int graphId;
@@ -32,7 +33,7 @@ public class DrawManager {
     public List<Drawable> getRenderData(List<Integer> changedElements) {
         Set<Integer> toCalculate = addConnectedEdges(changedElements);
         for(Integer id : toCalculate) {
-            Drawable drawable = changeElement(id);
+            Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
         List<Drawable> res = new ArrayList<>();
@@ -43,7 +44,7 @@ public class DrawManager {
     public List<Drawable> getRenderData() {
         rendered.clear();
         for(Integer id : graphSystem.getIDs(graphId)) {
-            Drawable drawable = changeElement(id);
+            Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
         List<Drawable> res = new ArrayList<>();
@@ -51,14 +52,24 @@ public class DrawManager {
         return res;
     }
 
-    private Drawable changeElement(int id) {
-
+    private Drawable calculateElement(int id) {
+        Drawable d;
         Node node = graphSystem.getNodeByID(graphId, id);
         if(node != null) {
-            return getRepresentation().calculate(node);
+            d = getRepresentation().calculate(node);
         } else {
             Edge edge = graphSystem.getEdgeByID(graphId, id);
-            return getRepresentation().calculate(edge);
+            d = getRepresentation().calculate(edge);
+        }
+        return d.setColor(getColorOfId(id));
+    }
+
+    private Color getColorOfId(int id) {
+        GraphElement el = GraphSystem.getInstance().getGraphElementByID(id);
+        try {
+            return Color.web(el.getMetadata("color"));
+        } catch (NullPointerException | IllegalArgumentException e) {
+            return el instanceof Node ? DEFAULT_NODE_COLOR : DEFAULT_EDGE_COLOR;
         }
     }
 
@@ -89,7 +100,7 @@ public class DrawManager {
         //clear the list of rendered Elements, because every Element has to be rendered newly
         rendered.clear();
         for(Integer id: graphSystem.getIDs(graphId)) {
-            Drawable drawable = changeElement(id);
+            Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
         res.addAll(rendered.values());
