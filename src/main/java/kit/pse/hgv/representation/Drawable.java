@@ -8,11 +8,13 @@ public abstract class Drawable extends Node {
     protected int id;
     protected Color color;
     protected final boolean isNode;
+    protected boolean isCentered;
 
     protected Drawable(int id, Color color, boolean isNode) {
         this.id = id;
         this.color = color;
         this.isNode = isNode;
+        isCentered = false;
     }
 
     public int getID() {
@@ -34,5 +36,13 @@ public abstract class Drawable extends Node {
     public Drawable setColor(Color c) {
         this.color = c;
         return this;
+    }
+
+    public boolean isCentered() {
+        return this.isCentered;
+    }
+
+    public void setCentered() {
+        isCentered = true;
     }
 }

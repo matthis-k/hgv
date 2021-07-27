@@ -4,10 +4,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.Coordinate;
 
-/**
- * This class handles the creation and undoing of a creation of a new node
- */
-public class CreateNodeCommand extends GraphSystemCommand {
+public class CreateNodeCommand extends CreateElementCommand {
     private Coordinate coord;
     
     /**
@@ -24,7 +21,7 @@ public class CreateNodeCommand extends GraphSystemCommand {
     @Override
     public void execute() {
         try {
-            GraphSystem.getInstance().addElement(graphId, coord);
+            addedId = GraphSystem.getInstance().addElement(graphId, coord);
         } catch (OverflowException e) {
             e.printStackTrace();
         }

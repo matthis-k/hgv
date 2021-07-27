@@ -4,9 +4,8 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.concurrent.Worker;
-import kit.pse.hgv.controller.commandController.commands.Command;
-import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
-import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
+import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;
 
 public class CommandController extends Thread implements CommandEventSource {
@@ -74,5 +73,35 @@ public class CommandController extends Thread implements CommandEventSource {
         c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
         c.execute();
         notifyAll(c);
+        int[] nodes = {((CreateElementCommand)c).getAddedId(), 8};
+        c = new CreateEdgeCommand(1, nodes);
+        c.execute();
+        notifyAll(c);
+    }
+
+    public void doSpiralGraph(int n) {
+        Command cmd = new LoadGraphCommand("src/main/resources/empty.graphml");
+        cmd.execute();
+        notifyAll(cmd);
+
+        int graph = 1;
+        Vector<Integer> nodeIds = new Vector<>();
+        for (int i = 0; i < n; i++) {
+            CreateNodeCommand c = new CreateNodeCommand(graph, new PolarCoordinate(i, i));
+            c.execute();
+            nodeIds.add(c.getAddedId());
+            int r = 150+(3*i*255/n)%100;
+            int g = 100+(2*i*255/n)%100;
+            int b = 50+(i*255/n)%100;
+            GraphSystem.getInstance().getGraphElementByID(c.getAddedId()).setMetadata("color", "rgb(" + r + ","+g+","+b+")");
+            notifyAll(c);
+            if (i>0) {
+                int[] nodes = {nodeIds.get(i-1), nodeIds.get(i)};
+                CreateEdgeCommand e = new CreateEdgeCommand(graph, nodes);
+                e.execute();
+                notifyAll(e);
+            }
+        }
+
     }
 }
