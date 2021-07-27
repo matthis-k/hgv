@@ -40,6 +40,8 @@ public class DefaultRenderEngine extends RenderEngine {
         //TODO ERROR
         if (command instanceof LoadGraphCommand) {
             firstRender();
+        } else if (command instanceof GraphSystemCommand) {
+            firstRender();
         }
     }
 

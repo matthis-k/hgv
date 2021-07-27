@@ -20,6 +20,7 @@ import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
 import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
+import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
@@ -54,7 +55,8 @@ public class RenderHandler implements UIHandler{
                 zoom(scrollEvent.getDeltaY());
         });
 
-        RenderEngine engine = new DefaultRenderEngine(1,1, new DrawManager(1, new NativeRepresentation()), this);
+
+        RenderEngine engine = new DefaultRenderEngine(1,1, new DrawManager(1, new NativeRepresentation(5, Accuracy.DIRECT)), this);
         CommandController.getInstance().register(engine);
 
     }
@@ -70,17 +72,21 @@ public class RenderHandler implements UIHandler{
                 CircleNode currentNode = (CircleNode) node;
                 currentNode.getRepresentation().setCenterX(currentNode.getRepresentation().getCenterX() + START_CENTER_X);
                 currentNode.getRepresentation().setCenterY(currentNode.getRepresentation().getCenterY() + START_CENTER_Y);
+                currentNode.getRepresentation().setFill(node.getColor());
                 bindNodeX(currentNode, renderCircle);
                 bindNodeY(currentNode, renderCircle);
                 bindRadius(currentNode, renderCircle);
+
 
                 nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentLine = (LineStrip) node;
                 bindLines(currentLine.getLines());
 
-                for (Line line : currentLine.getLines())
+                for (Line line : currentLine.getLines()) {
+                    line.setStroke(currentLine.getColor());
                     lines.add(line);
+                }
             }
         }
 

@@ -1,7 +1,5 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
-
-import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.CircleNode;
@@ -64,7 +62,7 @@ public class NativeRepresentation implements Representation {
     public CircleNode calculate(Node node) {
         //TODO Philipp Node.getCoordinate : Coordinate
         return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(),
-                Color.RED);
+                null);
     }
 
     @Override
@@ -78,9 +76,9 @@ public class NativeRepresentation implements Representation {
                 secondNode.getAngle() || accuracy.getAccuracy() == 1) {
             line.add(firstNode);
             line.add(secondNode);
-            return new LineStrip(line, edge.getId(), Color.BLUE);
+            return new LineStrip(line, edge.getId(), null);
         }
-        double angularDistance = firstNode.getAngle() - secondNode.getAngle();
+        double angularDistance = secondNode.getAngle() - firstNode.getAngle();
         if ((angularDistance > 0.0 && angularDistance < Math.PI) || (angularDistance < -Math.PI)) {
             PolarCoordinate temp = firstNode;
             firstNode = secondNode;
@@ -99,7 +97,7 @@ public class NativeRepresentation implements Representation {
         for (int i = 0; i < accuracy.getAccuracy(); i++) {
             double partial_distance = distance * (i / (double) accuracy.getAccuracy());
             double temp = Math.cosh(secondNode.getDistance() * Math.cosh(partial_distance) -
-                    (Math.sinh(secondNode.getDistance() * Math.sinh(partial_distance) * cosGamma2)));
+                    (Math.sinh(secondNode.getDistance()) * Math.sinh(partial_distance) * cosGamma2));
             double radius = acosh(temp) != -1 ? acosh(temp) : 0.0;
             temp = Math.sinh(radius) * Math.sinh(secondNode.getDistance()) != 0 ? (Math.cosh(radius) *
                     Math.cosh(secondNode.getDistance()) - Math.cosh(partial_distance)) /
@@ -111,7 +109,13 @@ public class NativeRepresentation implements Representation {
             line.add(nativeLinePoint);
         }
 
-        return new LineStrip(line, edge.getId(), Color.valueOf(edge.getMetadata("Color").toUpperCase()));
+        double sum = 0;
+        for (int i = 0; i< line.size()-1; i++) {
+            sum += line.get(i).hyperbolicDistance(line.get(i+1));
+        }
+        System.out.println("calculated" + firstNode.hyperbolicDistance(secondNode));
+        System.out.println("approx" + sum);
+        return new LineStrip(line, edge.getId(), null);
     }
 
     private List<Double> distribution(double rad1, double rad2) {

@@ -15,7 +15,6 @@ public abstract class Drawable extends Node {
         this.isNode = isNode;
     }
 
-
     public int getID() {
         return this.id;
     }
@@ -31,4 +30,9 @@ public abstract class Drawable extends Node {
     }
 
     public abstract Node getRepresentation();
+
+    public Drawable setColor(Color c) {
+        this.color = c;
+        return this;
+    }
 }

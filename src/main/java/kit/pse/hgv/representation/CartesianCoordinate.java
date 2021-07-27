@@ -18,9 +18,11 @@ public class CartesianCoordinate implements Coordinate {
     @Override
     public PolarCoordinate toPolar() {
         double distance = Math.sqrt(x*x + y*y);
-        double angle = distance == 0 ? 0 : Math.atan(y/x);
-        if (x < 0) {
-            angle += Math.PI;
+        double angle = 0;
+        if (x == 0) {
+            angle = y > 0 ? Math.PI*0.5 : Math.PI * 1.5;
+        } else {
+            angle = Math.atan(y/x) + (x < 0 ? Math.PI : 0);
         }
         return new PolarCoordinate(angle, distance);
     }
