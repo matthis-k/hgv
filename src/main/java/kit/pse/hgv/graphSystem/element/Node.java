@@ -19,7 +19,7 @@ public class Node extends GraphElement {
      */
     public Node(Coordinate coord) throws OverflowException {
         super();
-        this.coord = coord;
+        this.coord = coord.toPolar();
     }
 
     public Coordinate getCoord() {

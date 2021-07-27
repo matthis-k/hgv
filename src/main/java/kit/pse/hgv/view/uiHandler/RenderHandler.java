@@ -102,7 +102,7 @@ public class RenderHandler implements UIHandler{
     }
 
     private void zoom(double zoom) {
-        renderCircle.setRadius(renderCircle.getRadius() + zoom);
+        renderCircle.setRadius(renderCircle.getRadius() + zoom/renderCircle.getRadius());
     }
 
     private void bindLines(LineStrip strip) {
