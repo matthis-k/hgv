@@ -1,9 +1,9 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 /**
- * This class handles the shutdown of the system
+ * This class handles the commands that notify the renderEngine to update the visualization
  */
-public class ShutdownCommand implements Command {
+public class RenderCommand extends HyperModelCommand {
 
     @Override
     public void execute() {
@@ -16,4 +16,5 @@ public class ShutdownCommand implements Command {
         // TODO Auto-generated method stub
         
     }
+    
 }

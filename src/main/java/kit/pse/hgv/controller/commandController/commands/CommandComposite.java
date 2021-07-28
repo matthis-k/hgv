@@ -2,9 +2,16 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import java.util.Vector;
 
+/**
+ * This class handles the execution of various commands
+ */
 public class CommandComposite implements Command {
     private Vector<Command> commands = new Vector<>();
 
+    /**
+     * This method adds the command to be executed in a Vector class
+     * @param c command to be executed
+     */
     public void addCommand(Command c) {
         commands.add(c);
     }

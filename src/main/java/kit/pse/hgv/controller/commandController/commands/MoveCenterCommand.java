@@ -3,9 +3,15 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.representation.Coordinate;
 
+/**
+ * This class manages the commands that update the center of the hyperbolic model
+ */
 public class MoveCenterCommand extends HyperModelCommand {
-    // TODO Add Coordinate if its available
     private Coordinate transform;
+
+    public MoveCenterCommand(Coordinate transform) {
+        this.transform = transform;
+    }
 
     @Override
     public void execute() {
