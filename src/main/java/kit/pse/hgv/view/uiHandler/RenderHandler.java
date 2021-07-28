@@ -1,7 +1,9 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.*;
@@ -9,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.representation.CircleNode;
@@ -34,6 +37,8 @@ public class RenderHandler implements UIHandler{
     private Circle renderCircle;
     @FXML
     private CheckBox centerCheckBox;
+
+    private int currentlySelected;
     private Circle center;
 
     private static final int START_CENTER_X = 640;
@@ -92,6 +97,7 @@ public class RenderHandler implements UIHandler{
                     bindNodeX(currentNode);
                     bindNodeY(currentNode);
                     bindRadius(currentNode);
+                    selectNode(currentNode);
                 }
 
 
@@ -171,6 +177,13 @@ public class RenderHandler implements UIHandler{
 
     private void bindRadius(CircleNode child) {
         child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(100));
+    }
+
+    private void selectNode(CircleNode node) {
+        node.getRepresentation().setOnMouseClicked(mouseEvent -> {
+            currentlySelected = node.getID();
+            DetailHandler.getInstance().updateDisplayedDate(currentlySelected, node.getColor(), node.getCenter().toPolar());
+        });
     }
 
     //TODO ORIGINAL
