@@ -1,5 +1,6 @@
 package kit.pse.hgv.graphSystem.stub;
 
+import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import org.junit.Before;
 import org.junit.Test;

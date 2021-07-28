@@ -15,7 +15,7 @@ public class CommandController extends Thread implements CommandEventSource {
     private static CommandController instance;
 
     private Vector<CommandQListener> listeners = new Vector<>();
-    private ConcurrentLinkedQueue<Command> commandQ = new ConcurrentLinkedQueue<Command>();
+    private ConcurrentLinkedQueue<ICommand> commandQ = new ConcurrentLinkedQueue<ICommand>();
 
     public static CommandController getInstance() {
         if (instance == null) {
@@ -35,7 +35,7 @@ public class CommandController extends Thread implements CommandEventSource {
 
     private void executeNext() {
         synchronized (this) {
-            Command c = commandQ.poll();
+            ICommand c = commandQ.poll();
             if (c != null) {
                 c.execute();
                 notifyAll(c);
@@ -49,7 +49,7 @@ public class CommandController extends Thread implements CommandEventSource {
         }
     }
 
-    public void queueCommand(Command c) {
+    public void queueCommand(ICommand c) {
         synchronized (this) {
             commandQ.add(c);
             System.out.println(commandQ.size());
@@ -57,7 +57,7 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     @Override
-    public void notifyAll(Command c) {
+    public void notifyAll(ICommand c) {
         for (CommandQListener listener : listeners) {
             System.out.println("hi bin da");
             Task<Void> task = new Task<>() {
@@ -85,7 +85,7 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     public void dummy() {
-        Command c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
+        ICommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
         c.execute();
         notifyAll(c);
         /*c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
@@ -98,7 +98,7 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     public void doSpiralGraph(int n) {
-        Command cmd = new LoadGraphCommand("src/main/resources/empty.graphml");
+        ICommand cmd = new LoadGraphCommand("src/main/resources/empty.graphml");
         cmd.execute();
         notifyAll(cmd);
 

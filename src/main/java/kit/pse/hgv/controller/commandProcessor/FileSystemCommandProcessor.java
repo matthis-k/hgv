@@ -11,7 +11,7 @@ import java.io.File;
 public class FileSystemCommandProcessor implements CommandProcessor{
 
     @Override
-    public void queueCommand(Command command) {
+    public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
     }
 

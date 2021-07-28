@@ -1,5 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 
 /**
@@ -20,6 +21,7 @@ public class LoadGraphCommand extends FileSystemCommand{
     @Override
     public void execute() {
         GraphSystem.getInstance().loadGraph(path);
+        DataGateway.addlastOpened(path);
     }
 
     @Override

@@ -3,7 +3,7 @@ package kit.pse.hgv.controller.commandController.commands;
 /**
  * This class handles the shutdown of the system
  */
-public class ShutdownCommand implements Command {
+public class ShutdownCommand extends Command {
 
     @Override
     public void execute() {

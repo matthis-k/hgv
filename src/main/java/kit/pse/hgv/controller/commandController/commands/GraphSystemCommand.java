@@ -3,7 +3,7 @@ package kit.pse.hgv.controller.commandController.commands;
 /**
  * This class handles all Commands managing the graphSystem
  */
-public abstract class GraphSystemCommand implements Command {
+public abstract class GraphSystemCommand extends Command {
     protected int graphId;
     /**
      * The constructor creates an element of this class with a specific graphId

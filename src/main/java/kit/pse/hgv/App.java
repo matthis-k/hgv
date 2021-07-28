@@ -33,7 +33,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         CommandController cmdController = CommandController.getInstance();
         cmdController.start();
-        ExtensionServer server = new ExtensionServer(12345);
+        ExtensionServer server = ExtensionServer.getInstance();
         server.start();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
         stage.setScene(scene);

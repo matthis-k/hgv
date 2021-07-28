@@ -7,10 +7,10 @@ import java.util.List;
  * TODO 
  */
 public class SaveExtensionTriggersCommand extends FileSystemCommand{
-    private HashMap<Command, List> triggers;
+    private HashMap<ICommand, List> triggers;
     // TODO List<Extension>
 
-    public SaveExtensionTriggersCommand(HashMap<Command, List> triggers){
+    public SaveExtensionTriggersCommand(HashMap<ICommand, List> triggers){
         this.triggers = triggers;
     }
 

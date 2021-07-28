@@ -19,7 +19,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void receiveCommand(Command command) {
+    public void receiveCommand(ICommand command) {
         //TODO ERROR
         if (command instanceof LoadGraphCommand) {
             render();
@@ -57,7 +57,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void onNotify(Command c) {
+    public void onNotify(ICommand c) {
         receiveCommand(c);
     }
 

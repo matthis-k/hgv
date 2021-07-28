@@ -26,6 +26,9 @@ public class EditUserMetaCommand extends MetaSystemCommand{
 
     @Override
     public void execute() {
+        if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+            throw new IllegalArgumentException("No Element with that Id exists.");
+        }
         if(key.equals("phi")) {
             try {
                 double phi = Double.parseDouble(meta);
@@ -44,10 +47,8 @@ public class EditUserMetaCommand extends MetaSystemCommand{
             } catch (NumberFormatException e) {
                 //TODO
             }
-        } else if (key.equals("weight")){
-            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
         } else {
-            throw new IllegalArgumentException("This metadata type is non-existent");
+            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
         }
     }
 

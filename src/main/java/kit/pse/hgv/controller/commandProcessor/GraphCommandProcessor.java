@@ -1,6 +1,6 @@
 package kit.pse.hgv.controller.commandProcessor;
 
-import kit.pse.hgv.controller.commandController.commands.Command;
+import kit.pse.hgv.controller.commandController.commands.ICommand;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
@@ -12,9 +12,8 @@ import kit.pse.hgv.controller.commandController.commands.*;
 public class GraphCommandProcessor implements CommandProcessor{
 
     @Override
-    public void queueCommand(Command command) {
+    public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
-        CommandController.getInstance().queueCommand(new RenderCommand());
     }
 
     /**
@@ -36,8 +35,8 @@ public class GraphCommandProcessor implements CommandProcessor{
      * This method checks if the coordinate of the node is in the correct format and creates a createNodeCommand
      * 
      * @param graphId where to create a node
-     * @param xAsString x-Coordinate as string
-     * @param yAsString y-Coordinate as string
+     * @param phiAsString phi-Coordinate as string
+     * @param rAsString r-Coordinate as string
      */
     public void addNode(int graphId, String phiAsString, String rAsString){
         try{
@@ -55,8 +54,8 @@ public class GraphCommandProcessor implements CommandProcessor{
      * This method checks if the coordinate (where to move) is in the correct format and creates a moveNodeCommand
      * 
      * @param elementId id of the node
-     * @param xAsString x-Coordinate as string
-     * @param yAsString y-Coordinate as string
+     * @param phiAsString x-Coordinate as string
+     * @param rAsString y-Coordinate as string
      */
     public void moveNode(int elementId, String phiAsString, String rAsString){
         try {

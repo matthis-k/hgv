@@ -2,7 +2,6 @@ package kit.pse.hgv.view.RenderModel;
 
 import kit.pse.hgv.controller.commandController.CommandQListener;
 import kit.pse.hgv.controller.commandController.commands.*;
-import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
@@ -51,7 +50,7 @@ public abstract class RenderEngine implements CommandQListener {
 
     public abstract void render();
 
-    public abstract void receiveCommand(Command command);
+    public abstract void receiveCommand(ICommand ICommand);
     public abstract void receiveCommand(FileSystemCommand command);
     public abstract void receiveCommand(MoveCenterCommand command);
     public abstract void receiveCommand(MetaSystemCommand command);
