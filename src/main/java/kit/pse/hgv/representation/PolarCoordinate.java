@@ -43,12 +43,13 @@ public class PolarCoordinate implements Coordinate{
         return hyperbolicDistance;
     }
 
-    public void moveCoordinate(Coordinate coordinate) {
-        double x = coordinate.toCartesian().getX() + toCartesian().getX();
-        double y = coordinate.toCartesian().getY() + toCartesian().getY();
-        PolarCoordinate temp = (new CartesianCoordinate(x,y)).toPolar();
-        this.distance = temp.getDistance();
-        this.angle = temp.getAngle();
+    public Coordinate moveCoordinate(Coordinate vector) {
+        return toCartesian().moveCoordinate(vector);
+    }
+
+    @Override
+    public Coordinate mirroredY() {
+        return new PolarCoordinate(Math.PI * 2 - angle, distance);
     }
 
     public PolarCoordinate mirroredThroughCenter() {
@@ -61,5 +62,10 @@ public class PolarCoordinate implements Coordinate{
 
     public double getDistance() {
         return distance;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("r: %f, phi: %f", distance, angle);
     }
 }
