@@ -22,8 +22,11 @@ public class EditColorCommand extends MetaSystemCommand{
 
     @Override
     public void execute() {
+        if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+            throw new IllegalArgumentException("No Element with that Id exists.");
+        }
         String colorAsString = String.format("#%02X%02X%02X", (int) Math.round(color.getRed() *255), (int) Math.round(color.getGreen() * 255), (int) Math.round(color.getBlue() * 255));
-        GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata("Color", colorAsString);
+        GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata("color", colorAsString);
     }
 
     @Override
