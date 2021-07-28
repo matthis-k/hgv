@@ -2,11 +2,13 @@ package kit.pse.hgv.controller.commandController.commands;
 
 
 import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.view.RenderModel.RenderEngine;
 
 /**
  * This class manages the commands that update the center of the hyperbolic model
  */
 public class MoveCenterCommand extends HyperModelCommand {
+
     private Coordinate transform;
 
     public MoveCenterCommand(Coordinate transform) {
@@ -15,8 +17,7 @@ public class MoveCenterCommand extends HyperModelCommand {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+        RenderEngine.getInstance().getDrawManager().moveCenter(transform);
     }
 
     @Override

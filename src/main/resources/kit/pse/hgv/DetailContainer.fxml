@@ -26,7 +26,7 @@
       <ColorPicker fx:id="colorPick" layoutX="126.0" layoutY="123.0" />
       <TextField fx:id="radius" layoutX="126.0" layoutY="185.0" />
       <TextField fx:id="angle" layoutX="126.0" layoutY="238.0" />
-      <TextField fx:id="weight" layoutX="126.0" layoutY="285.0" />
+      <TextField fx:id="weight" layoutX="126.0" layoutY="285.0" visible="false" />
       <Text fill="#2e3440" layoutX="14.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:" wrappingWidth="26.803466796875">
          <font>
             <Font size="18.0" />
@@ -47,12 +47,12 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fill="#2e3440" layoutX="13.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gewicht" wrappingWidth="112.803466796875">
+      <Text fill="#2e3440" layoutX="13.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gewicht" visible="false" wrappingWidth="112.803466796875">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fill="#2e3440" layoutX="126.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---">
+      <Text fx:id="idText" fill="#2e3440" layoutX="126.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---">
          <font>
             <Font size="18.0" />
          </font>

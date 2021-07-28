@@ -88,7 +88,6 @@ public enum ExtensionCommandType {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             int elementId = inputAsJson.getInt("elementId");
-            // Hexazahl
             String hexcolor = inputAsJson.getString("color");
             Color color = Color.web(hexcolor);
             EditColorCommand command = new EditColorCommand(elementId, color);
@@ -102,8 +101,8 @@ public enum ExtensionCommandType {
     CHANGE_METADATA(ExtensionCommandType.START + "ChangeMetadata" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            String meta = inputAsJson.getString("TODO");
-            String key = inputAsJson.getString("TODO");
+            String meta = inputAsJson.getString("metadata-value");
+            String key = inputAsJson.getString("metadata-type");
             int elementId = inputAsJson.getInt("id");
             EditUserMetaCommand command = new EditUserMetaCommand(elementId, key, meta);
             return new ParseResult(command, this);

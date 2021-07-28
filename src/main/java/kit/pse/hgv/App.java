@@ -1,10 +1,13 @@
 package kit.pse.hgv;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
@@ -38,9 +41,7 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
 
-        //cmdController.doSpiralGraph(1000);
-        cmdController.dummy();
-        // cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
+        cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
 
 
     }

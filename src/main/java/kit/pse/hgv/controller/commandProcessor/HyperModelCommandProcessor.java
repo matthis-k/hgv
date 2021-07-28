@@ -4,7 +4,6 @@ import kit.pse.hgv.controller.commandController.commands.ICommand;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
-import kit.pse.hgv.representation.PolarCoordinate;
 
 /**
  * This class handles the input from the ui affecting the hyperbolic model visualization
@@ -23,8 +22,7 @@ public class HyperModelCommandProcessor implements CommandProcessor{
      * @param phi x-coordinate where to move the center
      * @param r y-coordinate where to move the center
      */
-    public void moveCenter(double phi, double r){
-        Coordinate coordinate = new PolarCoordinate(phi, r);
+    public void moveCenter(Coordinate coordinate){
         MoveCenterCommand command = new MoveCenterCommand(coordinate);
         queueCommand(command);
     }

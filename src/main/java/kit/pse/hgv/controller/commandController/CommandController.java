@@ -3,6 +3,9 @@ package kit.pse.hgv.controller.commandController;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;
@@ -56,7 +59,23 @@ public class CommandController extends Thread implements CommandEventSource {
     @Override
     public void notifyAll(ICommand c) {
         for (CommandQListener listener : listeners) {
-             listener.onNotify(c);
+            System.out.println("hi bin da");
+            Task<Void> task = new Task<>() {
+                @Override protected Void call() throws Exception {
+                    listener.onNotify(c);
+                    System.out.println("task done");
+                    return null;
+                }
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            Platform.runLater(th);
+            //th.start();
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

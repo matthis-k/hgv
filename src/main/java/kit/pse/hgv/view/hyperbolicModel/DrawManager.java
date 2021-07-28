@@ -18,6 +18,8 @@ public class DrawManager {
     private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
 
+    
+
     public DrawManager(int graphId, Coordinate center, Representation representation) {
         this.graphId = graphId;
         this.center = center;
@@ -96,7 +98,7 @@ public class DrawManager {
 
     public List<Drawable> moveCenter(Coordinate center) {
         List<Drawable> res = new ArrayList<>();
-        getRepresentation().setCenter(center);
+        representation.setCenter(center);
         //clear the list of rendered Elements, because every Element has to be rendered newly
         rendered.clear();
         for(Integer id: graphSystem.getIDs(graphId)) {
@@ -105,6 +107,10 @@ public class DrawManager {
         }
         res.addAll(rendered.values());
         return res;
+    }
+
+    public void moveCenterVoid(Coordinate center) {
+        representation.setCenter(center);
     }
 
     public Representation getRepresentation() {
