@@ -8,6 +8,9 @@ public class PolarCoordinate implements Coordinate{
 
     public PolarCoordinate (double angle, double distance) {
         this.angle = angle % MAX_ANGLE;
+        while (this.angle < 0) {
+            this.angle += MAX_ANGLE;
+        }
         this.distance = distance;
     }
 
