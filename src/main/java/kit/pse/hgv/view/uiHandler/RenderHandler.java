@@ -1,21 +1,14 @@
 package kit.pse.hgv.view.uiHandler;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
-import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
@@ -25,7 +18,7 @@ import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
-import java.lang.reflect.Array;
+
 import java.net.URL;
 import java.util.*;
 
@@ -49,7 +42,8 @@ public class RenderHandler implements UIHandler{
         renderCircle.setRadius(START_RADIUS);
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
-        enableDragMainCircle(renderCircle);
+       enableDragMainCircle(renderCircle);
+
 
         renderPane.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
             if(scrollEvent.isControlDown())
@@ -102,7 +96,8 @@ public class RenderHandler implements UIHandler{
     }
 
     private void zoom(double zoom) {
-        renderCircle.setRadius(renderCircle.getRadius() + zoom/renderCircle.getRadius());
+        if(renderCircle.getRadius() + zoom >= 0)
+            renderCircle.setRadius(renderCircle.getRadius() + zoom);
     }
 
     private void bindLines(LineStrip strip) {
@@ -150,11 +145,12 @@ public class RenderHandler implements UIHandler{
                 .add(parent.radiusProperty().divide(parent.getRadius())
                         .multiply(child.getCenter().getY() - parent.getCenterY())));*/
         //child.getRepresentation().radiusProperty().bind(parent.radiusProperty().divide(50));
-        child.getRepresentation().radiusProperty().setValue(5);
+        child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(50));
     }
 
+    //TODO ORIGINAL
 
-    private void enableDragMainCircle(final Circle circle) {
+    /*private void enableDragMainCircle(final Circle circle) {
         final Delta dragDelta = new Delta();
         circle.setOnMousePressed(mouseEvent -> {
             // record a delta distance for the drag and drop operation.
@@ -177,7 +173,33 @@ public class RenderHandler implements UIHandler{
             if (!mouseEvent.isPrimaryButtonDown())
                 circle.getScene().setCursor(Cursor.DEFAULT);
         });
+    }*/
+
+    private void enableDragMainCircle(final Circle circle) {
+        final Delta dragDelta = new Delta();
+        renderPane.setOnMousePressed(mouseEvent -> {
+            // record a delta distance for the drag and drop operation.
+            dragDelta.x = circle.getCenterX() - mouseEvent.getX();
+            dragDelta.y = circle.getCenterY() - mouseEvent.getY();
+            circle.getScene().setCursor(Cursor.MOVE);
+        });
+        renderPane.setOnMouseReleased(mouseEvent -> circle.getScene().setCursor(Cursor.HAND));
+        renderPane.setOnMouseDragged(mouseEvent -> {
+            if(!mouseEvent.isAltDown() && !mouseEvent.isControlDown()) {
+                circle.setCenterX(mouseEvent.getX() + dragDelta.x);
+                circle.setCenterY(mouseEvent.getY() + dragDelta.y);
+            }
+        });
+        renderPane.setOnMouseEntered(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown())
+                circle.getScene().setCursor(Cursor.HAND);
+        });
+        renderPane.setOnMouseExited(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown())
+                circle.getScene().setCursor(Cursor.DEFAULT);
+        });
     }
+
 
     //TODO moveCenter
     public void moveCenter(double x, double y) {
