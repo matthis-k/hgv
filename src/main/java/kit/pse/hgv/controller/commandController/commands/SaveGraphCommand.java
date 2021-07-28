@@ -1,5 +1,9 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import java.io.IOException;
+
+import kit.pse.hgv.graphSystem.stub.DataGateway;
+
 /**
  * This class handles the commands that save the graph
  */
@@ -20,8 +24,11 @@ public class SaveGraphCommand extends FileSystemCommand {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+        try{
+            DataGateway.saveGraph(id, path);
+        } catch(IOException e){
+            //TODO error message
+        }
     }
 
     @Override

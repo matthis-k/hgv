@@ -1,12 +1,16 @@
 package kit.pse.hgv.controller.commandProcessor;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.scene.paint.Color;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.PolarCoordinate;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,11 +29,10 @@ public enum ExtensionCommandType {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             int graphId = inputAsJson.getInt("graphId");
-            String coordinate = inputAsJson.getString("coordinate");
-            String[] eachCoordinate = coordinate.split(",");
-            double coord1 = Double.valueOf(eachCoordinate[0]);
-            double coord2 = Double.valueOf(eachCoordinate[1]);
-            Coordinate coord = new CartesianCoordinate(coord1, coord2);
+            JSONObject coordinate = inputAsJson.getJSONObject("coordinate");
+            double phi = coordinate.getDouble("phi");
+            double r = coordinate.getDouble("r");
+            Coordinate coord = new PolarCoordinate(phi, r);
             CreateNodeCommand command = new CreateNodeCommand(graphId, coord);
             return new ParseResult(command, this);
         }
@@ -69,12 +72,11 @@ public enum ExtensionCommandType {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             int id = inputAsJson.getInt("id");
-            String coordinateAString = inputAsJson.getString("coordinate");
-            String[] eachCoordinate = coordinateAString.split(",");
-            double x = Double.valueOf(eachCoordinate[0]);
-            double y = Double.valueOf(eachCoordinate[1]);
-            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
-            MoveNodeCommand command = new MoveNodeCommand(id, coordinate);
+            JSONObject coordinate = inputAsJson.getJSONObject("coordinate");
+            double phi = coordinate.getDouble("phi");
+            double r = coordinate.getDouble("r");
+            PolarCoordinate coord = new PolarCoordinate(phi, r);
+            MoveNodeCommand command = new MoveNodeCommand(id, coord);
             return new ParseResult(command, this);
         }
     },
@@ -131,12 +133,11 @@ public enum ExtensionCommandType {
     MOVE_CENTER(ExtensionCommandType.START + "MoveCenter" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            String coordinateAString = inputAsJson.getString("coordinate");
-            String[] eachCoordinate = coordinateAString.split(",");
-            double x = Double.valueOf(eachCoordinate[0]);
-            double y = Double.valueOf(eachCoordinate[1]);
-            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
-            MoveCenterCommand command = new MoveCenterCommand(coordinate);
+            JSONObject coordinate = inputAsJson.getJSONObject("coordinate");
+            double phi = coordinate.getDouble("phi");
+            double r = coordinate.getDouble("r");
+            Coordinate coord = new PolarCoordinate(phi, r);
+            MoveCenterCommand command = new MoveCenterCommand(coord);
             return new ParseResult(command, this);
         }
     },
@@ -202,11 +203,16 @@ public enum ExtensionCommandType {
      */
     SAVE_GRAPH(ExtensionCommandType.START + "SaveGraph" + ExtensionCommandType.END){
         @Override
-        protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            int id = inputAsJson.getInt("graphId");
+        protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, IllegalArgumentException {
             String path = inputAsJson.getString("path");
-            SaveGraphCommand command = new SaveGraphCommand(id, path);
-            return new ParseResult(command, this);
+            Path file = new File(path).toPath();
+            if(Files.isDirectory(file)){
+                int id = inputAsJson.getInt("graphId");
+                SaveGraphCommand command = new SaveGraphCommand(id, path);
+                return new ParseResult(command, this);
+            } else {
+                throw new IllegalArgumentException("This Directory is non-existent.");
+            }
         }
     };
 
