@@ -119,7 +119,7 @@ public enum ExtensionCommandType {
             CommandComposite command = new CommandComposite();
             JSONArray commandsAsArray = inputAsJson.getJSONArray("commands");
             for (int i = 0; i < commandsAsArray.length();i++) {
-                Command c = ExtensionCommandType.parseJson(commandsAsArray.getJSONObject(i)).cmd;
+                ICommand c = ExtensionCommandType.parseJson(commandsAsArray.getJSONObject(i)).cmd;
                 command.addCommand(c);
             }            
             return new ParseResult(command, this);
@@ -179,9 +179,9 @@ public enum ExtensionCommandType {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             //int id = inputAsJson.getInt("id");
-            Command command = null;
+            ICommand ICommand = null;
             //PauseExtensionCommand command = new PauseExtensionCommand(id);
-            return new ParseResult(command, this);
+            return new ParseResult(ICommand, this);
         }
     },
 
@@ -193,8 +193,8 @@ public enum ExtensionCommandType {
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
             //int id = inputAsJson.getInt("id");
             //StopExtensionCommand command = new StopExtensionCommand(id);
-            Command command = null;
-            return new ParseResult(command, this);
+            ICommand ICommand = null;
+            return new ParseResult(ICommand, this);
         }
     },
     
@@ -225,10 +225,10 @@ public enum ExtensionCommandType {
      * This class unites the command its enum type
      */
     private class ParseResult {
-        private Command cmd = null;
+        private ICommand cmd = null;
         private ExtensionCommandType type = null;
 
-        public ParseResult(Command cmd, ExtensionCommandType type) {
+        public ParseResult(ICommand cmd, ExtensionCommandType type) {
             this.cmd = cmd;
             this.type = type;
         }
@@ -251,11 +251,12 @@ public enum ExtensionCommandType {
      * @param extensionInput the command as string from the extension
      * @return the command as enum
      */
-    public static ExtensionCommandType processCommandString(String extensionInput) {
+    public static ExtensionCommandType processCommandString(String extensionInput, int clientId) {
         try {
             JSONObject inputAsJson = new JSONObject(extensionInput);
             ParseResult res = parseJson(inputAsJson);
             if(res.cmd != null){
+                res.cmd.setId(clientId);
                 CommandController.getInstance().queueCommand(res.cmd);
             }
             return res.type;

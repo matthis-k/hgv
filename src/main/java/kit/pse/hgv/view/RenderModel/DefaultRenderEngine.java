@@ -4,9 +4,6 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class DefaultRenderEngine extends RenderEngine {
 
     public DefaultRenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
@@ -33,12 +30,18 @@ public class DefaultRenderEngine extends RenderEngine {
 
 
     @Override
-    public void receiveCommand(Command command) {
+    public void receiveCommand(ICommand command) {
         //TODO ERROR
         if (command instanceof LoadGraphCommand) {
-            firstRender();
+            if (command.isUser()) {
+                firstRender();
+            }
         } else if (command instanceof CreateElementCommand) {
             toBeUpdated.add(((CreateElementCommand) command).getAddedId());
+            if (command.isUser()) {
+                rerender();
+            }
+        }else if (command instanceof RenderCommand) {
             rerender();
         }
     }
@@ -71,7 +74,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void onNotify(Command c) {
+    public void onNotify(ICommand c) {
         receiveCommand(c);
     }
 }

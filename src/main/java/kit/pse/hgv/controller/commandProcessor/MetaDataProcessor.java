@@ -10,7 +10,7 @@ import kit.pse.hgv.controller.commandController.commands.*;
 public class MetaDataProcessor implements CommandProcessor{
 
     @Override
-    public void queueCommand(Command command) {
+    public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
         CommandController.getInstance().queueCommand(new RenderCommand());
     }

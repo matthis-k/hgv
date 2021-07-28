@@ -1,5 +1,8 @@
 package kit.pse.hgv.extensionServer;
 
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,10 +10,12 @@ import java.net.SocketException;
 import java.util.HashMap;
 
 /**
- * This Class represents a Server, that listens for input on a specified port.
+ * This singleton Class represents a Server, that listens for input on a specified port.
  * Each Connection is managed by a {@link ClientHandler} on a seperate Thread.
  */
 public class ExtensionServer extends Thread {
+    private static int DEFAULT_PORT = 12345;
+    private static ExtensionServer instance;
     /**
      * Stores the Id of the next {@link ClientHandler}.
      */
@@ -26,14 +31,21 @@ public class ExtensionServer extends Thread {
     /**
      * A Collection of all ClientHandlers that are active.
      */
-    private HashMap<Integer, ClientHandler> handlers = new HashMap<>();
+    private DualHashBidiMap<Integer, ClientHandler> handlers = new DualHashBidiMap<>();
+
+    public static ExtensionServer getInstance() {
+        if (instance == null) {
+            instance = new ExtensionServer(DEFAULT_PORT);
+        }
+        return instance;
+    }
 
     /**
      * Create A new {@link ExtensionServer} on a specific port.
      * 
      * @param port is the port to listen to.
      */
-    public ExtensionServer(int port) {
+    private ExtensionServer(int port) {
         this.port = port;
         try {
             this.socket = new ServerSocket(this.port);
@@ -63,8 +75,8 @@ public class ExtensionServer extends Thread {
      * @param client is the socket of the client
      */
     private void startCommunication(Socket client) {
-        ClientHandler handler = new ClientHandler(client);
-        handlers.put(++nextId, handler);
+        ClientHandler handler = new ClientHandler(client, ++nextId);
+        handlers.put(handler.getClientId(), handler);
         handler.start();
     }
 

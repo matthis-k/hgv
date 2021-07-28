@@ -12,6 +12,7 @@ import java.net.SocketException;
  * An instance of this class manages the communication with one specific client.
  */
 public class ClientHandler extends Thread {
+    private int id;
     /**
      * Some information about the client.
      */
@@ -50,7 +51,8 @@ public class ClientHandler extends Thread {
      * Creates a new ClientHandler for a specific Socket.
      * @param clientSocket the socket of the client.
      */
-    public ClientHandler(Socket clientSocket) {
+    public ClientHandler(Socket clientSocket, int id) {
+        this.id = id;
         socket = clientSocket;
         try {
             socket.setSoTimeout(1000);
@@ -110,5 +112,8 @@ public class ClientHandler extends Thread {
      */
     Socket getSocket() {
         return socket;
+    }
+    public int getClientId() {
+        return id;
     }
 }

@@ -1,6 +1,6 @@
 package kit.pse.hgv.controller.commandProcessor;
 
-import kit.pse.hgv.controller.commandController.commands.Command;
+import kit.pse.hgv.controller.commandController.commands.ICommand;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
@@ -12,7 +12,7 @@ import kit.pse.hgv.controller.commandController.commands.*;
 public class GraphCommandProcessor implements CommandProcessor{
 
     @Override
-    public void queueCommand(Command command) {
+    public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
         CommandController.getInstance().queueCommand(new RenderCommand());
     }

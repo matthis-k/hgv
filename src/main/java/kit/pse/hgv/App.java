@@ -30,7 +30,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         CommandController cmdController = CommandController.getInstance();
         cmdController.start();
-        ExtensionServer server = new ExtensionServer(12345);
+        ExtensionServer server = ExtensionServer.getInstance();
         server.start();
         scene = new Scene(loadFXML("MainView"), 1280, 720);
         stage.setScene(scene);
@@ -38,8 +38,8 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
 
-        cmdController.doSpiralGraph(1000);
-        //cmdController.dummy();
+        //cmdController.doSpiralGraph(1000);
+        cmdController.dummy();
         // cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
 
 
