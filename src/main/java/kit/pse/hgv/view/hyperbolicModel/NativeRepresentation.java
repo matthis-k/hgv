@@ -14,7 +14,7 @@ import java.util.List;
 
 public class NativeRepresentation implements Representation {
 
-    private Coordinate center = new PolarCoordinate(Math.PI / 2,10);
+    private Coordinate center = new PolarCoordinate(0,0);
     private double nodeSize = 0.1;
     /**
      * this is the number of lines that is used to demonstrate one edge,

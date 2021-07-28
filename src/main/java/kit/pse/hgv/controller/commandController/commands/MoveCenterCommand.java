@@ -2,21 +2,23 @@ package kit.pse.hgv.controller.commandController.commands;
 
 
 import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 /**
  * This class manages the commands that update the center of the hyperbolic model
  */
 public class MoveCenterCommand extends HyperModelCommand {
+    private DrawManager manager;
     private Coordinate transform;
 
-    public MoveCenterCommand(Coordinate transform) {
+    public MoveCenterCommand(DrawManager manager, Coordinate transform) {
         this.transform = transform;
+        this.manager = manager;
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+        manager.moveCenterVoid(transform);
     }
 
     @Override

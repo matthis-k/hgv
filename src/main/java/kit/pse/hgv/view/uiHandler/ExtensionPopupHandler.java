@@ -29,6 +29,7 @@ public class ExtensionPopupHandler implements UIHandler {
         File extension = chooser.showOpenDialog(new Stage());
     }
 
+    @FXML
     public void addExtension() throws IOException {
         if(accordion.getPanes().size() < 10) {
             TitledPane newTitled = FXMLLoader.load(App.class.getResource("PopupElement.fxml"));

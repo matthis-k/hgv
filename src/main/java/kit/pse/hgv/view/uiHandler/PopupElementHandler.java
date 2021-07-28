@@ -6,8 +6,6 @@ import java.util.ResourceBundle;
 
 public class PopupElementHandler implements UIHandler {
 
-    //skript speichern
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

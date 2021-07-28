@@ -31,6 +31,7 @@ public class DetailHandler implements UIHandler {
     private Button updateButton;
     @FXML
     private Text idText;
+
     private int currentID;
     private Color currentColor;
     private double currentAngle;

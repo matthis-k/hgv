@@ -1,22 +1,15 @@
 package kit.pse.hgv.view.uiHandler;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
-import kit.pse.hgv.representation.CircleNode;
-import kit.pse.hgv.representation.Drawable;
-import kit.pse.hgv.representation.LineStrip;
+import kit.pse.hgv.controller.commandController.commands.MoveCenterCommand;
+import kit.pse.hgv.representation.*;
 import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
 import kit.pse.hgv.view.hyperbolicModel.Accuracy;
@@ -29,8 +22,6 @@ import java.util.*;
 
 public class RenderHandler implements UIHandler{
 
-    List<Integer> selectedNodes;
-
     @FXML
     private Pane renderPane;
     @FXML
@@ -41,6 +32,8 @@ public class RenderHandler implements UIHandler{
     private int currentlySelected;
     private Circle center;
 
+    private DrawManager manager;
+
     private static final int START_CENTER_X = 640;
     private static final int START_CENTER_Y = 360;
     private static final int START_RADIUS = 300;
@@ -48,31 +41,27 @@ public class RenderHandler implements UIHandler{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        center = new Circle();
-        center.setRadius(5);
-        center.setFill(Color.CYAN);
-        center.layoutXProperty().bind(renderCircle.centerXProperty());
-        center.layoutYProperty().bind(renderCircle.centerYProperty());
-        //center.setCenterX(600);
-        //center.setCenterY(300);
-        center.setVisible(false);
-        selectedNodes = new ArrayList<>();
+        setupCenter();
+
+        renderCircle.setFill(Color.DARKGREY);
+
         renderCircle.setRadius(START_RADIUS);
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
 
         centerCheckBox.layoutXProperty().bind(renderPane.prefWidthProperty().subtract(450));
         centerCheckBox.layoutYProperty().bind(renderPane.prefHeightProperty().subtract(25));
-        enableDragCC(renderCircle, center);
 
+        enableDragCC(renderCircle, center);
 
         renderPane.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
             if(scrollEvent.isControlDown())
                 zoom(scrollEvent.getDeltaY());
         });
 
+        manager = new DrawManager(1, new NativeRepresentation(5, Accuracy.DIRECT));
 
-        RenderEngine engine = new DefaultRenderEngine(1,1, new DrawManager(1, new NativeRepresentation(5, Accuracy.DIRECT)), this);
+        RenderEngine engine = new DefaultRenderEngine(1,1, manager, this);
         CommandController.getInstance().register(engine);
         renderPane.getChildren().add(center);
     }
@@ -90,8 +79,6 @@ public class RenderHandler implements UIHandler{
             if(node.isNode()){
                 CircleNode currentNode = (CircleNode) node;
                 if(!currentNode.isCentered()) {
-                    /*currentNode.getRepresentation().setCenterX(currentNode.getRepresentation().getCenterX() + START_CENTER_X);
-                    currentNode.getRepresentation().setCenterY(currentNode.getRepresentation().getCenterY() + START_CENTER_Y);*/
                     currentNode.setCentered();
                     currentNode.getRepresentation().setFill(node.getColor());
                     bindNodeX(currentNode);
@@ -100,14 +87,10 @@ public class RenderHandler implements UIHandler{
                     selectNode(currentNode);
                 }
 
-
-
                 nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentStrip = (LineStrip) node;
-
-                    bindLines(currentStrip);
-
+                bindLines(currentStrip);
 
                 for (Line line : currentStrip.getLines()) {
                     line.setStroke(currentStrip.getColor());
@@ -126,38 +109,84 @@ public class RenderHandler implements UIHandler{
         center.setVisible(false);
         if(centerCheckBox.isSelected())
             center.setVisible(true);
+        else {
+            Coordinate newCenterCoordinate = new CartesianCoordinate(center.getCenterX(), center.getCenterY());
+            moveCenter(newCenterCoordinate);
+        }
+    }
+
+
+    private void bindLines(LineStrip strip) {
+        for(Line line : strip.getLines()) {
+            if(!strip.isCentered()) {
+                setupLine(line);
+            }
+        }
+        strip.setCentered();
+    }
+
+    //TODO moveCenter
+    public void moveCenter(Coordinate coordinate) {
+        MoveCenterCommand c = new MoveCenterCommand(manager, coordinate);
+        c.execute();
+        renderGraph(manager.getRenderData());
+    }
+
+    private void enableDragCC(final Circle circle, Circle center) {
+        final Delta dragDeltaCircle = new Delta();
+        final Delta dragDeltaCenter = new Delta();
+        renderPane.setOnMousePressed(mouseEvent -> {
+            dragDeltaCircle.x = circle.getCenterX() - mouseEvent.getX();
+            dragDeltaCircle.y = circle.getCenterY() - mouseEvent.getY();
+            dragDeltaCenter.x = center.getCenterX() - mouseEvent.getX();
+            dragDeltaCenter.y = center.getCenterY() - mouseEvent.getY();
+        });
+
+        renderPane.setOnMouseDragged(mouseEvent -> {
+            if(!mouseEvent.isShiftDown()) {
+                circle.setCenterX(mouseEvent.getX() + dragDeltaCircle.x);
+                circle.setCenterY(mouseEvent.getY() + dragDeltaCircle.y);
+            } else {
+                double x = mouseEvent.getX() + dragDeltaCenter.x;
+                double y = mouseEvent.getY() + dragDeltaCenter.y;
+                center.setCenterX(x);
+                center.setCenterY(y);
+            }
+        });
+    }
+
+    private void setupLine(Line line) {
+        line.setStartY(line.getStartY() + START_CENTER_Y);
+        line.setEndY(line.getEndY() + START_CENTER_Y);
+        line.setStartX(line.getStartX() + START_CENTER_X);
+        line.setEndX(line.getEndX() + START_CENTER_X);
+
+        line.startXProperty().bind(renderCircle.centerXProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                        .multiply(line.getStartX() - renderCircle.getCenterX())));
+        line.startYProperty().bind(renderCircle.centerYProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                        .multiply(line.getStartY() - renderCircle.getCenterY())));
+        line.endXProperty().bind(renderCircle.centerXProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                        .multiply(line.getEndX() - renderCircle.getCenterX())));
+        line.endYProperty().bind(renderCircle.centerYProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                        .multiply(line.getEndY() - renderCircle.getCenterY())));
+    }
+
+    private void setupCenter() {
+        center = new Circle();
+        center.setRadius(5);
+        center.setFill(Color.CYAN);
+        center.layoutXProperty().bind(renderCircle.centerXProperty());
+        center.layoutYProperty().bind(renderCircle.centerYProperty());
+        center.setVisible(false);
     }
 
     private void zoom(double zoom) {
         if(renderCircle.getRadius() + zoom >= 0)
             renderCircle.setRadius(renderCircle.getRadius() + zoom);
-    }
-
-    private void bindLines(LineStrip strip) {
-        for(Line line : strip.getLines()) {
-
-            if(!strip.isCentered()) {
-                line.setStartY(line.getStartY() + START_CENTER_Y);
-                line.setEndY(line.getEndY() + START_CENTER_Y);
-                line.setStartX(line.getStartX() + START_CENTER_X);
-                line.setEndX(line.getEndX() + START_CENTER_X);
-
-                line.startXProperty().bind(renderCircle.centerXProperty()
-                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                                .multiply(line.getStartX() - renderCircle.getCenterX())));
-                line.startYProperty().bind(renderCircle.centerYProperty()
-                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                                .multiply(line.getStartY() - renderCircle.getCenterY())));
-                line.endXProperty().bind(renderCircle.centerXProperty()
-                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                                .multiply(line.getEndX() - renderCircle.getCenterX())));
-                line.endYProperty().bind(renderCircle.centerYProperty()
-                        .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                                .multiply(line.getEndY() - renderCircle.getCenterY())));
-            }
-
-        }
-        strip.setCentered();
     }
 
     private void bindNodeX(CircleNode child) {
@@ -184,104 +213,6 @@ public class RenderHandler implements UIHandler{
             currentlySelected = node.getID();
             DetailHandler.getInstance().updateDisplayedDate(currentlySelected, node.getColor(), node.getCenter().toPolar());
         });
-    }
-
-    //TODO ORIGINAL
-
-    /*private void enableDragMainCircle(final Circle circle) {
-        final Delta dragDelta = new Delta();
-        circle.setOnMousePressed(mouseEvent -> {
-            // record a delta distance for the drag and drop operation.
-            dragDelta.x = circle.getCenterX() - mouseEvent.getX();
-            dragDelta.y = circle.getCenterY() - mouseEvent.getY();
-            circle.getScene().setCursor(Cursor.MOVE);
-        });
-        circle.setOnMouseReleased(mouseEvent -> circle.getScene().setCursor(Cursor.HAND));
-        circle.setOnMouseDragged(mouseEvent -> {
-            if(!mouseEvent.isAltDown() && !mouseEvent.isControlDown()) {
-                circle.setCenterX(mouseEvent.getX() + dragDelta.x);
-                circle.setCenterY(mouseEvent.getY() + dragDelta.y);
-            }
-        });
-        circle.setOnMouseEntered(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown())
-                circle.getScene().setCursor(Cursor.HAND);
-        });
-        circle.setOnMouseExited(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown())
-                circle.getScene().setCursor(Cursor.DEFAULT);
-        });
-    }*/
-
-    /*
-    private void enableDragMainCircle(final Circle circle) {
-        final Delta dragDelta = new Delta();
-        renderPane.setOnMousePressed(mouseEvent -> {
-            // record a delta distance for the drag and drop operation.
-            dragDelta.x = circle.getCenterX() - mouseEvent.getX();
-            dragDelta.y = circle.getCenterY() - mouseEvent.getY();
-            circle.getScene().setCursor(Cursor.MOVE);
-        });
-        renderPane.setOnMouseReleased(mouseEvent -> circle.getScene().setCursor(Cursor.HAND));
-        renderPane.setOnMouseDragged(mouseEvent -> {
-            if(!mouseEvent.isAltDown() && !mouseEvent.isControlDown()) {
-                circle.setCenterX(mouseEvent.getX() + dragDelta.x);
-                circle.setCenterY(mouseEvent.getY() + dragDelta.y);
-            }
-        });
-        renderPane.setOnMouseEntered(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown())
-                circle.getScene().setCursor(Cursor.HAND);
-        });
-        renderPane.setOnMouseExited(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown())
-                circle.getScene().setCursor(Cursor.DEFAULT);
-        });
-    }*/
-
-    //vllt auslagern und in fxml schreiben
-    private void enableDragCC(final Circle circle, Circle center) {
-        final Delta dragDeltaCircle = new Delta();
-        final Delta dragDeltaCenter = new Delta();
-        renderPane.setOnMousePressed(mouseEvent -> {
-            // record a delta distance for the drag and drop operation.
-            dragDeltaCircle.x = circle.getCenterX() - mouseEvent.getX();
-            dragDeltaCircle.y = circle.getCenterY() - mouseEvent.getY();
-            dragDeltaCenter.x = center.getCenterX() - mouseEvent.getX();
-            dragDeltaCenter.y = center.getCenterY() - mouseEvent.getY();
-           //circle.getScene().setCursor(Cursor.MOVE);
-        });
-        //renderPane.setOnMouseReleased(mouseEvent -> circle.getScene().setCursor(Cursor.HAND));
-        renderPane.setOnMouseDragged(mouseEvent -> {
-            if(!mouseEvent.isShiftDown()) {
-                circle.setCenterX(mouseEvent.getX() + dragDeltaCircle.x);
-                circle.setCenterY(mouseEvent.getY() + dragDeltaCircle.y);
-            } else if(mouseEvent.isShiftDown()) {
-                double x = mouseEvent.getX() + dragDeltaCenter.x;
-                double y = mouseEvent.getY() + dragDeltaCenter.y;
-                center.setCenterX(x);
-                center.setCenterY(y);
-                moveCenter(x, y);
-            }
-        });
-        renderPane.setOnMouseEntered(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown()) {
-
-            }
-                //circle.getScene().setCursor(Cursor.HAND);
-        });
-        renderPane.setOnMouseExited(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown()) {
-
-            }
-                //circle.getScene().setCursor(Cursor.DEFAULT);
-        });
-    }
-
-    //TODO moveCenter
-    public void moveCenter(double x, double y) {
-        System.out.println(x + " " + y);
-        //new HyperModelCommandProcessor().moveCenter(x, y);
     }
 
 }

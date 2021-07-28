@@ -27,11 +27,6 @@ public class DefaultRenderEngine extends RenderEngine {
         this.toBeUpdated.clear();
     }
 
-    private void updateGraph() {
-        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
-    }
-
-
     @Override
     public void receiveCommand(Command command) {
         //TODO ERROR
@@ -73,5 +68,9 @@ public class DefaultRenderEngine extends RenderEngine {
     @Override
     public void onNotify(Command c) {
         receiveCommand(c);
+    }
+
+    private void updateGraph() {
+        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
     }
 }

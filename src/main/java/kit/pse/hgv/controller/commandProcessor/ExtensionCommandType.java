@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.view.hyperbolicModel.DrawManager;
+import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -136,7 +138,7 @@ public enum ExtensionCommandType {
             double x = Double.valueOf(eachCoordinate[0]);
             double y = Double.valueOf(eachCoordinate[1]);
             CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
-            MoveCenterCommand command = new MoveCenterCommand(coordinate);
+            MoveCenterCommand command = new MoveCenterCommand(new DrawManager(1, new NativeRepresentation()), coordinate); //TODO CARE
             return new ParseResult(command, this);
         }
     },
