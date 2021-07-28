@@ -7,4 +7,8 @@ public interface Coordinate {
     public double euclideanDistance(Coordinate coordinate);
     public double hyperbolicDistance(Coordinate coordinate);
     public Coordinate mirroredThroughCenter();
+    public Coordinate mirroredY();
+    public Coordinate moveCoordinate(Coordinate vector);
+    @Override
+    public String toString();
 }
