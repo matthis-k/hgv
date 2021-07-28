@@ -2,7 +2,7 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import java.io.IOException;
 
-import kit.pse.hgv.graphSystem.stub.DataGateway;
+import kit.pse.hgv.controller.dataGateway.DataGateway;
 
 /**
  * This class handles the commands that save the graph

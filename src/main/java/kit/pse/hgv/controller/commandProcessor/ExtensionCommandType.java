@@ -256,7 +256,7 @@ public enum ExtensionCommandType {
             JSONObject inputAsJson = new JSONObject(extensionInput);
             ParseResult res = parseJson(inputAsJson);
             if(res.cmd != null){
-                res.cmd.setId(clientId);
+                res.cmd.setClientId(clientId);
                 CommandController.getInstance().queueCommand(res.cmd);
             }
             return res.type;

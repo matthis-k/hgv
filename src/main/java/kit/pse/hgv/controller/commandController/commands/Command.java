@@ -12,10 +12,10 @@ public abstract class Command implements ICommand {
     public boolean isUser() {
         return client == 0;
     }
-    public int getClient() {
+    public int getClientId() {
         return client;
     }
-    public void setId(int id) {
+    public void setClientId(int id) {
         client = id;
     }
 }
