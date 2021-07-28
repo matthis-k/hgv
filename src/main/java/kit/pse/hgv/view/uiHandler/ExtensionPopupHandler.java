@@ -30,9 +30,11 @@ public class ExtensionPopupHandler implements UIHandler {
     }
 
     public void addExtension() throws IOException {
-        TitledPane newTitled = FXMLLoader.load(App.class.getResource("PopupElement.fxml"));
-        /*PopupElement element = new PopupElement("Denis", "Path");
-        accordion.getPanes().add(element);*/
-        accordion.getPanes().add(newTitled);
+        if(accordion.getPanes().size() < 10) {
+            TitledPane newTitled = FXMLLoader.load(App.class.getResource("PopupElement.fxml"));
+            accordion.getPanes().add(newTitled);
+        } else {
+            //TODO EXception
+        }
     }
 }

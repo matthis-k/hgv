@@ -1,8 +1,10 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.control.CheckBox;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -30,6 +32,9 @@ public class RenderHandler implements UIHandler{
     private Pane renderPane;
     @FXML
     private Circle renderCircle;
+    @FXML
+    private CheckBox centerCheckBox;
+    private Circle center;
 
     private static final int START_CENTER_X = 640;
     private static final int START_CENTER_Y = 360;
@@ -38,11 +43,22 @@ public class RenderHandler implements UIHandler{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        center = new Circle();
+        center.setRadius(5);
+        center.setFill(Color.CYAN);
+        center.layoutXProperty().bind(renderCircle.centerXProperty());
+        center.layoutYProperty().bind(renderCircle.centerYProperty());
+        //center.setCenterX(600);
+        //center.setCenterY(300);
+        center.setVisible(false);
         selectedNodes = new ArrayList<>();
         renderCircle.setRadius(START_RADIUS);
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
-       enableDragMainCircle(renderCircle);
+
+        centerCheckBox.layoutXProperty().bind(renderPane.prefWidthProperty().subtract(450));
+        centerCheckBox.layoutYProperty().bind(renderPane.prefHeightProperty().subtract(25));
+        enableDragCC(renderCircle, center);
 
 
         renderPane.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
@@ -53,11 +69,12 @@ public class RenderHandler implements UIHandler{
 
         RenderEngine engine = new DefaultRenderEngine(1,1, new DrawManager(1, new NativeRepresentation(5, Accuracy.DIRECT)), this);
         CommandController.getInstance().register(engine);
-
+        renderPane.getChildren().add(center);
     }
 
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        ///TODO nicht immer clearen
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
 
@@ -68,13 +85,13 @@ public class RenderHandler implements UIHandler{
             if(node.isNode()){
                 CircleNode currentNode = (CircleNode) node;
                 if(!currentNode.isCentered()) {
-                    currentNode.getRepresentation().setCenterX(currentNode.getRepresentation().getCenterX() + START_CENTER_X);
-                    currentNode.getRepresentation().setCenterY(currentNode.getRepresentation().getCenterY() + START_CENTER_Y);
+                    /*currentNode.getRepresentation().setCenterX(currentNode.getRepresentation().getCenterX() + START_CENTER_X);
+                    currentNode.getRepresentation().setCenterY(currentNode.getRepresentation().getCenterY() + START_CENTER_Y);*/
                     currentNode.setCentered();
                     currentNode.getRepresentation().setFill(node.getColor());
-                    bindNodeX(currentNode, renderCircle);
-                    bindNodeY(currentNode, renderCircle);
-                    bindRadius(currentNode, renderCircle);
+                    bindNodeX(currentNode);
+                    bindNodeY(currentNode);
+                    bindRadius(currentNode);
                 }
 
 
@@ -82,7 +99,9 @@ public class RenderHandler implements UIHandler{
                 nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentStrip = (LineStrip) node;
-                bindLines(currentStrip);
+
+                    bindLines(currentStrip);
+
 
                 for (Line line : currentStrip.getLines()) {
                     line.setStroke(currentStrip.getColor());
@@ -93,6 +112,14 @@ public class RenderHandler implements UIHandler{
 
         renderPane.getChildren().addAll(lines);
         renderPane.getChildren().addAll(nodes);
+        renderPane.getChildren().add(center);
+        renderPane.getChildren().add(centerCheckBox);
+    }
+
+    public void changeCenterVisibility() {
+        center.setVisible(false);
+        if(centerCheckBox.isSelected())
+            center.setVisible(true);
     }
 
     private void zoom(double zoom) {
@@ -127,25 +154,23 @@ public class RenderHandler implements UIHandler{
         strip.setCentered();
     }
 
-    private void bindNodeX(CircleNode child, Circle parent) {
-        child.getRepresentation().centerXProperty().bind(renderCircle.centerXProperty()
+    private void bindNodeX(CircleNode child) {
+        child.getRepresentation().layoutXProperty().bind(renderCircle.centerXProperty());
+        child.getRepresentation().centerXProperty().bind(renderCircle.layoutXProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                        .multiply(child.getRepresentation().getCenterX() - renderCircle.getCenterX())));
+                        .multiply(child.getRepresentation().getCenterX())));
 
     }
 
-    private void bindNodeY(CircleNode child, Circle parent) {
-        child.getRepresentation().centerYProperty().bind(renderCircle.centerYProperty()
+    private void bindNodeY(CircleNode child) {
+        child.getRepresentation().layoutYProperty().bind(renderCircle.centerYProperty());
+        child.getRepresentation().centerYProperty().bind(renderCircle.layoutYProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS)
-                        .multiply(10).multiply(child.getRepresentation().getCenterY() - renderCircle.getCenterY())));
+                        .multiply(10).multiply(child.getRepresentation().getCenterY())));
     }
 
-    private void bindRadius(CircleNode child, Circle parent) {
-        /*child.getRepresentation().centerYProperty().bind(parent.centerYProperty()
-                .add(parent.radiusProperty().divide(parent.getRadius())
-                        .multiply(child.getCenter().getY() - parent.getCenterY())));*/
-        //child.getRepresentation().radiusProperty().bind(parent.radiusProperty().divide(50));
-        child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(50));
+    private void bindRadius(CircleNode child) {
+        child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(100));
     }
 
     //TODO ORIGINAL
@@ -175,6 +200,7 @@ public class RenderHandler implements UIHandler{
         });
     }*/
 
+    /*
     private void enableDragMainCircle(final Circle circle) {
         final Delta dragDelta = new Delta();
         renderPane.setOnMousePressed(mouseEvent -> {
@@ -198,11 +224,50 @@ public class RenderHandler implements UIHandler{
             if (!mouseEvent.isPrimaryButtonDown())
                 circle.getScene().setCursor(Cursor.DEFAULT);
         });
-    }
+    }*/
 
+    //vllt auslagern und in fxml schreiben
+    private void enableDragCC(final Circle circle, Circle center) {
+        final Delta dragDeltaCircle = new Delta();
+        final Delta dragDeltaCenter = new Delta();
+        renderPane.setOnMousePressed(mouseEvent -> {
+            // record a delta distance for the drag and drop operation.
+            dragDeltaCircle.x = circle.getCenterX() - mouseEvent.getX();
+            dragDeltaCircle.y = circle.getCenterY() - mouseEvent.getY();
+            dragDeltaCenter.x = center.getCenterX() - mouseEvent.getX();
+            dragDeltaCenter.y = center.getCenterY() - mouseEvent.getY();
+           //circle.getScene().setCursor(Cursor.MOVE);
+        });
+        //renderPane.setOnMouseReleased(mouseEvent -> circle.getScene().setCursor(Cursor.HAND));
+        renderPane.setOnMouseDragged(mouseEvent -> {
+            if(!mouseEvent.isShiftDown()) {
+                circle.setCenterX(mouseEvent.getX() + dragDeltaCircle.x);
+                circle.setCenterY(mouseEvent.getY() + dragDeltaCircle.y);
+            } else if(mouseEvent.isShiftDown()) {
+                double x = mouseEvent.getX() + dragDeltaCenter.x;
+                double y = mouseEvent.getY() + dragDeltaCenter.y;
+                center.setCenterX(x);
+                center.setCenterY(y);
+                moveCenter(x, y);
+            }
+        });
+        renderPane.setOnMouseEntered(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown()) {
+
+            }
+                //circle.getScene().setCursor(Cursor.HAND);
+        });
+        renderPane.setOnMouseExited(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown()) {
+
+            }
+                //circle.getScene().setCursor(Cursor.DEFAULT);
+        });
+    }
 
     //TODO moveCenter
     public void moveCenter(double x, double y) {
+        System.out.println(x + " " + y);
         new HyperModelCommandProcessor().moveCenter(x, y);
     }
 
