@@ -3,7 +3,6 @@ package kit.pse.hgv.controller.commandController;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javafx.concurrent.Worker;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;

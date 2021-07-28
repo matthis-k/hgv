@@ -1,5 +1,8 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+/**
+ * TODO
+ */
 public class SendGraphCommand extends ExtensionCommand {
     private int graphId;
     private int clientId;
