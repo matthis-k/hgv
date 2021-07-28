@@ -66,8 +66,6 @@ public class DetailHandler implements UIHandler {
             currentColor = newColor;
             new EditColorCommand(currentID, currentColor);
         }
-        new EditUserMetaCommand(currentID, "phi", angle.getText());
-        new EditUserMetaCommand(currentID, "r", radius.getText());
     }
 
     public void updateDisplayedDate(int currentlySelected, Color color, PolarCoordinate toPolar) {

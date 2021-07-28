@@ -129,7 +129,9 @@ public class RenderHandler implements UIHandler{
     public void moveCenter(Coordinate coordinate) {
         MoveCenterCommand c = new MoveCenterCommand(manager, coordinate);
         c.execute();
-        renderGraph(manager.getRenderData());
+
+        List<Drawable> list = manager.getRenderData();
+        renderGraph(list);
     }
 
     private void enableDragCC(final Circle circle, Circle center) {
@@ -156,6 +158,11 @@ public class RenderHandler implements UIHandler{
     }
 
     private void setupLine(Line line) {
+        /*line.startYProperty().unbind();
+        line.startXProperty().unbind();
+        line.endXProperty().unbind();
+        line.endYProperty().unbind();*/
+
         line.setStartY(line.getStartY() + START_CENTER_Y);
         line.setEndY(line.getEndY() + START_CENTER_Y);
         line.setStartX(line.getStartX() + START_CENTER_X);
