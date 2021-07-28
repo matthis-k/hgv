@@ -1,11 +1,13 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.LineStrip;
 import kit.pse.hgv.representation.PolarCoordinate;
+import org.apache.commons.math3.analysis.function.Acosh;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,55 +69,69 @@ public class NativeRepresentation implements Representation {
 
     @Override
     public LineStrip calculate(Edge edge) {
-        PolarCoordinate firstNode = edge.getNodes()[0].getCoord().toPolar();
-        firstNode.moveCoordinate(center.mirroredThroughCenter());
-        PolarCoordinate secondNode = edge.getNodes()[1].getCoord().toPolar();
-        secondNode.moveCoordinate(center.mirroredThroughCenter());
-        List<Coordinate> line = new ArrayList<>();
-        if (firstNode.getDistance() == 0 || secondNode.getDistance() == 0 || firstNode.getAngle() ==
-                secondNode.getAngle() || accuracy.getAccuracy() == 1) {
-            line.add(firstNode);
-            line.add(secondNode);
-            return new LineStrip(line, edge.getId(), null);
-        }
-        double angularDistance = secondNode.getAngle() - firstNode.getAngle();
-        if ((angularDistance > 0.0 && angularDistance < Math.PI) || (angularDistance < -Math.PI)) {
-            PolarCoordinate temp = firstNode;
-            firstNode = secondNode;
-            secondNode = temp;
+        List<Coordinate> coordinates = new ArrayList<>();
+        double renderDetail = accuracy.getAccuracy();
+        PolarCoordinate point1 = edge.getNodes()[0].getCoord().toPolar();
+        PolarCoordinate point2 = edge.getNodes()[1].getCoord().toPolar();
+        if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
+                || point1.getAngle() == point2.mirroredThroughCenter().getAngle()) {
+            coordinates.add(point1);
+            coordinates.add(point2);
+            Color color = edge.getMetadata("color") != null? Color.web(edge.getMetadata("color")) : Color.BLACK;
+            return new LineStrip(coordinates, edge.getId(), color);
         }
 
-        double distance = firstNode.hyperbolicDistance(secondNode);
+        double angularDistance = point2.getAngle() - point1.getAngle();
+        if((angularDistance >0.0 && angularDistance < Math.PI) || angularDistance < -Math.PI) {
+            PolarCoordinate temp = point1;
+            point1 = point2;
+            point2 = temp;
+        }
+        double p1r = point1.getDistance();
+        double p2r = point2.getDistance();
+        double p2phi = point2.getAngle();
+
+        double distance = point1.hyperbolicDistance(point2);
 
         double cosGamma2 = 0.0;
 
-        if (Math.sinh(secondNode.getDistance()) * Math.sinh(distance) != 0) {
-            cosGamma2 = (((Math.cosh(secondNode.getDistance() * Math.cosh(distance)) -
-                    Math.cosh(firstNode.getDistance()) / (Math.sinh(secondNode.getDistance()) * Math.sinh(distance)))));
+        if(Math.sinh(p2r) * Math.sinh(distance) != 0) {
+            double first = Math.cosh(p2r) * Math.cosh(distance);
+            first -= Math.cosh(p1r);
+            double second = Math.sinh(p2r) * Math.sinh(distance);
+            cosGamma2 = first/second;
+        }
+        if(cosGamma2 == Double.NaN) {
+            cosGamma2 = 0;
+        }
+        Acosh acosh = new Acosh();
+        for(int i = 0; i <= renderDetail; i++) {
+            double partialDistance = distance * (i / renderDetail);
+            double r = 0.0;
+            r = acosh.value((Math.cosh(p2r) * Math.cosh(partialDistance) - (Math.sinh(p2r) * Math.sinh(partialDistance) * cosGamma2)));
+            if(Double.isNaN(r)) {
+                r = 0;
+            }
+            double gammaPrime = 0.0;
+            if(Math.sinh((r) * Math.sinh(p2r)) != 0) {
+                double first = Math.cosh(r) * Math.cosh(p2r);
+                first -= Math.cosh(partialDistance);
+                double second = Math.sinh(r) * Math.sinh(p2r);
+                double temp = first / second;
+                gammaPrime = Math.acos(temp);
+            }
+            if(Double.isNaN(gammaPrime)) {
+                gammaPrime = 0;
+            }
+            double phi = p2phi+gammaPrime;
+            PolarCoordinate nativeLinePoint = new PolarCoordinate(phi,r);
+            coordinates.add(nativeLinePoint);
         }
 
-        for (int i = 0; i < accuracy.getAccuracy(); i++) {
-            double partial_distance = distance * (i / (double) accuracy.getAccuracy());
-            double temp = Math.cosh(secondNode.getDistance() * Math.cosh(partial_distance) -
-                    (Math.sinh(secondNode.getDistance()) * Math.sinh(partial_distance) * cosGamma2));
-            double radius = acosh(temp) != -1 ? acosh(temp) : 0.0;
-            temp = Math.sinh(radius) * Math.sinh(secondNode.getDistance()) != 0 ? (Math.cosh(radius) *
-                    Math.cosh(secondNode.getDistance()) - Math.cosh(partial_distance)) /
-                    (Math.sinh(radius) * Math.sinh(secondNode.getDistance())) : -1.0;
-            double gammaPrime = acosh(temp) != -1 ? acosh(temp) : 0.0;
-            double phi = secondNode.getAngle() + gammaPrime;
-            PolarCoordinate nativeLinePoint = (new PolarCoordinate(phi, radius));
-            nativeLinePoint.moveCoordinate(center);
-            line.add(nativeLinePoint);
-        }
+    coordinates.add(point1);
+        Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
+        return new LineStrip(coordinates,edge.getId(), color);
 
-        double sum = 0;
-        for (int i = 0; i< line.size()-1; i++) {
-            sum += line.get(i).hyperbolicDistance(line.get(i+1));
-        }
-        System.out.println("calculated" + firstNode.hyperbolicDistance(secondNode));
-        System.out.println("approx" + sum);
-        return new LineStrip(line, edge.getId(), null);
     }
 
     private List<Double> distribution(double rad1, double rad2) {
@@ -146,15 +162,4 @@ public class NativeRepresentation implements Representation {
     public void setAccuracy(Accuracy accuracy) {
         this.accuracy = accuracy;
    }
-
-    private double acosh(double x) {
-        //TODO
-        //check whether x is valid, else return -1(invalid result)
-        if (x < 1) {
-            return -1;
-        }
-        double res = Math.log(x + Math.sqrt(x * x - 1));
-        //check whether the result is valid if so, return the result, else return -1
-        return res < 0 ? -1 : res;
-    }
 }
