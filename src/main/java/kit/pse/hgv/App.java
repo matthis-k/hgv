@@ -43,7 +43,7 @@ public class App extends Application {
 
         //cmdController.doSpiralGraph(1000);
         //cmdController.dummy();
-        cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
+        //cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
 
 
     }

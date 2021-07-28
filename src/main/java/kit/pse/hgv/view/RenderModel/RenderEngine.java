@@ -49,8 +49,7 @@ public abstract class RenderEngine implements CommandQListener {
         return drawManager;
     }
 
-    public abstract void firstRender();
-    public abstract void rerender();
+    public abstract void render();
 
     public abstract void receiveCommand(Command command);
     public abstract void receiveCommand(FileSystemCommand command);

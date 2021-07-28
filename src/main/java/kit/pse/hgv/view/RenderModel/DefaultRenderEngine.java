@@ -4,8 +4,6 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class DefaultRenderEngine extends RenderEngine {
 
@@ -14,14 +12,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void firstRender() {
-        this.displayedGraph = drawManager.getRenderData();
-        handler.renderGraph(this.displayedGraph);
-    }
-
-    //TODO Scheduler einbauen
-    @Override
-    public void rerender() {
+    public void render() {
         updateGraph();
         handler.renderGraph(this.displayedGraph);
         this.toBeUpdated.clear();
@@ -31,38 +22,38 @@ public class DefaultRenderEngine extends RenderEngine {
     public void receiveCommand(Command command) {
         //TODO ERROR
         if (command instanceof LoadGraphCommand) {
-            firstRender();
+            render();
         } else if (command instanceof CreateElementCommand) {
             toBeUpdated.add(((CreateElementCommand) command).getAddedId());
-            rerender();
+            render();
         }
     }
 
     @Override
     public void receiveCommand(MoveCenterCommand command) {
         drawManager.moveCenter(command.getTransform());
-        rerender();
+        render();
     }
 
     @Override
     public void receiveCommand(MetaSystemCommand command) {
         toBeUpdated.add(command.getID());
-        rerender();
+        render();
     }
 
     @Override
     public void receiveCommand(FileSystemCommand command) {
-        firstRender();
+        render();
     }
 
     @Override
     public void receiveCommand(GraphSystemCommand command) {
-        rerender();
+        render();
     }
 
     @Override
     public void receiveCommand(LoadGraphCommand command) {
-        firstRender();
+        render();
     }
 
     @Override
@@ -71,6 +62,9 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
+        if(toBeUpdated.size() > 0)
+            this.displayedGraph = drawManager.getRenderData(toBeUpdated);
+        else
+            this.displayedGraph = drawManager.getRenderData();
     }
 }

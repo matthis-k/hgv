@@ -21,9 +21,8 @@ public class FileSystemCommandProcessor implements CommandProcessor{
      * @param file The file that defines the graph
      */
     public void loadGraph(File file){
-        String path = file.getPath();
-        String[] fileType = path.split(path);
-        if (fileType[1].equals("graphml")){
+        String path = file.getAbsolutePath();
+        if (path.endsWith(".graphml")){
             LoadGraphCommand command = new LoadGraphCommand(path);
             queueCommand(command);
         }
