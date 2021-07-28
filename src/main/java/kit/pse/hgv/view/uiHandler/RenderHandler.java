@@ -9,6 +9,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
+import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
@@ -203,7 +204,8 @@ public class RenderHandler implements UIHandler{
 
     //TODO moveCenter
     public void moveCenter(double x, double y) {
-        new HyperModelCommandProcessor().moveCenter(x, y);
+
+        new HyperModelCommandProcessor().moveCenter(new CartesianCoordinate(x,y));
     }
 
 }
