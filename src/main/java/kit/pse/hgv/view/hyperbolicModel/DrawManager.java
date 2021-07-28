@@ -18,6 +18,8 @@ public class DrawManager {
     private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
 
+    
+
     public DrawManager(int graphId, Coordinate center, Representation representation) {
         this.graphId = graphId;
         this.center = center;

@@ -2,7 +2,8 @@ package kit.pse.hgv.controller.commandProcessor;
 
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.Command;
-import kit.pse.hgv.representation.CartesianCoordinate;
+import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
@@ -23,11 +24,11 @@ public class HyperModelCommandProcessor implements CommandProcessor{
      * This method creates a moveCenterCommand
      * TODO: double or string?
      * 
-     * @param x x-coordinate where to move the center
-     * @param y y-coordinate where to move the center
+     * @param phi x-coordinate where to move the center
+     * @param r y-coordinate where to move the center
      */
-    public void moveCenter(double x, double y){
-        MoveCenterCommand command = new MoveCenterCommand(new DrawManager(1, new NativeRepresentation()), new CartesianCoordinate(x, y)); //TODO CARE
+    public void moveCenter(Coordinate coordinate){
+        MoveCenterCommand command = new MoveCenterCommand(coordinate);
         queueCommand(command);
     }
 }

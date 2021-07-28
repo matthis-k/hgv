@@ -15,13 +15,26 @@ public class MetaDataProcessor implements CommandProcessor{
         CommandController.getInstance().queueCommand(new RenderCommand());
     }
     
+    /**
+     * This Method creates a new EditColorCommand
+     * 
+     * @param elementId
+     * @param color
+     */
     public void changeColor(int elementId, Color color){
         EditColorCommand command = new EditColorCommand(elementId, color);
         queueCommand(command);
     }
 
-    public void editMetaData(int elementId, String radius, String angle, String weight){
-        //TODO anpassen
-        //EditUserMetaCommand command = new EditUserMetaCommand(metaKey, metaVal, elementId);
+    /**
+     * This Method creates an EditUserMetaCommand
+     * 
+     * @param elementId which Element should be edited
+     * @param meta concrete meta information
+     * @param key which MetaData-Type should be edited
+     */
+    public void editMetaData(int elementId, String meta, String key){
+        EditUserMetaCommand command = new EditUserMetaCommand(elementId, key, meta);
+        queueCommand(command);
     }
 }

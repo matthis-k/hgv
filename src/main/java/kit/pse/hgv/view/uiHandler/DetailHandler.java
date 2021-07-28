@@ -44,6 +44,14 @@ public class DetailHandler implements UIHandler {
 
     public DetailHandler(){
 
+    @FXML
+    public void updateData() {
+        MetaDataProcessor processor = new MetaDataProcessor();
+        //TODO ID
+        processor.editMetaData(42, "r", radius.getText());
+        processor.editMetaData(42, "phi", angle.getText());
+        processor.editMetaData(42, "weight", weight.getText());
+        processor.changeColor(42, colorPick.getValue());
     }
 
 

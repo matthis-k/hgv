@@ -1,7 +1,8 @@
 package kit.pse.hgv.controller.commandProcessor;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
-import kit.pse.hgv.representation.CartesianCoordinate;
+import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 
@@ -38,11 +39,11 @@ public class GraphCommandProcessor implements CommandProcessor{
      * @param xAsString x-Coordinate as string
      * @param yAsString y-Coordinate as string
      */
-    public void addNode(int graphId, String xAsString, String yAsString){
+    public void addNode(int graphId, String phiAsString, String rAsString){
         try{
-            Double x = Double.valueOf(xAsString);
-            Double y = Double.valueOf(yAsString);
-            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
+            Double phi = Double.valueOf(phiAsString);
+            Double r = Double.valueOf(rAsString);
+            Coordinate coordinate = new PolarCoordinate(phi, r);
             CreateNodeCommand command = new CreateNodeCommand(graphId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
@@ -57,11 +58,11 @@ public class GraphCommandProcessor implements CommandProcessor{
      * @param xAsString x-Coordinate as string
      * @param yAsString y-Coordinate as string
      */
-    public void moveNode(int elementId, String xAsString, String yAsString){
+    public void moveNode(int elementId, String phiAsString, String rAsString){
         try {
-            Double x = Double.valueOf(xAsString);
-            Double y = Double.valueOf(yAsString);
-            CartesianCoordinate coordinate = new CartesianCoordinate(x, y);
+            Double phi = Double.valueOf(phiAsString);
+            Double r = Double.valueOf(rAsString);
+            PolarCoordinate coordinate = new PolarCoordinate(phi, r);
             MoveNodeCommand command = new MoveNodeCommand(elementId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {

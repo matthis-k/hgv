@@ -7,7 +7,7 @@ public class ExtensionCommandTypeTest {
     @Test
     public void testCreateNode() {
         assertEquals(ExtensionCommandType.CREATE_NODE, ExtensionCommandType.processCommandString(
-            "{ \"type\": \"CreateNode\", \"graphId\": 1, \"coordinate\": \"12,23\"}"
+            "{ \"type\": \"CreateNode\", \"graphId\": 1, \"coordinate\": {\"phi\": 3, \"r\": 5}}"
         ));
     }
     @Test
@@ -25,7 +25,7 @@ public class ExtensionCommandTypeTest {
     @Test
     public void testMove() {
         assertEquals(ExtensionCommandType.MOVE_NODE, ExtensionCommandType.processCommandString(
-            "{ \"type\": \"MoveNode\", \"id\": \"11234\", \"coordinate\": \"-2.333,1434\"}"
+            "{ \"type\": \"MoveNode\", \"id\": \"11234\", \"coordinate\": {\"phi\": 3, \"r\": 5}}"
         ));
     }
     @Test

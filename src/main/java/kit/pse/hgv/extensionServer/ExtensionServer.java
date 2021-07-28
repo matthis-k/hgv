@@ -3,6 +3,7 @@ package kit.pse.hgv.extensionServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 
 /**
@@ -50,11 +51,7 @@ public class ExtensionServer extends Thread {
             Socket client = null;
             try {
                 client = socket.accept();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Could not accept client");
-                continue;
-            }
+            } catch (IOException e) { continue; }
             startCommunication(client);
         }
     }
@@ -80,6 +77,7 @@ public class ExtensionServer extends Thread {
             ClientHandler handler = handlers.get(handlerId);
             handler.interrupt();
         }
+        handlers.clear();
         try {
             socket.close();
         } catch (IOException e) {

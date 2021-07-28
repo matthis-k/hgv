@@ -1,6 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.representation.PolarCoordinate;
 
 /**
  * This class calls the needed methods to manage the metadata (except color)
@@ -25,7 +26,29 @@ public class EditUserMetaCommand extends MetaSystemCommand{
 
     @Override
     public void execute() {
-        GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+        if(key.equals("phi")) {
+            try {
+                double phi = Double.parseDouble(meta);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+                Double r = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getDistance();
+                GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
+            } catch (NumberFormatException e) {
+                //TODO
+            }
+        } else if (key.equals("r")) {
+            try {
+                double r = Double.parseDouble(meta);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+                Double phi = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getAngle();
+                GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
+            } catch (NumberFormatException e) {
+                //TODO
+            }
+        } else if (key.equals("weight")){
+            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+        } else {
+            throw new IllegalArgumentException("This metadata type is non-existent");
+        }
     }
 
     @Override
