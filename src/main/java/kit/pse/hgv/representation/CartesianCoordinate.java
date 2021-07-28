@@ -51,6 +51,17 @@ public class CartesianCoordinate implements Coordinate {
         return this.y;
     }
 
+    @Override
+    public Coordinate moveCoordinate(Coordinate vector) {
+        CartesianCoordinate coordinate = vector.toCartesian();
+        return new CartesianCoordinate(x + coordinate.getX(), y + coordinate.getY());
+    }
+
+    @Override
+    public Coordinate mirroredY() {
+        return new CartesianCoordinate(x,-y);
+    }
+
     /*public void setX(double x) {
         this.x = x;
     }
@@ -58,4 +69,9 @@ public class CartesianCoordinate implements Coordinate {
     public void setY(double y) {
         this.y = y;
     }*/
+
+    @Override
+    public String toString() {
+        return String.format("x: %f, y: %f");
+    }
 }

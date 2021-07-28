@@ -14,7 +14,7 @@ import java.util.List;
 
 public class NativeRepresentation implements Representation {
 
-    private Coordinate center = new PolarCoordinate(0, 0);
+    private Coordinate center = new PolarCoordinate(Math.PI / 2,10);
     private double nodeSize = 0.1;
     /**
      * this is the number of lines that is used to demonstrate one edge,
@@ -63,23 +63,55 @@ public class NativeRepresentation implements Representation {
     @Override
     public CircleNode calculate(Node node) {
         //TODO Philipp Node.getCoordinate : Coordinate
-        return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(),
+        return new CircleNode(node.getCoord().mirroredY().toCartesian(), nodeSize, node.getId(),
                 null);
     }
 
     @Override
     public LineStrip calculate(Edge edge) {
         List<Coordinate> coordinates = new ArrayList<>();
-        double renderDetail = accuracy.getAccuracy();
-        PolarCoordinate point1 = edge.getNodes()[0].getCoord().toPolar();
-        PolarCoordinate point2 = edge.getNodes()[1].getCoord().toPolar();
+        double renderDetail = 100;
+        Coordinate vector = center.mirroredThroughCenter();
+        PolarCoordinate point1 = edge.getNodes()[0].getCoord().moveCoordinate(vector).toPolar();
+        PolarCoordinate point2 = edge.getNodes()[1].getCoord().moveCoordinate(vector).toPolar();
         if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
                 || point1.getAngle() == point2.mirroredThroughCenter().getAngle()) {
-            coordinates.add(point1);
-            coordinates.add(point2);
+            coordinates.add(point1.moveCoordinate(center).mirroredY());
+            coordinates.add(point2.moveCoordinate(center).mirroredY());
             Color color = edge.getMetadata("color") != null? Color.web(edge.getMetadata("color")) : Color.BLACK;
             return new LineStrip(coordinates, edge.getId(), color);
         }
+        double angularDistance = point2.getAngle() - point1.getAngle();
+        if((angularDistance >0.0 && angularDistance < Math.PI) || angularDistance < -Math.PI) {
+            PolarCoordinate temp = point1;
+            point1 = point2;
+            point2 = temp;
+        }
+        PolarCoordinate point1Temp = null;
+        if(point1.getDistance() > 9) {
+            point1Temp = point1;
+            point1 = new PolarCoordinate(point1.getAngle(), 9);
+        }
+
+        if(point2.getDistance() > 9) {
+            coordinates.add(point2.moveCoordinate(center).mirroredY());
+            point2 = new PolarCoordinate(point2.getAngle(), 9);
+        }
+        coordinates.addAll(coordinatesForShortestLine(point2, point1));
+        if(point1Temp != null) {
+            coordinates.add(point1Temp.moveCoordinate(center).mirroredY());
+        }
+
+        Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
+        return new LineStrip(coordinates,edge.getId(), color);
+
+    }
+
+
+
+    private List<Coordinate> coordinatesForShortestLine(PolarCoordinate point1, PolarCoordinate point2) {
+        List<Coordinate> coordinates = new ArrayList<>();
+        double renderDetail = 100;
 
         double angularDistance = point2.getAngle() - point1.getAngle();
         if((angularDistance >0.0 && angularDistance < Math.PI) || angularDistance < -Math.PI) {
@@ -90,7 +122,8 @@ public class NativeRepresentation implements Representation {
         double p1r = point1.getDistance();
         double p2r = point2.getDistance();
         double p2phi = point2.getAngle();
-
+        coordinates.add(point2.moveCoordinate(center).mirroredY());
+        //aproximation beacuse calulation fails when points have r > 10
         double distance = point1.hyperbolicDistance(point2);
 
         double cosGamma2 = 0.0;
@@ -105,8 +138,11 @@ public class NativeRepresentation implements Representation {
             cosGamma2 = 0;
         }
         Acosh acosh = new Acosh();
+        double tempr = 0;
+        double tempGamma = 0;
         for(int i = 0; i <= renderDetail; i++) {
-            double partialDistance = distance * (i / renderDetail);
+            List<Double> dist = distribution(p1r, p2r);
+            double partialDistance = distance * (i/renderDetail);
             double r = 0.0;
             r = acosh.value((Math.cosh(p2r) * Math.cosh(partialDistance) - (Math.sinh(p2r) * Math.sinh(partialDistance) * cosGamma2)));
             if(Double.isNaN(r)) {
@@ -122,22 +158,22 @@ public class NativeRepresentation implements Representation {
             }
             if(Double.isNaN(gammaPrime)) {
                 gammaPrime = 0;
+
             }
+            tempGamma = gammaPrime;
+            tempr = r;
             double phi = p2phi+gammaPrime;
             PolarCoordinate nativeLinePoint = new PolarCoordinate(phi,r);
-            coordinates.add(nativeLinePoint);
+            coordinates.add(nativeLinePoint.moveCoordinate(center).mirroredY());
         }
-
-    coordinates.add(point1);
-        Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
-        return new LineStrip(coordinates,edge.getId(), color);
-
+        coordinates.add(point1.moveCoordinate(center).mirroredY());
+        return coordinates;
     }
 
     private List<Double> distribution(double rad1, double rad2) {
         int factor = 100 / accuracy.getAccuracy();
         List<Double> res = new ArrayList<>();
-        for(int i = 0; i < accuracy.getAccuracy(); i++) {
+        for(int i = 0; i <= accuracy.getAccuracy(); i++) {
             res.add(distributionValue(rad1,rad2,i * factor));
         }
         return res;
@@ -148,8 +184,8 @@ public class NativeRepresentation implements Representation {
             return 1/(part+1);
         }
         double moveCenter = rad1/rad2 > 1 ? -50*(1+rad2/rad1): 50*(1+rad1/rad2);
-        double toPower = (part/50.0) + moveCenter;
-        double res = (0.5*Math.pow(toPower,3)) + 0.5;
+        double toPower = (part/ accuracy.getAccuracy()) * Math.PI / 2;
+        double res = Math.sin(toPower);
         return res;
     }
 
