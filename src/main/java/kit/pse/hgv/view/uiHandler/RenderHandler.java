@@ -110,7 +110,7 @@ public class RenderHandler implements UIHandler{
         if(centerCheckBox.isSelected())
             center.setVisible(true);
         else {
-            Coordinate newCenterCoordinate = new CartesianCoordinate(center.getCenterX(), center.getCenterY());
+            Coordinate newCenterCoordinate = new CartesianCoordinate(center.getCenterX()/10, center.getCenterY()/(-10));
             moveCenter(newCenterCoordinate);
         }
     }
@@ -127,7 +127,7 @@ public class RenderHandler implements UIHandler{
 
     //TODO moveCenter
     public void moveCenter(Coordinate coordinate) {
-        MoveCenterCommand c = new MoveCenterCommand(manager, coordinate);
+        MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
         List<Drawable> list = manager.getRenderData();

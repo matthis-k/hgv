@@ -42,7 +42,7 @@ public class DetailHandler implements UIHandler {
 
     private static final int UPDATE_POSITION = 75;
 
-    public DetailHandler(){
+    public DetailHandler(){}
 
     @FXML
     public void updateData() {
@@ -63,17 +63,6 @@ public class DetailHandler implements UIHandler {
 
     public static DetailHandler getInstance() {
         return instance;
-    }
-
-    @FXML
-    public void updateData() {
-        Color newColor = colorPick.getValue();
-        String newAngle = angle.getText();
-        String newRadius = radius.getText();
-        if(!newColor.equals(currentColor)){
-            currentColor = newColor;
-            new EditColorCommand(currentID, currentColor);
-        }
     }
 
     public void updateDisplayedDate(int currentlySelected, Color color, PolarCoordinate toPolar) {
