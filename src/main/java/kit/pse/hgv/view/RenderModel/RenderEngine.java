@@ -6,6 +6,8 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
+import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
+import kit.pse.hgv.view.hyperbolicModel.Representation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public abstract class RenderEngine implements CommandQListener {
     protected final int graphID;
     protected final UserScheduler userScheduler;
     protected final ExtensionScheduler extensionScheduler;
+    private static RenderEngine instance;
 
     public RenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
         this.tabID = tab;
@@ -30,6 +33,20 @@ public abstract class RenderEngine implements CommandQListener {
         this.toBeUpdated = new ArrayList<>();
         this.userScheduler = new UserScheduler();
         this.extensionScheduler = new ExtensionScheduler();
+        instance = this;
+    }
+
+    /**
+     * Creates or gets the only existing TabManager instance.
+     * 
+     * @return Returns the only instance of the graphsystem.
+     */
+    public static RenderEngine getInstance() {
+        return instance;
+    }
+
+    public DrawManager getDrawManager(){
+        return drawManager;
     }
 
     public abstract void firstRender();
