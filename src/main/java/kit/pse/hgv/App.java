@@ -43,7 +43,11 @@ public class App extends Application {
         stage.getIcons().add(new Image(App.class.getResourceAsStream("hgv.png")));
         stage.show();
 
+        //cmdController.doSpiralGraph(1000);
         cmdController.dummy();
+        // cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
+
+
     }
 
     static void setRoot(String fxml) throws IOException {

@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import kit.pse.hgv.controller.commandController.commands.EditColorCommand;
+import kit.pse.hgv.controller.commandController.commands.EditUserMetaCommand;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
 
@@ -59,6 +61,12 @@ public class DetailHandler implements UIHandler {
         Color newColor = colorPick.getValue();
         String newAngle = angle.getText();
         String newRadius = radius.getText();
+        if(!newColor.equals(currentColor)){
+            currentColor = newColor;
+            new EditColorCommand(currentID, currentColor);
+        }
+        new EditUserMetaCommand(currentID, "phi", angle.getText());
+        new EditUserMetaCommand(currentID, "r", radius.getText());
     }
 
     public void updateDisplayedDate(int currentlySelected, Color color, PolarCoordinate toPolar) {

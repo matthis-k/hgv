@@ -281,7 +281,7 @@ public class RenderHandler implements UIHandler{
     //TODO moveCenter
     public void moveCenter(double x, double y) {
         System.out.println(x + " " + y);
-        new HyperModelCommandProcessor().moveCenter(x, y);
+        //new HyperModelCommandProcessor().moveCenter(x, y);
     }
 
 }

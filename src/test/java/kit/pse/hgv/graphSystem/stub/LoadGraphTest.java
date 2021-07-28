@@ -17,7 +17,7 @@ public class LoadGraphTest {
         String savePath = "src/test/resources/result.graphml";
         int graphId = GraphSystem.getInstance().loadGraph(path);
         try {
-            DataGateway.safeGraph(graphId, savePath);
+            DataGateway.saveGraph(graphId, savePath);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -28,9 +28,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(19);
-        this.displayedGraph = drawManager.getRenderData(list);
+        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
     }
 
 
@@ -39,7 +37,8 @@ public class DefaultRenderEngine extends RenderEngine {
         //TODO ERROR
         if (command instanceof LoadGraphCommand) {
             firstRender();
-        } else if (command instanceof GraphSystemCommand) {
+        } else if (command instanceof CreateElementCommand) {
+            toBeUpdated.add(((CreateElementCommand) command).getAddedId());
             rerender();
         }
     }
