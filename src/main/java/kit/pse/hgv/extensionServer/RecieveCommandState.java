@@ -19,10 +19,7 @@ public class RecieveCommandState implements ClientState {
         } catch (IllegalArgumentException e) {
             nextState = new EndState();
         }
-        switch (lastCommandType) {
-            default: nextState = new RecieveCommandState(); break;
-        }
-
+        nextState = new RecieveCommandState();
     }
     
 }

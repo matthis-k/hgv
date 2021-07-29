@@ -1,11 +1,20 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
+import kit.pse.hgv.controller.dataGateway.DataGateway;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -13,9 +22,13 @@ import java.util.ResourceBundle;
  */
 public class FileMenuHandler implements UIHandler {
 
+    private static final int ONLY_GRAPH = 1;
+    private static final String NOTHING_OPENED_YET = "Noch keine Datei geöffnet.";
+    @FXML
+    private Menu lastOpened;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     /**
@@ -28,14 +41,33 @@ public class FileMenuHandler implements UIHandler {
     }
 
     /**
+     * This method updates the menu containing the five last opened graphs.
+     */
+    @FXML
+    public void updateLastOpened() {
+        lastOpened.getItems().clear();
+        List<String> paths = DataGateway.getlastOpenedGraphs();
+        if(!paths.isEmpty()) {
+            for (String path : paths) {
+                MenuItem newPath = new MenuItem(path);
+                newPath.setOnAction(action ->
+                        new FileSystemCommandProcessor().loadGraph(new File(path)));
+                lastOpened.getItems().add(newPath);
+            }
+        } else {
+            MenuItem empty = new MenuItem(NOTHING_OPENED_YET);
+            lastOpened.getItems().add(empty);
+        }
+    }
+
+    /**
      * This method allows a user to save the currently viewed graph.
      */
     @FXML
     public void saveFile() {
         FileChooser chooser = new FileChooser();
         String path = chooser.showOpenDialog(new Stage()).getAbsolutePath();
-        new FileSystemCommandProcessor().saveGraph(path, 1);
-        //TODO: ID bekommen processor.saveGraph(path, 42);
+        new FileSystemCommandProcessor().saveGraph(path, ONLY_GRAPH);
     }
 
     /**

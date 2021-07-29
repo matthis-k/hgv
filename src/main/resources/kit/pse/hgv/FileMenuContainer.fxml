@@ -11,11 +11,7 @@
          <accelerator>
             <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
          </accelerator></MenuItem>
-      <Menu mnemonicParsing="false" text="Zuletzt geöffnete Dateien...">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-        </items>
-      </Menu>
+      <Menu fx:id="lastOpened" mnemonicParsing="false" onAction="#updateLastOpened" text="Zuletzt geöffnete Dateien..." />
       <MenuItem fx:id="newGraphItem" mnemonicParsing="false" onAction="#createNewGraph" text="Neuen Graph erstellen" />
   </items>
 </Menu>

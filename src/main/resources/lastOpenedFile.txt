@@ -1,1 +1,39 @@
+<<<<<<< HEAD
 src/test/resources/Vorlage.graphml
+=======
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\empty.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\empty.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\empty.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+<<<<<<< HEAD
+>>>>>>> ViewFeatures
+=======
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
+>>>>>>> ViewFeatures

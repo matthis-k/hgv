@@ -8,7 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import kit.pse.hgv.controller.commandProcessor.ExtensionCommandType;
+import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
+import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
@@ -42,7 +43,9 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
 
-        cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
+        //cmdController.doSpiralGraph(1000);
+        //cmdController.dummy();
+        //cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
 
     }
 

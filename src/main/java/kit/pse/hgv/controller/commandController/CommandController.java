@@ -53,7 +53,6 @@ public class CommandController extends Thread implements CommandEventSource {
             if (c != null) {
                 c.execute();
                 notifyAll(c);
-                System.out.println("command processed");
                 try {
                     sleep(100);
                 } catch (InterruptedException e) {
@@ -71,25 +70,21 @@ public class CommandController extends Thread implements CommandEventSource {
     public void queueCommand(ICommand c) {
         synchronized (this) {
             commandQ.add(c);
-            System.out.println(commandQ.size());
         }
     }
 
     @Override
     public void notifyAll(ICommand c) {
         for (CommandQListener listener : listeners) {
-            System.out.println("hi bin da");
             Task<Void> task = new Task<>() {
                 @Override protected Void call() throws Exception {
                     listener.onNotify(c);
-                    System.out.println("task done");
                     return null;
                 }
             };
             Thread th = new Thread(task);
             th.setDaemon(true);
             Platform.runLater(th);
-            //th.start();
             try {
                 th.join();
             } catch (InterruptedException e) {
@@ -107,13 +102,13 @@ public class CommandController extends Thread implements CommandEventSource {
         ICommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
         c.execute();
         notifyAll(c);
-        c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
+        /*c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
         c.execute();
         notifyAll(c);
         int[] nodes = {3, 8};
         c = new CreateEdgeCommand(1, nodes);
         c.execute();
-        notifyAll(c);
+        notifyAll(c);*/
     }
 
     public void doSpiralGraph(int n) {
