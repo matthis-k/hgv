@@ -67,19 +67,20 @@ public class Graph {
      * @param elementID is the id of the element that should be deleted.
      * @return Return true is successfully deleted.
      */
-    protected boolean removeElement(int elementID) {
+    protected List<Integer> removeElement(int elementID) {
+        List<Integer> deleted = new Vector<>();
         if (getEdgeById(elementID) != null) {
             edges.remove(elementID);
+            deleted.add(elementID);
         } else if (getNodeById(elementID) != null) {
 
             for (Edge adj : getEdgesOfNode(getNodeById(elementID))) {
-                removeElement(adj.getId());
+                deleted.addAll(removeElement(adj.getId()));
             }
             nodes.remove(elementID);
-        } else {
-            return false;
+            deleted.add(elementID);
         }
-        return true;
+        return deleted;
     }
 
     /**

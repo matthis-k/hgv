@@ -19,7 +19,7 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
 
     @Override
     public void execute(){
-        GraphSystem.getInstance().removeElement(elementId);
+        modifiedIds .addAll(GraphSystem.getInstance().removeElement(elementId));
         modifiedIds.add(elementId);
     }
 

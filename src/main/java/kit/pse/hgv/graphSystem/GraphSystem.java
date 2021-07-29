@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Manages the creation an removal of graphs and elements. Also has getter for
@@ -202,10 +203,10 @@ public class GraphSystem {
      * @param elementID is the element ID that should be deleted.
      * @return Returns true is successful deleted.
      */
-    public boolean removeElement(int elementID) {
-        boolean deleted = false;
+    public List<Integer> removeElement(int elementID) {
+        List<Integer> deleted = new Vector<>();
         for (Graph g : graphs.values()) {
-            deleted = g.removeElement(elementID);
+            deleted.addAll(g.removeElement(elementID));
         }
         return deleted;
     }
