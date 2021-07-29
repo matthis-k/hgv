@@ -4,7 +4,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.Coordinate;
 
-public class CreateNodeCommand extends CreateElementCommand {
+public class CreateNodeCommand extends GraphSystemCommand {
     private Coordinate coord;
     
     /**
@@ -21,7 +21,8 @@ public class CreateNodeCommand extends CreateElementCommand {
     @Override
     public void execute() {
         try {
-            addedId = GraphSystem.getInstance().addElement(graphId, coord);
+            int addedId = GraphSystem.getInstance().addElement(graphId, coord);
+            modifiedIds.add(addedId);
         } catch (OverflowException e) {
             e.printStackTrace();
         }

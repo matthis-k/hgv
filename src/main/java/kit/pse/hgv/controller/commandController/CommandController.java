@@ -41,7 +41,7 @@ public class CommandController extends Thread implements CommandEventSource {
                 notifyAll(c);
                 System.out.println("command processed");
                 try {
-                    sleep(1000);
+                    sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -91,7 +91,7 @@ public class CommandController extends Thread implements CommandEventSource {
         c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
         c.execute();
         notifyAll(c);
-        int[] nodes = {((CreateElementCommand)c).getAddedId(), 8};
+        int[] nodes = {3, 8};
         c = new CreateEdgeCommand(1, nodes);
         c.execute();
         notifyAll(c);
@@ -107,11 +107,11 @@ public class CommandController extends Thread implements CommandEventSource {
         for (int i = 0; i < n; i++) {
             CreateNodeCommand c = new CreateNodeCommand(graph, new PolarCoordinate(i, i));
             c.execute();
-            nodeIds.add(c.getAddedId());
+            nodeIds.addAll(c.getModifiedIds());
             int r = 150+(3*i*255/n)%100;
             int g = 100+(2*i*255/n)%100;
             int b = 50+(i*255/n)%100;
-            GraphSystem.getInstance().getGraphElementByID(c.getAddedId()).setMetadata("color", "rgb(" + r + ","+g+","+b+")");
+            GraphSystem.getInstance().getGraphElementByID(nodeIds.lastElement()).setMetadata("color", "rgb(" + r + ","+g+","+b+")");
             notifyAll(c);
             if (i>0) {
                 int[] nodes = {nodeIds.get(i-1), nodeIds.get(i)};

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 /**
  * An instance of this class manages the communication with one specific client.
@@ -76,6 +77,7 @@ public class ClientHandler extends Thread {
         try {
             String res = in.readLine();
             return res;
+        } catch (SocketTimeoutException e) {
         } catch (IOException e) {
             try {
                 socket.close();
@@ -84,7 +86,7 @@ public class ClientHandler extends Thread {
             }
             e.printStackTrace();
         }
-        return new String();
+        return null;
     }
 
     /**

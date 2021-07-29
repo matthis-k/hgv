@@ -34,7 +34,7 @@ public class FileMenuHandler implements UIHandler {
     public void saveFile() {
         FileChooser chooser = new FileChooser();
         String path = chooser.showOpenDialog(new Stage()).getAbsolutePath();
-        new FileSystemCommandProcessor().saveGraph(path, 42);
+        new FileSystemCommandProcessor().saveGraph(path, 1);
         //TODO: ID bekommen processor.saveGraph(path, 42);
     }
 

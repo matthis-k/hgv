@@ -18,6 +18,7 @@ public class MoveCenterCommand extends HyperModelCommand {
     @Override
     public void execute() {
         RenderEngine.getInstance().getDrawManager().moveCenter(transform);
+        // TODO: add modified Ids
     }
 
     @Override

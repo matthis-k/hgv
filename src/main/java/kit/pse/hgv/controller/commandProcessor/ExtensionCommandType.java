@@ -87,7 +87,7 @@ public enum ExtensionCommandType {
     CHANGE_COLOR(ExtensionCommandType.START + "ChangeColor" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            int elementId = inputAsJson.getInt("elementId");
+            int elementId = inputAsJson.getInt("id");
             String hexcolor = inputAsJson.getString("color");
             Color color = Color.web(hexcolor);
             EditColorCommand command = new EditColorCommand(elementId, color);
@@ -254,6 +254,7 @@ public enum ExtensionCommandType {
         try {
             JSONObject inputAsJson = new JSONObject(extensionInput);
             ParseResult res = parseJson(inputAsJson);
+            if (res == null) { throw new IllegalArgumentException("Not a valid extension command"); }
             if(res.cmd != null){
                 res.cmd.setClientId(clientId);
                 CommandController.getInstance().queueCommand(res.cmd);

@@ -27,6 +27,7 @@ public class EditColorCommand extends MetaSystemCommand{
         }
         String colorAsString = String.format("#%02X%02X%02X", (int) Math.round(color.getRed() *255), (int) Math.round(color.getGreen() * 255), (int) Math.round(color.getBlue() * 255));
         GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata("color", colorAsString);
+        modifiedIds.add(elementId);
     }
 
     @Override

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import kit.pse.hgv.controller.commandProcessor.ExtensionCommandType;
 import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
@@ -42,7 +43,6 @@ public class App extends Application {
         stage.show();
 
         cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
-
 
     }
 

@@ -27,16 +27,12 @@ public class DefaultRenderEngine extends RenderEngine {
     @Override
     public void receiveCommand(ICommand command) {
         //TODO ERROR
+        toBeUpdated.addAll(command.getModifiedIds());
         if (command instanceof LoadGraphCommand) {
             if (command.isUser()) {
                 firstRender();
             }
-        } else if (command instanceof CreateElementCommand) {
-            toBeUpdated.add(((CreateElementCommand) command).getAddedId());
-            if (command.isUser()) {
-                rerender();
-            }
-        }else if (command instanceof RenderCommand) {
+        } else if (command instanceof RenderCommand) {
             rerender();
         }
     }

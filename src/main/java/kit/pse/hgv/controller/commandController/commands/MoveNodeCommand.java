@@ -30,6 +30,7 @@ public class MoveNodeCommand extends GraphSystemCommand {
         Double r = coordinate.getDistance();
         String rAsString = r.toString();
         GraphSystem.getInstance().getNodeByID(elementId).setMetadata("r", rAsString);
+        modifiedIds.add(elementId);
     }
 
     @Override
