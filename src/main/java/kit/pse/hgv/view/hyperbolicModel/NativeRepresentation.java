@@ -77,7 +77,7 @@ public class NativeRepresentation implements Representation {
             coordinates.add(point1.moveCoordinate(center).mirroredY());
             coordinates.add(point2.moveCoordinate(center).mirroredY());
             Color color = edge.getMetadata("color") != null? Color.web(edge.getMetadata("color")) : Color.BLACK;
-            return new LineStrip(coordinates, edge.getId(), color);
+            return new LineStrip(coordinates, edge.getId(), color, edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
         }
         double angularDistance = point2.getAngle() - point1.getAngle();
         if((angularDistance >0.0 && angularDistance < Math.PI) || angularDistance < -Math.PI) {
@@ -101,7 +101,7 @@ public class NativeRepresentation implements Representation {
         }
 
         Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
-        return new LineStrip(coordinates,edge.getId(), color);
+        return new LineStrip(coordinates,edge.getId(), color, edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
 
     }
 

@@ -1,5 +1,6 @@
 package kit.pse.hgv.representation;
 
+
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,6 +12,7 @@ import java.util.Vector;
 public class LineStrip extends Drawable {
     private List<Coordinate> coordinates;
     private Vector<Line> lines = new Vector<>();
+    private int[] connecting = new int[2];
 
     private void addLine(int index) {
         Line line = new Line();
@@ -22,12 +24,14 @@ public class LineStrip extends Drawable {
         lines.add(line);
     }
 
-    public LineStrip(List<Coordinate> coordinates, int id, Color color) {
+    public LineStrip(List<Coordinate> coordinates, int id, Color color, int firstID, int secondID) {
         super(id, color, false);
         this.coordinates = coordinates;
         for (int i = 0; i < coordinates.size()-1; i++) {
             addLine(i);
         }
+        connecting[0] = firstID;
+        connecting[1] = secondID;
     }
 
     @Override
@@ -38,15 +42,16 @@ public class LineStrip extends Drawable {
     }
 
     @Override
-    public boolean isNode() {
-        return super.isNode();
+    public Node getRepresentation() {
+        return null;
     }
+
 
     public Vector<Line> getLines() {
         return this.lines;
     }
-    @Override
-    public Node getRepresentation() {
-        return null;
+
+    public int[] getConnectedNodes() {
+        return connecting;
     }
 }
