@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * This singleton Class represents a Server, that listens for input on a specified port.
@@ -121,5 +122,13 @@ public class ExtensionServer extends Thread implements CommandQListener {
     public void onNotify(ICommand c) {
         if (c.isUser()) { return; }
         send(c.getClientId(), c.getResponse().toString() + '\n');
+    }
+
+    public HashMap<Integer, ClientInfo> getClients() {
+        HashMap<Integer, ClientInfo> clients = new HashMap<>();
+        for (int key : handlers.keySet()) {
+            clients.put(key, handlers.get(key).getInfo());
+        }
+        return clients;
     }
 }

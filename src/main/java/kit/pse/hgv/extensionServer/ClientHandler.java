@@ -54,6 +54,8 @@ public class ClientHandler extends Thread {
      */
     public ClientHandler(Socket clientSocket, int id) {
         setName("ClientHandler" + id);
+        clientInfo.setName("Client#" + id);
+        clientInfo.setDescription("Client#" + id + " description");
         this.id = id;
         socket = clientSocket;
         try {
