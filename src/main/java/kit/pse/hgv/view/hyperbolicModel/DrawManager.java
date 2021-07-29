@@ -48,14 +48,16 @@ public class DrawManager {
     public List<Drawable> getRenderData(List<Integer> changedElements) {
         Set<Integer> toCalculate = addConnectedEdges(changedElements);
         for(Integer id : toCalculate) {
-            if(graphSystem.isInGraph(graphId, id)) {
+            if (graphSystem.isInGraph(graphId, id)) {
                 Drawable drawable = calculateElement(id);
                 rendered.put(drawable.getID(), drawable);
             } else {
                 rendered.remove(id);
             }
         }
-        return rendered.values().stream().toList();
+        List<Drawable> res = new Vector<>();
+        res.addAll(rendered.values());
+        return res;
     }
 
     public List<Drawable> getRenderData() {
@@ -64,7 +66,9 @@ public class DrawManager {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
-        return rendered.values().stream().toList();
+        List<Drawable> res = new Vector<>();
+        res.addAll(rendered.values());
+        return res;
     }
 
     private Drawable calculateElement(int id) {
@@ -116,7 +120,9 @@ public class DrawManager {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
-        return rendered.values().stream().toList();
+        List<Drawable> res = new Vector<>();
+        res.addAll(rendered.values());
+        return res;
     }
 
     public void moveCenterVoid(Coordinate center) {

@@ -22,13 +22,7 @@ public class DefaultRenderEngine extends RenderEngine {
     public void receiveCommand(ICommand command) {
         //TODO ERROR
         toBeUpdated.addAll(command.getModifiedIds());
-        if (command instanceof LoadGraphCommand) {
-            render();
-        } else if (command instanceof CreateElementCommand) {
-            toBeUpdated.add(((CreateElementCommand) command).getAddedId());
-            render();
-        } else if (command instanceof  MetaSystemCommand) {
-            toBeUpdated.add(((MetaSystemCommand) command).getID());
+        if (command.isUser()) {
             render();
         }
     }
