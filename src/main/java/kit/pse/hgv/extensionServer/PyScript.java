@@ -4,14 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class PyScript extends Thread implements Extension {
+public class PyScript implements Extension {
     private String path;
     public PyScript(String path) {
         this.path = path;
-    }
-    @Override
-    public void run() {
-        startExtension();
     }
     @Override
     public void startExtension() {

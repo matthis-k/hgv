@@ -101,8 +101,8 @@ public enum ExtensionCommandType {
     CHANGE_METADATA(ExtensionCommandType.START + "ChangeMetadata" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            String meta = inputAsJson.getString("metadata-value");
-            String key = inputAsJson.getString("metadata-type");
+            String meta = inputAsJson.getString("value");
+            String key = inputAsJson.getString("key");
             int elementId = inputAsJson.getInt("id");
             EditUserMetaCommand command = new EditUserMetaCommand(elementId, key, meta);
             return new ParseResult(command, this);
