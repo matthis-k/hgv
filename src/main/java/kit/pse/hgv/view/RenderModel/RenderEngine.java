@@ -9,18 +9,18 @@ import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import kit.pse.hgv.view.hyperbolicModel.Representation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class RenderEngine implements CommandQListener {
 
-    protected List<Integer> toBeUpdated;
+    protected Set<Integer> toBeUpdated;
     protected final RenderHandler handler;
     protected DrawManager drawManager;
     protected List<Drawable> displayedGraph;
     protected final int tabID;
     protected final int graphID;
-    protected final UserScheduler userScheduler;
-    protected final ExtensionScheduler extensionScheduler;
     private static RenderEngine instance;
 
     public RenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
@@ -29,9 +29,7 @@ public abstract class RenderEngine implements CommandQListener {
         this.handler = handler;
         this.drawManager = drawManager;
         displayedGraph = new ArrayList<>();
-        this.toBeUpdated = new ArrayList<>();
-        this.userScheduler = new UserScheduler();
-        this.extensionScheduler = new ExtensionScheduler();
+        this.toBeUpdated = new HashSet<>();
         instance = this;
     }
 

@@ -8,7 +8,7 @@ import kit.pse.hgv.representation.PolarCoordinate;
  */
 public class EditUserMetaCommand extends MetaSystemCommand{
     private String key;
-    private String meta;
+    private String value;
     private int elementId;
     
     /**
@@ -16,11 +16,11 @@ public class EditUserMetaCommand extends MetaSystemCommand{
      * 
      * @param elementId The elementId from the element wich metadata should be changed
      * @param key Key represents the type of the Metadata (e.g. weight)
-     * @param meta Meta represents the value of the Metadata-Key
+     * @param value Meta represents the value of the Metadata-Key
      */
-    public EditUserMetaCommand(int elementId, String key, String meta){
+    public EditUserMetaCommand(int elementId, String key, String value){
         this.key = key;
-        this.meta = meta;
+        this.value = value;
         this.elementId = elementId;
     }
 
@@ -31,8 +31,8 @@ public class EditUserMetaCommand extends MetaSystemCommand{
         }
         if(key.equals("phi")) {
             try {
-                double phi = Double.parseDouble(meta);
-                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+                double phi = Double.parseDouble(value);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
                 Double r = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getDistance();
                 GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
                 modifiedIds.add(elementId);
@@ -43,19 +43,19 @@ public class EditUserMetaCommand extends MetaSystemCommand{
             }
         } else if (key.equals("r")) {
             try {
-                double r = Double.parseDouble(meta);
-                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+                double r = Double.parseDouble(value);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
                 Double phi = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getAngle();
                 GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
-                System.out.println("bin da oida");
                 modifiedIds.add(elementId);
             } catch (NumberFormatException e) {
                 //TODO
                 response.put("success", false);
                 response.put("reason", "can not parse metadata");
+                return;
             }
         } else {
-            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
             modifiedIds.add(elementId);
         }
         response.put("success", true);
