@@ -4,7 +4,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu mnemonicParsing="false" text="Erweiterungen" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.uiHandler.ExtensionHandler">
+<Menu mnemonicParsing="false" text="Erweiterungen" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.ExtensionMenuHandler">
   <items>
     <MenuItem mnemonicParsing="false" onAction="#onClick" text="Erweiterungen verwalten">
          <accelerator>
