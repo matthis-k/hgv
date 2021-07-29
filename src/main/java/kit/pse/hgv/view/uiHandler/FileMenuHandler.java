@@ -66,7 +66,7 @@ public class FileMenuHandler implements UIHandler {
     @FXML
     public void saveFile() {
         FileChooser chooser = new FileChooser();
-        String path = chooser.showOpenDialog(new Stage()).getAbsolutePath();
+        String path = chooser.showSaveDialog(new Stage()).getAbsolutePath();
         new FileSystemCommandProcessor().saveGraph(path, ONLY_GRAPH);
     }
 
