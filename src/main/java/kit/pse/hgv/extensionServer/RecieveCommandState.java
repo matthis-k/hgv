@@ -13,7 +13,6 @@ public class RecieveCommandState implements ClientState {
     public void work(ClientHandler handler) {
         String recieved = handler.receive();
         if (recieved == null || recieved.length() <= 0) { nextState = new RecieveCommandState(); return; }
-        System.out.println("recieved: '" + recieved + "' from: " + handler.getSocket().toString());
         ExtensionCommandType lastCommandType = null;
         try {
             lastCommandType = ExtensionCommandType.processCommandString(recieved, handler.getClientId());

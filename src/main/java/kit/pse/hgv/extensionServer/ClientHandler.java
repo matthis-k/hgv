@@ -17,7 +17,7 @@ public class ClientHandler extends Thread {
     /**
      * Some information about the client.
      */
-    private ClientInfo clientInfo;
+    private ClientInfo clientInfo = new ClientInfo();
     /**
      * The socket of the client communicats with.
      */
@@ -97,7 +97,6 @@ public class ClientHandler extends Thread {
             out.write(msg);
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
