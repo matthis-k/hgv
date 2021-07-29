@@ -94,6 +94,7 @@ public class RenderHandler implements UIHandler{
                 LineStrip currentStrip = (LineStrip) node;
 
                 bindLines(currentStrip);
+                selectEdge(currentStrip);
 
                 for (Line line : currentStrip.getLines()) {
                     line.setStroke(currentStrip.getColor());
@@ -247,8 +248,17 @@ public class RenderHandler implements UIHandler{
     private void selectNode(CircleNode node) {
         node.getRepresentation().setOnMouseClicked(mouseEvent -> {
             currentlySelected = node.getID();
-            DetailHandler.getInstance().updateDisplayedDate(currentlySelected, node.getColor(), node.getCenter().toPolar());
+            DetailHandler.getInstance().updateDisplayedData(currentlySelected, node.getColor(), node.getCenter().toPolar());
         });
+    }
+
+    private void selectEdge(LineStrip strip) {
+        for(Line line : strip.getLines()) {
+            line.setOnMouseClicked(mouseEvent -> {
+                currentlySelected = strip.getID();
+                DetailHandler.getInstance().updateDisplayData(currentlySelected, strip.getColor());
+            });
+        }
     }
 
 }
