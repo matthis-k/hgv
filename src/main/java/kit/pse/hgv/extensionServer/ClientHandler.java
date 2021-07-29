@@ -95,7 +95,6 @@ public class ClientHandler extends Thread {
         try {
             out.write(msg);
             out.flush();
-            System.out.println(msg);
         } catch (IOException e) {
             e.printStackTrace();
         }

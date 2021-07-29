@@ -119,6 +119,6 @@ public class ExtensionServer extends Thread implements CommandQListener {
     @Override
     public void onNotify(ICommand c) {
         if (c.isUser()) { return; }
-        send(c.getClientId(), c.getResponse().toString());
+        send(c.getClientId(), c.getResponse().toString() + '\n');
     }
 }
