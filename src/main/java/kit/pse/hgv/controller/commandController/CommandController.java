@@ -136,4 +136,8 @@ public class CommandController extends Thread implements CommandEventSource {
         }
 
     }
+
+    public void stopController() {
+        interrupt();
+    }
 }
