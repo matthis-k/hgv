@@ -53,6 +53,7 @@ public class ClientHandler extends Thread {
      * @param clientSocket the socket of the client.
      */
     public ClientHandler(Socket clientSocket, int id) {
+        setName("ClientHandler" + id);
         this.id = id;
         socket = clientSocket;
         try {

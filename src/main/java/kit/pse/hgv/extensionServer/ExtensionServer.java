@@ -49,6 +49,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
      * @param port is the port to listen to.
      */
     private ExtensionServer(int port) {
+        setName("ExtensionServer");
         CommandController.getInstance().register(this);
         this.port = port;
         try {

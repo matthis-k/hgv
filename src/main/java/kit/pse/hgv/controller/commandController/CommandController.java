@@ -33,6 +33,7 @@ public class CommandController extends Thread implements CommandEventSource {
      * The constructor creates an element of this class
      */
     private CommandController() {
+        setName("CommandController");
     }
 
     /**
