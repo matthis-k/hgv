@@ -52,7 +52,6 @@ public class DetailHandler implements UIHandler {
     private static DetailHandler instance;
 
     private static final int UPDATE_POSITION = 75;
-    private static final String KEY_WEIGHT = "weight";
 
     /**
      * Constructor cannot be declared private due to JavaFX issues.
@@ -71,9 +70,8 @@ public class DetailHandler implements UIHandler {
     @FXML
     public void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
-        processor.editMetaData(currentID, DataGateway.RADIUS, radius.getText());
-        processor.editMetaData(currentID, DataGateway.PHI, angle.getText());
-        processor.editMetaData(currentID, KEY_WEIGHT, weight.getText());
+        processor.editMetaData(currentID, "r", radius.getText());
+        processor.editMetaData(currentID, "phi", angle.getText());
         processor.changeColor(currentID, colorPick.getValue());
     }
 

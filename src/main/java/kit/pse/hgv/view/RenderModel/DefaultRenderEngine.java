@@ -7,8 +7,11 @@ import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 public class DefaultRenderEngine extends RenderEngine {
 
+    private boolean hasBeenStarted;
+
     public DefaultRenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
         super(tab, graph, drawManager, handler);
+        hasBeenStarted = false;
     }
 
     @Override
@@ -18,49 +21,25 @@ public class DefaultRenderEngine extends RenderEngine {
         this.toBeUpdated.clear();
     }
 
-    @Override
-    public void receiveCommand(ICommand command) {
-        //TODO ERROR
-        toBeUpdated.addAll(command.getModifiedIds());
-        if (command.isUser() || command instanceof RenderCommand) {
-            render();
-        }
-    }
-
-    @Override
-    public void receiveCommand(MoveCenterCommand command) {
-        drawManager.moveCenter(command.getTransform());
-        render();
-    }
-
-    @Override
-    public void receiveCommand(MetaSystemCommand command) {
-        toBeUpdated.add(command.getID());
-        render();
-    }
-
-    @Override
-    public void receiveCommand(FileSystemCommand command) {
-        render();
-    }
-
-    @Override
-    public void receiveCommand(GraphSystemCommand command) {
-        render();
-    }
-
-    @Override
-    public void receiveCommand(LoadGraphCommand command) {
-        render();
+    private void updateGraph() {
+        //ändern mit >0?
+        this.displayedGraph = drawManager.getRenderData();
     }
 
     @Override
     public void onNotify(ICommand c) {
-        receiveCommand(c);
+        if(c.isUser()) {
+            if(!c.getResponse().getBoolean("success")){
+                c.getResponse().get("reason");
+                //Popup fehler
+            }
+            System.out.println("bin da " + c.getModifiedIds());
+            toBeUpdated.addAll(c.getModifiedIds());
+            render();
+        } else {
+            toBeUpdated.addAll(c.getModifiedIds());
+        }
     }
 
-    private void updateGraph() {
-       //ändern mit >0?
-            this.displayedGraph = drawManager.getRenderData();
-    }
+
 }

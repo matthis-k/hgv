@@ -35,7 +35,7 @@ public class TabManager {
     }
 
     public void notifyEngine(int tabID, ICommand ICommand){
-        tabs.get(tabID).receiveCommand(ICommand);
+        tabs.get(tabID).onNotify(ICommand);
     }
 
 }

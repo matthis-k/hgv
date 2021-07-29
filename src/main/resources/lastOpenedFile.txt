@@ -37,3 +37,6 @@ C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
 C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
 C:\Users\denis\Documents\PSE\hgv\src\main\resources\Vorlage.graphml
 >>>>>>> ViewFeatures
+src/main/resources/Vorlage.graphml
+src/main/resources/Vorlage.graphml
+src/main/resources/Vorlage.graphml
