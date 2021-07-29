@@ -56,7 +56,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>15</release>
+                    <release>11</release>
                     <source>15</source>
                     <target>15</target>
                 </configuration>
@@ -82,6 +82,14 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <configuration>
+                  <archive>
+                    <manifest>
+                      <mainClass>main.kit.pse.hgv.App</mainClass>
+                    </manifest>
+                  </archive>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-install-plugin</artifactId>

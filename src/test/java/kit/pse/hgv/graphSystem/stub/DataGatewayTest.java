@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -41,6 +40,7 @@ public class DataGatewayTest {
         }
     }
 
+    /*
     @Test
     public void addLastGraphPath() {
         String path = "src/test/resources/Vorlage.graphml";
@@ -61,6 +61,7 @@ public class DataGatewayTest {
         List lastOpened = dataGateway.getlastOpenedGraphs();
         assertEquals(lastOpened.get(0), path);
     }
+    */
 
     @Test
     public void loadGraph(){
