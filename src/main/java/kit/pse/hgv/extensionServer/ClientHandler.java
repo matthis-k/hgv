@@ -40,12 +40,10 @@ public class ClientHandler extends Thread {
      */
     @Override
     public void run() {
-        System.out.println("New Connection: " + socket.toString());
         while (!socket.isClosed()) {
             state.work(this);
             state = state.nextState();
         }
-        System.out.println("Connection closed: " + socket.toString());
     }
 
     /**
@@ -73,8 +71,8 @@ public class ClientHandler extends Thread {
     }
 
     /**
-     * Reads a String from the Socket. Waits until something is recieved if nothing new was sent.
-     * @return the next message recieved
+     * Reads a String from the Socket. Waits until something is received if nothing new was sent.
+     * @return the next message received
      */
     String receive() {
         try {
