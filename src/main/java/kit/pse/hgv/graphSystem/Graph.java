@@ -119,6 +119,10 @@ public class Graph {
         return res;
     }
 
+    public boolean isInGraph(int id) {
+        return nodes.get(id) != null || edges.get(id) != null;
+    }
+
     /**
      * Returns all GraphElements in a list.
      *

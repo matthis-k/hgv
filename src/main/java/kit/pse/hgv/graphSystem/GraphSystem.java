@@ -219,4 +219,8 @@ public class GraphSystem {
         return g == null ? null : g.getIds();
     }
 
+    public boolean isInGraph(int graphId, int id) {
+        return getGraphByID(graphId).isInGraph(id);
+    }
+
 }
