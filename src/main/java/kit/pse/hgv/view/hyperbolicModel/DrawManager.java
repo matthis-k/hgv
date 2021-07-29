@@ -12,35 +12,50 @@ import java.util.*;
 public class DrawManager {
     private static Color DEFAULT_NODE_COLOR = Color.RED;
     private static Color DEFAULT_EDGE_COLOR = Color.BLACK;
-    private Coordinate center;
     private GraphSystem graphSystem = GraphSystem.getInstance();
     private int graphId;
     private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
 
-    
 
+    /**
+     * Constructor to create a new DrawManager with given Center
+     * @param graphId
+     * @param center
+     * @param representation
+     */
     public DrawManager(int graphId, Coordinate center, Representation representation) {
         this.graphId = graphId;
-        this.center = center;
         this.representation = representation;
+        representation.setCenter(center);
     }
 
+    /**
+     * Constructor to create a new DrawManager
+     * @param graphId the ID of the graph to be represented
+     * @param representation the type of representation the graph should be shown in
+     */
     public DrawManager(int graphId, Representation representation) {
         this.graphId = graphId;
-        this.center = new CartesianCoordinate(0,0);
         this.representation = representation;
     }
 
+    /**
+     * Method to get the Rendered elements
+     * @param changedElements
+     * @return
+     */
     public List<Drawable> getRenderData(List<Integer> changedElements) {
         Set<Integer> toCalculate = addConnectedEdges(changedElements);
         for(Integer id : toCalculate) {
-            Drawable drawable = calculateElement(id);
-            rendered.put(drawable.getID(), drawable);
+            if(graphSystem.isInGraph(graphId, id)) {
+                Drawable drawable = calculateElement(id);
+                rendered.put(drawable.getID(), drawable);
+            } else {
+                rendered.remove(id);
+            }
         }
-        List<Drawable> res = new ArrayList<>();
-        res.addAll(rendered.values());
-        return res;
+        return rendered.values().stream().toList();
     }
 
     public List<Drawable> getRenderData() {
@@ -49,9 +64,7 @@ public class DrawManager {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
-        List<Drawable> res = new ArrayList<>();
-        res.addAll(rendered.values());
-        return res;
+        return rendered.values().stream().toList();
     }
 
     private Drawable calculateElement(int id) {
@@ -85,7 +98,6 @@ public class DrawManager {
         Set<Integer> allChangedElements = new HashSet<>();
         allChangedElements.addAll(changedElements);
         for(Integer id: allChangedElements) {
-            //TODO Philipp
             if(graphSystem.getNodeByID(graphId, id) != null) {
                 for(Edge edge : graphSystem.getGraphByID(graphId).getEdgesOfNode(graphSystem.getNodeByID(graphId, id))) {
                     allChangedElements.add(edge.getId());
@@ -97,7 +109,6 @@ public class DrawManager {
     }
 
     public List<Drawable> moveCenter(Coordinate center) {
-        List<Drawable> res = new ArrayList<>();
         representation.setCenter(center);
         //clear the list of rendered Elements, because every Element has to be rendered newly
         rendered.clear();
@@ -105,8 +116,7 @@ public class DrawManager {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
-        res.addAll(rendered.values());
-        return res;
+        return rendered.values().stream().toList();
     }
 
     public void moveCenterVoid(Coordinate center) {
