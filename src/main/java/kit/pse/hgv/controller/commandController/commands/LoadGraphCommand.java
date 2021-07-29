@@ -23,6 +23,7 @@ public class LoadGraphCommand extends FileSystemCommand{
         int graphId = GraphSystem.getInstance().loadGraph(path);
         DataGateway.addlastOpened(path);
         modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
+        response.put("success", true);
     }
 
     @Override

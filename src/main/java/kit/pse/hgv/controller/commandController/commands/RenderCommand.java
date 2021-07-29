@@ -8,7 +8,7 @@ public class RenderCommand extends HyperModelCommand {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        
+        response.put("success", true);
     }
 
     @Override

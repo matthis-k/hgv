@@ -1,5 +1,8 @@
 package kit.pse.hgv.extensionServer;
+import kit.pse.hgv.controller.commandController.CommandController;
+import kit.pse.hgv.controller.commandController.CommandQListener;
 
+import kit.pse.hgv.controller.commandController.commands.ICommand;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
@@ -13,7 +16,7 @@ import java.util.HashMap;
  * This singleton Class represents a Server, that listens for input on a specified port.
  * Each Connection is managed by a {@link ClientHandler} on a seperate Thread.
  */
-public class ExtensionServer extends Thread {
+public class ExtensionServer extends Thread implements CommandQListener {
     private static int DEFAULT_PORT = 12345;
     private static ExtensionServer instance;
     /**
@@ -46,6 +49,7 @@ public class ExtensionServer extends Thread {
      * @param port is the port to listen to.
      */
     private ExtensionServer(int port) {
+        CommandController.getInstance().register(this);
         this.port = port;
         try {
             this.socket = new ServerSocket(this.port);
@@ -110,5 +114,11 @@ public class ExtensionServer extends Thread {
             return;
         }
         handler.send(msg);
+    }
+
+    @Override
+    public void onNotify(ICommand c) {
+        if (c.isUser()) { return; }
+        send(c.getClientId(), c.getResponse().toString());
     }
 }

@@ -1,5 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import org.json.JSONArray;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -19,9 +21,20 @@ public class CommandComposite extends Command {
 
     @Override
     public void execute() {
+        JSONArray responses = new JSONArray();
+        boolean success = true;
         for (ICommand c : commands) {
             c.execute();
             modifiedIds.addAll(c.getModifiedIds());
+            responses.put(c.getResponse());
+            if (!c.getResponse().getBoolean("success")) {
+                success = false;
+            }
+        }
+        response.put("success", success);
+        response.put("responses", responses);
+        if (!success) {
+            response.put("reason", "subcommand failed");
         }
     }
 

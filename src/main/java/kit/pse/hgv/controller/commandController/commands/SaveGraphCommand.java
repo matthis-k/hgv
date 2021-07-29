@@ -26,8 +26,9 @@ public class SaveGraphCommand extends FileSystemCommand {
     public void execute() {
         try{
             DataGateway.saveGraph(id, path);
+            response.put("success", true);
         } catch(IOException e){
-            //TODO error message
+            response.put("success", false);
         }
     }
 

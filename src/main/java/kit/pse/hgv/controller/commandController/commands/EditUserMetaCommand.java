@@ -38,6 +38,8 @@ public class EditUserMetaCommand extends MetaSystemCommand{
                 modifiedIds.add(elementId);
             } catch (NumberFormatException e) {
                 //TODO
+                response.put("success", false);
+                response.put("reason", "can not parse metadata");
             }
         } else if (key.equals("r")) {
             try {
@@ -48,11 +50,14 @@ public class EditUserMetaCommand extends MetaSystemCommand{
                 modifiedIds.add(elementId);
             } catch (NumberFormatException e) {
                 //TODO
+                response.put("success", false);
+                response.put("reason", "can not parse metadata");
             }
         } else {
             GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
             modifiedIds.add(elementId);
         }
+        response.put("success", true);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.extensionServer.ExtensionServer;
+import org.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
  * This class handles the execution of a command and the undoing of an execution
  */
 public abstract class Command implements ICommand {
+    protected JSONObject response = new JSONObject();
     protected int client = 0;
     protected HashSet<Integer> modifiedIds = new HashSet<>();
     protected Command() {}
@@ -44,11 +46,9 @@ public abstract class Command implements ICommand {
      * Checks if the Change is made by the user or the extension. If it's made by the extension, it sends
      * a response message to it
      *
-     * @param msg response to the extension
      */
-    protected void respond(String msg) {
-        if (isUser()) { return; }
-        ExtensionServer.getInstance().send(client, msg);
+    public JSONObject getResponse() {
+        return response;
     }
 
     /**

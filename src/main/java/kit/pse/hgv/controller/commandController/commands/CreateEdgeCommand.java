@@ -22,7 +22,10 @@ public class CreateEdgeCommand extends GraphSystemCommand {
         try {
             int addedId = GraphSystem.getInstance().addElement(graphId, nodeIds);
             modifiedIds.add(addedId);
+            response.put("success", true);
+            response.put("id", addedId);
         } catch (OverflowException e) {
+            response.put("success", false);
             e.printStackTrace();
         }
     }

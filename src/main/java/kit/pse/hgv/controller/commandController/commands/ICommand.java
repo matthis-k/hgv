@@ -1,5 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import org.json.JSONObject;
+
 import java.util.Set;
 
 public interface ICommand {
@@ -7,6 +9,7 @@ public interface ICommand {
     public void undo();
     public Set<Integer> getModifiedIds();
     public boolean isUser();
+    public JSONObject getResponse();
     public int getClientId();
     public void setClientId(int id);
 }
