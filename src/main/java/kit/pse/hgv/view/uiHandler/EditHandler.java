@@ -6,6 +6,9 @@ import javafx.scene.control.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Thie class manages the edit section of the program.
+ */
 public class EditHandler implements UIHandler {
 
     @FXML
