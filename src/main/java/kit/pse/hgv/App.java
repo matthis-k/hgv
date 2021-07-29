@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import kit.pse.hgv.controller.commandController.commands.ShutdownCommand;
 import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
 import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.extensionServer.PyScript;
@@ -43,6 +44,9 @@ public class App extends Application {
         stage.sizeToScene();
         stage.setTitle("HGV");
         stage.show();
+        stage.setOnCloseRequest(windowEvent -> {
+            new ShutdownCommand();
+        });
 
         cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
         PyScript script = new PyScript("client.py");

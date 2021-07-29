@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import kit.pse.hgv.controller.commandController.commands.EditColorCommand;
 import kit.pse.hgv.controller.commandController.commands.EditUserMetaCommand;
+import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.representation.PolarCoordinate;
@@ -78,16 +79,20 @@ public class DetailHandler implements UIHandler {
     @FXML
     public void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
+        HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
+
+        String mode = choiceBox.getValue().toString().toUpperCase();
+
         if(idText.getText().equals("---")) {
-            String mode = choiceBox.getValue().toString().toUpperCase();
-            System.out.println(mode);
-            //implement
+            hyperProcessor.setAccuracy(mode);
         } else if (currentRadius == 0 && currentAngle == 0){
             processor.changeColor(currentID, colorPick.getValue());
-            //implement
+            hyperProcessor.setAccuracy(mode);
         } else {
+            processor.changeColor(currentID, colorPick.getValue());
             processor.editMetaData(currentID, "r", radius.getText());
             processor.editMetaData(currentID, "phi", angle.getText());
+            hyperProcessor.setAccuracy(mode);
         }
     }
 

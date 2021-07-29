@@ -9,8 +9,9 @@ import java.nio.file.attribute.AttributeView;
 
 public class SetAccuracyCommand extends HyperModelCommand {
     private Accuracy accuracy;
-    public SetAccuracyCommand(Accuracy accuracy) {
-        this.accuracy = accuracy;
+    public SetAccuracyCommand(String accuracy) {
+
+        this.accuracy = Accuracy.valueOf(accuracy.toUpperCase());
     }
     @Override
     public void execute() {

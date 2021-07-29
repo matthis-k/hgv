@@ -70,7 +70,7 @@ public class NativeRepresentation implements Representation {
     @Override
     public LineStrip calculate(Edge edge) {
         List<Coordinate> coordinates = new ArrayList<>();
-        double renderDetail = 100;
+        double renderDetail = accuracy.getAccuracy();
         Coordinate vector = center.mirroredThroughCenter();
         PolarCoordinate point1 = edge.getNodes()[0].getCoord().moveCoordinate(vector).toPolar();
         PolarCoordinate point2 = edge.getNodes()[1].getCoord().moveCoordinate(vector).toPolar();

@@ -76,6 +76,7 @@ public class RenderHandler implements UIHandler{
 
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        System.out.println("as geht");
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
 
