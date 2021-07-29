@@ -33,7 +33,7 @@ public class MetaDataProcessor implements CommandProcessor{
      * @param meta concrete meta information
      * @param key which MetaData-Type should be edited
      */
-    public void editMetaData(int elementId, String meta, String key){
+    public void editMetaData(int elementId, String key, String meta){
         EditUserMetaCommand command = new EditUserMetaCommand(elementId, key, meta);
         queueCommand(command);
     }
