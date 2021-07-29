@@ -26,6 +26,9 @@ public class GraphSystem {
 
     private static int graphIDCounter = 1;
 
+    /**
+     * Creates a new element of this class
+     */
     private GraphSystem() {
     }
 
@@ -211,10 +214,22 @@ public class GraphSystem {
         return deleted;
     }
 
+    /**
+     * Returns all Metadata Information of each element of the graph
+     *
+     * @param graphID graphId from the graph that should return all Metadata Information
+     * @return all Metadatas of each element in the graph
+     */
     public Collection<String> getAllMetadataByID(int graphID) {
         return getGraphByID(graphID).getAllMetadata();
     }
 
+    /**
+     * Returns all existing ids of a given graph
+     *
+     * @param graphID graphId from the graph that should return all Ids
+     * @return all existing ids in the graph
+     */
     public List<Integer> getIDs(int graphID) {
         Graph g = getGraphByID(graphID);
         return g == null ? null : g.getIds();

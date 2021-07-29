@@ -19,8 +19,7 @@ public class HyperModelCommandProcessor implements CommandProcessor{
     /**
      * This method creates a moveCenterCommand
      * 
-     * @param phi x-coordinate where to move the center
-     * @param r y-coordinate where to move the center
+     * @param coordinate where to move the center
      */
     public void moveCenter(Coordinate coordinate){
         MoveCenterCommand command = new MoveCenterCommand(coordinate);

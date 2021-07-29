@@ -12,19 +12,50 @@ public abstract class Command implements ICommand {
     protected int client = 0;
     protected HashSet<Integer> modifiedIds = new HashSet<>();
     protected Command() {}
+
+    /**
+     * Returns if the user or the extension wants to change the graph
+     *
+     * @return true if the user wants to change the graph
+     */
     public boolean isUser() {
         return client == 0;
     }
+
+    /**
+     * Returns the Client id of the extension
+     *
+     * @return client-id
+     */
     public int getClientId() {
         return client;
     }
+
+    /**
+     * Sets the Client id of the extension
+     *
+     * @param id Client-Id
+     */
     public void setClientId(int id) {
         client = id;
     }
+
+    /**
+     * Checks if the Change is made by the user or the extension. If it's made by the extension, it sends
+     * a response message to it
+     *
+     * @param msg response to the extension
+     */
     protected void respond(String msg) {
         if (isUser()) { return; }
         ExtensionServer.getInstance().send(client, msg);
     }
+
+    /**
+     * Returns all changed IDs
+     *
+     * @return all changed IDs
+     */
     public Set<Integer> getModifiedIds() {
         return modifiedIds;
     }

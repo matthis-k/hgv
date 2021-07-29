@@ -11,6 +11,11 @@ public class MoveCenterCommand extends HyperModelCommand {
 
     private Coordinate transform;
 
+    /**
+     * The constructor creates an element of this class
+     *
+     * @param transform where the new center should be
+     */
     public MoveCenterCommand(Coordinate transform) {
         this.transform = transform;
     }

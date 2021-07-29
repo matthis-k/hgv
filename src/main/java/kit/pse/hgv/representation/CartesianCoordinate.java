@@ -5,6 +5,12 @@ public class CartesianCoordinate implements Coordinate {
     private double x;
     private double y;
 
+    /**
+     * Creates a new Cartesian Coordinate
+     *
+     * @param x x-Coordinate of a Cartesian Coordinate
+     * @param y y-Coordinate of a Cartesian Coordinate
+     */
     public CartesianCoordinate(double x, double y) {
         this.x = x;
         this.y = y;
@@ -39,14 +45,29 @@ public class CartesianCoordinate implements Coordinate {
         return toPolar().hyperbolicDistance(coordinate);
     }
 
+    /**
+     * Reflects the coordinate over the x- and y-axis
+     *
+     * @return reflection of the coordinate
+     */
     public CartesianCoordinate mirroredThroughCenter() {
         return new CartesianCoordinate(-x,-y);
     }
 
+    /**
+     * Returns the x-coordinate of the Cartesian Coordinate
+     *
+     * @return x-Coordinate
+     */
     public double getX() {
         return this.x;
     }
 
+    /**
+     * Returns the y-coordinate of the Cartesian Coordinate
+     *
+     * @return y-Coordinate
+     */
     public double getY() {
         return this.y;
     }
@@ -61,14 +82,6 @@ public class CartesianCoordinate implements Coordinate {
     public Coordinate mirroredY() {
         return new CartesianCoordinate(x,-y);
     }
-
-    /*public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }*/
 
     @Override
     public String toString() {

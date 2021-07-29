@@ -47,6 +47,10 @@ public class DataGateway {
     public static Scanner scanner;
     private static Locale LOCALE = Locale.ENGLISH;
 
+    /**
+     * Adds the last opened Graph into a file
+     * @param path path of the last opened Graph
+     */
     public static void addlastOpened(String path){
         File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
         try{
@@ -60,6 +64,11 @@ public class DataGateway {
         }
     }
 
+    /**
+     * Returns the last five opened Graphs
+     *
+     * @return List of the five last opened Graphs
+     */
     public static List<String> getlastOpenedGraphs(){
         List<String> lastOpened = new ArrayList<>();
         File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
@@ -88,6 +97,15 @@ public class DataGateway {
         return lastOpened;
     }
 
+    /**
+     * Loads a Graph from a file
+     *
+     * @param path path of the Graph file
+     * @param graphID which graphID
+     * @throws IllegalFormatException if the File doesn't have the right format
+     * @throws FileNotFoundException if the File is non-existent
+     * @throws OverflowException if there are too many added ids
+     */
     public static void loadGraph(String path, int graphID) throws IllegalFormatException, FileNotFoundException, OverflowException {
         path.endsWith(".graphml");
         File file = new File(path);
@@ -108,10 +126,23 @@ public class DataGateway {
         nodeIDs.clear();
     }
 
+    /**
+     * Checks if the new Element is a new Node
+     *
+     * @param line new Element
+     * @return true, if the new Element is a node, false if it isn't
+     */
     private static boolean isNewNode(String line) {
         return line.matches(NODE_REGEX);
     }
 
+    /**
+     * Reads the Graphml-String and converts it into a node
+     *
+     * @param NodeLine new Node as a graphml String
+     * @param graphID given Graph
+     * @throws OverflowException if there are too many added ids
+     */
     private static void readNode(String NodeLine, int graphID) throws OverflowException {
         Matcher matcher = NODE_PATTERN.matcher(NodeLine);
         int graphMLID = 0;
@@ -152,6 +183,13 @@ public class DataGateway {
         nodeIDs.put(graphMLID, nodeID);
     }
 
+    /**
+     * Reads the Graphml-String and converts it into an edge
+     *
+     * @param currentLine new Edge as String
+     * @param graphID given Graph
+     * @throws OverflowException if there are too many added ids
+     */
     private static void readEdge(String currentLine, int graphID) throws OverflowException {
         Matcher matcher = EDGE_PATTERN.matcher(currentLine);
         if (!matcher.matches()) {
@@ -184,6 +222,14 @@ public class DataGateway {
         }
     }
 
+    /**
+     * Saves a Graph into a file
+     *
+     * @param graphId given graph
+     * @param path path where to save
+     * @return if the save was successful
+     * @throws IOException if writing on the file failed
+     */
     public static boolean saveGraph(int graphId, String path) throws IOException {
         File file = new File(path);
         //try {

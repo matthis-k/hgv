@@ -9,6 +9,14 @@ public class CircleNode extends Drawable{
     private double radius;
     private Circle representation;
 
+    /**
+     * Creates an element of CircleNode
+     *
+     * @param center the Coordinate of the Node
+     * @param radius the Radius of the node
+     * @param id id of the node
+     * @param color the Color of the node
+     */
     public CircleNode(CartesianCoordinate center, double radius, int id, Color color) {
         super(id, color, true);
         this.center = center;
@@ -27,9 +35,19 @@ public class CircleNode extends Drawable{
         return super.isNode();
     }
 
+    /**
+     * Returns the Representation of the Node
+     *
+     * @return Representation of the Node
+     */
     public Circle getRepresentation() {
         return this.representation;
     }
 
+    /**
+     * Returns the Cartesian Coordinate of the Node
+     *
+     * @return CartesianCoordinate of the Node
+     */
     public CartesianCoordinate getCenter() { return this.center;}
 }

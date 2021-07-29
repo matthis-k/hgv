@@ -6,6 +6,11 @@ public class PolarCoordinate implements Coordinate{
     private double angle;
     private double distance;
 
+    /**
+     * Creates a new polar Coordinate
+     * @param angle
+     * @param distance
+     */
     public PolarCoordinate (double angle, double distance) {
         this.angle = angle % MAX_ANGLE;
         while (this.angle < 0) {
@@ -43,6 +48,12 @@ public class PolarCoordinate implements Coordinate{
         return hyperbolicDistance;
     }
 
+    /**
+     * moves the coordinate with the vector
+     *
+     * @param vector where the coordinate should be moved
+     * @return moved coordinate
+     */
     public Coordinate moveCoordinate(Coordinate vector) {
         return toCartesian().moveCoordinate(vector);
     }
@@ -52,14 +63,29 @@ public class PolarCoordinate implements Coordinate{
         return new PolarCoordinate(Math.PI * 2 - angle, distance);
     }
 
+    /**
+     * Reflects the coordinate over the x- and y-axis
+     *
+     * @return Reflection of the coordinate
+     */
     public PolarCoordinate mirroredThroughCenter() {
         return new PolarCoordinate(angle + Math.PI, distance);
     }
 
+    /**
+     * returns the angle of the given polar coordinate
+     *
+     * @return angle of the given polar coordinate
+     */
     public double getAngle() {
         return angle;
     }
 
+    /**
+     * returns the distance of the given polar coordinate
+     *
+     * @return distance of the given polar coordinate
+     */
     public double getDistance() {
         return distance;
     }

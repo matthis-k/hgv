@@ -51,6 +51,12 @@ public class Graph {
         }
     }
 
+    /**
+     * Returns the edges of a given node
+     *
+     * @param node node which edges should be returned
+     * @return List of Edges that are connected to the node
+     */
     public List<Edge> getEdgesOfNode(Node node) {
         List<Edge> res = new ArrayList<>();
         for (Edge edge : edges.values()) {
@@ -92,10 +98,22 @@ public class Graph {
         return nodes.values();
     }
 
+    /**
+     * Returns the edge that has the given id
+     *
+     * @param id from the Edge
+     * @return Edge that has the given id
+     */
     public Edge getEdgeById(int id) {
         return edges.get(id);
     }
 
+    /**
+     * Returns the node that has the given id
+     *
+     * @param id from the Node
+     * @return Node that has the given id
+     */
     public Node getNodeById(int id) {
         return nodes.get(id);
     }
@@ -109,6 +127,11 @@ public class Graph {
         return edges.values();
     }
 
+    /**
+     * Returns a list of all MetaData of all elements
+     *
+     * @return all Metadata
+     */
     public Collection<String> getAllMetadata() {
         HashSet<String> res = new HashSet<>();
         for(Integer i : nodes.keySet()) {
@@ -136,6 +159,11 @@ public class Graph {
         return elements;
     }
 
+    /**
+     * Returns all ids of all existing elements
+     *
+     * @return List of all ids
+     */
     public List<Integer> getIds() {
         List<Integer> res = new Vector<>();
         res.addAll(nodes.keySet());
