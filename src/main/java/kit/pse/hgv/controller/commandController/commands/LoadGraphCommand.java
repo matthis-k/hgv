@@ -20,8 +20,9 @@ public class LoadGraphCommand extends FileSystemCommand{
 
     @Override
     public void execute() {
-        GraphSystem.getInstance().loadGraph(path);
+        int graphId = GraphSystem.getInstance().loadGraph(path);
         DataGateway.addlastOpened(path);
+        modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
     }
 
     @Override

@@ -3,7 +3,7 @@ package kit.pse.hgv.controller.commandController.commands;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
-public class CreateEdgeCommand extends CreateElementCommand {
+public class CreateEdgeCommand extends GraphSystemCommand {
     private int[] nodeIds;
 
     /**
@@ -20,7 +20,8 @@ public class CreateEdgeCommand extends CreateElementCommand {
     @Override
     public void execute() {
         try {
-            addedId = GraphSystem.getInstance().addElement(graphId, nodeIds);
+            int addedId = GraphSystem.getInstance().addElement(graphId, nodeIds);
+            modifiedIds.add(addedId);
         } catch (OverflowException e) {
             e.printStackTrace();
         }

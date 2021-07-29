@@ -11,9 +11,14 @@ public class RecieveCommandState implements ClientState {
     @Override
     public void work(ClientHandler handler) {
         String recieved = handler.recieve();
-        if (recieved == null) { return; }
+        if (recieved == null || recieved.length() <= 0) { nextState = new RecieveCommandState(); return; }
         System.out.println("recieved: '" + recieved + "' from: " + handler.getSocket().toString());
-        ExtensionCommandType lastCommandType = ExtensionCommandType.processCommandString(recieved, handler.getClientId());
+        ExtensionCommandType lastCommandType = null;
+        try {
+            lastCommandType = ExtensionCommandType.processCommandString(recieved, handler.getClientId());
+        } catch (IllegalArgumentException e) {
+            nextState = new EndState();
+        }
         switch (lastCommandType) {
             default: nextState = new RecieveCommandState(); break;
         }

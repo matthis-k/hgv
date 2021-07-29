@@ -1,5 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -20,6 +21,7 @@ public class CommandComposite extends Command {
     public void execute() {
         for (ICommand c : commands) {
             c.execute();
+            modifiedIds.addAll(c.getModifiedIds());
         }
     }
 
