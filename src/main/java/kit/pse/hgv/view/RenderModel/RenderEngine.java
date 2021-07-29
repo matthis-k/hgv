@@ -50,11 +50,5 @@ public abstract class RenderEngine implements CommandQListener {
 
     public abstract void render();
 
-    public abstract void receiveCommand(ICommand ICommand);
-    public abstract void receiveCommand(FileSystemCommand command);
-    public abstract void receiveCommand(MoveCenterCommand command);
-    public abstract void receiveCommand(MetaSystemCommand command);
-    public abstract void receiveCommand(GraphSystemCommand command);
-    public abstract void receiveCommand(LoadGraphCommand command);
 
 }

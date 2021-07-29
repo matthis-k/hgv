@@ -47,6 +47,7 @@ public class EditUserMetaCommand extends MetaSystemCommand{
                 GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
                 Double phi = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getAngle();
                 GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
+                System.out.println("bin da oida");
                 modifiedIds.add(elementId);
             } catch (NumberFormatException e) {
                 //TODO
