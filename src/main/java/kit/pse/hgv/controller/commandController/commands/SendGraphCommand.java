@@ -14,9 +14,8 @@ public class SendGraphCommand extends ExtensionCommand {
     private int graphId;
     private int clientId;
 
-    public SendGraphCommand(int graphId, int clientId) {
+    public SendGraphCommand(int graphId) {
         this.graphId = graphId;
-        this.clientId = clientId;
     }
 
     @Override
@@ -37,9 +36,8 @@ public class SendGraphCommand extends ExtensionCommand {
         for (Edge edge : g.getEdges()) {
             JSONObject jsonEdge = new JSONObject();
             jsonEdge.put("id", edge.getId());
-            JSONObject coord = new JSONObject();
-            coord.put("node1", edge.getNodes()[0]);
-            coord.put("node2", edge.getNodes()[1]);
+            jsonEdge.put("node1", edge.getNodes()[0].getId());
+            jsonEdge.put("node2", edge.getNodes()[1].getId());
             edges.put(jsonEdge);
             // TODO: Metadata
         }

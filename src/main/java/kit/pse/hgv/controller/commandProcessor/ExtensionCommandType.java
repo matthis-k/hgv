@@ -141,6 +141,15 @@ public enum ExtensionCommandType {
         }
     },
 
+    GET_GRAPH(ExtensionCommandType.START + "GetGraph" + ExtensionCommandType.END) {
+        @Override
+        protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
+            int graphId = inputAsJson.getInt("graphId");
+            SendGraphCommand command = new SendGraphCommand(graphId);
+            return  new ParseResult(command, this);
+        }
+    },
+
     /**
      * This enum handles the render command coming from the extension
      */
