@@ -33,7 +33,6 @@ public class DefaultRenderEngine extends RenderEngine {
                 c.getResponse().get("reason");
                 //Popup fehler
             }
-            System.out.println("bin da " + c.getModifiedIds());
             toBeUpdated.addAll(c.getModifiedIds());
             render();
         } else {

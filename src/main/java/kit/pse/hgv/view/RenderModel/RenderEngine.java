@@ -19,8 +19,6 @@ public abstract class RenderEngine implements CommandQListener {
     protected List<Drawable> displayedGraph;
     protected final int tabID;
     protected final int graphID;
-    protected final UserScheduler userScheduler;
-    protected final ExtensionScheduler extensionScheduler;
     private static RenderEngine instance;
 
     public RenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
@@ -30,8 +28,6 @@ public abstract class RenderEngine implements CommandQListener {
         this.drawManager = drawManager;
         displayedGraph = new ArrayList<>();
         this.toBeUpdated = new ArrayList<>();
-        this.userScheduler = new UserScheduler();
-        this.extensionScheduler = new ExtensionScheduler();
         instance = this;
     }
 

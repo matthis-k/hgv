@@ -46,3 +46,5 @@ src/main/resources/Vorlage.graphml
 src/main/resources/Vorlage.graphml
 src/main/resources/Vorlage.graphml
 src/main/resources/Vorlage.graphml
+src/main/resources/Vorlage.graphml
+src/main/resources/Vorlage.graphml
