@@ -50,10 +50,10 @@ public class DataGateway {
     public static void addlastOpened(String path){
         File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
         try{
-            lastOpenedFile.createNewFile();
-            BufferedWriter writer = new BufferedWriter((new FileWriter(lastOpenedFile)));
-            writer.append(path);
-            writer.newLine();
+            FileWriter writer = new FileWriter(lastOpenedFile, true);
+            writer.write(path);
+            writer.write(System.getProperty("line.separator"));
+            writer.flush();
             writer.close();
         } catch (IOException e) {
             //TODO
@@ -69,9 +69,7 @@ public class DataGateway {
                 reader = new BufferedReader(new FileReader(lastOpenedFile));
                 String path;
                 path = reader.readLine();
-                lastOpened.add(path);
                 while (lastOpened.size() < 5 && path != null) {
-                    path = reader.readLine();
                     for(int i = 0; i < lastOpened.size(); i++) {
                         if (lastOpened.get(i).equals(path)){
                             path = "";
@@ -80,19 +78,17 @@ public class DataGateway {
                     if (!(path == null) && !path.equals("")){
                         lastOpened.add(path);
                     }
+                    path = reader.readLine();
                 }
                 reader.close();
             } catch (IOException e){
                 //TODO
             }
-            return lastOpened;
-        } else {
-            return null;
         }
+        return lastOpened;
     }
 
     public static void loadGraph(String path, int graphID) throws IllegalFormatException, FileNotFoundException, OverflowException {
-        //TODO: Correctly implemnt!
         path.endsWith(".graphml");
         File file = new File(path);
         scanner = new Scanner(file);

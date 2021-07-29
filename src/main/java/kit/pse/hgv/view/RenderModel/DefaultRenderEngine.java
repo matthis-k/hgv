@@ -4,6 +4,7 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
+
 public class DefaultRenderEngine extends RenderEngine {
 
     public DefaultRenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
@@ -11,14 +12,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     @Override
-    public void firstRender() {
-        this.displayedGraph = drawManager.getRenderData();
-        handler.renderGraph(this.displayedGraph);
-    }
-
-    //TODO Scheduler einbauen
-    @Override
-    public void rerender() {
+    public void render() {
         updateGraph();
         handler.renderGraph(this.displayedGraph);
         this.toBeUpdated.clear();
@@ -29,39 +23,41 @@ public class DefaultRenderEngine extends RenderEngine {
         //TODO ERROR
         toBeUpdated.addAll(command.getModifiedIds());
         if (command instanceof LoadGraphCommand) {
-            if (command.isUser()) {
-                firstRender();
-            }
-        } else if (command instanceof RenderCommand) {
-            rerender();
+            render();
+        } else if (command instanceof CreateElementCommand) {
+            toBeUpdated.add(((CreateElementCommand) command).getAddedId());
+            render();
+        } else if (command instanceof  MetaSystemCommand) {
+            toBeUpdated.add(((MetaSystemCommand) command).getID());
+            render();
         }
     }
 
     @Override
     public void receiveCommand(MoveCenterCommand command) {
         drawManager.moveCenter(command.getTransform());
-        rerender();
+        render();
     }
 
     @Override
     public void receiveCommand(MetaSystemCommand command) {
         toBeUpdated.add(command.getID());
-        rerender();
+        render();
     }
 
     @Override
     public void receiveCommand(FileSystemCommand command) {
-        firstRender();
+        render();
     }
 
     @Override
     public void receiveCommand(GraphSystemCommand command) {
-        rerender();
+        render();
     }
 
     @Override
     public void receiveCommand(LoadGraphCommand command) {
-        firstRender();
+        render();
     }
 
     @Override
@@ -70,6 +66,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
+       //ändern mit >0?
+            this.displayedGraph = drawManager.getRenderData();
     }
 }

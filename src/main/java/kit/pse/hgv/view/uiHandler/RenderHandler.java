@@ -29,6 +29,7 @@ public class RenderHandler implements UIHandler{
     @FXML
     private CheckBox centerCheckBox;
 
+
     private int currentlySelected;
     private Circle center;
 
@@ -68,6 +69,7 @@ public class RenderHandler implements UIHandler{
 
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        System.out.println("was geht");
         ///TODO nicht immer clearen
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
@@ -98,29 +100,38 @@ public class RenderHandler implements UIHandler{
                 }
             }
         }
+        buildRenderPane(nodes, lines);
+    }
 
+    public void changeCenterVisibility() {
+        center.setVisible(false);
+        if(centerCheckBox.isSelected()){
+            center.centerYProperty().unbind();
+            center.centerXProperty().unbind();
+            center.setVisible(true);
+        } else {
+            double x = (center.getCenterX()-renderCircle.getCenterX())/10;
+            double y = (center.getCenterY()-renderCircle.getCenterY()/(-10));
+            Coordinate newCenterCoordinate = new CartesianCoordinate(x ,y);
+            /*
+            Coordinate newCenterCoordinate = new CartesianCoordinate(center.getCenterX()/10, center.getCenterY()/(-10));*/
+            moveCenter(newCenterCoordinate);
+            bindCenter();
+        }
+    }
+
+    private void buildRenderPane(ArrayList<Circle> nodes, ArrayList<Line> lines) {
         renderPane.getChildren().addAll(lines);
         renderPane.getChildren().addAll(nodes);
         renderPane.getChildren().add(center);
         renderPane.getChildren().add(centerCheckBox);
     }
 
-    public void changeCenterVisibility() {
-        center.setVisible(false);
-        if(centerCheckBox.isSelected())
-            center.setVisible(true);
-        else {
-            Coordinate newCenterCoordinate = new CartesianCoordinate(center.getCenterX()/10, center.getCenterY()/(-10));
-            moveCenter(newCenterCoordinate);
-        }
-    }
-
-
     private void bindLines(LineStrip strip) {
         for(Line line : strip.getLines()) {
-            if(!strip.isCentered()) {
-                setupLine(line);
-            }
+            //if(!strip.isCentered()) {
+            setupLine(line);
+            //}
         }
         strip.setCentered();
     }
@@ -148,6 +159,7 @@ public class RenderHandler implements UIHandler{
             if(!mouseEvent.isShiftDown()) {
                 circle.setCenterX(mouseEvent.getX() + dragDeltaCircle.x);
                 circle.setCenterY(mouseEvent.getY() + dragDeltaCircle.y);
+                System.out.println(center.getCenterX());
             } else {
                 double x = mouseEvent.getX() + dragDeltaCenter.x;
                 double y = mouseEvent.getY() + dragDeltaCenter.y;
@@ -158,15 +170,15 @@ public class RenderHandler implements UIHandler{
     }
 
     private void setupLine(Line line) {
-        /*line.startYProperty().unbind();
+        line.startYProperty().unbind();
         line.startXProperty().unbind();
         line.endXProperty().unbind();
-        line.endYProperty().unbind();*/
+        line.endYProperty().unbind();
 
-        line.setStartY(line.getStartY() + START_CENTER_Y);
-        line.setEndY(line.getEndY() + START_CENTER_Y);
-        line.setStartX(line.getStartX() + START_CENTER_X);
-        line.setEndX(line.getEndX() + START_CENTER_X);
+        line.setStartY(line.getStartY() + renderCircle.getCenterY());
+        line.setEndY(line.getEndY() + renderCircle.getCenterY());
+        line.setStartX(line.getStartX() + renderCircle.getCenterX());
+        line.setEndX(line.getEndX() + renderCircle.getCenterX());
 
         line.startXProperty().bind(renderCircle.centerXProperty()
                 .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
@@ -186,14 +198,32 @@ public class RenderHandler implements UIHandler{
         center = new Circle();
         center.setRadius(5);
         center.setFill(Color.CYAN);
-        center.layoutXProperty().bind(renderCircle.centerXProperty());
-        center.layoutYProperty().bind(renderCircle.centerYProperty());
+        //center.layoutXProperty().bind(renderCircle.centerXProperty());
+        //center.layoutYProperty().bind(renderCircle.centerYProperty());
+        bindCenter();
+
         center.setVisible(false);
     }
 
     private void zoom(double zoom) {
         if(renderCircle.getRadius() + zoom >= 0)
             renderCircle.setRadius(renderCircle.getRadius() + zoom);
+    }
+
+    private void bindCenter() {
+        /*center.centerXProperty().bind(renderCircle.layoutXProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS)
+                        .multiply(center.getCenterX())));
+        center.centerYProperty().bind(renderCircle.layoutYProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS)
+                        .multiply(center.getCenterY())));*/
+
+        center.centerXProperty().bind(renderCircle.centerXProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS)
+                        .multiply(center.getCenterX())));
+        center.centerYProperty().bind(renderCircle.centerYProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS)
+                        .multiply(center.getCenterY())));
     }
 
     private void bindNodeX(CircleNode child) {

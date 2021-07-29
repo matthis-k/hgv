@@ -83,13 +83,13 @@ public class CommandController extends Thread implements CommandEventSource {
         ICommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
         c.execute();
         notifyAll(c);
-        c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
+        /*c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
         c.execute();
         notifyAll(c);
         int[] nodes = {3, 8};
         c = new CreateEdgeCommand(1, nodes);
         c.execute();
-        notifyAll(c);
+        notifyAll(c);*/
     }
 
     public void doSpiralGraph(int n) {

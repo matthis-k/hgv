@@ -55,9 +55,7 @@ public class DrawManager {
                 rendered.remove(id);
             }
         }
-        List<Drawable> res = new Vector<>();
-        res.addAll(rendered.values());
-        return res;
+        return rendered.values().stream().toList();
     }
 
     public List<Drawable> getRenderData() {
@@ -66,9 +64,7 @@ public class DrawManager {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
-        List<Drawable> res = new Vector<>();
-        res.addAll(rendered.values());
-        return res;
+        return rendered.values().stream().toList();
     }
 
     private Drawable calculateElement(int id) {
@@ -120,9 +116,7 @@ public class DrawManager {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
-        List<Drawable> res = new Vector<>();
-        res.addAll(rendered.values());
-        return res;
+        return rendered.values().stream().toList();
     }
 
     public void moveCenterVoid(Coordinate center) {
