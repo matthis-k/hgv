@@ -17,6 +17,11 @@ public class CommandController extends Thread implements CommandEventSource {
     private Vector<CommandQListener> listeners = new Vector<>();
     private ConcurrentLinkedQueue<ICommand> commandQ = new ConcurrentLinkedQueue<ICommand>();
 
+    /**
+     * returns the instance of the CommandController
+     *
+     * @return CommandController
+     */
     public static CommandController getInstance() {
         if (instance == null) {
             instance = new CommandController();
@@ -24,15 +29,24 @@ public class CommandController extends Thread implements CommandEventSource {
         return instance;
     }
 
+    /**
+     * The constructor creates an element of this class
+     */
     private CommandController() {
     }
 
+    /**
+     * Starts the CommandController
+     */
     public void run() {
         while (true) {
             executeNext();
         }
     }
 
+    /**
+     * Executes the next Command in the CommandQ
+     */
     private void executeNext() {
         synchronized (this) {
             ICommand c = commandQ.poll();
@@ -49,6 +63,11 @@ public class CommandController extends Thread implements CommandEventSource {
         }
     }
 
+    /**
+     * Puts a Command in the commandQueue
+     *
+     * @param c Command that was build from the CommandProcessor
+     */
     public void queueCommand(ICommand c) {
         synchronized (this) {
             commandQ.add(c);
