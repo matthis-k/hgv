@@ -11,7 +11,6 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
 import java.io.*;
 import java.util.*;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,7 +48,7 @@ public class DataGateway {
     private static Locale LOCALE = Locale.ENGLISH;
 
     public static void addlastOpened(String path){
-        File lastOpenedFile = new File("src/test/resources/lastOpenedFile.txt");
+        File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
         try{
             lastOpenedFile.createNewFile();
             BufferedWriter writer = new BufferedWriter((new FileWriter(lastOpenedFile)));
@@ -63,7 +62,7 @@ public class DataGateway {
 
     public static List<String> getlastOpenedGraphs(){
         List<String> lastOpened = new ArrayList<>();
-        File lastOpenedFile = new File("src/test/resources/lastOpenedFile.txt");
+        File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
         if(lastOpenedFile.exists()) {
             BufferedReader reader = null;
             try {
@@ -71,14 +70,14 @@ public class DataGateway {
                 String path;
                 path = reader.readLine();
                 lastOpened.add(path);
-                while (lastOpened.size() < 5) {
+                while (lastOpened.size() < 5 && path != null) {
                     path = reader.readLine();
                     for(int i = 0; i < lastOpened.size(); i++) {
                         if (lastOpened.get(i).equals(path)){
                             path = "";
                         }
                     }
-                    if (!path.equals("")){
+                    if (!(path == null) && !path.equals("")){
                         lastOpened.add(path);
                     }
                 }

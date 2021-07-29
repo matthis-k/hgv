@@ -4,6 +4,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class ExtensionCommandTypeTest {
+    /*@Test
+    public void testSaveGraph() {
+        assertEquals(ExtensionCommandType.SAVE_GRAPH, ExtensionCommandType.processCommandString(
+                "{\"type\": \"SaveGraph\", \"graphId\": 1, \"path\": C:/Benutzer/Chris}", 1));
+    }*/
+
     @Test
     public void testCreateNode() {
         assertEquals(ExtensionCommandType.CREATE_NODE, ExtensionCommandType.processCommandString(
@@ -34,6 +40,7 @@ public class ExtensionCommandTypeTest {
             "{ \"type\": \"CommandComposite\", \"commands\": [ { \"type\": \"DeleteElement\", \"id\": \"2333\"} ] }"
         ,1));
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void testMissingField() {
         ExtensionCommandType.processCommandString(
