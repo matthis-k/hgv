@@ -1,7 +1,6 @@
 package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
@@ -9,10 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import kit.pse.hgv.controller.commandController.commands.EditColorCommand;
-import kit.pse.hgv.controller.commandController.commands.EditUserMetaCommand;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
-import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.representation.PolarCoordinate;
 
 import java.net.URL;
@@ -38,7 +34,7 @@ public class DetailHandler implements UIHandler {
     @FXML
     private Text idText;
     @FXML
-    private ChoiceBox choiceBox;
+    private ChoiceBox<String> choiceBox;
 
     /**
      * Attributes to store the currently displayed information of a node.

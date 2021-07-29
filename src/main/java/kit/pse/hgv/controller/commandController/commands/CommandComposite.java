@@ -2,7 +2,6 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import org.json.JSONArray;
 
-import java.util.List;
 import java.util.Vector;
 
 /**

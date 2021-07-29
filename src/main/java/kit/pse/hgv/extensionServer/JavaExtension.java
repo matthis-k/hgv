@@ -1,7 +1,5 @@
 package kit.pse.hgv.extensionServer;
 
-import javafx.scene.transform.Transform;
-
 import java.io.IOException;
 
 public class JavaExtension extends Thread implements Extension {

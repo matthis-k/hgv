@@ -1,24 +1,11 @@
 package kit.pse.hgv;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
-import kit.pse.hgv.controller.dataGateway.DataGateway;
 import kit.pse.hgv.extensionServer.PyScript;
-import kit.pse.hgv.graphSystem.Graph;
-import kit.pse.hgv.graphSystem.GraphSystem;
-import kit.pse.hgv.view.uiHandler.RenderHandler;
-import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
-import kit.pse.hgv.view.hyperbolicModel.DrawManager;
-import kit.pse.hgv.view.RenderModel.TabManager;
-import kit.pse.hgv.view.RenderModel.RenderEngine;
-import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
 import kit.pse.hgv.extensionServer.ExtensionServer;

@@ -1,8 +1,5 @@
 package kit.pse.hgv.view.uiHandler;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -13,7 +10,6 @@ import kit.pse.hgv.controller.dataGateway.DataGateway;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 

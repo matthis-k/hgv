@@ -1,7 +1,6 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
 import kit.pse.hgv.graphSystem.element.Edge;
-import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Coordinate;

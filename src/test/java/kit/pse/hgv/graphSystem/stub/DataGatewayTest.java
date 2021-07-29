@@ -6,13 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 public class DataGatewayTest {
 

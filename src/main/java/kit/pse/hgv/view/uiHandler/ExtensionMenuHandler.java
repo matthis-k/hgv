@@ -3,8 +3,6 @@ package kit.pse.hgv.view.uiHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import kit.pse.hgv.App;
 

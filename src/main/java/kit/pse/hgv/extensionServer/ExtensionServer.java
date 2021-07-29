@@ -3,15 +3,12 @@ import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.CommandQListener;
 
 import kit.pse.hgv.controller.commandController.commands.ICommand;
-import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * This singleton Class represents a Server, that listens for input on a specified port.

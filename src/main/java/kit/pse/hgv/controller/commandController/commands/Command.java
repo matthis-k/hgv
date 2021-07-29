@@ -1,6 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.extensionServer.ExtensionServer;
 import org.json.JSONObject;
 
 import java.util.HashSet;

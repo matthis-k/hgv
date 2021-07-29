@@ -62,7 +62,6 @@ public class NativeRepresentation implements Representation {
 
     @Override
     public CircleNode calculate(Node node) {
-        //TODO Philipp Node.getCoordinate : Coordinate
         return new CircleNode(node.getCoord().mirroredY().toCartesian(), nodeSize, node.getId(),
                 null);
     }
