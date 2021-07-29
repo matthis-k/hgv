@@ -3,6 +3,7 @@ package kit.pse.hgv.view.uiHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -36,6 +37,8 @@ public class DetailHandler implements UIHandler {
     private Button updateButton;
     @FXML
     private Text idText;
+    @FXML
+    private ChoiceBox choiceBox;
 
     /**
      * Attributes to store the currently displayed information of a node.
@@ -62,6 +65,11 @@ public class DetailHandler implements UIHandler {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
         updateButton.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION));
+        choiceBox.getItems().add("direct");
+        choiceBox.getItems().add("low");
+        choiceBox.getItems().add("medium");
+        choiceBox.getItems().add("high");
+        choiceBox.setValue("high");
     }
 
     /**
@@ -70,9 +78,16 @@ public class DetailHandler implements UIHandler {
     @FXML
     public void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
-        processor.editMetaData(currentID, "r", radius.getText());
-        processor.editMetaData(currentID, "phi", angle.getText());
-        processor.changeColor(currentID, colorPick.getValue());
+        if(idText.getText().equals("---")) {
+            String mode = choiceBox.getValue().toString().toUpperCase();
+            System.out.println(mode);
+            //implement
+        } else {
+            processor.editMetaData(currentID, "r", radius.getText());
+            processor.editMetaData(currentID, "phi", angle.getText());
+            processor.changeColor(currentID, colorPick.getValue());
+            //implement
+        }
     }
 
 
