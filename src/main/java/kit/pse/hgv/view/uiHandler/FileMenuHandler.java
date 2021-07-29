@@ -22,13 +22,13 @@ import java.util.ResourceBundle;
  */
 public class FileMenuHandler implements UIHandler {
 
+    private static final int ONLY_GRAPH = 1;
+    private static final String NOTHING_OPENED_YET = "Noch keine Datei geöffnet.";
     @FXML
     private Menu lastOpened;
-    private boolean cleared;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cleared = false;
     }
 
     /**
@@ -40,6 +40,10 @@ public class FileMenuHandler implements UIHandler {
         new FileSystemCommandProcessor().loadGraph(chooser.showOpenDialog(new Stage()));
     }
 
+    /**
+     * This method updates the menu containing the five last opened graphs.
+     */
+    @FXML
     public void updateLastOpened() {
         lastOpened.getItems().clear();
         List<String> paths = DataGateway.getlastOpenedGraphs();
@@ -51,7 +55,7 @@ public class FileMenuHandler implements UIHandler {
                 lastOpened.getItems().add(newPath);
             }
         } else {
-            MenuItem empty = new MenuItem("Noch keine Datei geöffnet.");
+            MenuItem empty = new MenuItem(NOTHING_OPENED_YET);
             lastOpened.getItems().add(empty);
         }
     }
@@ -63,8 +67,7 @@ public class FileMenuHandler implements UIHandler {
     public void saveFile() {
         FileChooser chooser = new FileChooser();
         String path = chooser.showOpenDialog(new Stage()).getAbsolutePath();
-        new FileSystemCommandProcessor().saveGraph(path, 42);
-        //TODO: ID bekommen processor.saveGraph(path, 42);
+        new FileSystemCommandProcessor().saveGraph(path, ONLY_GRAPH);
     }
 
     /**

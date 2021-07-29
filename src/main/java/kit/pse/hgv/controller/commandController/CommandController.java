@@ -39,7 +39,6 @@ public class CommandController extends Thread implements CommandEventSource {
             if (c != null) {
                 c.execute();
                 notifyAll(c);
-                System.out.println("command processed");
                 try {
                     sleep(1000);
                 } catch (InterruptedException e) {
@@ -59,11 +58,9 @@ public class CommandController extends Thread implements CommandEventSource {
     @Override
     public void notifyAll(ICommand c) {
         for (CommandQListener listener : listeners) {
-            System.out.println("hi bin da");
             Task<Void> task = new Task<>() {
                 @Override protected Void call() throws Exception {
                     listener.onNotify(c);
-                    System.out.println("task done");
                     return null;
                 }
             };

@@ -20,7 +20,11 @@ import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * This class manages the graphic representation of the current graph.
+ */
 public class RenderHandler implements UIHandler{
+
 
     @FXML
     private Pane renderPane;
@@ -38,6 +42,9 @@ public class RenderHandler implements UIHandler{
     private static final int START_CENTER_X = 640;
     private static final int START_CENTER_Y = 360;
     private static final int START_RADIUS = 300;
+    private static final int ONLY_GRAPH = 1;
+    private static final double FACTOR_VIEW = 10;
+    private int startRadiusForCenter = 300;
 
 
     @Override
@@ -60,17 +67,15 @@ public class RenderHandler implements UIHandler{
                 zoom(scrollEvent.getDeltaY());
         });
 
-        manager = new DrawManager(1, new NativeRepresentation(5, Accuracy.DIRECT));
+        manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(5, Accuracy.DIRECT));
 
-        RenderEngine engine = new DefaultRenderEngine(1,1, manager, this);
+        RenderEngine engine = new DefaultRenderEngine(ONLY_GRAPH,ONLY_GRAPH, manager, this);
         CommandController.getInstance().register(engine);
         renderPane.getChildren().add(center);
     }
 
     @FXML
     public void renderGraph(List<Drawable> graph) {
-        System.out.println("was geht");
-        ///TODO nicht immer clearen
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
 
@@ -80,18 +85,14 @@ public class RenderHandler implements UIHandler{
         for (Drawable node : graph) {
             if(node.isNode()){
                 CircleNode currentNode = (CircleNode) node;
-                if(!currentNode.isCentered()) {
-                    currentNode.setCentered();
-                    currentNode.getRepresentation().setFill(node.getColor());
-                    bindNodeX(currentNode);
-                    bindNodeY(currentNode);
-                    bindRadius(currentNode);
-                    selectNode(currentNode);
-                }
+
+                if(!currentNode.isCentered())
+                    setupNode(currentNode);
 
                 nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentStrip = (LineStrip) node;
+
                 bindLines(currentStrip);
 
                 for (Line line : currentStrip.getLines()) {
@@ -110,11 +111,9 @@ public class RenderHandler implements UIHandler{
             center.centerXProperty().unbind();
             center.setVisible(true);
         } else {
-            double x = (center.getCenterX()-renderCircle.getCenterX())/10;
-            double y = (center.getCenterY()-renderCircle.getCenterY()/(-10));
+            double x = ((center.getCenterX() - renderCircle.getCenterX())/FACTOR_VIEW);
+            double y = ((center.getCenterY() - renderCircle.getCenterY())/(-FACTOR_VIEW));
             Coordinate newCenterCoordinate = new CartesianCoordinate(x ,y);
-            /*
-            Coordinate newCenterCoordinate = new CartesianCoordinate(center.getCenterX()/10, center.getCenterY()/(-10));*/
             moveCenter(newCenterCoordinate);
             bindCenter();
         }
@@ -128,12 +127,8 @@ public class RenderHandler implements UIHandler{
     }
 
     private void bindLines(LineStrip strip) {
-        for(Line line : strip.getLines()) {
-            //if(!strip.isCentered()) {
+        for(Line line : strip.getLines())
             setupLine(line);
-            //}
-        }
-        strip.setCentered();
     }
 
     //TODO moveCenter
@@ -159,92 +154,96 @@ public class RenderHandler implements UIHandler{
             if(!mouseEvent.isShiftDown()) {
                 circle.setCenterX(mouseEvent.getX() + dragDeltaCircle.x);
                 circle.setCenterY(mouseEvent.getY() + dragDeltaCircle.y);
-                System.out.println(center.getCenterX());
             } else {
-                double x = mouseEvent.getX() + dragDeltaCenter.x;
-                double y = mouseEvent.getY() + dragDeltaCenter.y;
-                center.setCenterX(x);
-                center.setCenterY(y);
+                center.setCenterX(mouseEvent.getX() + dragDeltaCenter.x);
+                center.setCenterY(mouseEvent.getY() + dragDeltaCenter.y);
             }
         });
     }
 
     private void setupLine(Line line) {
-        line.startYProperty().unbind();
-        line.startXProperty().unbind();
-        line.endXProperty().unbind();
-        line.endYProperty().unbind();
+        line.layoutXProperty().bind(renderCircle.centerXProperty());
+        line.layoutYProperty().bind(renderCircle.centerYProperty());
 
-        line.setStartY(line.getStartY() + renderCircle.getCenterY());
-        line.setEndY(line.getEndY() + renderCircle.getCenterY());
-        line.setStartX(line.getStartX() + renderCircle.getCenterX());
-        line.setEndX(line.getEndX() + renderCircle.getCenterX());
+        line.startXProperty().bind(renderCircle.layoutXProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(FACTOR_VIEW)
+                        .multiply(line.getStartX())));
+        line.startYProperty().bind(renderCircle.layoutYProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(FACTOR_VIEW)
+                        .multiply(line.getStartY())));
+        line.endXProperty().bind(renderCircle.layoutXProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(FACTOR_VIEW)
+                        .multiply(line.getEndX())));
+        line.endYProperty().bind(renderCircle.layoutYProperty()
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(FACTOR_VIEW)
+                        .multiply(line.getEndY())));
+    }
 
-        line.startXProperty().bind(renderCircle.centerXProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                        .multiply(line.getStartX() - renderCircle.getCenterX())));
-        line.startYProperty().bind(renderCircle.centerYProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                        .multiply(line.getStartY() - renderCircle.getCenterY())));
-        line.endXProperty().bind(renderCircle.centerXProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                        .multiply(line.getEndX() - renderCircle.getCenterX())));
-        line.endYProperty().bind(renderCircle.centerYProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
-                        .multiply(line.getEndY() - renderCircle.getCenterY())));
+    private void setupNode(CircleNode currentNode) {
+        currentNode.setCentered();
+        currentNode.getRepresentation().setFill(currentNode.getColor());
+        bindNodeX(currentNode);
+        bindNodeY(currentNode);
+        bindRadius(currentNode);
+        selectNode(currentNode);
     }
 
     private void setupCenter() {
         center = new Circle();
         center.setRadius(5);
         center.setFill(Color.CYAN);
-        //center.layoutXProperty().bind(renderCircle.centerXProperty());
-        //center.layoutYProperty().bind(renderCircle.centerYProperty());
-        bindCenter();
 
+        bindCenter();
         center.setVisible(false);
     }
 
     private void zoom(double zoom) {
-        if(renderCircle.getRadius() + zoom >= 0)
+        if(renderCircle.getRadius() + zoom >= 0 && startRadiusForCenter + zoom >= 0) {
+            startRadiusForCenter += zoom;
             renderCircle.setRadius(renderCircle.getRadius() + zoom);
+        }
     }
 
     private void bindCenter() {
-        /*center.centerXProperty().bind(renderCircle.layoutXProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS)
-                        .multiply(center.getCenterX())));
-        center.centerYProperty().bind(renderCircle.layoutYProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS)
-                        .multiply(center.getCenterY())));*/
-
         center.centerXProperty().bind(renderCircle.centerXProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS)
-                        .multiply(center.getCenterX())));
+                .add(renderCircle.radiusProperty().divide(startRadiusForCenter)
+                        .multiply(center.getCenterX() - renderCircle.getCenterX())));
         center.centerYProperty().bind(renderCircle.centerYProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS)
-                        .multiply(center.getCenterY())));
+                .add(renderCircle.radiusProperty().divide(startRadiusForCenter)
+                        .multiply(center.getCenterY() - renderCircle.getCenterY())));
     }
 
     private void bindNodeX(CircleNode child) {
         child.getRepresentation().layoutXProperty().bind(renderCircle.centerXProperty());
         child.getRepresentation().centerXProperty().bind(renderCircle.layoutXProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(10)
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(FACTOR_VIEW)
                         .multiply(child.getRepresentation().getCenterX())));
 
     }
 
+    /**
+     * This methods binds the y coordinate of a node to the renderCircle.
+     * @param child
+     */
     private void bindNodeY(CircleNode child) {
         child.getRepresentation().layoutYProperty().bind(renderCircle.centerYProperty());
         child.getRepresentation().centerYProperty().bind(renderCircle.layoutYProperty()
-                .add(renderCircle.radiusProperty().divide(START_RADIUS)
-                        .multiply(10).multiply(child.getRepresentation().getCenterY())));
+                .add(renderCircle.radiusProperty().divide(START_RADIUS).multiply(FACTOR_VIEW)
+                        .multiply(child.getRepresentation().getCenterY())));
     }
 
+    /**
+     * This method binds the radius of a node of the graph.
+     * @param child
+     */
     private void bindRadius(CircleNode child) {
         child.getRepresentation().radiusProperty().bind(renderCircle.radiusProperty().divide(100));
     }
 
+    /**
+     * Add a mouseClick event to a node. This is used to display the meta data in the DetailContainer.
+     * @param node
+     */
     private void selectNode(CircleNode node) {
         node.getRepresentation().setOnMouseClicked(mouseEvent -> {
             currentlySelected = node.getID();
