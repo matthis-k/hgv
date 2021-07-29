@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
 

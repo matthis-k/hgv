@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import kit.pse.hgv.extensionServer.PyScript;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
+import kit.pse.hgv.controller.commandController.commands.ShutdownCommand;
 import kit.pse.hgv.extensionServer.ExtensionServer;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
         stage.setOnCloseRequest(windowEvent -> {
-            new ShutdownCommand();
+            CommandController.getInstance().queueCommand(new ShutdownCommand());
         });
 
         cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
@@ -51,4 +52,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
+}
