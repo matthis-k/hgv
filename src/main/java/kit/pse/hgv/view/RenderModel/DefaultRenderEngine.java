@@ -26,6 +26,9 @@ public class DefaultRenderEngine extends RenderEngine {
         } else if (command instanceof CreateElementCommand) {
             toBeUpdated.add(((CreateElementCommand) command).getAddedId());
             render();
+        } else if (command instanceof  MetaSystemCommand) {
+            toBeUpdated.add(((MetaSystemCommand) command).getID());
+            render();
         }
     }
 
@@ -62,9 +65,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        if(toBeUpdated.size() > 0)
-            this.displayedGraph = drawManager.getRenderData(toBeUpdated);
-        else
+       //ändern mit >0?
             this.displayedGraph = drawManager.getRenderData();
     }
 }
