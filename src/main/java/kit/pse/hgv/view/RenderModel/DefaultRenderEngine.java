@@ -22,7 +22,7 @@ public class DefaultRenderEngine extends RenderEngine {
     public void receiveCommand(ICommand command) {
         //TODO ERROR
         toBeUpdated.addAll(command.getModifiedIds());
-        if (command.isUser()) {
+        if (command.isUser() || command instanceof RenderCommand) {
             render();
         }
     }

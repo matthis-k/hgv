@@ -31,6 +31,7 @@ public class MoveNodeCommand extends GraphSystemCommand {
         String rAsString = r.toString();
         GraphSystem.getInstance().getNodeByID(elementId).setMetadata("r", rAsString);
         modifiedIds.add(elementId);
+        modifiedIds.addAll(GraphSystem.getInstance().getEdgeIdsOfNode(elementId));
     }
 
     @Override

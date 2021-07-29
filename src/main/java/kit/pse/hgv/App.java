@@ -43,9 +43,7 @@ public class App extends Application {
         stage.setTitle("HGV");
         stage.show();
 
-        //cmdController.doSpiralGraph(1000);
-        //cmdController.dummy();
-        //cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
+        cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
 
     }
 

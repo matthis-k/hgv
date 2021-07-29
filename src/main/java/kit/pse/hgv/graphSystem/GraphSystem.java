@@ -214,6 +214,28 @@ public class GraphSystem {
         return deleted;
     }
 
+    public int getGraphOfNode(int nodeId) {
+        int graphId = -1;
+        for (int key: graphs.keySet()) {
+            if (graphs.get(key).getNodeById(nodeId) != null) {
+                graphId = key;
+                break;
+            }
+        }
+        return graphId;
+    }
+
+    public List<Integer> getEdgeIdsOfNode(int nodeId) {
+        List<Integer> edgeIds = new Vector<>();
+        int graphId = getGraphOfNode(nodeId);
+        if (graphId < 0) { return  edgeIds; }
+        for (Edge e : getGraphByID(graphId).getEdgesOfNode(getNodeByID(nodeId))) {
+            edgeIds.add(e.getId());
+        }
+        return edgeIds;
+
+    }
+
     /**
      * Returns all Metadata Information of each element of the graph
      *
