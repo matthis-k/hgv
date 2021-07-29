@@ -1,5 +1,6 @@
 package kit.pse.hgv.extensionServer;
 import kit.pse.hgv.controller.commandProcessor.ExtensionCommandType;
+
 public class RecieveCommandState implements ClientState {
     private ClientState nextState = null;
 
@@ -10,7 +11,7 @@ public class RecieveCommandState implements ClientState {
 
     @Override
     public void work(ClientHandler handler) {
-        String recieved = handler.recieve();
+        String recieved = handler.receive();
         if (recieved == null || recieved.length() <= 0) { nextState = new RecieveCommandState(); return; }
         System.out.println("recieved: '" + recieved + "' from: " + handler.getSocket().toString());
         ExtensionCommandType lastCommandType = null;

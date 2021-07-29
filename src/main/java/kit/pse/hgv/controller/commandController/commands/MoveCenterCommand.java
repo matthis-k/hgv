@@ -1,6 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 
+import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
 
@@ -22,8 +23,8 @@ public class MoveCenterCommand extends HyperModelCommand {
 
     @Override
     public void execute() {
+        modifiedIds .addAll(GraphSystem.getInstance().getAllIds());
         RenderEngine.getInstance().getDrawManager().moveCenter(transform);
-        // TODO: add modified Ids
     }
 
     @Override

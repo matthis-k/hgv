@@ -261,4 +261,11 @@ public class GraphSystem {
         return getGraphByID(graphId).isInGraph(id);
     }
 
+    public Collection<Integer> getAllIds() {
+        Vector<Integer> ids = new Vector<>();
+        for (Graph g : graphs.values()) {
+            ids.addAll(g.getIds());
+        }
+        return ids;
+    }
 }

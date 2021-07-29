@@ -73,7 +73,7 @@ public class ClientHandler extends Thread {
      * Reads a String from the Socket. Waits until something is recieved if nothing new was sent.
      * @return the next message recieved
      */
-    String recieve() {
+    String receive() {
         try {
             String res = in.readLine();
             return res;
@@ -81,10 +81,8 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             try {
                 socket.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (IOException _e) {
             }
-            e.printStackTrace();
         }
         return null;
     }
