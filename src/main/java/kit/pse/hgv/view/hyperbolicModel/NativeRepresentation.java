@@ -69,7 +69,6 @@ public class NativeRepresentation implements Representation {
     @Override
     public LineStrip calculate(Edge edge) {
         List<Coordinate> coordinates = new ArrayList<>();
-        double renderDetail = accuracy.getAccuracy();
         Coordinate vector = center.mirroredThroughCenter();
         PolarCoordinate point1 = edge.getNodes()[0].getCoord().moveCoordinate(vector).toPolar();
         PolarCoordinate point2 = edge.getNodes()[1].getCoord().moveCoordinate(vector).toPolar();
@@ -110,7 +109,7 @@ public class NativeRepresentation implements Representation {
 
     private List<Coordinate> coordinatesForShortestLine(PolarCoordinate point1, PolarCoordinate point2) {
         List<Coordinate> coordinates = new ArrayList<>();
-        double renderDetail = 100;
+        double renderDetail = accuracy.getAccuracy();
 
         double angularDistance = point2.getAngle() - point1.getAngle();
         if((angularDistance >0.0 && angularDistance < Math.PI) || angularDistance < -Math.PI) {
