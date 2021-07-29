@@ -125,10 +125,6 @@ public class DrawManager {
         return res;
     }
 
-    public void moveCenterVoid(Coordinate center) {
-        representation.setCenter(center);
-    }
-
     public Representation getRepresentation() {
         return representation;
     }
@@ -141,5 +137,6 @@ public class DrawManager {
 
     public void setAccuracy(Accuracy accuracy) {
         representation.setAccuracy(accuracy);
+        System.out.println(accuracy);
     }
 }

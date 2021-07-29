@@ -25,4 +25,10 @@ public class HyperModelCommandProcessor implements CommandProcessor{
         MoveCenterCommand command = new MoveCenterCommand(coordinate);
         queueCommand(command);
     }
+
+    public void setAccuracy(String accuracy) {
+        SetAccuracyCommand command = new SetAccuracyCommand(accuracy);
+        queueCommand(command);
+    }
+
 }

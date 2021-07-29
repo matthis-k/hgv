@@ -74,15 +74,20 @@ public class DetailHandler implements UIHandler {
     @FXML
     public void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
+        HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
+
+        String mode = choiceBox.getValue().toString().toUpperCase();
+
         if(idText.getText().equals("---")) {
-            String mode = choiceBox.getValue().toString().toUpperCase();
-            System.out.println(mode);
-            //implement
+            hyperProcessor.setAccuracy(mode);
+        } else if (currentRadius == 0 && currentAngle == 0){
+            processor.changeColor(currentID, colorPick.getValue());
+            hyperProcessor.setAccuracy(mode);
         } else {
+            processor.changeColor(currentID, colorPick.getValue());
             processor.editMetaData(currentID, "r", radius.getText());
             processor.editMetaData(currentID, "phi", angle.getText());
-            processor.changeColor(currentID, colorPick.getValue());
-            //implement
+            hyperProcessor.setAccuracy(mode);
         }
     }
 
@@ -97,7 +102,7 @@ public class DetailHandler implements UIHandler {
      * @param color
      * @param toPolar the coordinates of the currently selected nodes.
      */
-    public void updateDisplayedDate(int currentlySelected, Color color, PolarCoordinate toPolar) {
+    public void updateDisplayedData(int currentlySelected, Color color, PolarCoordinate toPolar) {
         currentID = currentlySelected;
         currentColor = color;
         currentAngle = toPolar.getAngle();
@@ -106,5 +111,16 @@ public class DetailHandler implements UIHandler {
         colorPick.setValue(color);
         radius.setText(String.valueOf(toPolar.getDistance()));
         angle.setText(String.valueOf(toPolar.getAngle()));
+    }
+
+    public void updateDisplayData(int currentlySelected, Color color) {
+        currentID = currentlySelected;
+        currentColor = color;
+        currentAngle = 0;
+        currentRadius = 0;
+        idText.setText(String.valueOf(currentlySelected));
+        colorPick.setValue(color);
+        radius.setText("");
+        angle.setText("");
     }
 }

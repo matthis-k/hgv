@@ -30,6 +30,9 @@ public class App extends Application {
         stage.sizeToScene();
         stage.setTitle("HGV");
         stage.show();
+        stage.setOnCloseRequest(windowEvent -> {
+            new ShutdownCommand();
+        });
 
         cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
         PyScript script = new PyScript("client.py");
@@ -49,4 +52,3 @@ public class App extends Application {
         launch();
     }
 
-}
