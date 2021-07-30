@@ -32,6 +32,5 @@ public class CreateEdgeCommand extends GraphSystemCommand {
 
     @Override
     public void undo() {
-        //TODO
     }
 }

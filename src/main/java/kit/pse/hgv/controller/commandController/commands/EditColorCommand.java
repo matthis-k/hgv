@@ -33,7 +33,7 @@ public class EditColorCommand extends MetaSystemCommand{
 
     @Override
     public void undo() {
-        // TODO Auto-generated method stub
+
     }
     
 }

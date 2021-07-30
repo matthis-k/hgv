@@ -12,7 +12,7 @@ public class StartExtensionCommand extends ExtensionCommand{
     /**
      * The constructor creates an element of this class
      * 
-     * @param id The id of the extension that should start
+     * @param path The id of the extension that should start
      */
     public StartExtensionCommand(String path) {
         this.path = path;
