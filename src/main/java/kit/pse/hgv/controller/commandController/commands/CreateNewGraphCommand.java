@@ -16,8 +16,7 @@ public class CreateNewGraphCommand extends FileSystemCommand{
 
     @Override
     public void undo() {
-        // TODO Auto-generated method stub
-        
+
     }
     
 }

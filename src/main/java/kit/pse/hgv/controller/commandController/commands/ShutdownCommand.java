@@ -17,7 +17,5 @@ public class ShutdownCommand extends Command {
 
     @Override
     public void undo() {
-        // TODO Auto-generated method stub
-        
     }
 }

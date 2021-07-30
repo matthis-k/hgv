@@ -141,6 +141,9 @@ public enum ExtensionCommandType {
         }
     },
 
+    /**
+     * This enum handles the command string that returns the graph
+     */
     GET_GRAPH(ExtensionCommandType.START + "GetGraph" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
