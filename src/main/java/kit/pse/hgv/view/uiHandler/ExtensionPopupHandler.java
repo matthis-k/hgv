@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ import kit.pse.hgv.extensionServer.ExtensionServer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -25,15 +27,28 @@ public class ExtensionPopupHandler implements UIHandler {
 
     @FXML
     private Accordion accordion;
+    @FXML
+    private AnchorPane anchor;
+    @FXML
+    private Pane accPane;
     private Accordion activeAccordion;
     private Accordion availableAccordion;
     private ExtensionPopupHandler instance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         instance = this;
-         activeAccordion = new Accordion();
-         availableAccordion = new Accordion();
+        activeAccordion = new Accordion();
+        availableAccordion = new Accordion();
+
+        accPane.prefWidthProperty().bind(anchor.widthProperty());
+        AnchorPane.setBottomAnchor(accPane, 0.0);
+
+        setupAccordion(accordion);
+        setupAccordion(activeAccordion);
+        setupAccordion(availableAccordion);
+
         TitledPane activeExtensions = new TitledPane();
         activeExtensions.setText("Aktive Erweiterungen");
         activeExtensions.setContent(activeAccordion);
@@ -97,6 +112,11 @@ public class ExtensionPopupHandler implements UIHandler {
         pane.setPrefWidth(500);
 
         Button start = new Button("Starte Erweiterung");
+
+        start.setOnMouseClicked(mouseEvent -> {
+            new ExtensionCommandProcessor().startExtension(path);
+        });
+
         AnchorPane.setRightAnchor(start, 10.0);
         AnchorPane.setBottomAnchor(start, 10.0);
         Text text = new Text(path);
@@ -114,6 +134,11 @@ public class ExtensionPopupHandler implements UIHandler {
         for(int key : map.keySet()) {
             registerClient(key, map.get(key));
         }
+    }
+
+    private void setupAccordion(Accordion accordion) {
+        accordion.prefWidthProperty().bind(anchor.widthProperty());
+        accordion.prefHeightProperty().bind(anchor.heightProperty().subtract(50));
     }
 
     public ExtensionPopupHandler getInstance() {

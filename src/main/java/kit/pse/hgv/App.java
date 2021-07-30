@@ -34,10 +34,6 @@ public class App extends Application {
         stage.setOnCloseRequest(windowEvent -> {
             CommandController.getInstance().queueCommand(new ShutdownCommand());
         });
-
-        cmdController.queueCommand(new LoadGraphCommand("src/main/resources/Vorlage.graphml"));
-        PyScript script = new PyScript("client.py");
-        script.startExtension();
     }
 
     static void setRoot(String fxml) throws IOException {
