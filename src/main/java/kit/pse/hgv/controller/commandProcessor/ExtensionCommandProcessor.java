@@ -25,8 +25,8 @@ public class ExtensionCommandProcessor implements CommandProcessor{
      * Processes the command to start the extension
      * @param id id of the extension to be executed
      */
-    public void startExtension(int id){
-        StartExtensionCommand command = new StartExtensionCommand(id);
+    public void startExtension(String path){
+        StartExtensionCommand command = new StartExtensionCommand(path);
         queueCommand(command);
     }
 }
