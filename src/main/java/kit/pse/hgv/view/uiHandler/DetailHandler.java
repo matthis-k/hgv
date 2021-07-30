@@ -20,6 +20,14 @@ import java.util.ResourceBundle;
  */
 public class DetailHandler implements UIHandler {
 
+    private static final String DIRECT = "direct";
+    private static final String LOW = "low";
+    private static final String MEDIUM = "medium";
+    private static final String HIGH = "high";
+    private static final String NO_ID = "---";
+    private static final String RADIUS = "r";
+    private static final String PHI = "phi";
+    private static final double EIGHTTEEN = 18;
     @FXML
     private ColorPicker colorPick;
     @FXML
@@ -36,6 +44,8 @@ public class DetailHandler implements UIHandler {
     private Text idText;
     @FXML
     private ChoiceBox<String> choiceBox;
+    @FXML
+    private Text accuracyText;
 
     /**
      * Attributes to store the currently displayed information of a node.
@@ -62,32 +72,34 @@ public class DetailHandler implements UIHandler {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
         updateButton.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION));
-        choiceBox.getItems().add("direct");
-        choiceBox.getItems().add("low");
-        choiceBox.getItems().add("medium");
-        choiceBox.getItems().add("high");
-        choiceBox.setValue("direct");
+        choiceBox.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION).subtract(UPDATE_POSITION));
+        accuracyText.layoutYProperty().bind(choiceBox.layoutYProperty().add(EIGHTTEEN));
+        choiceBox.getItems().add(DIRECT);
+        choiceBox.getItems().add(LOW);
+        choiceBox.getItems().add(MEDIUM);
+        choiceBox.getItems().add(HIGH);
+        choiceBox.setValue(DIRECT);
     }
 
     /**
      * The method updates the meta data of a node if the user clicks the updateButton
      */
     @FXML
-    public void updateData() {
+    private void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
         HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
 
-        String mode = choiceBox.getValue().toString().toUpperCase();
+        String mode = choiceBox.getValue().toUpperCase();
 
-        if(idText.getText().equals("---")) {
+        if(idText.getText().equals(NO_ID)) {
             hyperProcessor.setAccuracy(mode);
         } else if (currentRadius == 0 && currentAngle == 0){
             processor.changeColor(currentID, colorPick.getValue());
             hyperProcessor.setAccuracy(mode);
         } else {
             processor.changeColor(currentID, colorPick.getValue());
-            processor.editMetaData(currentID, "r", radius.getText());
-            processor.editMetaData(currentID, "phi", angle.getText());
+            processor.editMetaData(currentID, RADIUS, radius.getText());
+            processor.editMetaData(currentID, PHI, angle.getText());
             hyperProcessor.setAccuracy(mode);
 
         }
@@ -99,12 +111,12 @@ public class DetailHandler implements UIHandler {
     }
 
     /**
-     * This method updates the currently displayed information.
+     * This method updates the currently displayed information (if the object is a node).
      * @param currentlySelected the ID of the currently selected node
      * @param color
      * @param toPolar the coordinates of the currently selected nodes.
      */
-    public void updateDisplayedData(int currentlySelected, Color color, PolarCoordinate toPolar) {
+    void updateDisplayedData(int currentlySelected, Color color, PolarCoordinate toPolar) {
         currentID = currentlySelected;
         currentColor = color;
         currentAngle = toPolar.getAngle();
@@ -115,7 +127,12 @@ public class DetailHandler implements UIHandler {
         angle.setText(String.valueOf(toPolar.getAngle()));
     }
 
-    public void updateDisplayData(int currentlySelected, Color color) {
+    /**
+     * This method updates the currently displayed information (if the object is an edge).
+     * @param currentlySelected the ID of the currently selected edge
+     * @param color
+     */
+     void updateDisplayData(int currentlySelected, Color color) {
         currentID = currentlySelected;
         currentColor = color;
         currentAngle = 0;

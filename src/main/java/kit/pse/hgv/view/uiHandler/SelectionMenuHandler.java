@@ -24,7 +24,6 @@ public class SelectionMenuHandler implements UIHandler {
      */
     @FXML
     public void dismissSelection() {
-        System.out.println("Selection dismissed");
     }
 
     /**
@@ -32,7 +31,6 @@ public class SelectionMenuHandler implements UIHandler {
      */
     @FXML
     public void invertSelection() {
-        System.out.println("Selection inverted");
     }
 
     /**
@@ -40,7 +38,6 @@ public class SelectionMenuHandler implements UIHandler {
      */
     @FXML
     public void selectAll() {
-        System.out.println("Selected all");
     }
 
     public void show() {

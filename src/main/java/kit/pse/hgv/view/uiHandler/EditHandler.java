@@ -31,18 +31,14 @@ public class EditHandler implements UIHandler {
     }
 
     public void addNode(String radius, String angle) {
-        //TODO
     }
 
     public void deleteNode(int nodeID) {
-        //TODO
     }
 
     public void addEdge(int startID, int endID) {
-        //TODO
     }
 
     public void deleteEdge(int edgeID) {
-        //TODO
     }
 }

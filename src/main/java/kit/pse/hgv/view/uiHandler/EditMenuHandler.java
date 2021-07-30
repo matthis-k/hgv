@@ -24,15 +24,13 @@ public class EditMenuHandler implements UIHandler {
      */
     @FXML
     public void undo() {
-        System.out.println("Undo");
     }
-        //TODO ÄNDERN
+
     /**
      * This method reverts undo().
      */
     @FXML
     public void redo() {
-        System.out.println("Redo");
     }
 
     public void show() {

@@ -11,7 +11,7 @@
          <children>
             <Button fx:id="addExtensionButton" layoutX="338.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#selectExtension" prefHeight="25.0" prefWidth="148.0" text="Erweiterung hinzufügen" textFill="#2e3440" />
             <Button fx:id="deleteExtensionButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Erweiterung entfernen" textFill="#2e3440" />
-            <Button fx:id="refreshButton" layoutX="173.0" layoutY="14.0" mnemonicParsing="false" onAction="#refresh" onMouseClicked="#selectExtension" prefHeight="25.0" prefWidth="148.0" text="Erweiterungen neu laden" textFill="#2e3440" />
+            <Button fx:id="refreshButton" layoutX="173.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="25.0" prefWidth="148.0" text="Erweiterungen neu laden" textFill="#2e3440" />
          </children>
       </Pane>
       <Accordion fx:id="accordion" prefHeight="297.0" prefWidth="500.0" style="-fx-background-color: #D8DEE9;" />

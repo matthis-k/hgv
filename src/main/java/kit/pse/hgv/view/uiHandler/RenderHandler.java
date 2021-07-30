@@ -34,6 +34,9 @@ public class RenderHandler implements UIHandler{
     private CheckBox centerCheckBox;
 
 
+    /**
+     * ID of the currently selected node/edge.
+     */
     private int currentlySelected;
     private Circle center;
 
@@ -45,6 +48,10 @@ public class RenderHandler implements UIHandler{
     private static final int ONLY_GRAPH = 1;
     private static final double FACTOR_VIEW = 10;
     private int startRadiusForCenter = 300;
+    private static final int NODE_SIZE = 5;
+    private static final int CHECKBOX_X_OFFSET = 450;
+    private static final int CHECKBOX_Y_OFFSET = 25;
+    private static final int CENTER_ID = -1;
 
 
     @Override
@@ -55,8 +62,8 @@ public class RenderHandler implements UIHandler{
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
 
-        centerCheckBox.layoutXProperty().bind(renderPane.prefWidthProperty().subtract(450));
-        centerCheckBox.layoutYProperty().bind(renderPane.prefHeightProperty().subtract(25));
+        centerCheckBox.layoutXProperty().bind(renderPane.prefWidthProperty().subtract(CHECKBOX_X_OFFSET));
+        centerCheckBox.layoutYProperty().bind(renderPane.prefHeightProperty().subtract(CHECKBOX_Y_OFFSET));
 
         enableDragCC(renderCircle, center);
 
@@ -65,22 +72,27 @@ public class RenderHandler implements UIHandler{
                 zoom(scrollEvent.getDeltaY());
         });
 
-        manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(5, Accuracy.DIRECT));
+        manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(NODE_SIZE, Accuracy.DIRECT));
 
         RenderEngine engine = new DefaultRenderEngine(ONLY_GRAPH,ONLY_GRAPH, manager, this);
         CommandController.getInstance().register(engine);
         renderPane.getChildren().add(center);
     }
 
+    /**
+     * This method rerenders the displayed graph.
+     * @param graph
+     */
     @FXML
     public void renderGraph(List<Drawable> graph) {
-        System.out.println("as geht");
+        //clear the renderPane
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
 
         ArrayList<Circle> nodes = new ArrayList<>();
         ArrayList<Line> lines = new ArrayList<>();
 
+        //setup and sort elements
         for (Drawable node : graph) {
             if(node.isNode()){
                 CircleNode currentNode = (CircleNode) node;
@@ -104,6 +116,9 @@ public class RenderHandler implements UIHandler{
         buildRenderPane(nodes, lines);
     }
 
+    /**
+     * This method manages whether the center is visible and draggable.
+     */
     public void changeCenterVisibility() {
         center.setVisible(false);
         if(centerCheckBox.isSelected()){
@@ -119,6 +134,11 @@ public class RenderHandler implements UIHandler{
         }
     }
 
+    /**
+     * This method rebuilds the renderPane after a new graph is displayed.
+     * @param nodes
+     * @param lines
+     */
     private void buildRenderPane(ArrayList<Circle> nodes, ArrayList<Line> lines) {
         renderPane.getChildren().addAll(lines);
         renderPane.getChildren().addAll(nodes);
@@ -126,12 +146,16 @@ public class RenderHandler implements UIHandler{
         renderPane.getChildren().add(centerCheckBox);
     }
 
+
     private void bindLines(LineStrip strip) {
         for(Line line : strip.getLines())
             setupLine(line);
     }
 
-    //TODO moveCenter
+    /**
+     * This method moves the center and rerenders accordingly.
+     * @param coordinate the new coordinate of the center.
+     */
     public void moveCenter(Coordinate coordinate) {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
@@ -140,6 +164,11 @@ public class RenderHandler implements UIHandler{
         renderGraph(list);
     }
 
+    /**
+     * This method adds drag events to the graph and the center.
+     * @param circle
+     * @param center
+     */
     private void enableDragCC(final Circle circle, Circle center) {
         final Delta dragDeltaCircle = new Delta();
         final Delta dragDeltaCenter = new Delta();
@@ -161,6 +190,10 @@ public class RenderHandler implements UIHandler{
         });
     }
 
+    /**
+     * This method sets up a line (which is a part of a LineStrip).
+     * @param line
+     */
     private void setupLine(Line line) {
         line.layoutXProperty().bind(renderCircle.centerXProperty());
         line.layoutYProperty().bind(renderCircle.centerYProperty());
@@ -179,6 +212,10 @@ public class RenderHandler implements UIHandler{
                         .multiply(line.getEndY())));
     }
 
+    /**
+     * This method sets up a node.
+     * @param currentNode
+     */
     private void setupNode(CircleNode currentNode) {
         currentNode.setCentered();
         currentNode.getRepresentation().setFill(currentNode.getColor());
@@ -188,15 +225,22 @@ public class RenderHandler implements UIHandler{
         selectNode(currentNode);
     }
 
+    /**
+     * This method sets up the center of the hyperbolic representation.
+     */
     private void setupCenter() {
         center = new Circle();
-        center.setRadius(5);
+        center.setRadius(NODE_SIZE);
         center.setFill(Color.CYAN);
 
         bindCenter();
         center.setVisible(false);
     }
 
+    /**
+     * This method implements the zoom function.
+     * @param zoom
+     */
     private void zoom(double zoom) {
         if(renderCircle.getRadius() + zoom >= 0 && startRadiusForCenter + zoom >= 0) {
             startRadiusForCenter += zoom;
@@ -204,6 +248,9 @@ public class RenderHandler implements UIHandler{
         }
     }
 
+    /**
+     * This method binds the center of the hyperbolic representation.
+     */
     private void bindCenter() {
         center.centerXProperty().bind(renderCircle.centerXProperty()
                 .add(renderCircle.radiusProperty().divide(startRadiusForCenter)
@@ -213,6 +260,10 @@ public class RenderHandler implements UIHandler{
                         .multiply(center.getCenterY() - renderCircle.getCenterY())));
     }
 
+    /**
+     * This methods binds the y coordinate of a node to the renderCircle.
+     * @param child
+     */
     private void bindNodeX(CircleNode child) {
         child.getRepresentation().layoutXProperty().bind(renderCircle.centerXProperty());
         child.getRepresentation().centerXProperty().bind(renderCircle.layoutXProperty()
@@ -251,6 +302,10 @@ public class RenderHandler implements UIHandler{
         });
     }
 
+    /**
+     * Add a mouseClick event to an edge. This is used to display the meta data in the DetailContainer.
+     * @param strip
+     */
     private void selectEdge(LineStrip strip) {
         for(Line line : strip.getLines()) {
             line.setOnMouseClicked(mouseEvent -> {
@@ -262,6 +317,9 @@ public class RenderHandler implements UIHandler{
 
 }
 
+/**
+ * this is used to calculate the delta when a node is dragged.
+ */
 class Delta { double x, y; }
 
 

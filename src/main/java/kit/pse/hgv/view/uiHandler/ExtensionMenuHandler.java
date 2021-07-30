@@ -32,7 +32,6 @@ public class ExtensionMenuHandler implements UIHandler {
         root = FXMLLoader.load(App.class.getResource("ExtensionPopupContainer.fxml"));
         popupStage.setScene(new Scene(root));
         popupStage.setTitle(EXTENSIONS);
-        //popupStage.getIcons().add(new Image(App.class.getResourceAsStream("hgv.png")));
         popupStage.show();
     }
 }

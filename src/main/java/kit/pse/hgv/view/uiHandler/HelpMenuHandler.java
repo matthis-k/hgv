@@ -24,7 +24,6 @@ public class HelpMenuHandler implements UIHandler {
      */
     @FXML
     public void popUp() {
-        System.out.println("Help popped up");
     }
 
     public void show() {
