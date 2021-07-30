@@ -12,7 +12,7 @@ public class ShutdownCommand extends Command {
     public void execute() {
         ExtensionServer.getInstance().stopServer();
         CommandController.getInstance().stopController();
-        
+        System.exit(0);
     }
 
     @Override

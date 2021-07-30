@@ -66,7 +66,7 @@ public class DetailHandler implements UIHandler {
         choiceBox.getItems().add("low");
         choiceBox.getItems().add("medium");
         choiceBox.getItems().add("high");
-        choiceBox.setValue("high");
+        choiceBox.setValue("direct");
     }
 
     /**

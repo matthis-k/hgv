@@ -51,8 +51,6 @@ public class RenderHandler implements UIHandler{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupCenter();
 
-        renderCircle.setFill(Color.DARKGREY);
-
         renderCircle.setRadius(START_RADIUS);
         renderCircle.setCenterX(START_CENTER_X);
         renderCircle.setCenterY(START_CENTER_Y);
