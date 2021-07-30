@@ -13,6 +13,8 @@ repo/
 
 *.tmp
 
+lastOpendFile.txt
+
 # Word temporary
 ~$.doc
 #

@@ -15,50 +15,17 @@ import java.util.List;
 public class NativeRepresentation implements Representation {
 
     private Coordinate center = new PolarCoordinate(0,0);
-    private double nodeSize = 0.1;
+    private double nodeSize;
     /**
      * this is the number of lines that is used to demonstrate one edge,
      * any value below 1 is invalid, the value 1 is for a direct line
      */
-    private Accuracy accuracy = Accuracy.DIRECT;
-
-    public NativeRepresentation() {
-
-    }
-
-    public NativeRepresentation(double nodeSize) {
-        this.nodeSize = nodeSize;
-    }
-
-    public NativeRepresentation(Coordinate center) {
-        this.center = center;
-    }
-
-    public NativeRepresentation(Accuracy accuracy) {
-        this.accuracy = accuracy;
-    }
-
-    public NativeRepresentation(Accuracy accuracy, Coordinate center) {
-        this.accuracy = accuracy;
-        this.center = center;
-    }
+    private Accuracy accuracy;
 
     public NativeRepresentation(double nodeSize, Accuracy accuracy) {
         this.nodeSize = nodeSize;
         this.accuracy = accuracy;
     }
-
-    public NativeRepresentation(double nodeSize, Coordinate center) {
-        this.nodeSize = nodeSize;
-        this.center = center;
-    }
-
-    public NativeRepresentation(double nodeSize, Accuracy accuracy, Coordinate center) {
-        this.nodeSize = nodeSize;
-        this.accuracy = accuracy;
-        this.center = center;
-    }
-
 
     @Override
     public CircleNode calculate(Node node) {
