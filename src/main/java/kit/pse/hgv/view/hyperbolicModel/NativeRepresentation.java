@@ -86,14 +86,16 @@ public class NativeRepresentation implements Representation {
             point2 = temp;
         }
         PolarCoordinate point1Temp = null;
-        if(point1.getDistance() > 9) {
-            point1Temp = point1;
-            point1 = new PolarCoordinate(point1.getAngle(), 9);
-        }
+        if (accuracy != Accuracy.DIRECT) {
+            if(point1.getDistance() > 9) {
+                point1Temp = point1;
+                point1 = new PolarCoordinate(point1.getAngle(), 9);
+            }
 
-        if(point2.getDistance() > 9) {
-            coordinates.add(point2.moveCoordinate(center).mirroredY());
-            point2 = new PolarCoordinate(point2.getAngle(), 9);
+            if(point2.getDistance() > 9) {
+                coordinates.add(point2.moveCoordinate(center).mirroredY());
+                point2 = new PolarCoordinate(point2.getAngle(), 9);
+            }
         }
         coordinates.addAll(coordinatesForShortestLine(point2, point1));
         if(point1Temp != null) {
