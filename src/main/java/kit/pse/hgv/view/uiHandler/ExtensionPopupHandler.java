@@ -2,11 +2,9 @@ package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kit.pse.hgv.App;
@@ -61,21 +59,7 @@ public class ExtensionPopupHandler implements UIHandler {
     public void selectExtension() {
         FileChooser chooser = new FileChooser();
         File extension = chooser.showOpenDialog(new Stage());
-        new ExtensionCommandProcessor().registerExtension(extension.getAbsolutePath());
-    }
-
-    /**
-     * This method adds a new PopupElement instance for an extension.
-     * @throws IOException if PopupElement.fxml couldn't be accessed
-     */
-    @FXML
-    public void addExtension() throws IOException {
-        if(accordion.getPanes().size() < 10) {
-            TitledPane newTitled = FXMLLoader.load(App.class.getResource("PopupElement.fxml"));
-            accordion.getPanes().add(newTitled);
-        } else {
-            //TODO EXception
-        }
+        availableAccordion.getPanes().add(addAvailable(extension.getAbsolutePath(), extension.getName()));
     }
 
     public TitledPane registerClient(int id, ClientInfo info){
@@ -101,6 +85,25 @@ public class ExtensionPopupHandler implements UIHandler {
         pane.getChildren().add(pause);
         pane.getChildren().add(stop);
 
+        newTitledPane.setContent(pane);
+        return newTitledPane;
+    }
+
+    public TitledPane addAvailable(String path, String name) {
+        TitledPane newTitledPane = new TitledPane();
+        newTitledPane.setText(name);
+        AnchorPane pane = new AnchorPane();
+        pane.setPrefHeight(60);
+        pane.setPrefWidth(500);
+
+        Button start = new Button("Starte Erweiterung");
+        AnchorPane.setRightAnchor(start, 10.0);
+        AnchorPane.setBottomAnchor(start, 10.0);
+        Text text = new Text(path);
+        pane.getChildren().add(start);
+        pane.getChildren().add(text);
+        AnchorPane.setTopAnchor(text, 10.0);
+        AnchorPane.setLeftAnchor(text, 5.0);
         newTitledPane.setContent(pane);
         return newTitledPane;
     }
