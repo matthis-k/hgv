@@ -4,7 +4,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu mnemonicParsing="false" text="Datei" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.FileMenuHandler">
+<Menu fx:id="fileMenu" mnemonicParsing="false" onAction="#show" text="Datei" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.FileMenuHandler">
   <items>
     <MenuItem fx:id="fileOpenItem" mnemonicParsing="false" onAction="#openFile" text="Datei öffnen" />
       <MenuItem fx:id="fileSaveItem" mnemonicParsing="false" onAction="#saveFile" text="Datei speichern">

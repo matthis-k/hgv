@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
  */
 public class FileMenuHandler implements UIHandler {
 
+    @FXML
+    private Menu fileMenu;
     private static final int ONLY_GRAPH = 1;
     private static final String NOTHING_OPENED_YET = "Noch keine Datei geöffnet.";
     @FXML
@@ -72,6 +74,10 @@ public class FileMenuHandler implements UIHandler {
     @FXML
     public void createNewGraph() {
         new FileSystemCommandProcessor().createNewGraph();
+    }
+
+    public void show() {
+        fileMenu.show();
     }
 
 }

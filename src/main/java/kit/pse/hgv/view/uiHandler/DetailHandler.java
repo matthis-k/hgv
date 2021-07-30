@@ -89,6 +89,7 @@ public class DetailHandler implements UIHandler {
             processor.editMetaData(currentID, "r", radius.getText());
             processor.editMetaData(currentID, "phi", angle.getText());
             hyperProcessor.setAccuracy(mode);
+
         }
     }
 
