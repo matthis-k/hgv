@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This class manages the RenderSystem. It decides when to rerender.
+ */
 public abstract class RenderEngine implements CommandQListener {
 
     protected Set<Integer> toBeUpdated;

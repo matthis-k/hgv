@@ -175,8 +175,9 @@ public class ExtensionPopupHandler implements UIHandler {
     public void refresh(){
         activeAccordion.getPanes().clear();
         HashMap<Integer, ClientInfo> map = ExtensionServer.getInstance().getClients();
+        System.out.println(map.size());
         for(int key : map.keySet()) {
-            registerClient(key, map.get(key));
+            activeAccordion.getPanes().add(registerClient(key, map.get(key)));
         }
     }
 
