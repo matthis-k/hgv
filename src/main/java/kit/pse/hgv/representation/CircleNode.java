@@ -6,6 +6,7 @@ import javafx.scene.shape.Circle;
 
 public class CircleNode extends Drawable{
     private CartesianCoordinate center;
+    private CartesianCoordinate viewCenter;
     private double radius;
     private Circle representation;
 
@@ -20,8 +21,9 @@ public class CircleNode extends Drawable{
     public CircleNode(CartesianCoordinate center, double radius, int id, Color color) {
         super(id, color, true);
         this.center = center;
+        this.viewCenter = center.mirroredY().toCartesian();
         this.radius = radius;
-        representation = new Circle(center.getX(), center.getY(), radius, color);
+        representation = new Circle(viewCenter.getX(), viewCenter.getY(), radius, color);
         representation.setStroke(color); //nur um rand zu togglen
     }
 
@@ -50,4 +52,11 @@ public class CircleNode extends Drawable{
      * @return CartesianCoordinate of the Node
      */
     public CartesianCoordinate getCenter() { return this.center;}
+
+    /**
+     * Returns the Cartesian Coordinate of the Node
+     *
+     * @return CartesianCoordinate of the Node
+     */
+    public CartesianCoordinate getVisualCenter() { return this.viewCenter;}
 }

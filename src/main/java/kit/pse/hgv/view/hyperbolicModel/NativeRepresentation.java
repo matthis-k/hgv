@@ -29,7 +29,7 @@ public class NativeRepresentation implements Representation {
 
     @Override
     public CircleNode calculate(Node node) {
-        return new CircleNode(node.getCoord().mirroredY().toCartesian(), nodeSize, node.getId(),
+        return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(),
                 null);
     }
 
