@@ -16,5 +16,10 @@ public class RenderCommand extends HyperModelCommand {
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public boolean isUser() {
+        return true;
+    }
     
 }
