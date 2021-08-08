@@ -6,12 +6,12 @@ import kit.pse.hgv.representation.Coordinate;
 
 public class CreateNodeCommand extends GraphSystemCommand {
     private Coordinate coord;
-    
+
     /**
      * The constructor creates an element of this class
      * 
      * @param graphId the graphId from the graph where the node should be created
-     * @param coord the coordinate of the new node
+     * @param coord   the coordinate of the new node
      */
     public CreateNodeCommand(int graphId, Coordinate coord) {
         super(graphId);

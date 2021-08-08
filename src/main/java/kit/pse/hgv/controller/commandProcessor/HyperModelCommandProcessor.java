@@ -6,9 +6,10 @@ import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 
 /**
- * This class handles the input from the ui affecting the hyperbolic model visualization
+ * This class handles the input from the ui affecting the hyperbolic model
+ * visualization
  */
-public class HyperModelCommandProcessor implements CommandProcessor{
+public class HyperModelCommandProcessor implements CommandProcessor {
 
     @Override
     public void queueCommand(ICommand command) {
@@ -21,7 +22,7 @@ public class HyperModelCommandProcessor implements CommandProcessor{
      * 
      * @param coordinate where to move the center
      */
-    public void moveCenter(Coordinate coordinate){
+    public void moveCenter(Coordinate coordinate) {
         MoveCenterCommand command = new MoveCenterCommand(coordinate);
         queueCommand(command);
     }

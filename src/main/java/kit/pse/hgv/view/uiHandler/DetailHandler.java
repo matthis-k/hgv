@@ -56,8 +56,8 @@ public class DetailHandler implements UIHandler {
     private double currentRadius;
 
     /**
-     * Kind of a singleton. There should only be a single DetailHandler and it has to be accessible without a direct link
-     * between the accessor and the accessed.
+     * Kind of a singleton. There should only be a single DetailHandler and it has
+     * to be accessible without a direct link between the accessor and the accessed.
      */
     private static DetailHandler instance;
 
@@ -66,13 +66,15 @@ public class DetailHandler implements UIHandler {
     /**
      * Constructor cannot be declared private due to JavaFX issues.
      */
-    public DetailHandler(){}
+    public DetailHandler() {
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
         updateButton.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION));
-        choiceBox.layoutYProperty().bind(detailPane.heightProperty().subtract(UPDATE_POSITION).subtract(UPDATE_POSITION));
+        choiceBox.layoutYProperty()
+                .bind(detailPane.heightProperty().subtract(UPDATE_POSITION).subtract(UPDATE_POSITION));
         accuracyText.layoutYProperty().bind(choiceBox.layoutYProperty().add(EIGHTTEEN));
         choiceBox.getItems().add(DIRECT);
         choiceBox.getItems().add(LOW);
@@ -82,7 +84,8 @@ public class DetailHandler implements UIHandler {
     }
 
     /**
-     * The method updates the meta data of a node if the user clicks the updateButton
+     * The method updates the meta data of a node if the user clicks the
+     * updateButton
      */
     @FXML
     private void updateData() {
@@ -91,9 +94,9 @@ public class DetailHandler implements UIHandler {
 
         String mode = choiceBox.getValue().toUpperCase();
 
-        if(idText.getText().equals(NO_ID)) {
+        if (idText.getText().equals(NO_ID)) {
             hyperProcessor.setAccuracy(mode);
-        } else if (currentRadius == 0 && currentAngle == 0){
+        } else if (currentRadius == 0 && currentAngle == 0) {
             processor.changeColor(currentID, colorPick.getValue());
             hyperProcessor.setAccuracy(mode);
         } else {
@@ -105,16 +108,17 @@ public class DetailHandler implements UIHandler {
         }
     }
 
-
     public static DetailHandler getInstance() {
         return instance;
     }
 
     /**
-     * This method updates the currently displayed information (if the object is a node).
+     * This method updates the currently displayed information (if the object is a
+     * node).
+     * 
      * @param currentlySelected the ID of the currently selected node
      * @param color
-     * @param toPolar the coordinates of the currently selected nodes.
+     * @param toPolar           the coordinates of the currently selected nodes.
      */
     void updateDisplayedData(int currentlySelected, Color color, PolarCoordinate toPolar) {
         currentID = currentlySelected;
@@ -128,11 +132,13 @@ public class DetailHandler implements UIHandler {
     }
 
     /**
-     * This method updates the currently displayed information (if the object is an edge).
+     * This method updates the currently displayed information (if the object is an
+     * edge).
+     * 
      * @param currentlySelected the ID of the currently selected edge
      * @param color
      */
-     void updateDisplayData(int currentlySelected, Color color) {
+    void updateDisplayData(int currentlySelected, Color color) {
         currentID = currentlySelected;
         currentColor = color;
         currentAngle = 0;

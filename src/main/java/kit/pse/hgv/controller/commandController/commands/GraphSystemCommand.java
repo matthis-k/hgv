@@ -5,6 +5,7 @@ package kit.pse.hgv.controller.commandController.commands;
  */
 public abstract class GraphSystemCommand extends Command {
     protected int graphId;
+
     /**
      * The constructor creates an element of this class with a specific graphId
      * 
@@ -13,7 +14,7 @@ public abstract class GraphSystemCommand extends Command {
     public GraphSystemCommand(int graphId) {
         this.graphId = graphId;
     }
-    
+
     /**
      * The constructor creates an element of this class without a specific graph
      */

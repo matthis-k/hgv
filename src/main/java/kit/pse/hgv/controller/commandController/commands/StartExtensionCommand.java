@@ -6,7 +6,7 @@ import kit.pse.hgv.extensionServer.PyScript;
 /**
  * This class handles the command for the start of an extension
  */
-public class StartExtensionCommand extends ExtensionCommand{
+public class StartExtensionCommand extends ExtensionCommand {
     private String path;
 
     /**
@@ -19,7 +19,7 @@ public class StartExtensionCommand extends ExtensionCommand{
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         Extension extension = new PyScript(path);
         extension.startExtension();
     }

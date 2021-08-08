@@ -6,6 +6,7 @@ import java.util.Set;
 
 public interface ICommand {
     public void execute();
+
     public void undo();
 
     /**
@@ -23,8 +24,8 @@ public interface ICommand {
     public boolean isUser();
 
     /**
-     * Checks if the Change is made by the user or the extension. If it's made by the extension, it sends
-     * a response message to it
+     * Checks if the Change is made by the user or the extension. If it's made by
+     * the extension, it sends a response message to it
      *
      */
     public JSONObject getResponse();

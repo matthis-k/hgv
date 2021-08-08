@@ -4,9 +4,11 @@ import java.io.IOException;
 
 public class PyScript implements Extension {
     private String path;
+
     public PyScript(String path) {
         this.path = path;
     }
+
     @Override
     public void startExtension() {
         try {

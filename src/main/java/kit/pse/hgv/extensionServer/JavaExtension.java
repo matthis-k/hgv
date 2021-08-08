@@ -4,6 +4,7 @@ import java.io.IOException;
 
 public class JavaExtension extends Thread implements Extension {
     private String path;
+
     public JavaExtension(String path) {
         this.path = path;
     }

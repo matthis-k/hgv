@@ -1,7 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.extensionServer.Extension;
-
 /**
  * This class handles the stop of an extension
  */

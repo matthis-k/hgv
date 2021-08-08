@@ -9,7 +9,6 @@ import kit.pse.hgv.view.hyperbolicModel.DrawManager;
  */
 public class DefaultRenderEngine extends RenderEngine {
 
-
     public DefaultRenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
         super(tab, graph, drawManager, handler);
     }
@@ -27,8 +26,8 @@ public class DefaultRenderEngine extends RenderEngine {
 
     @Override
     public void onNotify(ICommand c) {
-        if(c.isUser()) {
-            if(!c.getResponse().getBoolean("success")){
+        if (c.isUser()) {
+            if (!c.getResponse().getBoolean("success")) {
                 c.getResponse().get("reason");
             }
             toBeUpdated.addAll(c.getModifiedIds());
@@ -37,6 +36,5 @@ public class DefaultRenderEngine extends RenderEngine {
             toBeUpdated.addAll(c.getModifiedIds());
         }
     }
-
 
 }

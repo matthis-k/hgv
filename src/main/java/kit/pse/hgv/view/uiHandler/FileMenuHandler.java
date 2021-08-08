@@ -45,11 +45,10 @@ public class FileMenuHandler implements UIHandler {
     public void updateLastOpened() {
         lastOpened.getItems().clear();
         List<String> paths = DataGateway.getlastOpenedGraphs();
-        if(!paths.isEmpty()) {
+        if (!paths.isEmpty()) {
             for (String path : paths) {
                 MenuItem newPath = new MenuItem(path);
-                newPath.setOnAction(action ->
-                        new FileSystemCommandProcessor().loadGraph(new File(path)));
+                newPath.setOnAction(action -> new FileSystemCommandProcessor().loadGraph(new File(path)));
                 lastOpened.getItems().add(newPath);
             }
         } else {

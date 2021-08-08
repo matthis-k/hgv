@@ -48,6 +48,7 @@ public class ClientHandler extends Thread {
 
     /**
      * Creates a new ClientHandler for a specific Socket.
+     * 
      * @param clientSocket the socket of the client.
      */
     public ClientHandler(Socket clientSocket, int id) {
@@ -71,7 +72,9 @@ public class ClientHandler extends Thread {
     }
 
     /**
-     * Reads a String from the Socket. Waits until something is received if nothing new was sent.
+     * Reads a String from the Socket. Waits until something is received if nothing
+     * new was sent.
+     * 
      * @return the next message received
      */
     String receive() {
@@ -90,6 +93,7 @@ public class ClientHandler extends Thread {
 
     /**
      * Sends a message to the client.
+     * 
      * @param msg is the message to be send.
      */
     void send(String msg) {
@@ -113,6 +117,7 @@ public class ClientHandler extends Thread {
     Socket getSocket() {
         return socket;
     }
+
     public int getClientId() {
         return id;
     }
