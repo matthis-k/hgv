@@ -6,7 +6,7 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
-import kit.pse.hgv.controller.dataGateway.DataGateway;
+import kit.pse.hgv.dataGateway.DataGateway;
 
 import java.io.File;
 import java.net.URL;

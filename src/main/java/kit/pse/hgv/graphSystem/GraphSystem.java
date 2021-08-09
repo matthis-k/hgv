@@ -4,7 +4,7 @@ import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
-import kit.pse.hgv.controller.dataGateway.DataGateway;
+import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
 
 import java.io.FileNotFoundException;
