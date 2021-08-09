@@ -100,6 +100,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
             handler.interrupt();
         }
         handlers.clear();
+        handlers.clear();
         try {
             socket.close();
         } catch (IOException e) {
@@ -143,7 +144,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     }
 
     /**
-     * Pauses the {@link ClientHander} with the specified Id.
+     * Pauses the {@link ClientHandler} with the specified Id.
      * 
      * @param clientId is the Id of the {@link ClientHandler} to be paused.
      */
@@ -156,7 +157,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     }
 
     /**
-     * Resumes the {@link ClientHander} with the specified Id.
+     * Resumes the {@link ClientHandler} with the specified Id.
      * 
      * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
      */
@@ -169,7 +170,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     }
 
     /**
-     * Stops the {@link ClientHander} with the specified Id. A stopped client can
+     * Stops the {@link ClientHandler} with the specified Id. A stopped client can
      * not be resumed in the future.
      * 
      * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
@@ -182,7 +183,19 @@ public class ExtensionServer extends Thread implements CommandQListener {
         handler.stopConnection();
     }
 
+    /**
+     * Removes a {@link ClientHandler} from {@link ExtensionServer#handlers}.
+     *
+     * @param id is the Id of the {@link ClientHandler} that will be removed.
+     */
     void removeClient(int id) {
         handlers.remove(id);
+    }
+
+    /**
+     * @return the port of the {@link ExtensionServer#socket}.
+     */
+    public int getPort() {
+        return port;
     }
 }
