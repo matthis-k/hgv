@@ -4,6 +4,7 @@ import java.io.IOException;
 
 public class PyScript implements Extension {
     private String path;
+    private Process p;
 
     public PyScript(String path) {
         this.path = path;
@@ -12,7 +13,7 @@ public class PyScript implements Extension {
     @Override
     public void startExtension() {
         try {
-            Process p = Runtime.getRuntime().exec("python " + path);
+            p = Runtime.getRuntime().exec("python " + path);
             try {
                 p.waitFor();
             } catch (InterruptedException e) {
@@ -25,6 +26,6 @@ public class PyScript implements Extension {
 
     @Override
     public void stopExtension() {
-
+        p.destroy();
     }
 }

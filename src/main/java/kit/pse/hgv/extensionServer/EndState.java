@@ -17,5 +17,4 @@ public class EndState implements ClientState {
             e.printStackTrace();
         }
     }
-
 }

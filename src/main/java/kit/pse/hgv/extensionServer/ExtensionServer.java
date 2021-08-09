@@ -111,7 +111,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     /**
      * Sends a message to the client with the specified id.
      * 
-     * @param clientId is the Id of the client
+     * @param clientId is the Id of the client.
      * @param msg      is the message to be sent.
      */
     public void send(int clientId, String msg) {
@@ -130,11 +130,55 @@ public class ExtensionServer extends Thread implements CommandQListener {
         send(c.getClientId(), c.getResponse().toString() + '\n');
     }
 
+    /**
+     * @return A {@link HashMap} that maps an Id of a client to a {@link ClientInfo}
+     *         for each existing client.
+     */
     public HashMap<Integer, ClientInfo> getClients() {
         HashMap<Integer, ClientInfo> clients = new HashMap<>();
         for (int key : handlers.keySet()) {
             clients.put(key, handlers.get(key).getInfo());
         }
         return clients;
+    }
+
+    /**
+     * Pauses the {@link ClientHander} with the specified Id.
+     * 
+     * @param clientId is the Id of the {@link ClientHandler} to be paused.
+     */
+    public void pause(int clientId) {
+        ClientHandler handler = handlers.get(clientId);
+        if (handler == null) {
+            return;
+        }
+        handler.pauseConnection();
+    }
+
+    /**
+     * Resumes the {@link ClientHander} with the specified Id.
+     * 
+     * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
+     */
+    public void resume(int clientId) {
+        ClientHandler handler = handlers.get(clientId);
+        if (handler == null) {
+            return;
+        }
+        handler.resumeConnection();
+    }
+
+    /**
+     * Stops the {@link ClientHander} with the specified Id. A stopped client can
+     * not be resumed in the future.
+     * 
+     * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
+     */
+    public void stop(int clientId) {
+        ClientHandler handler = handlers.get(clientId);
+        if (handler == null) {
+            return;
+        }
+        handler.stopConnection();
     }
 }

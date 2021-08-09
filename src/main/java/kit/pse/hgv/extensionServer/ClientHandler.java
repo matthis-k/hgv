@@ -118,7 +118,37 @@ public class ClientHandler extends Thread {
         return socket;
     }
 
+    /**
+     * @return the client's Id.
+     */
     public int getClientId() {
         return id;
     }
+
+    /**
+     * Pauses the client.
+     */
+    void pauseConnection() {
+        interrupt();
+        state = new PausedState();
+    }
+
+    /**
+     * Resumes the client.
+     */
+    void resumeConnection() {
+        interrupt();
+        state = state.nextState();
+        start();
+    }
+
+    /**
+     * Stops the client.
+     */
+    void stopConnection() {
+        interrupt();
+        state = new EndState();
+        start();
+    }
+
 }
