@@ -1,6 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.extensionServer.Extension;
+import kit.pse.hgv.extensionServer.ExtensionServer;
 
 /**
  * This class handles the stop of an extension
@@ -19,7 +19,7 @@ public class StopExtensionCommand extends ExtensionCommand {
 
     @Override
     public void execute() {
-
+        ExtensionServer.getInstance().stop(id);
     }
 
     @Override

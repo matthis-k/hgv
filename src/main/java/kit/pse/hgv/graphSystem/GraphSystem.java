@@ -216,7 +216,7 @@ public class GraphSystem {
 
     public int getGraphOfNode(int nodeId) {
         int graphId = -1;
-        for (int key: graphs.keySet()) {
+        for (int key : graphs.keySet()) {
             if (graphs.get(key).getNodeById(nodeId) != null) {
                 graphId = key;
                 break;
@@ -228,7 +228,9 @@ public class GraphSystem {
     public List<Integer> getEdgeIdsOfNode(int nodeId) {
         List<Integer> edgeIds = new Vector<>();
         int graphId = getGraphOfNode(nodeId);
-        if (graphId < 0) { return  edgeIds; }
+        if (graphId < 0) {
+            return edgeIds;
+        }
         for (Edge e : getGraphByID(graphId).getEdgesOfNode(getNodeByID(nodeId))) {
             edgeIds.add(e.getId());
         }
@@ -239,7 +241,8 @@ public class GraphSystem {
     /**
      * Returns all Metadata Information of each element of the graph
      *
-     * @param graphID graphId from the graph that should return all Metadata Information
+     * @param graphID graphId from the graph that should return all Metadata
+     *                Information
      * @return all Metadatas of each element in the graph
      */
     public Collection<String> getAllMetadataByID(int graphID) {

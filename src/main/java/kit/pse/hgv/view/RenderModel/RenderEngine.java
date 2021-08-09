@@ -42,11 +42,10 @@ public abstract class RenderEngine implements CommandQListener {
         return instance;
     }
 
-    public DrawManager getDrawManager(){
+    public DrawManager getDrawManager() {
         return drawManager;
     }
 
     public abstract void render();
-
 
 }

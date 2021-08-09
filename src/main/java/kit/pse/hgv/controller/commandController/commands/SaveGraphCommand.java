@@ -14,20 +14,20 @@ public class SaveGraphCommand extends FileSystemCommand {
     /**
      * The constructor creates an element of this class
      * 
-     * @param id the id of the graph that should be saved
+     * @param id   the id of the graph that should be saved
      * @param path the path that defines where the graph should be saved
      */
-    public SaveGraphCommand(int id, String path){
+    public SaveGraphCommand(int id, String path) {
         this.id = id;
         this.path = path;
     }
 
     @Override
     public void execute() {
-        try{
+        try {
             DataGateway.saveGraph(id, path);
             response.put("success", true);
-        } catch(IOException e){
+        } catch (IOException e) {
             response.put("success", false);
         }
     }
@@ -35,7 +35,7 @@ public class SaveGraphCommand extends FileSystemCommand {
     @Override
     public void undo() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
 }

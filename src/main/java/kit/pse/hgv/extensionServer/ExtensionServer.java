@@ -1,4 +1,5 @@
 package kit.pse.hgv.extensionServer;
+
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.CommandQListener;
 
@@ -11,8 +12,9 @@ import java.net.Socket;
 import java.util.HashMap;
 
 /**
- * This singleton Class represents a Server, that listens for input on a specified port.
- * Each Connection is managed by a {@link ClientHandler} on a seperate Thread.
+ * This singleton Class represents a Server, that listens for input on a
+ * specified port. Each Connection is managed by a {@link ClientHandler} on a
+ * seperate Thread.
  */
 public class ExtensionServer extends Thread implements CommandQListener {
     private static int DEFAULT_PORT = 12345;
@@ -50,10 +52,13 @@ public class ExtensionServer extends Thread implements CommandQListener {
         setName("ExtensionServer");
         CommandController.getInstance().register(this);
         this.port = port;
-        try {
-            this.socket = new ServerSocket(this.port);
-        } catch (IOException e) {
-            e.printStackTrace();
+        while (socket == null) {
+            try {
+                this.socket = new ServerSocket(this.port);
+            } catch (IOException e) {
+                this.port++;
+                e.printStackTrace();
+            }
         }
     }
 
@@ -66,7 +71,9 @@ public class ExtensionServer extends Thread implements CommandQListener {
             Socket client = null;
             try {
                 client = socket.accept();
-            } catch (IOException e) { continue; }
+            } catch (IOException e) {
+                continue;
+            }
             startCommunication(client);
         }
     }
@@ -104,7 +111,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     /**
      * Sends a message to the client with the specified id.
      * 
-     * @param clientId is the Id of the client
+     * @param clientId is the Id of the client.
      * @param msg      is the message to be sent.
      */
     public void send(int clientId, String msg) {
@@ -117,16 +124,62 @@ public class ExtensionServer extends Thread implements CommandQListener {
 
     @Override
     public void onNotify(ICommand c) {
-        if (c.isUser()) { return; }
+        if (c.isUser()) {
+            return;
+        }
         send(c.getClientId(), c.getResponse().toString() + '\n');
     }
 
+    /**
+     * @return A {@link HashMap} that maps an Id of a client to a {@link ClientInfo}
+     *         for each existing client.
+     */
     public HashMap<Integer, ClientInfo> getClients() {
         HashMap<Integer, ClientInfo> clients = new HashMap<>();
         for (int key : handlers.keySet()) {
             clients.put(key, handlers.get(key).getInfo());
         }
         return clients;
+    }
+
+    /**
+     * Pauses the {@link ClientHander} with the specified Id.
+     * 
+     * @param clientId is the Id of the {@link ClientHandler} to be paused.
+     */
+    public void pause(int clientId) {
+        ClientHandler handler = handlers.get(clientId);
+        if (handler == null) {
+            return;
+        }
+        handler.pauseConnection();
+    }
+
+    /**
+     * Resumes the {@link ClientHander} with the specified Id.
+     * 
+     * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
+     */
+    public void resume(int clientId) {
+        ClientHandler handler = handlers.get(clientId);
+        if (handler == null) {
+            return;
+        }
+        handler.resumeConnection();
+    }
+
+    /**
+     * Stops the {@link ClientHander} with the specified Id. A stopped client can
+     * not be resumed in the future.
+     * 
+     * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
+     */
+    public void stop(int clientId) {
+        ClientHandler handler = handlers.get(clientId);
+        if (handler == null) {
+            return;
+        }
+        handler.stopConnection();
     }
 
     void removeClient(int id) {

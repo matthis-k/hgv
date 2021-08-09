@@ -12,7 +12,9 @@ public abstract class Command implements ICommand {
     protected JSONObject response = new JSONObject();
     protected int client = 0;
     protected HashSet<Integer> modifiedIds = new HashSet<>();
-    protected Command() {}
+
+    protected Command() {
+    }
 
     /**
      * Returns if the user or the extension wants to change the graph
@@ -42,8 +44,8 @@ public abstract class Command implements ICommand {
     }
 
     /**
-     * Checks if the Change is made by the user or the extension. If it's made by the extension, it sends
-     * a response message to it
+     * Checks if the Change is made by the user or the extension. If it's made by
+     * the extension, it sends a response message to it
      *
      */
     public JSONObject getResponse() {

@@ -4,6 +4,8 @@ import java.io.IOException;
 
 public class JavaExtension extends Thread implements Extension {
     private String path;
+    private Process p;
+
     public JavaExtension(String path) {
         this.path = path;
     }
@@ -11,7 +13,7 @@ public class JavaExtension extends Thread implements Extension {
     @Override
     public void startExtension() {
         try {
-            Process p = Runtime.getRuntime().exec("java " + path);
+            p = Runtime.getRuntime().exec("java " + path);
             try {
                 p.waitFor();
             } catch (InterruptedException e) {
@@ -24,6 +26,6 @@ public class JavaExtension extends Thread implements Extension {
 
     @Override
     public void stopExtension() {
-
+        p.destroy();
     }
 }

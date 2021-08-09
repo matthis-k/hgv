@@ -134,10 +134,10 @@ public class Graph {
      */
     public Collection<String> getAllMetadata() {
         HashSet<String> res = new HashSet<>();
-        for(Integer i : nodes.keySet()) {
+        for (Integer i : nodes.keySet()) {
             res.addAll(nodes.get(i).getAllMetadata());
         }
-        for(Integer i : edges.keySet()) {
+        for (Integer i : edges.keySet()) {
             res.addAll(edges.get(i).getAllMetadata());
         }
         return res;

@@ -5,7 +5,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 /**
  * This class handles the creation and undo of a creation of a new empty graph
  */
-public class CreateNewGraphCommand extends FileSystemCommand{
+public class CreateNewGraphCommand extends FileSystemCommand {
 
     @Override
     public void execute() {
@@ -18,5 +18,5 @@ public class CreateNewGraphCommand extends FileSystemCommand{
     public void undo() {
 
     }
-    
+
 }

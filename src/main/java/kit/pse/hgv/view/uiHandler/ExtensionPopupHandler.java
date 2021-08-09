@@ -1,21 +1,17 @@
 package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandProcessor.ExtensionCommandProcessor;
 import kit.pse.hgv.extensionServer.ClientInfo;
 import kit.pse.hgv.extensionServer.ExtensionServer;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInput;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -55,18 +51,18 @@ public class ExtensionPopupHandler implements UIHandler {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //instantiate accordions
+        // instantiate accordions
         instance = this;
         activeAccordion = new Accordion();
         availableAccordion = new Accordion();
-        //bind and setup( create) accordions
+        // bind and setup( create) accordions
         accPane.prefWidthProperty().bind(anchor.widthProperty());
         AnchorPane.setBottomAnchor(accPane, 0.0);
         setupAccordion(accordion);
         setupAccordion(activeAccordion);
         setupAccordion(availableAccordion);
 
-        //create subsection for active extensions
+        // create subsection for active extensions
         TitledPane activeExtensions = new TitledPane();
         activeExtensions.setText(ACTIVE);
         activeExtensions.setContent(activeAccordion);
@@ -76,7 +72,7 @@ public class ExtensionPopupHandler implements UIHandler {
             tobeAdded.setText(map.get(key).getName());
             accordion.getPanes().add(tobeAdded);
         }
-        //create subsection for available extensions
+        // create subsection for available extensions
         TitledPane availableExtensions = new TitledPane();
         availableExtensions.setText(AVAILABLE);
         availableExtensions.setContent(availableAccordion);
@@ -98,11 +94,12 @@ public class ExtensionPopupHandler implements UIHandler {
 
     /**
      * Adds a client to the UI section of activeExcentions.
-     * @param id the id of the extension
+     * 
+     * @param id   the id of the extension
      * @param info the client info
      * @return
      */
-    private TitledPane registerClient(int id, ClientInfo info){
+    private TitledPane registerClient(int id, ClientInfo info) {
         TitledPane newTitledPane = new TitledPane();
         newTitledPane.setText(info.getName() + " - ID: " + id);
 
@@ -117,6 +114,7 @@ public class ExtensionPopupHandler implements UIHandler {
 
     /**
      * Add needed buttons for a client.
+     * 
      * @param pane
      */
     private void addButtons(AnchorPane pane) {
@@ -138,6 +136,7 @@ public class ExtensionPopupHandler implements UIHandler {
 
     /**
      * Add an extension the the available accordion.
+     * 
      * @param path the path of the extension
      * @param name the extensions's name
      * @return
@@ -145,12 +144,12 @@ public class ExtensionPopupHandler implements UIHandler {
     public TitledPane addAvailable(String path, String name) {
         TitledPane newTitledPane = new TitledPane();
         newTitledPane.setText(name);
-        //setup AnchorPane
+        // setup AnchorPane
         AnchorPane pane = new AnchorPane();
         pane.setPrefHeight(PREF_HEIGHT_ANCHOR);
         pane.setPrefWidth(PREF_WIDTH_ANCHOR);
 
-        //setup start button
+        // setup start button
         Button start = new Button("Starte Erweiterung");
         start.setOnMouseClicked(mouseEvent -> {
             new ExtensionCommandProcessor().startExtension(path);
@@ -158,7 +157,7 @@ public class ExtensionPopupHandler implements UIHandler {
         AnchorPane.setRightAnchor(start, MARGIN_TOP_BOTTOM);
         AnchorPane.setBottomAnchor(start, MARGIN_TOP_BOTTOM);
 
-        //setup text
+        // setup text
         Text text = new Text(path);
         pane.getChildren().add(start);
         pane.getChildren().add(text);
@@ -172,11 +171,11 @@ public class ExtensionPopupHandler implements UIHandler {
     /**
      * This method refreshes the active extensions.
      */
-    public void refresh(){
+    public void refresh() {
         activeAccordion.getPanes().clear();
         HashMap<Integer, ClientInfo> map = ExtensionServer.getInstance().getClients();
         System.out.println(map.size());
-        for(int key : map.keySet()) {
+        for (int key : map.keySet()) {
             activeAccordion.getPanes().add(registerClient(key, map.get(key)));
         }
     }

@@ -18,23 +18,23 @@ public class TabManager {
         tabs.put(tabID, engine);
     }
 
-    public DrawManager findDrawManager(int tabID){
+    public DrawManager findDrawManager(int tabID) {
         return null;
     }
 
-    public void addTab(int tabID, RenderEngine engine) { //was wenn gleiche enginge für verschiedene tabs?
-        if(!tabs.containsKey(tabID))
+    public void addTab(int tabID, RenderEngine engine) { // was wenn gleiche enginge für verschiedene tabs?
+        if (!tabs.containsKey(tabID))
             tabs.put(tabID, engine);
         else
             return;
-            //TODO error
+        // TODO error
     }
 
     public void removeTab(int tabID) {
         tabs.remove(tabID);
     }
 
-    public void notifyEngine(int tabID, ICommand ICommand){
+    public void notifyEngine(int tabID, ICommand ICommand) {
         tabs.get(tabID).onNotify(ICommand);
     }
 
