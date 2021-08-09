@@ -13,7 +13,7 @@ public class ResumeExtensionCommand extends ExtensionCommand {
      * 
      * @param id is the Id if the client that will be paused.
      */
-    public RegisterExtensionCommand(int id) {
+    public ResumeExtensionCommand(int id) {
         this.id = id;
     }
 
