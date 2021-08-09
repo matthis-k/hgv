@@ -20,8 +20,13 @@ public class StartExtensionCommand extends ExtensionCommand {
 
     @Override
     public void execute() {
-        Extension extension = new PyScript(path);
-        extension.startExtension();
+        Extension extension = null;
+        if (path.endsWith(".py")) {
+            extension = new PyScript(path);
+        }
+        if (extension != null) {
+            extension.startExtension();
+        }
     }
 
     @Override
