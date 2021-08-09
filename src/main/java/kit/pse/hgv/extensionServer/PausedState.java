@@ -4,7 +4,7 @@ public class PausedState implements ClientState {
 
     @Override
     public ClientState nextState() {
-        return new RecieveCommandState();
+        return new ReceiveCommandState();
     }
 
     @Override

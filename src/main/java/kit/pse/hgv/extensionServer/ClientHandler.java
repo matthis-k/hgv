@@ -69,7 +69,7 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        state = new RecieveCommandState();
+        state = new ReceiveCommandState();
     }
 
     /**
