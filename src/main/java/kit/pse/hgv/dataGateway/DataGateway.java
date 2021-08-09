@@ -1,4 +1,4 @@
-package kit.pse.hgv.controller.dataGateway;
+package kit.pse.hgv.dataGateway;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Edge;
