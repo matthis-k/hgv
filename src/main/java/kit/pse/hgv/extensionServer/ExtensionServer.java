@@ -128,4 +128,8 @@ public class ExtensionServer extends Thread implements CommandQListener {
         }
         return clients;
     }
+
+    void removeClient(int id) {
+        handlers.remove(id);
+    }
 }

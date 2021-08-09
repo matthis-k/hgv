@@ -44,6 +44,7 @@ public class ClientHandler extends Thread {
             state.work(this);
             state = state.nextState();
         }
+        ExtensionServer.getInstance().removeClient(getClientId());
     }
 
     /**
