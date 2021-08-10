@@ -1,5 +1,6 @@
 package kit.pse.hgv.controller.commandController;
 
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -42,6 +43,10 @@ public class CommandController extends Thread implements CommandEventSource {
         while (true) {
             executeNext();
         }
+    }
+
+    private List<ICommand> getNextCommands() {
+        return null;
     }
 
     /**
