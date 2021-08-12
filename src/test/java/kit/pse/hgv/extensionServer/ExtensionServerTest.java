@@ -1,18 +1,18 @@
 package kit.pse.hgv.extensionServer;
 
 import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.Socket;
 
-
 public class ExtensionServerTest {
     private ExtensionServer server = ExtensionServer.getInstance();
 
-    @Before
+    @BeforeClass
     public void startServer() {
         server.start();
     }
@@ -29,10 +29,22 @@ public class ExtensionServerTest {
         server.stop(1);
         sleep(100);
         assertEquals(1, server.getClients().keySet().size());
+        server.pause(2);
+        sleep(100);
+        assertEquals(1, server.getClients().keySet().size());
+        server.resume(2);
+        server.stop(2);
+        sleep(100);
+        assertEquals(0, server.getClients().keySet().size());
     }
 
     @After
-    public void cleanup() {
+    public void resetServer() {
+        server.resetServer();
+    }
+
+    @AfterClass
+    public void stopServer() {
         server.stopServer();
     }
 
