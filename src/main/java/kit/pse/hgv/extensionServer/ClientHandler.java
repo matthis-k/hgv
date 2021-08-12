@@ -31,9 +31,11 @@ public class ClientHandler extends Thread {
      */
     private ClientState state;
     /**
-     * State of the client, if a state was set via {@link ClientHandler#setState(ClientState)}.
+     * State of the client, if a state was set via
+     * {@link ClientHandler#setState(ClientState)}.
      */
     private ClientState setState = null;
+    private boolean isPaused = false;
 
     /**
      * Creates a new ClientHandler for a specific Socket.
@@ -72,6 +74,16 @@ public class ClientHandler extends Thread {
             } else {
                 state = setState;
                 setState = null;
+            }
+            synchronized (this) {
+                if (isPaused) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    isPaused = false;
+                }
             }
         }
         ExtensionServer.getInstance().removeClient(getClientId());
@@ -135,18 +147,9 @@ public class ClientHandler extends Thread {
      * Pauses the client.
      */
     void pauseConnection() {
-        try {
-            wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        synchronized (this) {
+            isPaused = true;
         }
-    }
-
-    /**
-     * Resumes the client.
-     */
-    void resumeConnection() {
-        notify();
     }
 
     /**

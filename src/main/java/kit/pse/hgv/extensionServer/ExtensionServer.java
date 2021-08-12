@@ -95,18 +95,21 @@ public class ExtensionServer extends Thread implements CommandQListener {
      */
     public void stopServer() {
         interrupt();
-        for (int handlerId : handlers.keySet()) {
-            ClientHandler handler = handlers.get(handlerId);
-            handler.interrupt();
-        }
-        handlers.clear();
-        handlers.clear();
+        resetServer();
         try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Could not close server socket");
         }
+    }
+
+    void resetServer() {
+        for (int handlerId : handlers.keySet()) {
+            ClientHandler handler = handlers.get(handlerId);
+            handler.interrupt();
+        }
+        handlers.clear();
     }
 
     /**
@@ -166,7 +169,9 @@ public class ExtensionServer extends Thread implements CommandQListener {
         if (handler == null) {
             return;
         }
-        handler.resumeConnection();
+        synchronized (handler) {
+            handler.notify();
+        }
     }
 
     /**
