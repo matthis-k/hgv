@@ -57,7 +57,7 @@ public class ClientHandlerTest {
     }
 
     @Test
-    public void pauseResumeHnadler() {
+    public void pauseResumeHandler() {
         handler.start();
         handler.pauseConnection();
         sleep(100);

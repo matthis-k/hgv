@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class ExtensionServer extends Thread implements CommandQListener {
     private static int DEFAULT_PORT = 12345;
-    private static ExtensionServer instance;
+    private static ExtensionServer instance = new ExtensionServer(DEFAULT_PORT);
     /**
      * Stores the Id of the next {@link ClientHandler}.
      */
@@ -57,7 +57,6 @@ public class ExtensionServer extends Thread implements CommandQListener {
                 this.socket = new ServerSocket(this.port);
             } catch (IOException e) {
                 this.port++;
-                e.printStackTrace();
             }
         }
     }
