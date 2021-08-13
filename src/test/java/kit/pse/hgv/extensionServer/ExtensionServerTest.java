@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ExtensionServerTest {
-    private ExtensionServer server = ExtensionServer.getInstance();
+    private static ExtensionServer server = ExtensionServer.getInstance();
 
     @BeforeClass
-    public void startServer() {
+    public static void startServer() {
         server.start();
     }
 
@@ -46,7 +46,7 @@ public class ExtensionServerTest {
     }
 
     @AfterClass
-    public void stopServer() {
+    public static void stopServer() {
         server.stopServer();
     }
 
