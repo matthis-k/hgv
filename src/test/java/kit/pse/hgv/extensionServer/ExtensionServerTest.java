@@ -36,6 +36,8 @@ public class ExtensionServerTest {
         server.stop(2);
         sleep(100);
         assertEquals(0, server.getClients().keySet().size());
+        client1.close();
+        client2.close();
     }
 
     @After
