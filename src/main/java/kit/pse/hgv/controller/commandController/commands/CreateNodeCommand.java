@@ -5,7 +5,8 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.Coordinate;
 
 public class CreateNodeCommand extends GraphSystemCommand {
-    private Coordinate coord;
+    private final Coordinate coord;
+    private final int graphId;
     
     /**
      * The constructor creates an element of this class
@@ -14,8 +15,9 @@ public class CreateNodeCommand extends GraphSystemCommand {
      * @param coord the coordinate of the new node
      */
     public CreateNodeCommand(int graphId, Coordinate coord) {
-        super(graphId);
+        this.graphId = graphId;
         this.coord = coord;
+
     }
 
     @Override

@@ -19,6 +19,7 @@ public class MoveNodeCommand extends GraphSystemCommand {
     public MoveNodeCommand(int elementId, PolarCoordinate coordinate){
         this.elementId = elementId;
         this.coordinate = coordinate;
+        extendWorkingArea(elementId);
     }
 
     @Override

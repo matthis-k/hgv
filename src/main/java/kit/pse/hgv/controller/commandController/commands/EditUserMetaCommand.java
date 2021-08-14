@@ -7,9 +7,9 @@ import kit.pse.hgv.representation.PolarCoordinate;
  * This class calls the needed methods to manage the metadata (except color)
  */
 public class EditUserMetaCommand extends MetaSystemCommand{
-    private String key;
-    private String meta;
-    private int elementId;
+    private final String key;
+    private final String meta;
+    private final int elementId;
     
     /**
      * The constructor creates an element of this class
@@ -22,6 +22,7 @@ public class EditUserMetaCommand extends MetaSystemCommand{
         this.key = key;
         this.meta = meta;
         this.elementId = elementId;
+        extendWorkingArea(elementId);
     }
 
     @Override

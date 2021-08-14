@@ -3,8 +3,13 @@ package kit.pse.hgv.controller.commandController.commands;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CreateEdgeCommand extends GraphSystemCommand {
     private int[] nodeIds;
+    private final int graphId;
 
     /**
      * The constructor creates an element of this class
@@ -13,8 +18,10 @@ public class CreateEdgeCommand extends GraphSystemCommand {
      * @param nodeIds the nodeIds from the Nodes which should be connected
      */
     public CreateEdgeCommand(int graphId, int[] nodeIds) {
-        super(graphId);
+        this.graphId = graphId;
         this.nodeIds = nodeIds;
+        extendWorkingArea(nodeIds[0]);
+        extendWorkingArea(nodeIds[1]);
     }
 
     @Override
