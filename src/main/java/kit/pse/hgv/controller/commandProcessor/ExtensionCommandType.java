@@ -82,20 +82,6 @@ public enum ExtensionCommandType {
     },
 
     /**
-     * This enum handles the command string that changes the color.
-     */
-    CHANGE_COLOR(ExtensionCommandType.START + "ChangeColor" + ExtensionCommandType.END) {
-        @Override
-        protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            int elementId = inputAsJson.getInt("id");
-            String hexcolor = inputAsJson.getString("color");
-            Color color = Color.web(hexcolor);
-            EditColorCommand command = new EditColorCommand(elementId, color);
-            return new ParseResult(command, this);
-        }
-    },
-
-    /**
      * This enum handles the command that changes the metadata of an element
      */
     CHANGE_METADATA(ExtensionCommandType.START + "ChangeMetadata" + ExtensionCommandType.END) {
