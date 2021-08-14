@@ -13,7 +13,7 @@ public abstract class GraphSystemCommand extends Command {
 
     /** Elements which will be changed in execution. */
     private List<GraphElement> workingArea = new ArrayList<GraphElement>();
-    
+
 
     /**
      * The constructor creates an element of this class with a specific graphId
@@ -32,5 +32,12 @@ public abstract class GraphSystemCommand extends Command {
 
     public List<GraphElement> getWorkingArea() {
         return workingArea;
+    }
+
+    private void extendWorkingArea(GraphElement g) {
+        if(!workingArea.contains(g)) {
+            workingArea.add(g);
+        }
+        return;
     }
 }
