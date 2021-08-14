@@ -2,6 +2,7 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.element.GraphElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ public abstract class GraphSystemCommand extends Command {
     protected int graphId;
 
     /** Elements which will be changed in execution. */
-    private List<GraphElement> workingArea = new List<GraphElement>();
-
+    private List<GraphElement> workingArea = new ArrayList<GraphElement>();
+    
 
     /**
      * The constructor creates an element of this class with a specific graphId
