@@ -8,36 +8,15 @@ import java.util.List;
 /**
  * This class handles all Commands managing the graphSystem
  */
-public abstract class GraphSystemCommand extends Command {
+public abstract class GraphSystemCommand extends WorkingAreaCommand {
     protected int graphId;
 
-    /** Elements which will be changed in execution. */
-    private List<GraphElement> workingArea = new ArrayList<GraphElement>();
 
 
-    /**
-     * The constructor creates an element of this class with a specific graphId
-     * 
-     * @param graphId GraphId from the Graph that should be updated
-     */
-    public GraphSystemCommand(int graphId) {
-        this.graphId = graphId;
-    }
     
     /**
      * The constructor creates an element of this class without a specific graph
      */
     public GraphSystemCommand() {
-    }
-
-    public List<GraphElement> getWorkingArea() {
-        return workingArea;
-    }
-
-    private void extendWorkingArea(GraphElement g) {
-        if(!workingArea.contains(g)) {
-            workingArea.add(g);
-        }
-        return;
     }
 }
