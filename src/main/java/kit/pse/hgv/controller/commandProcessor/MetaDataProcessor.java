@@ -14,17 +14,6 @@ public class MetaDataProcessor implements CommandProcessor{
         CommandController.getInstance().queueCommand(command);
         CommandController.getInstance().queueCommand(new RenderCommand());
     }
-    
-    /**
-     * This Method creates a new EditColorCommand
-     * 
-     * @param elementId
-     * @param color
-     */
-    public void changeColor(int elementId, Color color){
-        EditColorCommand command = new EditColorCommand(elementId, color);
-        queueCommand(command);
-    }
 
     /**
      * This Method creates an EditUserMetaCommand
