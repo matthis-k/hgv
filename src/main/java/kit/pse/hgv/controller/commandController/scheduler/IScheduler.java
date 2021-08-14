@@ -7,6 +7,6 @@ import java.util.Queue;
 
 public interface IScheduler {
 
-    public List<ICommand> getNextCommand(Queue commandQ);
+    public List<ICommand> getNextCommand(Queue<ICommand> commandQ);
 
 }

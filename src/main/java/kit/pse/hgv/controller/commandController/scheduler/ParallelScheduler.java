@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * @version 0.2 Not tested yet!
+ *
+ * This class is a paralell scheduler.
+ * Commands got with the getnextCommands method can be executed
+ * at the same time without risk to have issues.
+ */
 public class ParallelScheduler implements IScheduler {
 
     /**
@@ -20,50 +27,47 @@ public class ParallelScheduler implements IScheduler {
         List<ICommand> scheduled = new ArrayList<>();
         scheduled.add(commandQ.poll());
 
-        //Wir halten mal unabhängig hiervon fest das ihr das command System vertrashed habt... ihr habt nur scheiße priogrammiert...
-
-        // Welcher Code ist save zum gleiczeitig abzuarbeiten?!
-
         for(ICommand c : commandQ) {
-            if(c instanceof GraphSystemCommand ||c instanceof MetaSystemCommand) {
-                List<Integer> modifiedIDs;
-                //Check: Gleiches Element?
-                //TODO: contains ALl muss es alles haben oder reicht 1 ? CHECK : geht nicht so-
-                //TODO: getModifiedsIDs
-                if(c.getModifiedIds().containsAll(modifiedIDs)) {
+
+            if(c instanceof WorkingAreaCommand) {
+                WorkingAreaCommand ac = (WorkingAreaCommand) c;
+                if (!hasWorkingMatch(ac, scheduled)) {
                     scheduled.add(c);
-                    modifiedIDs.add(); //TODO: Add die benutzte ID.
                 } else {
                     return scheduled;
                 }
+
+            //This for future scheduling maybe commands can too be handeled!
             } else if(c instanceof HyperModelCommand) {
-                //Check: MoveCenter und RenderCommand muss einzeln gerechnet werden -> Zeitl. Konsistenz in der Ansicht
                 return scheduled;
             } else if(c instanceof FileSystemCommand) {
-                //Check: Theoretisch geht es das gleichzeitig zu machen
                 return scheduled;
             } else if(c instanceof ExtensionCommand) {
-                //Check: Alles einzeln, sonst zeitl Inkosistent.
                 return scheduled;
             }
         }
         return scheduled;
-        //TODO: Überprüfen ob Commands danach funktionieren.
-
-        //Nebengedanken:
-        /*
-
-        Metadaten sind egal.
-        Knoten Positionen sind unter sich egal.
-        Elemente Erstellen ist egal.
-        Elemente Löschen ist egal.
-        Gleiches ELEMENT ist nciht egal.
+    }
 
 
-
-         */
-
-
-        return null;
+    /**
+     * Controlls that a Command has no overlapping WorkingArea with a given list of GraphElement ids.
+     * @param c is the Command.
+     * @param workingArea is the given id List.
+     * @return Returns true when there is one equal id. False when not.
+     */
+    private boolean hasWorkingMatch(WorkingAreaCommand c, List<ICommand> workingArea) {
+        for (Integer i : c.getWorkingArea()) {
+            for (ICommand ic : workingArea) {
+                if (ic instanceof WorkingAreaCommand) {
+                    for (Integer j : ((WorkingAreaCommand) ic).getWorkingArea()) {
+                        if (j == i) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
