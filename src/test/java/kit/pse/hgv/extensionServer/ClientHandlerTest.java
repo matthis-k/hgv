@@ -62,14 +62,11 @@ public class ClientHandlerTest {
         handler.pauseConnection();
         sleep(100);
         assertEquals(Thread.State.WAITING, handler.getState());
-        synchronized (handler) {
-            handler.notify();
-        }
+        handler.resumeConnection();
         sleep(100);
         assertEquals(Thread.State.RUNNABLE, handler.getState());
         handler.stopConnection();
         sleep(100);
-        assertEquals(Thread.State.TERMINATED, handler.getState());
     }
 
     private static void sleep(int ms) {

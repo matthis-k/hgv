@@ -37,9 +37,6 @@ public class ExtensionServer extends Thread implements CommandQListener {
     private DualHashBidiMap<Integer, ClientHandler> handlers = new DualHashBidiMap<>();
 
     public static ExtensionServer getInstance() {
-        if (instance == null) {
-            instance = new ExtensionServer(DEFAULT_PORT);
-        }
         return instance;
     }
 
@@ -98,8 +95,6 @@ public class ExtensionServer extends Thread implements CommandQListener {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Could not close server socket");
         }
     }
 
@@ -108,6 +103,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
             ClientHandler handler = handlers.get(handlerId);
             handler.interrupt();
         }
+        nextId = 0;
         handlers.clear();
     }
 
@@ -122,7 +118,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
         if (handler == null) {
             return;
         }
-        handler.send(msg);
+        handler.send(msg + "\n");
     }
 
     @Override
@@ -168,9 +164,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
         if (handler == null) {
             return;
         }
-        synchronized (handler) {
-            handler.notify();
-        }
+        handler.resumeConnection();
     }
 
     /**
