@@ -57,6 +57,12 @@ public class ClientHandlerTest {
     }
 
     @Test
+    public void receiveNull() {
+        String received = handler.receive();
+        assertEquals(null, received);
+    }
+
+    @Test
     public void pauseResumeHandler() {
         handler.start();
         handler.pauseConnection();
