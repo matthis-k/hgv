@@ -1,10 +1,6 @@
 package kit.pse.hgv.extensionServer;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -13,15 +9,15 @@ import java.net.SocketTimeoutException;
  * An instance of this class manages the communication with one specific client.
  */
 public class ClientHandler extends Thread {
-    private int id;
+    private final int id;
     /**
      * Some information about the client.
      */
-    private ClientInfo clientInfo = new ClientInfo();
+    private final ClientInfo clientInfo = new ClientInfo();
     /**
      * The socket of the client communicats with.
      */
-    private Socket socket;
+    private final Socket socket;
     /**
      * OutputStream of the socket.
      */
@@ -34,20 +30,14 @@ public class ClientHandler extends Thread {
      * State of the client.
      */
     private ClientState state;
-
     /**
-     * Starts the communication loop.
+     * State of the client, if a state was set via {@link ClientHandler#setState(ClientState)}.
      */
-    @Override
-    public void run() {
-        while (!socket.isClosed()) {
-            state.work(this);
-            state = state.nextState();
-        }
-    }
+    private ClientState setState = null;
 
     /**
      * Creates a new ClientHandler for a specific Socket.
+     *
      * @param clientSocket the socket of the client.
      */
     public ClientHandler(Socket clientSocket, int id) {
@@ -57,7 +47,7 @@ public class ClientHandler extends Thread {
         this.id = id;
         socket = clientSocket;
         try {
-            socket.setSoTimeout(1000);
+            socket.setSoTimeout(50);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -67,11 +57,30 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        state = new RecieveCommandState();
+        state = new ReceiveCommandState();
     }
 
     /**
-     * Reads a String from the Socket. Waits until something is received if nothing new was sent.
+     * Starts the communication loop.
+     */
+    @Override
+    public void run() {
+        while (!socket.isClosed() && state != null) {
+            state.work(this);
+            if (setState == null) {
+                state = state.nextState();
+            } else {
+                state = setState;
+                setState = null;
+            }
+        }
+        ExtensionServer.getInstance().removeClient(getClientId());
+    }
+
+    /**
+     * Reads a String from the Socket. Waits until something is received if nothing
+     * new was sent.
+     *
      * @return the next message received
      */
     String receive() {
@@ -90,6 +99,7 @@ public class ClientHandler extends Thread {
 
     /**
      * Sends a message to the client.
+     *
      * @param msg is the message to be send.
      */
     void send(String msg) {
@@ -113,7 +123,41 @@ public class ClientHandler extends Thread {
     Socket getSocket() {
         return socket;
     }
+
+    /**
+     * @return the client's Id.
+     */
     public int getClientId() {
         return id;
     }
+
+    /**
+     * Pauses the client.
+     */
+    void pauseConnection() {
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Resumes the client.
+     */
+    void resumeConnection() {
+        notify();
+    }
+
+    /**
+     * Stops the client.
+     */
+    void stopConnection() {
+        setState(new EndState());
+    }
+
+    void setState(ClientState state) {
+        setState = state;
+    }
+
 }

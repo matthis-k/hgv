@@ -1,4 +1,5 @@
 package kit.pse.hgv.graphSystem.element;
+
 import kit.pse.hgv.graphSystem.GraphSystemMessages;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
@@ -12,16 +13,18 @@ public class Edge extends GraphElement {
     private Node[] nodes = new Node[MAX_EDGE_NODES];
 
     /**
-     * Create edge with the 2 nodes as an array.
-     * The Element will automaticly have an unique id.
+     * Create edge with the 2 nodes as an array. The Element will automaticly have
+     * an unique id.
      *
      * @param nodes array which contains the nodes the edge should be connected to.
-     * @throws OverflowException When there are to many elements and the id is overflowing.
-     * @throws IllegalArgumentException When the array with the edges is less or higher than two.
+     * @throws OverflowException        When there are to many elements and the id
+     *                                  is overflowing.
+     * @throws IllegalArgumentException When the array with the edges is less or
+     *                                  higher than two.
      */
     public Edge(Node[] nodes) throws OverflowException, IllegalArgumentException {
         super();
-        if(nodes.length != MAX_EDGE_NODES) {
+        if (nodes.length != MAX_EDGE_NODES) {
             throw new IllegalArgumentException(GraphSystemMessages.MAX_NODES_EDGE.DE());
         }
         this.nodes = nodes;
@@ -29,6 +32,7 @@ public class Edge extends GraphElement {
 
     /**
      * Gets youthe nodes which the edge is connected to.
+     * 
      * @return Returns an array of length 2 with the nodes.
      */
     public Node[] getNodes() {

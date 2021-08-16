@@ -4,12 +4,14 @@ public interface Coordinate {
 
     /**
      * Converts a given Coordinate into a Cartesian Coordinate
+     * 
      * @return the converted Cartesian Coordinate
      */
     public CartesianCoordinate toCartesian();
 
     /**
      * Converts a given Coordinate into a Polar Coordinate
+     * 
      * @return the converted Polar Coordinate
      */
     public PolarCoordinate toPolar();
@@ -17,7 +19,8 @@ public interface Coordinate {
     /**
      * Calculates the euclidean distance of a given Coordinate
      *
-     * @param coordinate the coordinate where the euclidean distance should be calculated
+     * @param coordinate the coordinate where the euclidean distance should be
+     *                   calculated
      * @return the calculated euclidean distance
      */
     public double euclideanDistance(Coordinate coordinate);
@@ -25,7 +28,8 @@ public interface Coordinate {
     /**
      * Calculates the hyperbolic distance of a given
      *
-     * @param coordinate the coordinate where the hyperbolic distance should be calculated
+     * @param coordinate the coordinate where the hyperbolic distance should be
+     *                   calculated
      * @return the calculated hyperbolic distance
      */
     public double hyperbolicDistance(Coordinate coordinate);

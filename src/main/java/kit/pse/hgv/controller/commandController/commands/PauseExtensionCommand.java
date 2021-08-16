@@ -1,9 +1,11 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import kit.pse.hgv.extensionServer.ExtensionServer;
+
 /**
  * This class handles the commands that pauses an extension
  */
-public class PauseExtensionCommand extends ExtensionCommand{
+public class PauseExtensionCommand extends ExtensionCommand {
     private int id;
 
     /**
@@ -11,13 +13,13 @@ public class PauseExtensionCommand extends ExtensionCommand{
      * 
      * @param id The id of the extension that should be paused
      */
-    public PauseExtensionCommand(int id){
+    public PauseExtensionCommand(int id) {
         this.id = id;
     }
 
     @Override
-    public void execute(){
-        
+    public void execute() {
+        ExtensionServer.getInstance().pause(id);
     }
 
     @Override

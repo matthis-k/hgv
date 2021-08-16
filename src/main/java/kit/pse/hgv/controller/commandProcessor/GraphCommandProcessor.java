@@ -9,7 +9,7 @@ import kit.pse.hgv.controller.commandController.commands.*;
 /**
  * This class processes the input from the ui that affects the graph itself
  */
-public class GraphCommandProcessor implements CommandProcessor{
+public class GraphCommandProcessor implements CommandProcessor {
 
     @Override
     public void queueCommand(ICommand command) {
@@ -20,10 +20,10 @@ public class GraphCommandProcessor implements CommandProcessor{
      * This method creates an createEdgeCommand
      * 
      * @param graphId where to create an edge
-     * @param id1 first nodeId that should be connected
-     * @param id2 second nodeId that should be connected
+     * @param id1     first nodeId that should be connected
+     * @param id2     second nodeId that should be connected
      */
-    public void addEdge(int graphId, int id1, int id2){
+    public void addEdge(int graphId, int id1, int id2) {
         int[] nodeIds = new int[2];
         nodeIds[1] = id1;
         nodeIds[2] = id2;
@@ -32,32 +32,34 @@ public class GraphCommandProcessor implements CommandProcessor{
     }
 
     /**
-     * This method checks if the coordinate of the node is in the correct format and creates a createNodeCommand
+     * This method checks if the coordinate of the node is in the correct format and
+     * creates a createNodeCommand
      * 
-     * @param graphId where to create a node
+     * @param graphId     where to create a node
      * @param phiAsString phi-Coordinate as string
-     * @param rAsString r-Coordinate as string
+     * @param rAsString   r-Coordinate as string
      */
-    public void addNode(int graphId, String phiAsString, String rAsString){
-        try{
+    public void addNode(int graphId, String phiAsString, String rAsString) {
+        try {
             Double phi = Double.valueOf(phiAsString);
             Double r = Double.valueOf(rAsString);
             Coordinate coordinate = new PolarCoordinate(phi, r);
             CreateNodeCommand command = new CreateNodeCommand(graphId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            //TODO
+            // TODO
         }
     }
-    
+
     /**
-     * This method checks if the coordinate (where to move) is in the correct format and creates a moveNodeCommand
+     * This method checks if the coordinate (where to move) is in the correct format
+     * and creates a moveNodeCommand
      * 
-     * @param elementId id of the node
+     * @param elementId   id of the node
      * @param phiAsString x-Coordinate as string
-     * @param rAsString y-Coordinate as string
+     * @param rAsString   y-Coordinate as string
      */
-    public void moveNode(int elementId, String phiAsString, String rAsString){
+    public void moveNode(int elementId, String phiAsString, String rAsString) {
         try {
             Double phi = Double.valueOf(phiAsString);
             Double r = Double.valueOf(rAsString);
@@ -65,7 +67,7 @@ public class GraphCommandProcessor implements CommandProcessor{
             MoveNodeCommand command = new MoveNodeCommand(elementId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            //TODO
+            // TODO
         }
     }
 
@@ -74,7 +76,7 @@ public class GraphCommandProcessor implements CommandProcessor{
      * 
      * @param elementId id of the element that should be deleted
      */
-    public void deleteElement(int elementId){
+    public void deleteElement(int elementId) {
         GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId);
         queueCommand(command);
     }

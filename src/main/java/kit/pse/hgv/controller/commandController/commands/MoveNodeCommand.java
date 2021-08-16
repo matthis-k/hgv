@@ -13,16 +13,21 @@ public class MoveNodeCommand extends GraphSystemCommand {
     /**
      * The constructor creates an element of this class
      * 
-     * @param elementId ElementId of the Element that should be moved
+     * @param elementId  ElementId of the Element that should be moved
      * @param coordinate Coordinate of the new position of the element
      */
-    public MoveNodeCommand(int elementId, PolarCoordinate coordinate){
+    public MoveNodeCommand(int elementId, PolarCoordinate coordinate) {
         this.elementId = elementId;
         this.coordinate = coordinate;
     }
 
     @Override
-    public void execute(){
+    public void execute() {
+        if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+            response.put("success", false);
+            response.put("reason", "No element with that Id exists.");
+            throw new IllegalArgumentException("No Element with that Id exists.");
+        }
         GraphSystem.getInstance().getNodeByID(elementId).move(coordinate);
         Double phi = coordinate.getAngle();
         String phiAsString = phi.toString();
@@ -38,6 +43,6 @@ public class MoveNodeCommand extends GraphSystemCommand {
     @Override
     public void undo() {
         // TODO Auto-generated method stub
-        
+
     }
 }

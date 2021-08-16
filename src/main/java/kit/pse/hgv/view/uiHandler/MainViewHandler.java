@@ -41,6 +41,7 @@ public class MainViewHandler implements UIHandler {
 
     /**
      * This method binds the containers to their destined location.
+     * 
      * @param url
      * @param resourceBundle
      */

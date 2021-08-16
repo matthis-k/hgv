@@ -10,7 +10,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;
 
 public class CommandController extends Thread implements CommandEventSource {
-    //TODO: undo/redo
+    // TODO: undo/redo
     private static CommandController instance;
 
     private Vector<CommandQListener> listeners = new Vector<>();
@@ -77,7 +77,8 @@ public class CommandController extends Thread implements CommandEventSource {
     public void notifyAll(ICommand c) {
         for (CommandQListener listener : listeners) {
             Task<Void> task = new Task<>() {
-                @Override protected Void call() throws Exception {
+                @Override
+                protected Void call() throws Exception {
                     listener.onNotify(c);
                     return null;
                 }
@@ -102,13 +103,11 @@ public class CommandController extends Thread implements CommandEventSource {
         ICommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
         c.execute();
         notifyAll(c);
-        /*c = new CreateNodeCommand(1, new PolarCoordinate(5, 2));
-        c.execute();
-        notifyAll(c);
-        int[] nodes = {3, 8};
-        c = new CreateEdgeCommand(1, nodes);
-        c.execute();
-        notifyAll(c);*/
+        /*
+         * c = new CreateNodeCommand(1, new PolarCoordinate(5, 2)); c.execute();
+         * notifyAll(c); int[] nodes = {3, 8}; c = new CreateEdgeCommand(1, nodes);
+         * c.execute(); notifyAll(c);
+         */
     }
 
     public void doSpiralGraph(int n) {
@@ -122,13 +121,14 @@ public class CommandController extends Thread implements CommandEventSource {
             CreateNodeCommand c = new CreateNodeCommand(graph, new PolarCoordinate(i, i));
             c.execute();
             nodeIds.addAll(c.getModifiedIds());
-            int r = 150+(3*i*255/n)%100;
-            int g = 100+(2*i*255/n)%100;
-            int b = 50+(i*255/n)%100;
-            GraphSystem.getInstance().getGraphElementByID(nodeIds.lastElement()).setMetadata("color", "rgb(" + r + ","+g+","+b+")");
+            int r = 150 + (3 * i * 255 / n) % 100;
+            int g = 100 + (2 * i * 255 / n) % 100;
+            int b = 50 + (i * 255 / n) % 100;
+            GraphSystem.getInstance().getGraphElementByID(nodeIds.lastElement()).setMetadata("color",
+                    "rgb(" + r + "," + g + "," + b + ")");
             notifyAll(c);
-            if (i>0) {
-                int[] nodes = {nodeIds.get(i-1), nodeIds.get(i)};
+            if (i > 0) {
+                int[] nodes = { nodeIds.get(i - 1), nodeIds.get(i) };
                 CreateEdgeCommand e = new CreateEdgeCommand(graph, nodes);
                 e.execute();
                 notifyAll(e);

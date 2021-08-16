@@ -10,17 +10,17 @@ public class PolarCoordinate implements Coordinate{
 
     /**
      * Creates a new polar Coordinate
+     * 
      * @param angle
      * @param distance
      */
-    public PolarCoordinate (double angle, double distance) {
+    public PolarCoordinate(double angle, double distance) {
         this.angle = angle % MAX_ANGLE;
         while (this.angle < 0) {
             this.angle += MAX_ANGLE;
         }
         this.distance = distance;
     }
-
 
     @Override
     public CartesianCoordinate toCartesian() {

@@ -5,9 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import kit.pse.hgv.extensionServer.PyScript;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;
 import kit.pse.hgv.controller.commandController.commands.ShutdownCommand;
 import kit.pse.hgv.extensionServer.ExtensionServer;
 

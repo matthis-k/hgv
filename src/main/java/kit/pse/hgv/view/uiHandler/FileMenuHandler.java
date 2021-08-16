@@ -6,7 +6,7 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
-import kit.pse.hgv.controller.dataGateway.DataGateway;
+import kit.pse.hgv.dataGateway.DataGateway;
 
 import java.io.File;
 import java.net.URL;
@@ -45,11 +45,10 @@ public class FileMenuHandler implements UIHandler {
     public void updateLastOpened() {
         lastOpened.getItems().clear();
         List<String> paths = DataGateway.getlastOpenedGraphs();
-        if(!paths.isEmpty()) {
+        if (!paths.isEmpty()) {
             for (String path : paths) {
                 MenuItem newPath = new MenuItem(path);
-                newPath.setOnAction(action ->
-                        new FileSystemCommandProcessor().loadGraph(new File(path)));
+                newPath.setOnAction(action -> new FileSystemCommandProcessor().loadGraph(new File(path)));
                 lastOpened.getItems().add(newPath);
             }
         } else {
