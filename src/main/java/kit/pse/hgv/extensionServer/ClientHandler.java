@@ -51,13 +51,11 @@ public class ClientHandler extends Thread {
         try {
             socket.setSoTimeout(50);
         } catch (SocketException e) {
-            e.printStackTrace();
         }
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
-            e.printStackTrace();
         }
         state = new ReceiveCommandState();
     }
@@ -80,7 +78,6 @@ public class ClientHandler extends Thread {
                     try {
                         wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                     isPaused = false;
                 }
@@ -99,12 +96,7 @@ public class ClientHandler extends Thread {
         try {
             String res = in.readLine();
             return res;
-        } catch (SocketTimeoutException e) {
         } catch (IOException e) {
-            try {
-                socket.close();
-            } catch (IOException _e) {
-            }
         }
         return null;
     }
