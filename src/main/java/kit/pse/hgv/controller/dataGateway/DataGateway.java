@@ -119,7 +119,11 @@ public class DataGateway {
             if(isNewNode(currentLine)) {
                 readNode(currentLine, graphID);
             } else {
-                readEdge(currentLine, graphID);
+                try {
+                    readEdge(currentLine, graphID);
+                } catch (NullPointerException e) {
+                    System.out.println("Edge nicht gefunden: " + currentLine);
+                }
             }
             currentLine = scanner.nextLine();
         }
@@ -143,7 +147,7 @@ public class DataGateway {
      * @param graphID given Graph
      * @throws OverflowException if there are too many added ids
      */
-    private static void readNode(String NodeLine, int graphID) throws OverflowException {
+    private static void readNode(String NodeLine, int graphID) throws OverflowException, NullPointerException {
         Matcher matcher = NODE_PATTERN.matcher(NodeLine);
         int graphMLID = 0;
         if(matcher.find()) {

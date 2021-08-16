@@ -40,7 +40,7 @@ public class NativeRepresentation implements Representation {
         PolarCoordinate point1 = edge.getNodes()[0].getCoord().moveCoordinate(vector).toPolar();
         PolarCoordinate point2 = edge.getNodes()[1].getCoord().moveCoordinate(vector).toPolar();
         if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
-                || point1.getAngle() == point2.mirroredThroughCenter().getAngle()) {
+                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT) {
             coordinates.add(point1.moveCoordinate(center).mirroredY());
             coordinates.add(point2.moveCoordinate(center).mirroredY());
             Color color = edge.getMetadata("color") != null? Color.web(edge.getMetadata("color")) : Color.BLACK;

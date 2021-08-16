@@ -51,6 +51,10 @@ public class LineStrip extends Drawable {
         return this.lines;
     }
 
+    public List<Coordinate> getCoords() {
+        return this.coordinates;
+    }
+
     public int[] getConnectedNodes() {
         return connecting;
     }
