@@ -6,34 +6,46 @@ import kit.pse.hgv.controller.commandController.commands.StartExtensionCommand;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ExtensionCommandProcessorTest {
 
-    private static ExtensionCommandProcessor extensionCommandProcessor;
+  private static ExtensionCommandProcessor extensionCommandProcessor;
 
-    @BeforeClass
-    public static void setup() {
-        extensionCommandProcessor = new ExtensionCommandProcessor();
-    }
+  @BeforeClass
+  public static void setup() {
+    extensionCommandProcessor = new ExtensionCommandProcessor();
+  }
 
-    @Test
-    public void testStartExtension(){
-        String path = "C:";
-        extensionCommandProcessor.startExtension(path);
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof StartExtensionCommand);
-    }
+  @Before
+  public void clear() {
+    CommandController.getInstance().getCommandQ().clear();
+  }
 
-    @Test
-    public void testRegisterExtension() {
-        String path = "C:";
-        extensionCommandProcessor.registerExtension(path);
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof RegisterExtensionCommand);
-    }
+  @Test
+  public void testStartExtension() {
+    String path = "./client.py";
+    extensionCommandProcessor.startExtension(path);
+    assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof StartExtensionCommand);
+  }
 
-    @AfterClass
-    public static void free() {
-        extensionCommandProcessor = null;
-    }
+  @Test
+  public void testRegisterExtension() {
+    String path = "./client.py";
+    extensionCommandProcessor.registerExtension(path);
+    assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof RegisterExtensionCommand);
+  }
+
+  @After
+  public void cleanup() {
+    CommandController.getInstance().getCommandQ().clear();
+  }
+
+  @AfterClass
+  public static void free() {
+    extensionCommandProcessor = null;
+  }
 }
