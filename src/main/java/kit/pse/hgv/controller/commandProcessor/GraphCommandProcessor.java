@@ -25,8 +25,8 @@ public class GraphCommandProcessor implements CommandProcessor {
      */
     public void addEdge(int graphId, int id1, int id2) {
         int[] nodeIds = new int[2];
-        nodeIds[1] = id1;
-        nodeIds[2] = id2;
+        nodeIds[0] = id1;
+        nodeIds[1] = id2;
         CreateEdgeCommand command = new CreateEdgeCommand(graphId, nodeIds);
         queueCommand(command);
     }
@@ -47,7 +47,7 @@ public class GraphCommandProcessor implements CommandProcessor {
             CreateNodeCommand command = new CreateNodeCommand(graphId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            // TODO
+            throw new NumberFormatException("TODO");
         }
     }
 
@@ -67,7 +67,7 @@ public class GraphCommandProcessor implements CommandProcessor {
             MoveNodeCommand command = new MoveNodeCommand(elementId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            // TODO
+            throw new NumberFormatException("TODO");
         }
     }
 

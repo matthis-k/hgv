@@ -137,6 +137,10 @@ public class CommandController extends Thread implements CommandEventSource {
 
     }
 
+    public ConcurrentLinkedQueue<ICommand> getCommandQ(){
+        return commandQ;
+    }
+
     public void stopController() {
         interrupt();
     }
