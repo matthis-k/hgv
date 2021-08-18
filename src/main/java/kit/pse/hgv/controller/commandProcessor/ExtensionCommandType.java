@@ -217,7 +217,7 @@ public enum ExtensionCommandType {
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, IllegalArgumentException {
             String path = inputAsJson.getString("path");
             Path file = new File(path).toPath();
-            if (Files.isDirectory(file)) {
+            if (Files.isDirectory(file.getParent())) {
                 int id = inputAsJson.getInt("graphId");
                 SaveGraphCommand command = new SaveGraphCommand(id, path);
                 return new ParseResult(command, this);

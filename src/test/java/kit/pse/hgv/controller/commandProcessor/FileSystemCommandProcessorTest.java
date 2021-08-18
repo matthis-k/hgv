@@ -1,6 +1,5 @@
 package kit.pse.hgv.controller.commandProcessor;
 
-
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.graphSystem.GraphSystem;
@@ -17,6 +16,7 @@ public class FileSystemCommandProcessorTest {
     @Before
     public void setup() {
         fileSystemCommandProcessor = new FileSystemCommandProcessor();
+        CommandController.getInstance().getCommandQ().clear();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class FileSystemCommandProcessorTest {
 
     @Test
     public void testSaveGraph() {
-        fileSystemCommandProcessor.saveGraph("C:", 1);
+        fileSystemCommandProcessor.saveGraph("./out.graphml", 1);
         assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof SaveGraphCommand);
     }
 
@@ -46,5 +46,6 @@ public class FileSystemCommandProcessorTest {
     @After
     public void free() {
         fileSystemCommandProcessor = null;
+        CommandController.getInstance().getCommandQ().clear();
     }
 }

@@ -90,11 +90,11 @@ public class ExtensionCommandTypeTest {
 
     @Test
     public void testSaveGraph() {
-        assertEquals(ExtensionCommandType.SAVE_GRAPH, ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"C:\", \"graphId\": 1}", 1));
+        assertEquals(ExtensionCommandType.SAVE_GRAPH, ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"./out.graphml\", \"graphId\": 1}", 1));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveGraphFailure() {
-        ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"other\", \"graphId\": 1}", 1);
+        ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"./noexistingdir/out\", \"graphId\": 1}", 1);
     }
 }
