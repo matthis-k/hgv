@@ -99,44 +99,6 @@ public class CommandController extends Thread implements CommandEventSource {
         listeners.add(listener);
     }
 
-    public void dummy() {
-        ICommand c = new LoadGraphCommand("src/main/resources/Vorlage.graphml");
-        c.execute();
-        notifyAll(c);
-        /*
-         * c = new CreateNodeCommand(1, new PolarCoordinate(5, 2)); c.execute();
-         * notifyAll(c); int[] nodes = {3, 8}; c = new CreateEdgeCommand(1, nodes);
-         * c.execute(); notifyAll(c);
-         */
-    }
-
-    public void doSpiralGraph(int n) {
-        ICommand cmd = new LoadGraphCommand("src/main/resources/empty.graphml");
-        cmd.execute();
-        notifyAll(cmd);
-
-        int graph = 1;
-        Vector<Integer> nodeIds = new Vector<>();
-        for (int i = 0; i < n; i++) {
-            CreateNodeCommand c = new CreateNodeCommand(graph, new PolarCoordinate(i, i));
-            c.execute();
-            nodeIds.addAll(c.getModifiedIds());
-            int r = 150 + (3 * i * 255 / n) % 100;
-            int g = 100 + (2 * i * 255 / n) % 100;
-            int b = 50 + (i * 255 / n) % 100;
-            GraphSystem.getInstance().getGraphElementByID(nodeIds.lastElement()).setMetadata("color",
-                    "rgb(" + r + "," + g + "," + b + ")");
-            notifyAll(c);
-            if (i > 0) {
-                int[] nodes = { nodeIds.get(i - 1), nodeIds.get(i) };
-                CreateEdgeCommand e = new CreateEdgeCommand(graph, nodes);
-                e.execute();
-                notifyAll(e);
-            }
-        }
-
-    }
-
     public ConcurrentLinkedQueue<ICommand> getCommandQ(){
         return commandQ;
     }
