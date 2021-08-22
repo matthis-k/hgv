@@ -1,6 +1,8 @@
 package kit.pse.hgv.representation;
 
-public class PolarCoordinate implements Coordinate {
+import org.apache.commons.math3.analysis.function.Acosh;
+
+public class PolarCoordinate implements Coordinate{
 
     public static final double MAX_ANGLE = 2 * Math.PI;
     private double angle;
@@ -37,15 +39,21 @@ public class PolarCoordinate implements Coordinate {
         return toCartesian().euclideanDistance(coordinate);
     }
 
+    public double getAngularDistance(Coordinate coordinate) {
+        double angle1 = coordinate.toPolar().getAngle();
+        double res = Math.min(Math.abs(angle - angle1), MAX_ANGLE - Math.abs(angle - angle1));
+        return res;
+    }
+
     @Override
     public double hyperbolicDistance(Coordinate coordinate) {
         double angle1 = coordinate.toPolar().getAngle();
         double distance1 = coordinate.toPolar().getDistance();
         double deltaAngle = Math.min(Math.abs(angle - angle1), MAX_ANGLE - Math.abs(angle - angle1));
-        // check for division by -1, when it occurs set to -1(invalid distance)
-        double hyperbolicDistance = Math.cos(deltaAngle) < 1
-                ? distance + distance1 - Math.log(2 / (1 - Math.cos(deltaAngle)))
-                : -1;
+        Acosh acosh = new Acosh();
+        //check for division by -1, when it occurs set to -1(invalid distance)
+        double temp = Math.cosh(distance) * Math.cosh(distance1) - Math.sinh(distance) * Math.sinh(distance1) * Math.cos(deltaAngle);
+        double hyperbolicDistance = acosh.value(temp);
         return hyperbolicDistance;
     }
 
@@ -56,6 +64,9 @@ public class PolarCoordinate implements Coordinate {
      * @return moved coordinate
      */
     public Coordinate moveCoordinate(Coordinate vector) {
+        if(vector.toPolar().getDistance() == 0) {
+            return this;
+        }
         return toCartesian().moveCoordinate(vector);
     }
 
@@ -94,5 +105,18 @@ public class PolarCoordinate implements Coordinate {
     @Override
     public String toString() {
         return String.format("r: %f, phi: %f", distance, angle);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Coordinate)) {
+            return false;
+        }
+        PolarCoordinate coordinate = ((Coordinate) o).toPolar();
+        double deltaPhi = Math.min(Math.abs(angle - coordinate.getAngle()), MAX_ANGLE - Math.abs(angle - coordinate.getAngle()));
+        double deltaR = Math.abs(distance - coordinate.getDistance());
+        double conversionError = 1.0 / 1000000.0;
+        boolean res = deltaPhi < conversionError & deltaR < conversionError;
+        return res;
     }
 }

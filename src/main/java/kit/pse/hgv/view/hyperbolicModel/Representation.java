@@ -29,4 +29,6 @@ public interface Representation {
     void setAccuracy(Accuracy accuracy);
 
     void setCenter(Coordinate center);
+
+    Accuracy getAccuracy();
 }

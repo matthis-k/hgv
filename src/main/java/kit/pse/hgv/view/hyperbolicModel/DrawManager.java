@@ -104,7 +104,7 @@ public class DrawManager {
     private Set<Integer> addConnectedEdges(List<Integer> changedElements) {
         Set<Integer> allChangedElements = new HashSet<>();
         allChangedElements.addAll(changedElements);
-        for (Integer id : allChangedElements) {
+        for (Integer id : changedElements) {
             if (graphSystem.getNodeByID(graphId, id) != null) {
                 for (Edge edge : graphSystem.getGraphByID(graphId)
                         .getEdgesOfNode(graphSystem.getNodeByID(graphId, id))) {
