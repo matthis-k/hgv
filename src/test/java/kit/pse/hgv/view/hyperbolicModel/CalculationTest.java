@@ -35,7 +35,7 @@ public class CalculationTest {
         for(Drawable drawable : rendered) {
             if(drawable instanceof LineStrip) {
                 LineStrip lineStrip = (LineStrip) drawable;
-                Iterator<Coordinate> coordinates = lineStrip.getCoords().iterator();
+                Iterator<CartesianCoordinate> coordinates = lineStrip.getCoords().iterator();
                 Coordinate coord1 = null;
                 Coordinate coord2 = null;
                 int connected [] = lineStrip.getConnectedNodes();
@@ -65,7 +65,7 @@ public class CalculationTest {
             if(drawable instanceof LineStrip) {
                 LineStrip lineStrip = (LineStrip) drawable;
                 int nodes[] = lineStrip.getConnectedNodes();
-                List<Coordinate> coordinates = lineStrip.getCoords();
+                List<CartesianCoordinate> coordinates = lineStrip.getCoords();
                 Coordinate coord1 = graphSystem.getNodeByID(nodes[0]).getCoord();
                 Coordinate coord2 = graphSystem.getNodeByID(nodes[1]).getCoord();
                 boolean goodCoords = (coord1.equals(coordinates.get(0).mirroredY()) || coord1.equals(coordinates.get(1).mirroredY())) &&
