@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class LineStrip extends Drawable {
-    private List<Coordinate> coordinates;
+    private List<CartesianCoordinate> coordinates;
     private Vector<Line> lines = new Vector<>();
     private int[] connecting = new int[2];
 
@@ -23,7 +23,7 @@ public class LineStrip extends Drawable {
         lines.add(line);
     }
 
-    public LineStrip(List<Coordinate> coordinates, int id, Color color, int firstID, int secondID) {
+    public LineStrip(List<CartesianCoordinate> coordinates, int id, Color color, int firstID, int secondID) {
         super(id, color, false);
         this.coordinates = coordinates;
         for (int i = 0; i < coordinates.size() - 1; i++) {
@@ -49,7 +49,7 @@ public class LineStrip extends Drawable {
         return this.lines;
     }
 
-    public List<Coordinate> getCoords() {
+    public List<CartesianCoordinate> getCoords() {
         return this.coordinates;
     }
 

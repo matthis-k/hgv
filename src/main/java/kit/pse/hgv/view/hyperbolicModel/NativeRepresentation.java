@@ -3,10 +3,7 @@ package kit.pse.hgv.view.hyperbolicModel;
 import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
-import kit.pse.hgv.representation.CircleNode;
-import kit.pse.hgv.representation.Coordinate;
-import kit.pse.hgv.representation.LineStrip;
-import kit.pse.hgv.representation.PolarCoordinate;
+import kit.pse.hgv.representation.*;
 import org.apache.commons.math3.analysis.function.Acosh;
 
 import java.util.ArrayList;
@@ -34,14 +31,14 @@ public class NativeRepresentation implements Representation {
 
     @Override
     public LineStrip calculate(Edge edge) {
-        List<Coordinate> coordinates = new ArrayList<>();
+        List<CartesianCoordinate> coordinates = new ArrayList<>();
         Coordinate vector = center.mirroredThroughCenter();
         PolarCoordinate point1 = edge.getNodes()[0].getCoord().moveCoordinate(vector).toPolar();
         PolarCoordinate point2 = edge.getNodes()[1].getCoord().moveCoordinate(vector).toPolar();
         if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
                 || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT) {
-            coordinates.add(point1.moveCoordinate(center).mirroredY());
-            coordinates.add(point2.moveCoordinate(center).mirroredY());
+            coordinates.add(point1.moveCoordinate(center).mirroredY().toCartesian());
+            coordinates.add(point2.moveCoordinate(center).mirroredY().toCartesian());
             Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
             return new LineStrip(coordinates, edge.getId(), color, edge.getNodes()[0].getId(),
                     edge.getNodes()[1].getId());
@@ -60,13 +57,13 @@ public class NativeRepresentation implements Representation {
             }
 
             if (point2.getDistance() > 9) {
-                coordinates.add(point2.moveCoordinate(center).mirroredY());
+                coordinates.add(point2.moveCoordinate(center).mirroredY().toCartesian());
                 point2 = new PolarCoordinate(point2.getAngle(), 9);
             }
         }
         coordinates.addAll(coordinatesForShortestLine(point2, point1));
         if (point1Temp != null) {
-            coordinates.add(point1Temp.moveCoordinate(center).mirroredY());
+            coordinates.add(point1Temp.moveCoordinate(center).mirroredY().toCartesian());
         }
 
         Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
@@ -74,8 +71,8 @@ public class NativeRepresentation implements Representation {
 
     }
 
-    private List<Coordinate> coordinatesForShortestLine(PolarCoordinate point1, PolarCoordinate point2) {
-        List<Coordinate> coordinates = new ArrayList<>();
+    private List<CartesianCoordinate> coordinatesForShortestLine(PolarCoordinate point1, PolarCoordinate point2) {
+        List<CartesianCoordinate> coordinates = new ArrayList<>();
         double renderDetail = accuracy.getAccuracy();
 
         double angularDistance = point2.getAngle() - point1.getAngle();
@@ -87,7 +84,7 @@ public class NativeRepresentation implements Representation {
         double p1r = point1.getDistance();
         double p2r = point2.getDistance();
         double p2phi = point2.getAngle();
-        coordinates.add(point2.moveCoordinate(center).mirroredY());
+        coordinates.add(point2.moveCoordinate(center).mirroredY().toCartesian());
         // aproximation beacuse calulation fails when points have r > 10
         double distance = point1.hyperbolicDistance(point2);
 
@@ -130,9 +127,11 @@ public class NativeRepresentation implements Representation {
             tempr = r;
             double phi = p2phi + gammaPrime;
             PolarCoordinate nativeLinePoint = new PolarCoordinate(phi, r);
-            coordinates.add(nativeLinePoint.moveCoordinate(center).mirroredY());
+            coordinates.add(nativeLinePoint.moveCoordinate(center).mirroredY().toCartesian());
         }
-        coordinates.add(point1.moveCoordinate(center).mirroredY());
+        if(!coordinates.get(coordinates.size() - 1).equals(point1.moveCoordinate(center).mirroredY())) {
+            coordinates.add(point1.moveCoordinate(center).mirroredY().toCartesian());
+        }
         return coordinates;
     }
 
@@ -163,5 +162,10 @@ public class NativeRepresentation implements Representation {
     @Override
     public void setAccuracy(Accuracy accuracy) {
         this.accuracy = accuracy;
+    }
+
+    @Override
+    public Accuracy getAccuracy() {
+        return this.accuracy;
     }
 }

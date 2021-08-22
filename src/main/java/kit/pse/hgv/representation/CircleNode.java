@@ -63,4 +63,13 @@ public class CircleNode extends Drawable {
     public CartesianCoordinate getVisualCenter() {
         return this.viewCenter;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof CircleNode)) return false;
+        CircleNode circleNode = (CircleNode) o;
+        boolean equals = getCenter().equals(circleNode.getCenter());
+        equals &= id == circleNode.getID();
+        return equals;
+    }
 }

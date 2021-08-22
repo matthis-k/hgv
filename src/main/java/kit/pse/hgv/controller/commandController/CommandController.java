@@ -40,7 +40,17 @@ public class CommandController extends Thread implements CommandEventSource {
      */
     public void run() {
         while (true) {
-            executeNext();
+            synchronized (this) {
+                if (!commandQ.isEmpty()) {
+                    executeNext();
+                } else {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
@@ -70,6 +80,7 @@ public class CommandController extends Thread implements CommandEventSource {
     public void queueCommand(ICommand c) {
         synchronized (this) {
             commandQ.add(c);
+            notify();
         }
     }
 
