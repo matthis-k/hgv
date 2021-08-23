@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class GraphTest {
+public class GraphAddRemoveTest {
 
     private GraphSystem g;
     private int graphId;
