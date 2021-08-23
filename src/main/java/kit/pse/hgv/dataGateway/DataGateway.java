@@ -122,7 +122,6 @@ public class DataGateway {
                 try {
                     readEdge(currentLine, graphID);
                 } catch (NullPointerException e) {
-                    System.out.println("Edge nicht gefunden: " + currentLine);
                 }
             }
             currentLine = scanner.nextLine();

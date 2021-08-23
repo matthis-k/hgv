@@ -24,7 +24,7 @@ public class CalculationTest {
     public static void createEnvironment() {
         representation = new NativeRepresentation(0.1, Accuracy.HIGH);
         drawManager = new DrawManager(id, representation);
-        id = graphSystem.loadGraph("src\\test\\resources\\testGraph.graphml");
+        id = graphSystem.loadGraph("src/test/resources/testGraph.graphml");
 
     }
 
@@ -74,9 +74,6 @@ public class CalculationTest {
                         && (coord2.equals(coordinates.get(0).mirroredY())
                                 || coord2.equals(coordinates.get(1).mirroredY()));
                 Assert.assertTrue(goodCoords);
-                System.out.println(goodCoords + " Coord1 " + coord1.toString() + " Coord2 " + coord2.toString()
-                        + " Edge first " + coordinates.get(0).toPolar().mirroredY() + " Edge Second "
-                        + coordinates.get(1).toPolar().mirroredY());
                 Assert.assertTrue(lineStrip.getCoords().size() == 2);
             }
         }
@@ -124,10 +121,7 @@ public class CalculationTest {
             for (int i = 0; i < 10; i++) {
                 PolarCoordinate coord1 = new PolarCoordinate(0, j);
                 PolarCoordinate coord2 = new PolarCoordinate((1.0 / Math.pow(10, i)), j);
-                System.out.printf("distance %d: angular distance %6.3e: distance %6.3e\n", j,
-                        coord1.getAngularDistance(coord2), coord1.hyperbolicDistance(coord2));
             }
-            System.out.println("###");
         }
 
     }
@@ -149,7 +143,6 @@ public class CalculationTest {
             Command command = new CreateEdgeCommand(0, ids);
             commandController.queueCommand(command);
         }
-        System.out.println("test");
     }
 
 }
