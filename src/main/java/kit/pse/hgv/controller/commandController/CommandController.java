@@ -35,6 +35,10 @@ public class CommandController extends Thread implements CommandEventSource {
         setName("CommandController");
     }
 
+    static void reset() {
+        instance = null;
+    }
+
     /**
      * Starts the CommandController
      */
@@ -47,7 +51,6 @@ public class CommandController extends Thread implements CommandEventSource {
                     try {
                         wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -60,10 +63,8 @@ public class CommandController extends Thread implements CommandEventSource {
     private void executeNext() {
         synchronized (this) {
             ICommand c = commandQ.poll();
-            if (c != null) {
-                c.execute();
-                notifyAll(c);
-            }
+            c.execute();
+            notifyAll(c);
         }
     }
 
@@ -73,6 +74,9 @@ public class CommandController extends Thread implements CommandEventSource {
      * @param c Command that was build from the CommandProcessor
      */
     public void queueCommand(ICommand c) {
+        if (c == null) {
+            return;
+        }
         synchronized (this) {
             commandQ.add(c);
             notify();
@@ -95,7 +99,6 @@ public class CommandController extends Thread implements CommandEventSource {
             try {
                 th.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -105,7 +108,7 @@ public class CommandController extends Thread implements CommandEventSource {
         listeners.add(listener);
     }
 
-    public ConcurrentLinkedQueue<ICommand> getCommandQ(){
+    public ConcurrentLinkedQueue<ICommand> getCommandQ() {
         return commandQ;
     }
 

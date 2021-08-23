@@ -1,6 +1,4 @@
-package kit.pse.hgv.controller.commands;
-
-import kit.pse.hgv.controller.commandController.commands.Command;
+package kit.pse.hgv.controller.commandController.commands;
 
 public class DummyCommand extends Command {
 
