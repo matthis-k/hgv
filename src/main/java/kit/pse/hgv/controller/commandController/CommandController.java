@@ -63,11 +63,6 @@ public class CommandController extends Thread implements CommandEventSource {
             if (c != null) {
                 c.execute();
                 notifyAll(c);
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
