@@ -14,11 +14,11 @@ public class PyScript implements Extension {
     public void startExtension() {
         try {
             p = Runtime.getRuntime().exec("python " + path);
-            try {
+            /* try {
                 p.waitFor();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            } */
         } catch (IOException e) {
             e.printStackTrace();
         }
