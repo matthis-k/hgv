@@ -1,5 +1,6 @@
 package kit.pse.hgv.controller.commandController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -8,12 +9,16 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.controller.commandController.scheduler.IScheduler;
+import kit.pse.hgv.controller.commandController.scheduler.ParallelScheduler;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;
 
 public class CommandController extends Thread implements CommandEventSource {
     //TODO: undo/redo
     private static CommandController instance;
+
+    private IScheduler scheduler = new ParallelScheduler();
 
     private Vector<CommandQListener> listeners = new Vector<>();
     private ConcurrentLinkedQueue<ICommand> commandQ = new ConcurrentLinkedQueue<ICommand>();
@@ -50,9 +55,34 @@ public class CommandController extends Thread implements CommandEventSource {
     }
 
     /**
-     * Executes the next Command in the CommandQ
+     * Executes the next Commands in the CommandQ that are possible to execute parallel.
      */
     private void executeNext() {
+        List<CommandThread> commandThreads = new ArrayList<>();
+
+        //Thread creation.
+        for(ICommand c : scheduler.getNextCommand(commandQ)) {
+            CommandThread th = new CommandThread(c);
+            commandThreads.add(th);
+            th.start();
+        }
+
+        //Thread joins.
+        for(CommandThread th : commandThreads) {
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //When thread finished, notifyAll.
+        for(CommandThread th : commandThreads) {
+            notifyAll(th.getCommand());
+        }
+
+
+        /*
         synchronized (this) {
             ICommand c = commandQ.poll();
             if (c != null) {
@@ -64,7 +94,7 @@ public class CommandController extends Thread implements CommandEventSource {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
     /**
