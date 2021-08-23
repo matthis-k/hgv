@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GraphGetTest {
@@ -48,6 +49,21 @@ public class GraphGetTest {
         assert(g.getGraphElementByID(3).getId() == 3);
         assert(((Edge) g.getGraphElementByID(3)).getNodes()[0].getId() == 1);
         assert(((Edge) g.getGraphElementByID(3)).getNodes()[1].getId() == 2);
+    }
+
+    @Test
+    public void getAllIds() throws OverflowException {
+        Coordinate c0 = new CartesianCoordinate(0, 0);
+        Coordinate c1 = new CartesianCoordinate(1, 1);
+        g.newGraph();
+        g.addElement(1, c0);
+        g.addElement(1, c1);
+        int[] i = {1, 2};
+        int[] k = new int[2];
+        for(int h = 0; h < g.getAllIds().size(); h++) {
+            k[h] = (int) g.getAllIds().toArray()[h];
+        }
+        assertArrayEquals(k, i);
     }
 
 
