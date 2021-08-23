@@ -7,6 +7,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import kit.pse.hgv.controller.commandController.commands.PauseExtensionCommand;
+import kit.pse.hgv.controller.commandController.commands.ResumeExtensionCommand;
+import kit.pse.hgv.controller.commandController.commands.StopExtensionCommand;
 import kit.pse.hgv.controller.commandProcessor.ExtensionCommandProcessor;
 import kit.pse.hgv.extensionServer.ClientInfo;
 import kit.pse.hgv.extensionServer.ExtensionServer;
@@ -106,7 +109,7 @@ public class ExtensionPopupHandler implements UIHandler {
         AnchorPane pane = new AnchorPane();
         pane.setPrefHeight(PREF_HEIGHT_ANCHOR);
         pane.setPrefWidth(PREF_WIDTH_ANCHOR);
-        addButtons(pane);
+        addButtons(pane, id);
 
         newTitledPane.setContent(pane);
         return newTitledPane;
@@ -117,7 +120,7 @@ public class ExtensionPopupHandler implements UIHandler {
      * 
      * @param pane
      */
-    private void addButtons(AnchorPane pane) {
+    private void addButtons(AnchorPane pane, int id) {
         Button start = new Button(START);
         Button pause = new Button(PAUSE);
         Button stop = new Button(STOP);
@@ -128,6 +131,19 @@ public class ExtensionPopupHandler implements UIHandler {
         AnchorPane.setTopAnchor(start, MARGIN_TOP_BOTTOM);
         AnchorPane.setRightAnchor(pause, PAUSE_RIGHT);
         AnchorPane.setTopAnchor(pause, MARGIN_TOP_BOTTOM);
+
+
+        start.setOnMouseClicked(mouseEvent -> {
+            new ResumeExtensionCommand(id).execute();
+        });
+
+        pause.setOnMouseClicked(mouseEvent -> {
+            new PauseExtensionCommand(id).execute();
+        });
+
+        stop.setOnMouseClicked(mouseEvent -> {
+            new StopExtensionCommand(id).execute();
+        });
 
         pane.getChildren().add(start);
         pane.getChildren().add(pause);
