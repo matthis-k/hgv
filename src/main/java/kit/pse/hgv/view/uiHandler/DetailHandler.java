@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
 
@@ -26,6 +27,7 @@ public class DetailHandler implements UIHandler {
     private static final String NO_ID = "---";
     private static final String RADIUS = "r";
     private static final String PHI = "phi";
+    private static final String COLOR = "color";
     private static final double EIGHTTEEN = 18;
     @FXML
     private ColorPicker colorPick;
@@ -96,10 +98,10 @@ public class DetailHandler implements UIHandler {
         if (idText.getText().equals(NO_ID)) {
             hyperProcessor.setAccuracy(mode);
         } else if (currentRadius == 0 && currentAngle == 0) {
-            processor.changeColor(currentID, colorPick.getValue());
+            processor.editMetaData(currentID, COLOR, colorPick.getValue().toString());
             hyperProcessor.setAccuracy(mode);
         } else {
-            processor.changeColor(currentID, colorPick.getValue());
+            processor.editMetaData(currentID, COLOR, colorPick.getValue().toString());
             processor.editMetaData(currentID, RADIUS, radius.getText());
             processor.editMetaData(currentID, PHI, angle.getText());
             hyperProcessor.setAccuracy(mode);

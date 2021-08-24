@@ -1,16 +1,17 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;
 
 /**
  * This class calls the needed methods to manage the metadata (except color)
  */
-public class EditUserMetaCommand extends MetaSystemCommand{
+public class EditUserMetaCommand extends MetaSystemCommand {
     private final String key;
-    private final String meta;
+    private final String value;
     private final int elementId;
-    
+
     /**
      * The constructor creates an element of this class
      * 
@@ -57,6 +58,15 @@ public class EditUserMetaCommand extends MetaSystemCommand{
                 response.put("success", false);
                 response.put("reason", "can not parse metadata");
                 return;
+            }
+        } else if (key.equals("color")) {
+            try {
+                Color.web(value);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
+                modifiedIds.add(elementId);
+            } catch (IllegalArgumentException e) {
+                response.put("success", false);
+                response.put("reason", "can not parse metadata");
             }
         } else {
             GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
