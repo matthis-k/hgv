@@ -24,8 +24,8 @@ public class CalculationTest {
     @Before
     public void createEnvironment(){
         representation = new NativeRepresentation(0.1, Accuracy.HIGH);
-        drawManager = new DrawManager(id, representation);
         id = graphSystem.loadGraph("src\\main\\resources\\spiralGraph.graphml");
+        drawManager = new DrawManager(id, representation);
     }
 
     @After
@@ -55,15 +55,15 @@ public class CalculationTest {
                     coord2 = coord1;
                 }
                 int i = 0;
-                System.out.println(graphSystem.getNodeByID(connected[0]).getCoord() + ":" + graphSystem.getNodeByID(connected[1]).getCoord());
+              //  System.out.println(graphSystem.getNodeByID(connected[0]).getCoord() + ":" + graphSystem.getNodeByID(connected[1]).getCoord());
                 while (coordinates.hasNext()) {
                     coord1 = coord2;
                     coord2 = coordinates.next();
                     deltaAprox += coord1.hyperbolicDistance(coord2);
                     if(Math.abs(coord1.hyperbolicDistance(coord2) - (deltaReal /
                             (lineStrip.getCoords().size() - 1))) > 0.1) {
-                        System.out.println(coord1.hyperbolicDistance(coord2) + ":" + deltaReal /
-                                (lineStrip.getCoords().size() - 1) + ":" + i + ":" + graphSystem.getNodeByID(connected[0]).getCoord() + ":" + graphSystem.getNodeByID(connected[1]).getCoord());
+                      //  System.out.println(coord1.hyperbolicDistance(coord2) + ":" + deltaReal /
+                                //(lineStrip.getCoords().size() - 1) + ":" + i + ":" + graphSystem.getNodeByID(connected[0]).getCoord() + ":" + graphSystem.getNodeByID(connected[1]).getCoord());
                     }
                     i++;
                 }
@@ -72,26 +72,6 @@ public class CalculationTest {
         }
     }
 
-    @Test
-    public void calculateDirect() {
-        drawManager.setAccuracy(Accuracy.DIRECT);
-        List<Drawable> rendered = drawManager.getRenderData();
-        for (Drawable drawable : rendered) {
-            if (drawable instanceof LineStrip) {
-                LineStrip lineStrip = (LineStrip) drawable;
-                int nodes[] = lineStrip.getConnectedNodes();
-                List<CartesianCoordinate> coordinates = lineStrip.getCoords();
-                Coordinate coord1 = graphSystem.getNodeByID(nodes[0]).getCoord();
-                Coordinate coord2 = graphSystem.getNodeByID(nodes[1]).getCoord();
-                boolean goodCoords = (coord1.equals(coordinates.get(0).mirroredY())
-                        || coord1.equals(coordinates.get(1).mirroredY()))
-                        && (coord2.equals(coordinates.get(0).mirroredY())
-                                || coord2.equals(coordinates.get(1).mirroredY()));
-                Assert.assertTrue(goodCoords);
-                Assert.assertTrue(lineStrip.getCoords().size() == 2);
-            }
-        }
-    }
 
     @Test
     public void conversionTest() {
@@ -143,13 +123,27 @@ public class CalculationTest {
 
     @Test
     public void changesRightElements() {
-
         List<Drawable> firstRender = drawManager.getRenderData();
+        List<double[]> renderedCoords = new ArrayList<>();
+        for(Drawable drawable : firstRender) {
+            double add[] = new double[3];
+            if(drawable instanceof CircleNode) {
+                add[0] = 0;
+                add[1] = ((CircleNode) drawable).getCenter().toPolar().getDistance();
+                add[2] = ((CircleNode) drawable).getCenter().toPolar().getAngle();
+            } else {
+                add[0] = 1;
+                add[1] = ((LineStrip) drawable).getConnectedNodes()[0];
+                add[2] = ((LineStrip) drawable).getConnectedNodes()[1];
+            }
+            renderedCoords.add(add);
+        }
         List<Integer> ids = graphSystem.getIDs(id);
         List<Integer> changedGraph = new ArrayList<>();
         List<Integer> changedRendered = new ArrayList<>();
-        for(int i = 1; i < ((ids.size() > 11)? 11 : ids.size()); i++) {
-            int elementId = ids.get(i);
+        int smallestID = getSmallestID(id);
+        for(int i = smallestID; i < ((ids.size() > 11)? smallestID + 11 : smallestID + ids.size()); i++) {
+            int elementId = ids.get(i - getSmallestID(id));
             GraphElement element = graphSystem.getGraphElementByID(id, elementId);
             if(element instanceof Node) {
                 Node node = (Node) element;
@@ -163,12 +157,21 @@ public class CalculationTest {
             changedGraph.add(elementId);
 
         }
-        List<Drawable> secondRender = drawManager.getRenderData();
-        for(Integer i:changedGraph){
+        System.out.println(changedGraph.size());
+        List<Drawable> secondRender = drawManager.getRenderData(changedRendered);
+        for(Integer j: changedGraph){
+            int i = j - smallestID;
+            if(secondRender.contains(j)) {
+                assert !firstRender.get(i).equals(secondRender.get(i));
+            } else {
+                assert firstRender.get(i).equals(secondRender.get(i));
+            }
 
-            System.out.println(((CircleNode) firstRender.get(i)).getCenter().toPolar() + " : " + ((CircleNode) secondRender.get(i)).getCenter().toPolar() + " : " + graphSystem.getNodeByID(i).getCoord());
-
-
+        }
+        for(int i = 0; i < firstRender.size(); i++) {
+            if(!changedGraph.contains(i)) {
+                assert firstRender.get(i).equals(secondRender.get(i));
+            }
         }
 
     }
@@ -183,7 +186,7 @@ public class CalculationTest {
 
     @Test
     public void testMove(){
-        for(int i = 0; i < 1000; i++) {
+        for(Integer i : graphSystem.getIDs(id)) {
             if(graphSystem.getGraphElementByID(i) instanceof Node) {
                 Node node = graphSystem.getNodeByID(i);
                 double phi = node.getCoord().toPolar().getAngle();
@@ -194,15 +197,72 @@ public class CalculationTest {
                 double newPhi = graphSystem.getNodeByID(id).getCoord().toPolar().getAngle();
                 double newR = graphSystem.getNodeByID(id).getCoord().toPolar().getDistance();
                 double dPhi = phi - newPhi < newPhi - phi? phi - newPhi : newPhi - phi;
-                System.out.printf("%f : %f : %f : %f : %f : %f \n", phi, r,  newPhi, newR, (phi + 1) % (Math.PI * 2), r - newR);
+                //System.out.printf("%f : %f : %f : %f : %f : %f \n", phi, r,  newPhi, newR, (phi + 1) % (Math.PI * 2), r - newR);
             }
         }
-        for(int i = 0; i < 50; i++) {
-            int[] ids = {i,(i + 1) % 50};
-            Command command = new CreateEdgeCommand(0,ids);
-            commandController.queueCommand(command);
+        int smallestID = getSmallestNodeID(id);
+        int largestID = getLargestNodeID(id);
+        for(int i = smallestID; i < largestID; i++) {
+            int j = i >= largestID ? smallestID : i + 1;
+            int[] ids = {i,j};
+            Command command = new CreateEdgeCommand(id,ids);
+            command.execute();
+           // System.out.println((Integer) i + " " + (Integer) (i + 1));
         }
         System.out.println("test");
+    }
+
+    @Test
+    public void moveCenterTest() {
+
+    }
+
+    private int getSmallestID(int id) {
+        int smallestID = Integer.MAX_VALUE;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i < smallestID) smallestID = i;
+        }
+        return smallestID;
+    }
+
+    private int getLargestID(int id) {
+        int largestID = 0;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i > largestID) largestID = i;
+        }
+        return largestID;
+    }
+
+    private int getLargestNodeID(int id) {
+        int largestID = 0;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i > largestID && graphSystem.getGraphElementByID(i) instanceof Node) largestID = i;
+        }
+        return largestID;
+    }
+
+    private int getLargestEdgeID(int id) {
+        int largestID = 0;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i > largestID && graphSystem.getGraphElementByID(i) instanceof Edge) largestID = i;
+        }
+        return largestID;
+    }
+
+    private int getSmallestNodeID(int id) {
+        int smallestID = Integer.MAX_VALUE;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i < smallestID && graphSystem.getGraphElementByID(i) instanceof Node) smallestID = i;
+        }
+        return smallestID;
+    }
+
+    private int getSmallestEdgeID(int id) {
+        int smallestID = Integer.MAX_VALUE;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i < smallestID && graphSystem.getGraphElementByID(i) instanceof Edge) smallestID = i;
+        }
+        return smallestID;
     }
 }
 
