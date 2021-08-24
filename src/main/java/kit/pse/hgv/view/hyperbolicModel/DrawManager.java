@@ -63,7 +63,6 @@ public class DrawManager {
     }
 
     public List<Drawable> getRenderData() {
-        rendered.clear();
         for (Integer id : graphSystem.getIDs(graphId)) {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
@@ -77,10 +76,13 @@ public class DrawManager {
         Drawable d;
         Node node = graphSystem.getNodeByID(graphId, id);
         if (node != null) {
-            d = getRepresentation().calculate(node);
+            CircleNode circleNode = (CircleNode) rendered.get(id);
+            d = getRepresentation().calculate(node, circleNode);
+
         } else {
             Edge edge = graphSystem.getEdgeByID(graphId, id);
-            d = getRepresentation().calculate(edge);
+            LineStrip lineStrip = (LineStrip) rendered.get(id);
+            d = getRepresentation().calculate(edge, lineStrip);
         }
         return d.setColor(getColorOfId(id));
     }

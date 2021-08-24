@@ -56,4 +56,12 @@ public class LineStrip extends Drawable {
     public int[] getConnectedNodes() {
         return connecting;
     }
+
+    public void setCoordinates(List<CartesianCoordinate> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setConecting(int[] connecting) {
+        this.connecting = connecting;
+    }
 }

@@ -15,7 +15,7 @@ public interface Representation {
      * @param node the Node to be represented
      * @return the Drawable object representing the Node
      */
-    CircleNode calculate(Node node);
+    CircleNode calculate(Node node, CircleNode circleNode);
 
     /**
      * This method calculates the way the Edge should be represented, depending on
@@ -24,7 +24,7 @@ public interface Representation {
      * @param edge the Edge to be represented
      * @return The Drawable object representing the Edge
      */
-    LineStrip calculate(Edge edge);
+    LineStrip calculate(Edge edge, LineStrip lineStrip);
 
     void setAccuracy(Accuracy accuracy);
 

@@ -2,16 +2,17 @@ package kit.pse.hgv.view.hyperbolicModel;
 
 import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandController.commands.Command;
-import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
+import kit.pse.hgv.controller.commandController.CommandQListener;
+import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.element.Edge;
+import kit.pse.hgv.graphSystem.element.GraphElement;
+import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.*;
 import org.junit.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CalculationTest {
     static int id = 1;
@@ -20,17 +21,24 @@ public class CalculationTest {
     static DrawManager drawManager;
     static int edgeId = 0;
 
-    @BeforeClass
-    public static void createEnvironment() {
+    @Before
+    public void createEnvironment(){
         representation = new NativeRepresentation(0.1, Accuracy.HIGH);
         drawManager = new DrawManager(id, representation);
-        id = graphSystem.loadGraph("src\\test\\resources\\testGraph.graphml");
-
+        id = graphSystem.loadGraph("src\\main\\resources\\spiralGraph.graphml");
     }
 
-    @Test
-    public void drawShortestEdge() {
+    @After
+    public void free() {
+        representation = null;
+        drawManager = null;
+        graphSystem.removeGraph(id);
+    }
 
+
+    @Test
+    public void drawShortestHighEdge() {
+        drawManager.setAccuracy(Accuracy.HIGH);
         List<Drawable> rendered = drawManager.getRenderData();
         for (Drawable drawable : rendered) {
             if (drawable instanceof LineStrip) {
@@ -46,14 +54,20 @@ public class CalculationTest {
                     coord1 = coordinates.next();
                     coord2 = coord1;
                 }
+                int i = 0;
+                System.out.println(graphSystem.getNodeByID(connected[0]).getCoord() + ":" + graphSystem.getNodeByID(connected[1]).getCoord());
                 while (coordinates.hasNext()) {
-                    deltaAprox += coord1.hyperbolicDistance(coord2);
                     coord1 = coord2;
                     coord2 = coordinates.next();
-                    Assert.assertTrue(Math.abs(coord1.hyperbolicDistance(coord2) - (deltaReal / 100.0)) < 0.1);
-
+                    deltaAprox += coord1.hyperbolicDistance(coord2);
+                    if(Math.abs(coord1.hyperbolicDistance(coord2) - (deltaReal /
+                            (lineStrip.getCoords().size() - 1))) > 0.1) {
+                        System.out.println(coord1.hyperbolicDistance(coord2) + ":" + deltaReal /
+                                (lineStrip.getCoords().size() - 1) + ":" + i + ":" + graphSystem.getNodeByID(connected[0]).getCoord() + ":" + graphSystem.getNodeByID(connected[1]).getCoord());
+                    }
+                    i++;
                 }
-                Assert.assertTrue(Math.abs(deltaAprox - deltaReal) < 0.1);
+               Assert.assertTrue(Math.abs(deltaAprox - deltaReal) < 0.1);
             }
         }
     }
@@ -74,9 +88,6 @@ public class CalculationTest {
                         && (coord2.equals(coordinates.get(0).mirroredY())
                                 || coord2.equals(coordinates.get(1).mirroredY()));
                 Assert.assertTrue(goodCoords);
-                System.out.println(goodCoords + " Coord1 " + coord1.toString() + " Coord2 " + coord2.toString()
-                        + " Edge first " + coordinates.get(0).toPolar().mirroredY() + " Edge Second "
-                        + coordinates.get(1).toPolar().mirroredY());
                 Assert.assertTrue(lineStrip.getCoords().size() == 2);
             }
         }
@@ -119,37 +130,80 @@ public class CalculationTest {
     }
 
     @Test
-    public void distanceClose() {
-        for (int j = 1; j < 50; j++) {
-            for (int i = 0; i < 10; i++) {
-                PolarCoordinate coord1 = new PolarCoordinate(0, j);
-                PolarCoordinate coord2 = new PolarCoordinate((1.0 / Math.pow(10, i)), j);
-                System.out.printf("distance %d: angular distance %6.3e: distance %6.3e\n", j,
-                        coord1.getAngularDistance(coord2), coord1.hyperbolicDistance(coord2));
+    public void createsAllElements() {
+        List<Drawable> rendered = drawManager.getRenderData();
+        List<Integer> ids = graphSystem.getIDs(id);
+        for(Drawable drawable: rendered) {
+            Integer id = drawable.getID();
+            Assert.assertTrue(ids.contains(id));
+            ids.remove(id);
+        }
+        Assert.assertTrue(ids.isEmpty());
+    }
+
+    @Test
+    public void changesRightElements() {
+
+        List<Drawable> firstRender = drawManager.getRenderData();
+        List<Integer> ids = graphSystem.getIDs(id);
+        List<Integer> changedGraph = new ArrayList<>();
+        List<Integer> changedRendered = new ArrayList<>();
+        for(int i = 1; i < ((ids.size() > 11)? 11 : ids.size()); i++) {
+            int elementId = ids.get(i);
+            GraphElement element = graphSystem.getGraphElementByID(id, elementId);
+            if(element instanceof Node) {
+                Node node = (Node) element;
+                PolarCoordinate coord = node.getCoord().moveCoordinate((new CartesianCoordinate(1,1)).toPolar()).toPolar();
+                ICommand command = new MoveNodeCommand(i,coord);
+                command.execute();
+                if(i % 2 == 0) changedRendered.add(elementId);
+            } else {
+                graphSystem.removeElement(elementId);
             }
-            System.out.println("###");
+            changedGraph.add(elementId);
+
+        }
+        List<Drawable> secondRender = drawManager.getRenderData();
+        for(Integer i:changedGraph){
+
+            System.out.println(((CircleNode) firstRender.get(i)).getCenter().toPolar() + " : " + ((CircleNode) secondRender.get(i)).getCenter().toPolar() + " : " + graphSystem.getNodeByID(i).getCoord());
+
+
         }
 
     }
 
     @Ignore
     @Test
-    public void visualGraphTest() {
-        String args[] = new String[1];
-        App.main(args);
-        CommandController commandController = CommandController.getInstance();
-        commandController.queueCommand(new CreateNewGraphCommand());
-        for (int i = 0; i < 50; i++) {
-            Coordinate coordinate = new PolarCoordinate(i, i);
-            Command command = new CreateNodeCommand(0, coordinate);
-            commandController.queueCommand(command);
+    public void moveCoordinate() {
+        PolarCoordinate coord = new PolarCoordinate(1.0, 1.0);
+        CartesianCoordinate newCoord = coord.moveCoordinate(new PolarCoordinate(2,0.1)).toCartesian();
+        System.out.println(newCoord + " : " + coord.toCartesian() + ":" + new PolarCoordinate(Math.PI / 2 + 1, 1.0).toCartesian());
+    }
+
+    @Test
+    public void testMove(){
+        for(int i = 0; i < 1000; i++) {
+            if(graphSystem.getGraphElementByID(i) instanceof Node) {
+                Node node = graphSystem.getNodeByID(i);
+                double phi = node.getCoord().toPolar().getAngle();
+                double r = node.getCoord().toPolar().getDistance();
+                int id = node.getId();
+                ICommand command = new MoveNodeCommand(id, (new CartesianCoordinate(1, 1)).toPolar());
+                command.execute();
+                double newPhi = graphSystem.getNodeByID(id).getCoord().toPolar().getAngle();
+                double newR = graphSystem.getNodeByID(id).getCoord().toPolar().getDistance();
+                double dPhi = phi - newPhi < newPhi - phi? phi - newPhi : newPhi - phi;
+                System.out.printf("%f : %f : %f : %f : %f : %f \n", phi, r,  newPhi, newR, (phi + 1) % (Math.PI * 2), r - newR);
+            }
         }
-        for (int i = 0; i < 50; i++) {
-            int[] ids = { i, (i + 1) % 50 };
-            Command command = new CreateEdgeCommand(0, ids);
+        for(int i = 0; i < 50; i++) {
+            int[] ids = {i,(i + 1) % 50};
+            Command command = new CreateEdgeCommand(0,ids);
             commandController.queueCommand(command);
         }
         System.out.println("test");
     }
-
 }
+
+

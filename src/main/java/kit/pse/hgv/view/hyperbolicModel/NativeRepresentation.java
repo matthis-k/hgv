@@ -25,12 +25,17 @@ public class NativeRepresentation implements Representation {
     }
 
     @Override
-    public CircleNode calculate(Node node) {
-        return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(), null);
+    public CircleNode calculate(Node node, CircleNode circleNode) {
+        if(circleNode == null || circleNode.getID() != node.getId()) {
+            return new CircleNode(node.getCoord().toCartesian(), nodeSize, node.getId(), null);
+        } else {
+            circleNode.setCenter(node.getCoord());
+            return circleNode;
+        }
     }
 
     @Override
-    public LineStrip calculate(Edge edge) {
+    public LineStrip calculate(Edge edge, LineStrip lineStrip) {
         List<CartesianCoordinate> coordinates = new ArrayList<>();
         Coordinate vector = center.mirroredThroughCenter();
         PolarCoordinate point1 = edge.getNodes()[0].getCoord().moveCoordinate(vector).toPolar();
@@ -65,9 +70,18 @@ public class NativeRepresentation implements Representation {
         if (point1Temp != null) {
             coordinates.add(point1Temp.moveCoordinate(center).mirroredY().toCartesian());
         }
-
-        Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
-        return new LineStrip(coordinates, edge.getId(), color, edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
+        if(lineStrip == null) {
+            Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
+            return new LineStrip(coordinates, edge.getId(), color, edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
+        } else {
+            lineStrip.setCoordinates(coordinates);
+            Color color = edge.getMetadata("color") == null || edge.getMetadata("color").equals(lineStrip.getColor()) ? lineStrip.getColor() : Color.web(edge.getMetadata("color"));
+            lineStrip.setColor(color);
+            Node[] nodes = edge.getNodes();
+            int [] ids = {nodes[0].getId(), nodes[1].getId()};
+            lineStrip.setConecting(ids);
+            return  lineStrip;
+        }
 
     }
 

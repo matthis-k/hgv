@@ -67,7 +67,8 @@ public class PolarCoordinate implements Coordinate{
         if(vector.toPolar().getDistance() == 0) {
             return this;
         }
-        return toCartesian().moveCoordinate(vector);
+        CartesianCoordinate cartesianVector = vector.toCartesian();
+        return cartesianVector.moveCoordinate(this);
     }
 
     @Override
