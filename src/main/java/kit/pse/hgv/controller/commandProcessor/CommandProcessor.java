@@ -1,4 +1,5 @@
 package kit.pse.hgv.controller.commandProcessor;
+
 import kit.pse.hgv.controller.commandController.commands.ICommand;
 
 /**
@@ -7,6 +8,7 @@ import kit.pse.hgv.controller.commandController.commands.ICommand;
 public interface CommandProcessor {
    /**
     * queues the Command in the CommandController
+    * 
     * @param command the command to be executed
     */
    public void queueCommand(ICommand command);

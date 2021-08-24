@@ -23,12 +23,12 @@ public class CartesianCoordinate implements Coordinate {
 
     @Override
     public PolarCoordinate toPolar() {
-        double distance = Math.sqrt(x*x + y*y);
+        double distance = Math.sqrt(x * x + y * y);
         double angle = 0;
         if (x == 0) {
-            angle = y > 0 ? Math.PI*0.5 : Math.PI * 1.5;
+            angle = y > 0 ? Math.PI * 0.5 : Math.PI * 1.5;
         } else {
-            angle = Math.atan(y/x) + (x < 0 ? Math.PI : 0);
+            angle = Math.atan(y / x) + (x < 0 ? Math.PI : 0);
         }
         return new PolarCoordinate(angle, distance);
     }
@@ -51,7 +51,7 @@ public class CartesianCoordinate implements Coordinate {
      * @return reflection of the coordinate
      */
     public CartesianCoordinate mirroredThroughCenter() {
-        return new CartesianCoordinate(-x,-y);
+        return new CartesianCoordinate(-x, -y);
     }
 
     /**
@@ -75,16 +75,32 @@ public class CartesianCoordinate implements Coordinate {
     @Override
     public Coordinate moveCoordinate(Coordinate vector) {
         CartesianCoordinate coordinate = vector.toCartesian();
+        if(coordinate.getX() == 0 && coordinate.getY() == 0) {
+            return this;
+        }
         return new CartesianCoordinate(x + coordinate.getX(), y + coordinate.getY());
     }
 
     @Override
     public Coordinate mirroredY() {
-        return new CartesianCoordinate(x,-y);
+        return new CartesianCoordinate(x, -y);
     }
 
     @Override
     public String toString() {
-        return String.format("x: %f, y: %f");
+        return String.format("x: %f, y: %f", x , y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Coordinate)) {
+            return false;
+        }
+        CartesianCoordinate coordinate = ((Coordinate) o).toCartesian();
+        double deltaX = Math.abs(x - coordinate.getX());
+        double deltaY = Math.abs(y - coordinate.getY());
+        double conversionError = 1.0/1000000.0;
+        boolean res = deltaX < conversionError & deltaY < conversionError;
+        return res;
     }
 }

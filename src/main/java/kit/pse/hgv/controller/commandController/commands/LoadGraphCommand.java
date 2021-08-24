@@ -1,12 +1,13 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.controller.dataGateway.DataGateway;
+import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 
 /**
- * This class manages all commands that handle the first visualization of a graph
+ * This class manages all commands that handle the first visualization of a
+ * graph
  */
-public class LoadGraphCommand extends FileSystemCommand{
+public class LoadGraphCommand extends FileSystemCommand {
     private String path;
 
     /**
@@ -14,7 +15,7 @@ public class LoadGraphCommand extends FileSystemCommand{
      * 
      * @param path The path of the graph
      */
-    public LoadGraphCommand(String path){
+    public LoadGraphCommand(String path) {
         this.path = path;
     }
 
@@ -28,8 +29,7 @@ public class LoadGraphCommand extends FileSystemCommand{
 
     @Override
     public void undo() {
-        // TODO Auto-generated method stub
-        
+
     }
-    
+
 }

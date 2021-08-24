@@ -4,42 +4,42 @@
   xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
   http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
 
-  <key  id="phi" for="node" attr.name="phi" attr.type="Double"/>
-  <key  id="radius" for="node" attr.name="radius" attr.type="Double"/>
-  <key  id="color" for="all" attr.name="color" attr.type="String"/>
+\s\s<key\s id="phi"\sfor="node"\sattr.name="phi"\sattr.type="Double"/>
+\s\s<key\s id="radius"\sfor="node"\sattr.name="radius"\sattr.type="Double"/>
+\s\s<key\s id="color"\sfor="all"\sattr.name="color"\sattr.type="String"/>
 
-	<graph edgedefault="undirected">
-	<node id="0">
-		<data key="phi">1.500000</data>
-		<data key="radius">5.000000</data>
-		<data key="color">#0000FF</data>
+	<graph\sedgedefault="undirected">
+	<node\sid="0">
+		<data\skey="phi">1.500000</data>
+		<data\skey="radius">5.000000</data>
+		<data\skey="color">#0000FF</data>
 	</node>
-	<node id="1">
-		<data key="phi">1.000000</data>
-		<data key="radius">5.000000</data>
+	<node\sid="1">
+		<data\skey="phi">1.000000</data>
+		<data\skey="radius">5.000000</data>
 	</node>
-	<node id="2">
-		<data key="phi">2.000000</data>
-		<data key="radius">5.000000</data>
+	<node\sid="2">
+		<data\skey="phi">2.000000</data>
+		<data\skey="radius">5.000000</data>
 	</node>
-	<node id="3">
-		<data key="phi">0.000000</data>
-		<data key="radius">5.000000</data>
+	<node\sid="3">
+		<data\skey="phi">0.000000</data>
+		<data\skey="radius">5.000000</data>
 	</node>
-	<node id="4">
-		<data key="phi">0.500000</data>
-		<data key="radius">5.000000</data>
+	<node\sid="4">
+		<data\skey="phi">0.500000</data>
+		<data\skey="radius">5.000000</data>
 	</node>
-	<edge id="0" source="1" target="0">
+	<edge\sid="0"\ssource="1"\starget="0">
 	</edge>
-	<edge id="1" source="1" target="2">
+	<edge\sid="1"\ssource="1"\starget="2">
 	</edge>
-	<edge id="2" source="1" target="3">
-		<data key="color">#0000FF</data>
+	<edge\sid="2"\ssource="1"\starget="3">
+		<data\skey="color">#0000FF</data>
 	</edge>
-	<edge id="3" source="1" target="4">
+	<edge\sid="3"\ssource="1"\starget="4">
 	</edge>
-	<edge id="4" source="2" target="3">
+	<edge\sid="4"\ssource="2"\starget="3">
 	</edge>
 	</graph>
 </graphml>

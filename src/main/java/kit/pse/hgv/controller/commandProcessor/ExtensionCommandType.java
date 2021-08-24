@@ -47,7 +47,7 @@ public enum ExtensionCommandType {
             int graphId = inputAsJson.getInt("graphId");
             int firstNode = inputAsJson.getInt("id1");
             int secondNode = inputAsJson.getInt("id2");
-            int[] nodeIds = {firstNode, secondNode};
+            int[] nodeIds = { firstNode, secondNode };
             CreateEdgeCommand command = new CreateEdgeCommand(graphId, nodeIds);
             return new ParseResult(command, this);
         }
@@ -87,8 +87,8 @@ public enum ExtensionCommandType {
     CHANGE_METADATA(ExtensionCommandType.START + "ChangeMetadata" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            String meta = inputAsJson.getString("metadata-value");
-            String key = inputAsJson.getString("metadata-type");
+            String meta = inputAsJson.getString("value");
+            String key = inputAsJson.getString("key");
             int elementId = inputAsJson.getInt("id");
             EditUserMetaCommand command = new EditUserMetaCommand(elementId, key, meta);
             return new ParseResult(command, this);
@@ -103,10 +103,10 @@ public enum ExtensionCommandType {
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
             CommandComposite command = new CommandComposite();
             JSONArray commandsAsArray = inputAsJson.getJSONArray("commands");
-            for (int i = 0; i < commandsAsArray.length();i++) {
+            for (int i = 0; i < commandsAsArray.length(); i++) {
                 ICommand c = ExtensionCommandType.parseJson(commandsAsArray.getJSONObject(i)).cmd;
                 command.addCommand(c);
-            }            
+            }
             return new ParseResult(command, this);
         }
     },
@@ -128,9 +128,21 @@ public enum ExtensionCommandType {
     },
 
     /**
+     * This enum handles the command string that returns the graph
+     */
+    GET_GRAPH(ExtensionCommandType.START + "GetGraph" + ExtensionCommandType.END) {
+        @Override
+        protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
+            int graphId = inputAsJson.getInt("graphId");
+            SendGraphCommand command = new SendGraphCommand(graphId);
+            return new ParseResult(command, this);
+        }
+    },
+
+    /**
      * This enum handles the render command coming from the extension
      */
-    RENDER(ExtensionCommandType.START + "Render" + ExtensionCommandType.END){
+    RENDER(ExtensionCommandType.START + "Render" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
             RenderCommand command = new RenderCommand();
@@ -145,7 +157,7 @@ public enum ExtensionCommandType {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
             String booleanString = inputAsJson.getString("manualedit");
-            if (booleanString.equals("enable")){
+            if (booleanString.equals("enable")) {
                 SetManualEditCommand command = new SetManualEditCommand(true);
                 return new ParseResult(command, this);
             } else if (booleanString.equals("disable")) {
@@ -163,9 +175,9 @@ public enum ExtensionCommandType {
     PAUSE(ExtensionCommandType.START + "Pause" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            //int id = inputAsJson.getInt("id");
+            // int id = inputAsJson.getInt("id");
             ICommand ICommand = null;
-            //PauseExtensionCommand command = new PauseExtensionCommand(id);
+            // PauseExtensionCommand command = new PauseExtensionCommand(id);
             return new ParseResult(ICommand, this);
         }
     },
@@ -176,22 +188,22 @@ public enum ExtensionCommandType {
     STOP(ExtensionCommandType.START + "Stop" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            //int id = inputAsJson.getInt("id");
-            //StopExtensionCommand command = new StopExtensionCommand(id);
+            // int id = inputAsJson.getInt("id");
+            // StopExtensionCommand command = new StopExtensionCommand(id);
             ICommand ICommand = null;
             return new ParseResult(ICommand, this);
         }
     },
-    
+
     /**
      * This enum handles the command string that saves the graph
      */
-    SAVE_GRAPH(ExtensionCommandType.START + "SaveGraph" + ExtensionCommandType.END){
+    SAVE_GRAPH(ExtensionCommandType.START + "SaveGraph" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, IllegalArgumentException {
             String path = inputAsJson.getString("path");
             Path file = new File(path).toPath();
-            if(Files.isDirectory(file)){
+            if (Files.isDirectory(file.getParent())) {
                 int id = inputAsJson.getInt("graphId");
                 SaveGraphCommand command = new SaveGraphCommand(id, path);
                 return new ParseResult(command, this);
@@ -240,8 +252,10 @@ public enum ExtensionCommandType {
         try {
             JSONObject inputAsJson = new JSONObject(extensionInput);
             ParseResult res = parseJson(inputAsJson);
-            if (res == null) { throw new IllegalArgumentException("Not a valid extension command"); }
-            if(res.cmd != null){
+            if (res == null) {
+                throw new IllegalArgumentException("Not a valid extension command");
+            }
+            if (res.cmd != null) {
                 res.cmd.setClientId(clientId);
                 CommandController.getInstance().queueCommand(res.cmd);
             }
@@ -252,11 +266,13 @@ public enum ExtensionCommandType {
     }
 
     /**
-     * This method decides which command should be executed and calls the parseCommand Method
+     * This method decides which command should be executed and calls the
+     * parseCommand Method
      * 
      * @param json the command as JSONObject
      * @return the command and the enum united in one class
-     * @throws JSONException if the JSONObject doesn't contain the correct format
+     * @throws JSONException         if the JSONObject doesn't contain the correct
+     *                               format
      * @throws NumberFormatException if other parameters are incorrect
      */
     private static ParseResult parseJson(JSONObject json) throws JSONException, NumberFormatException {

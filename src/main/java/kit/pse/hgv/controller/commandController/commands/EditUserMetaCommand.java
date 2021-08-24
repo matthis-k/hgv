@@ -14,13 +14,14 @@ public class EditUserMetaCommand extends MetaSystemCommand{
     /**
      * The constructor creates an element of this class
      * 
-     * @param elementId The elementId from the element wich metadata should be changed
-     * @param key Key represents the type of the Metadata (e.g. weight)
-     * @param meta Meta represents the value of the Metadata-Key
+     * @param elementId The elementId from the element wich metadata should be
+     *                  changed
+     * @param key       Key represents the type of the Metadata (e.g. weight)
+     * @param value     Meta represents the value of the Metadata-Key
      */
-    public EditUserMetaCommand(int elementId, String key, String meta){
+    public EditUserMetaCommand(int elementId, String key, String value) {
         this.key = key;
-        this.meta = meta;
+        this.value = value;
         this.elementId = elementId;
         extendWorkingArea(elementId);
     }
@@ -28,34 +29,37 @@ public class EditUserMetaCommand extends MetaSystemCommand{
     @Override
     public void execute() {
         if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+            response.put("success", false);
+            response.put("reason", "No element with that Id exists.");
             throw new IllegalArgumentException("No Element with that Id exists.");
         }
-        if(key.equals("phi")) {
+        if (key.equals("phi")) {
             try {
-                double phi = Double.parseDouble(meta);
-                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+                double phi = Double.parseDouble(value);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
                 Double r = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getDistance();
                 GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
                 modifiedIds.add(elementId);
             } catch (NumberFormatException e) {
-                //TODO
+                // TODO
                 response.put("success", false);
                 response.put("reason", "can not parse metadata");
             }
         } else if (key.equals("r")) {
             try {
-                double r = Double.parseDouble(meta);
-                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+                double r = Double.parseDouble(value);
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
                 Double phi = GraphSystem.getInstance().getNodeByID(elementId).getCoord().toPolar().getAngle();
                 GraphSystem.getInstance().getNodeByID(elementId).move(new PolarCoordinate(phi, r));
                 modifiedIds.add(elementId);
             } catch (NumberFormatException e) {
-                //TODO
+                // TODO
                 response.put("success", false);
                 response.put("reason", "can not parse metadata");
+                return;
             }
         } else {
-            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, meta);
+            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
             modifiedIds.add(elementId);
         }
         response.put("success", true);
@@ -63,7 +67,7 @@ public class EditUserMetaCommand extends MetaSystemCommand{
 
     @Override
     public void undo() {
-        // TODO Auto-generated method stub
+
     }
 
 }

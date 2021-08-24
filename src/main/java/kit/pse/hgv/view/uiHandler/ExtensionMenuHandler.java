@@ -3,8 +3,6 @@ package kit.pse.hgv.view.uiHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import kit.pse.hgv.App;
 
@@ -26,6 +24,7 @@ public class ExtensionMenuHandler implements UIHandler {
 
     /**
      * This method allows the pop up to pop up.
+     * 
      * @throws IOException
      */
     public void onClick() throws IOException {
@@ -34,7 +33,6 @@ public class ExtensionMenuHandler implements UIHandler {
         root = FXMLLoader.load(App.class.getResource("ExtensionPopupContainer.fxml"));
         popupStage.setScene(new Scene(root));
         popupStage.setTitle(EXTENSIONS);
-        //popupStage.getIcons().add(new Image(App.class.getResourceAsStream("hgv.png")));
         popupStage.show();
     }
 }

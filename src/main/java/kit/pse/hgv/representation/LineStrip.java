@@ -9,44 +9,51 @@ import java.util.List;
 import java.util.Vector;
 
 public class LineStrip extends Drawable {
-    private List<Coordinate> coordinates;
+    private List<CartesianCoordinate> coordinates;
     private Vector<Line> lines = new Vector<>();
+    private int[] connecting = new int[2];
 
     private void addLine(int index) {
         Line line = new Line();
         line.setStartX(coordinates.get(index).toCartesian().getX());
         line.setStartY(coordinates.get(index).toCartesian().getY());
-        line.setEndX(coordinates.get(index+1).toCartesian().getX());
-        line.setEndY(coordinates.get(index+1).toCartesian().getY());
+        line.setEndX(coordinates.get(index + 1).toCartesian().getX());
+        line.setEndY(coordinates.get(index + 1).toCartesian().getY());
         line.setStroke(color);
         lines.add(line);
     }
 
-    public LineStrip(List<Coordinate> coordinates, int id, Color color) {
+    public LineStrip(List<CartesianCoordinate> coordinates, int id, Color color, int firstID, int secondID) {
         super(id, color, false);
         this.coordinates = coordinates;
-        for (int i = 0; i < coordinates.size()-1; i++) {
+        for (int i = 0; i < coordinates.size() - 1; i++) {
             addLine(i);
         }
+        connecting[0] = firstID;
+        connecting[1] = secondID;
     }
 
     @Override
     public void draw(Pane pane) {
-        for (Line line : lines){
+        for (Line line : lines) {
             pane.getChildren().add(line);
         }
     }
 
     @Override
-    public boolean isNode() {
-        return super.isNode();
+    public Node getRepresentation() {
+        return null;
     }
 
     public Vector<Line> getLines() {
         return this.lines;
     }
-    @Override
-    public Node getRepresentation() {
-        return null;
+
+    public List<CartesianCoordinate> getCoords() {
+        return this.coordinates;
+    }
+
+    public int[] getConnectedNodes() {
+        return connecting;
     }
 }

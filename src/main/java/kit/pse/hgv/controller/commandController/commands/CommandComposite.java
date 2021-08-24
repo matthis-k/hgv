@@ -2,7 +2,6 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import org.json.JSONArray;
 
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -13,6 +12,7 @@ public class CommandComposite extends Command {
 
     /**
      * This method adds the command to be executed in a Vector class
+     * 
      * @param c command to be executed
      */
     public void addCommand(ICommand c) {

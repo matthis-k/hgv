@@ -4,7 +4,9 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
-
+/**
+ * This class manages the RenderSystem. It decides when to rerender.
+ */
 public class DefaultRenderEngine extends RenderEngine {
 
     public DefaultRenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
@@ -18,49 +20,21 @@ public class DefaultRenderEngine extends RenderEngine {
         this.toBeUpdated.clear();
     }
 
-    @Override
-    public void receiveCommand(ICommand command) {
-        //TODO ERROR
-        toBeUpdated.addAll(command.getModifiedIds());
-        if (command.isUser() || command instanceof RenderCommand) {
-            render();
-        }
-    }
-
-    @Override
-    public void receiveCommand(MoveCenterCommand command) {
-        drawManager.moveCenter(command.getTransform());
-        render();
-    }
-
-    @Override
-    public void receiveCommand(MetaSystemCommand command) {
-        toBeUpdated.add(command.getID());
-        render();
-    }
-
-    @Override
-    public void receiveCommand(FileSystemCommand command) {
-        render();
-    }
-
-    @Override
-    public void receiveCommand(GraphSystemCommand command) {
-        render();
-    }
-
-    @Override
-    public void receiveCommand(LoadGraphCommand command) {
-        render();
+    private void updateGraph() {
+        this.displayedGraph = drawManager.getRenderData();
     }
 
     @Override
     public void onNotify(ICommand c) {
-        receiveCommand(c);
+        if (c.isUser()) {
+            if (!c.getResponse().getBoolean("success")) {
+                c.getResponse().get("reason");
+            }
+            toBeUpdated.addAll(c.getModifiedIds());
+            render();
+        } else {
+            toBeUpdated.addAll(c.getModifiedIds());
+        }
     }
 
-    private void updateGraph() {
-       //ändern mit >0?
-            this.displayedGraph = drawManager.getRenderData();
-    }
 }

@@ -17,9 +17,9 @@ public class DrawManager {
     private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
 
-
     /**
      * Constructor to create a new DrawManager with given Center
+     * 
      * @param graphId
      * @param center
      * @param representation
@@ -32,7 +32,8 @@ public class DrawManager {
 
     /**
      * Constructor to create a new DrawManager
-     * @param graphId the ID of the graph to be represented
+     * 
+     * @param graphId        the ID of the graph to be represented
      * @param representation the type of representation the graph should be shown in
      */
     public DrawManager(int graphId, Representation representation) {
@@ -42,12 +43,13 @@ public class DrawManager {
 
     /**
      * Method to get the Rendered elements
+     * 
      * @param changedElements
      * @return
      */
     public List<Drawable> getRenderData(List<Integer> changedElements) {
         Set<Integer> toCalculate = addConnectedEdges(changedElements);
-        for(Integer id : toCalculate) {
+        for (Integer id : toCalculate) {
             if (graphSystem.isInGraph(graphId, id)) {
                 Drawable drawable = calculateElement(id);
                 rendered.put(drawable.getID(), drawable);
@@ -62,7 +64,7 @@ public class DrawManager {
 
     public List<Drawable> getRenderData() {
         rendered.clear();
-        for(Integer id : graphSystem.getIDs(graphId)) {
+        for (Integer id : graphSystem.getIDs(graphId)) {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
@@ -74,7 +76,7 @@ public class DrawManager {
     private Drawable calculateElement(int id) {
         Drawable d;
         Node node = graphSystem.getNodeByID(graphId, id);
-        if(node != null) {
+        if (node != null) {
             d = getRepresentation().calculate(node);
         } else {
             Edge edge = graphSystem.getEdgeByID(graphId, id);
@@ -93,17 +95,19 @@ public class DrawManager {
     }
 
     /**
-     * Methode that checks the List of changed Elements for changed Nodes and searches all Edges that are based in this
-     * Node
+     * Methode that checks the List of changed Elements for changed Nodes and
+     * searches all Edges that are based in this Node
+     * 
      * @param changedElements The List of Elements which have to be newly rendered
      * @return A Set of all Elements that also need to be newly rendered
      */
     private Set<Integer> addConnectedEdges(List<Integer> changedElements) {
         Set<Integer> allChangedElements = new HashSet<>();
         allChangedElements.addAll(changedElements);
-        for(Integer id: allChangedElements) {
-            if(graphSystem.getNodeByID(graphId, id) != null) {
-                for(Edge edge : graphSystem.getGraphByID(graphId).getEdgesOfNode(graphSystem.getNodeByID(graphId, id))) {
+        for (Integer id : changedElements) {
+            if (graphSystem.getNodeByID(graphId, id) != null) {
+                for (Edge edge : graphSystem.getGraphByID(graphId)
+                        .getEdgesOfNode(graphSystem.getNodeByID(graphId, id))) {
                     allChangedElements.add(edge.getId());
                 }
             }
@@ -114,19 +118,16 @@ public class DrawManager {
 
     public List<Drawable> moveCenter(Coordinate center) {
         representation.setCenter(center);
-        //clear the list of rendered Elements, because every Element has to be rendered newly
+        // clear the list of rendered Elements, because every Element has to be rendered
+        // newly
         rendered.clear();
-        for(Integer id: graphSystem.getIDs(graphId)) {
+        for (Integer id : graphSystem.getIDs(graphId)) {
             Drawable drawable = calculateElement(id);
             rendered.put(drawable.getID(), drawable);
         }
         List<Drawable> res = new Vector<>();
         res.addAll(rendered.values());
         return res;
-    }
-
-    public void moveCenterVoid(Coordinate center) {
-        representation.setCenter(center);
     }
 
     public Representation getRepresentation() {

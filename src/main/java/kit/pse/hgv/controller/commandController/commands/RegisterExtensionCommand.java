@@ -11,12 +11,12 @@ public class RegisterExtensionCommand extends ExtensionCommand {
      * 
      * @param path Path of the extension that should be added in the system
      */
-    public RegisterExtensionCommand(String path){
+    public RegisterExtensionCommand(String path) {
         this.path = path;
     }
 
     @Override
-    public void execute(){
+    public void execute() {
 
     }
 

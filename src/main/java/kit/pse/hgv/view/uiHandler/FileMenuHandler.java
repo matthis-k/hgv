@@ -1,19 +1,15 @@
 package kit.pse.hgv.view.uiHandler;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kit.pse.hgv.controller.commandProcessor.FileSystemCommandProcessor;
-import kit.pse.hgv.controller.dataGateway.DataGateway;
+import kit.pse.hgv.dataGateway.DataGateway;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,6 +18,8 @@ import java.util.ResourceBundle;
  */
 public class FileMenuHandler implements UIHandler {
 
+    @FXML
+    private Menu fileMenu;
     private static final int ONLY_GRAPH = 1;
     private static final String NOTHING_OPENED_YET = "Noch keine Datei geöffnet.";
     @FXML
@@ -47,11 +45,10 @@ public class FileMenuHandler implements UIHandler {
     public void updateLastOpened() {
         lastOpened.getItems().clear();
         List<String> paths = DataGateway.getlastOpenedGraphs();
-        if(!paths.isEmpty()) {
+        if (!paths.isEmpty()) {
             for (String path : paths) {
                 MenuItem newPath = new MenuItem(path);
-                newPath.setOnAction(action ->
-                        new FileSystemCommandProcessor().loadGraph(new File(path)));
+                newPath.setOnAction(action -> new FileSystemCommandProcessor().loadGraph(new File(path)));
                 lastOpened.getItems().add(newPath);
             }
         } else {
@@ -66,7 +63,7 @@ public class FileMenuHandler implements UIHandler {
     @FXML
     public void saveFile() {
         FileChooser chooser = new FileChooser();
-        String path = chooser.showOpenDialog(new Stage()).getAbsolutePath();
+        String path = chooser.showSaveDialog(new Stage()).getAbsolutePath();
         new FileSystemCommandProcessor().saveGraph(path, ONLY_GRAPH);
     }
 
@@ -76,6 +73,10 @@ public class FileMenuHandler implements UIHandler {
     @FXML
     public void createNewGraph() {
         new FileSystemCommandProcessor().createNewGraph();
+    }
+
+    public void show() {
+        fileMenu.show();
     }
 
 }
