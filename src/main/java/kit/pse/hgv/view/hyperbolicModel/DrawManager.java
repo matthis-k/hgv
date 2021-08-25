@@ -82,7 +82,13 @@ public class DrawManager {
         } else {
             Edge edge = graphSystem.getEdgeByID(graphId, id);
             LineStrip lineStrip = (LineStrip) rendered.get(id);
-            d = getRepresentation().calculate(edge, lineStrip);
+            if(lineStrip != null) {
+                int temp[] = lineStrip.getConnectedNodes();
+                d = getRepresentation().calculate(edge, lineStrip, ((CircleNode) rendered.get(temp[0])).getCenter(), ((CircleNode) rendered.get(temp[1])).getCenter());
+            } else {
+                Node temp[] = edge.getNodes();
+                d = getRepresentation().calculate(edge, lineStrip, temp[0].getCoord(), temp[1].getCoord());
+            }
         }
         return d.setColor(getColorOfId(id));
     }
@@ -140,6 +146,10 @@ public class DrawManager {
 
         this.representation = representation;
 
+    }
+
+    public Coordinate getCenter() {
+        return representation.getCenter();
     }
 
     public void setAccuracy(Accuracy accuracy) {
