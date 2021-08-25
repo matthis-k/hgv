@@ -123,10 +123,6 @@ public class RenderHandler implements UIHandler {
             center.centerXProperty().unbind();
             center.setVisible(true);
         } else {
-            double x = ((center.getCenterX() - renderCircle.getCenterX()) / FACTOR_VIEW);
-            double y = ((center.getCenterY() - renderCircle.getCenterY()) / (-FACTOR_VIEW));
-            Coordinate newCenterCoordinate = new CartesianCoordinate(x, y);
-            moveCenter(newCenterCoordinate);
             bindCenter();
         }
     }
@@ -179,12 +175,16 @@ public class RenderHandler implements UIHandler {
         });
 
         renderPane.setOnMouseDragged(mouseEvent -> {
-            if (!mouseEvent.isShiftDown()) {
+            if (!center.isVisible()) {
                 circle.setCenterX(mouseEvent.getX() + dragDeltaCircle.x);
                 circle.setCenterY(mouseEvent.getY() + dragDeltaCircle.y);
             } else {
                 center.setCenterX(mouseEvent.getX() + dragDeltaCenter.x);
                 center.setCenterY(mouseEvent.getY() + dragDeltaCenter.y);
+                double x = ((mouseEvent.getX() + dragDeltaCenter.x - renderCircle.getCenterX()) / FACTOR_VIEW);
+                double y = ((mouseEvent.getY() + dragDeltaCenter.y - renderCircle.getCenterY()) / (-FACTOR_VIEW));
+                Coordinate newCenterCoordinate = new CartesianCoordinate(x, y);
+                moveCenter(newCenterCoordinate);
             }
         });
     }

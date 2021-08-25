@@ -55,6 +55,7 @@ public class FileMenuHandler implements UIHandler {
             MenuItem empty = new MenuItem(NOTHING_OPENED_YET);
             lastOpened.getItems().add(empty);
         }
+        lastOpened.show();
     }
 
     /**
