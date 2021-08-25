@@ -66,6 +66,19 @@ public class GraphGetTest {
         assertArrayEquals(k, i);
     }
 
+    //TODO
+    @Test
+    public void getMetaData() {
+
+    }
+
+
+    //TODO
+    @Test
+    public void setMetaData() {
+
+    }
+
 
 
 
