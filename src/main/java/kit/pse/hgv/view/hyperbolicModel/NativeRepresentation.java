@@ -56,7 +56,6 @@ public class NativeRepresentation implements Representation {
                             prematureExit = true;
                         }
                     }
-
                     i /= 2;
                 }
             }
@@ -80,7 +79,7 @@ public class NativeRepresentation implements Representation {
         PolarCoordinate point1 = po1.toPolar();
         PolarCoordinate point2 = po2.toPolar();
         if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
-                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT || point1.equals(point2)) {
+                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT) {
             coordinates.add(point1.mirroredY().toCartesian());
             coordinates.add(point2.mirroredY().toCartesian());
             Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;

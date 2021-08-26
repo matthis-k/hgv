@@ -265,4 +265,8 @@ public class GraphSystem {
         }
         return ids;
     }
+
+    public boolean newMetadataDefinition(int graphID, MetadataDefinition metadataDefinition) {
+        return graphs.get(graphID).newMetadataDefinition(metadataDefinition);
+    }
 }

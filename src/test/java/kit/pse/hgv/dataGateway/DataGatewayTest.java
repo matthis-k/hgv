@@ -8,6 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
 
 
 public class DataGatewayTest {
@@ -63,6 +65,17 @@ public class DataGatewayTest {
     public void loadGraph() throws FileNotFoundException, OverflowException {
         String path = "src/test/resources/Vorlage.graphml";
         GraphSystem.getInstance().loadGraph(path);
+        System.out.println("");
+    }
+
+    @Test
+    public void saveLoadedGraph() throws IOException {
+        int id = GraphSystem.getInstance().loadGraph("src/main/resources/spiralGraph.graphml");
+        GraphSystem.getInstance().getGraphElementByID(id, 51).setMetadata("weight", "3.14159");
+        DataGateway.saveGraph(id, "src/test/resources/testOutput");
+        File file1 = new File("src/main/resources/spiralGraph.graphml");
+        File file2 = new File("src/main/resources/testOutput");
+
     }
 
 }
