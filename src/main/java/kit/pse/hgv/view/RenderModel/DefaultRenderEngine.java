@@ -4,6 +4,8 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
+import java.util.Vector;
+
 /**
  * This class manages the RenderSystem. It decides when to rerender.
  */
@@ -21,6 +23,9 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
+        //Vector<Integer> update = new Vector<>();
+        //update.addAll(toBeUpdated);
+        //this.displayedGraph = drawManager.getRenderData(update);
         this.displayedGraph = drawManager.getRenderData();
     }
 

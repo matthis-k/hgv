@@ -15,11 +15,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.ref.Cleaner.Cleanable;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -34,7 +31,7 @@ public class ExtensionServerTest {
     }
 
     @Test
-    public void testConnections() throws IOException {
+    public void testConnections() throws IOException, InterruptedException {
         assertEquals(0, server.getClients().keySet().size());
         Socket client1 = new Socket("localhost", server.getPort());
         sleep(100);
@@ -56,7 +53,7 @@ public class ExtensionServerTest {
     }
 
     @Test
-    public void send() throws UnknownHostException, IOException {
+    public void send() throws UnknownHostException, IOException, InterruptedException {
         Socket client = new Socket("localhost", server.getPort());
         String msg = "testmessage\n";
         sleep(100);
@@ -76,7 +73,7 @@ public class ExtensionServerTest {
     }
 
     @Test(expected = SocketTimeoutException.class)
-    public void onNotify() throws UnknownHostException, IOException {
+    public void onNotify() throws UnknownHostException, IOException, InterruptedException {
         CommandEventSource emitter = new CommandEventSource() {
             private Vector<CommandQListener> listeners = new Vector<>();
 
@@ -120,22 +117,9 @@ public class ExtensionServerTest {
         server.stopServer();
     }
 
-    private void sleep(int ms) {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    sleep(ms);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private void sleep(int ms) throws InterruptedException {
+        synchronized (this) {
+            wait(ms);
         }
     }
 }

@@ -7,7 +7,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
  * command
  */
 public class GraphElementDeleteCommand extends GraphSystemCommand {
-    private int elementId;
+    private final int elementId;
 
     /**
      * The constructor creates an element of this class
@@ -16,6 +16,7 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
      */
     public GraphElementDeleteCommand(int elementId) {
         this.elementId = elementId;
+        extendWorkingArea(elementId);
     }
 
     @Override
