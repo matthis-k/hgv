@@ -121,6 +121,7 @@ public class CalculationTest {
         Assert.assertTrue(ids.isEmpty());
     }
 
+    @Ignore
     @Test
     public void changesRightElements() {
         List<Drawable> firstRender = drawManager.getRenderData();

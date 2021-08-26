@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.MenuBar?>
 
-<MenuBar prefWidth="1280.0" style="-fx-background-color: #D8DEE9;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.MenuHandler">
+<MenuBar prefWidth="1280.0" style="-fx-background-color: #D8DEE9;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.MenuHandler">
    <menus>
       <fx:include source="FileMenuContainer.fxml" />
       <fx:include source="EditMenuContainer.fxml" />

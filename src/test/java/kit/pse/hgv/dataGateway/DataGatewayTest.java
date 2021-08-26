@@ -69,7 +69,7 @@ public class DataGatewayTest {
     }
 
     @Test
-    public void saveLoadedGraph() throws IOException {
+    public void saveLoadedGraph() throws IOException, OverflowException {
         int id = GraphSystem.getInstance().loadGraph("src/main/resources/spiralGraph.graphml");
         GraphSystem.getInstance().getGraphElementByID(id, 51).setMetadata("weight", "3.14159");
         DataGateway.saveGraph(id, "src/test/resources/testOutput");
