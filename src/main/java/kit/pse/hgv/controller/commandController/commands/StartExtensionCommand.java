@@ -23,6 +23,9 @@ public class StartExtensionCommand extends ExtensionCommand {
         Extension extension = null;
         if (path.endsWith(".py")) {
             extension = new PyScript(path);
+            response.put("success", true);
+        } else {
+            response.put("success", true);
         }
         if (extension != null) {
             extension.startExtension();

@@ -64,6 +64,7 @@ public class NativeRepresentation implements Representation {
             approximatedCoordinate = center.toCartesian();
         }
 
+        //TODO
         //if(circleNode == null || circleNode.getID() != node.getId()) {
             return new CircleNode(approximatedCoordinate, nodeSize, node.getId(), null);
         /*} else {
