@@ -27,14 +27,14 @@ public class ExtensionCommandProcessorTest {
 
   @Test
   public void testStartExtension() {
-    String path = "./client.py";
+    String path = "src/resources/client.py";
     extensionCommandProcessor.startExtension(path);
     assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof StartExtensionCommand);
   }
 
   @Test
   public void testRegisterExtension() {
-    String path = "./client.py";
+    String path = "src/resources/client.py";
     extensionCommandProcessor.registerExtension(path);
     assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof RegisterExtensionCommand);
   }

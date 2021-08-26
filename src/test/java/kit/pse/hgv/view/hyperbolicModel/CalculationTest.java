@@ -25,7 +25,7 @@ public class CalculationTest {
     @Before
     public void createEnvironment(){
         representation = new NativeRepresentation(0.1, Accuracy.HIGH);
-        id = graphSystem.loadGraph("src\\main\\resources\\spiralGraph.graphml");
+        id = graphSystem.loadGraph("src/main/resources/spiralGraph.graphml");
         drawManager = new DrawManager(id, representation);
     }
 

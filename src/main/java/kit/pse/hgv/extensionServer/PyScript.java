@@ -31,7 +31,9 @@ public class PyScript extends Thread implements Extension {
 
     @Override
     public void stopExtension() {
-        p.destroy();
+        if (p != null) {
+            p.destroy();
+        }
         interrupt();
     }
 }
