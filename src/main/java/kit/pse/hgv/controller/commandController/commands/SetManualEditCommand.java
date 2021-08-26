@@ -12,7 +12,6 @@ public class SetManualEditCommand extends ExtensionCommand {
 
     @Override
     public void execute() {
-        response.put("success", true);
     }
 
     @Override

@@ -43,4 +43,6 @@ public interface ICommand {
      * @param id Client-Id
      */
     public void setClientId(int id);
+
+    public boolean succeeded();
 }

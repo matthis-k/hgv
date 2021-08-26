@@ -2,12 +2,18 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.OverflowException;
+
+import java.io.FileNotFoundException;
+import java.util.IllegalFormatException;
 
 /**
  * This class manages all commands that handle the first visualization of a
  * graph
  */
 public class LoadGraphCommand extends FileSystemCommand {
+    private static final String FILE_NOT_FOUND = "file not found";
+    private static final String GRAPH_TOO_BIG = "graph is too big";
     private String path;
 
     /**
@@ -21,10 +27,17 @@ public class LoadGraphCommand extends FileSystemCommand {
 
     @Override
     public void execute() {
-        int graphId = GraphSystem.getInstance().loadGraph(path);
-        DataGateway.addlastOpened(path);
-        modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
-        response.put("success", true);
+        try {
+            int graphId = GraphSystem.getInstance().loadGraph(path);
+            DataGateway.addlastOpened(path);
+            modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
+        } catch (IllegalFormatException e) {
+            fail(e.getMessage());
+        } catch (FileNotFoundException e) {
+            fail(FILE_NOT_FOUND);
+        } catch (OverflowException e) {
+            fail(GRAPH_TOO_BIG);
+        }
     }
 
     @Override

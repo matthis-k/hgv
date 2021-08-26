@@ -2,9 +2,12 @@ package kit.pse.hgv.dataGateway;
 
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.OverflowException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.FileNotFoundException;
 
 
 public class DataGatewayTest {
@@ -22,7 +25,7 @@ public class DataGatewayTest {
     }
 
     @Test
-    public void saveGraph() {
+    public void saveGraph() throws FileNotFoundException, OverflowException {
         String path = "src/test/resources/Vorlage.graphml";
         String savePath = "src/test/resources/result.graphml";
         int graphId = GraphSystem.getInstance().loadGraph(path);
@@ -57,7 +60,7 @@ public class DataGatewayTest {
     */
 
     @Test
-    public void loadGraph(){
+    public void loadGraph() throws FileNotFoundException, OverflowException {
         String path = "src/test/resources/Vorlage.graphml";
         GraphSystem.getInstance().loadGraph(path);
     }

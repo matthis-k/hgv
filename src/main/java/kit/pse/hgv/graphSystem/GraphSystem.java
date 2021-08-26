@@ -142,15 +142,9 @@ public class GraphSystem {
      * @return Returns the graphID of the loaded graph. The graph can be get by this
      *         id in future.
      */
-    public int loadGraph(String path) {
+    public int loadGraph(String path) throws FileNotFoundException, OverflowException {
         int graphID = newGraph();
-        try {
-            DataGateway.loadGraph(path, graphID);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (OverflowException e) {
-            e.printStackTrace();
-        }
+        DataGateway.loadGraph(path, graphID);
         return graphID;
     }
 
@@ -204,7 +198,7 @@ public class GraphSystem {
      * Removes an element out of the graphsystem.
      *
      * @param elementID is the element ID that should be deleted.
-     * @return Returns true is successful deleted.
+     * @return A List of all element ids that were deleted.
      */
     public List<Integer> removeElement(int elementID) {
         List<Integer> deleted = new Vector<>();

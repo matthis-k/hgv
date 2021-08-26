@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEdgeCommand extends GraphSystemCommand {
+    private static final String INVALID_NODES = "can not connect these nodes";
+
     private int[] nodeIds;
     private final int graphId;
 
@@ -29,10 +31,9 @@ public class CreateEdgeCommand extends GraphSystemCommand {
         try {
             int addedId = GraphSystem.getInstance().addElement(graphId, nodeIds);
             modifiedIds.add(addedId);
-            response.put("success", true);
-            response.put("id", addedId);
+            response.put(ID, addedId);
         } catch (OverflowException e) {
-            response.put("success", false);
+            fail(INVALID_NODES);
             e.printStackTrace();
         }
     }

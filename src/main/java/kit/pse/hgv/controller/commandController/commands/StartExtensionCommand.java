@@ -7,6 +7,8 @@ import kit.pse.hgv.extensionServer.PyScript;
  * This class handles the command for the start of an extension
  */
 public class StartExtensionCommand extends ExtensionCommand {
+    private static final String FILE_NOT_FOUND = "file not found";
+    private static final String PY_FILE_SUFFIX = ".py";
     private String path;
 
     /**
@@ -21,14 +23,13 @@ public class StartExtensionCommand extends ExtensionCommand {
     @Override
     public void execute() {
         Extension extension = null;
-        if (path.endsWith(".py")) {
+        if (path.endsWith(PY_FILE_SUFFIX)) {
             extension = new PyScript(path);
-            response.put("success", true);
-        } else {
-            response.put("success", true);
         }
         if (extension != null) {
             extension.startExtension();
+        } else {
+            fail(FILE_NOT_FOUND);
         }
     }
 

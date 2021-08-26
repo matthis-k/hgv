@@ -25,7 +25,6 @@ public class MoveCenterCommand extends HyperModelCommand {
     public void execute() {
         modifiedIds.addAll(GraphSystem.getInstance().getAllIds());
         RenderEngine.getInstance().getDrawManager().moveCenter(transform);
-        response.put("success", true);
     }
 
     @Override

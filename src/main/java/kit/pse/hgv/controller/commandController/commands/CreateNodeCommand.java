@@ -17,7 +17,6 @@ public class CreateNodeCommand extends GraphSystemCommand {
     public CreateNodeCommand(int graphId, Coordinate coord) {
         this.graphId = graphId;
         this.coord = coord;
-
     }
 
     @Override
@@ -25,10 +24,9 @@ public class CreateNodeCommand extends GraphSystemCommand {
         try {
             int addedId = GraphSystem.getInstance().addElement(graphId, coord);
             modifiedIds.add(addedId);
-            response.put("success", true);
-            response.put("id", addedId);
+            response.put(ID, addedId);
         } catch (OverflowException e) {
-            response.put("success", false);
+            fail(NO_GRAPH_WITH_ID);
             e.printStackTrace();
         }
     }

@@ -10,8 +10,7 @@ public class CreateNewGraphCommand extends FileSystemCommand {
     @Override
     public void execute() {
         int id = GraphSystem.getInstance().newGraph();
-        response.put("success", true);
-        response.put("id", id);
+        response.put(ID, id);
     }
 
     @Override

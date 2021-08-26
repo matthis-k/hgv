@@ -9,6 +9,8 @@ import java.util.Vector;
  */
 public class CommandComposite extends Command {
     private Vector<ICommand> commands = new Vector<>();
+    private static final String RESPONSES = "responses";
+    private static final String SUBCOMMAND_FAILED = "subcommand failed";
 
     /**
      * This method adds the command to be executed in a Vector class
@@ -22,20 +24,15 @@ public class CommandComposite extends Command {
     @Override
     public void execute() {
         JSONArray responses = new JSONArray();
-        boolean success = true;
         for (ICommand c : commands) {
             c.execute();
             modifiedIds.addAll(c.getModifiedIds());
             responses.put(c.getResponse());
-            if (!c.getResponse().getBoolean("success")) {
-                success = false;
+            if (!c.succeeded()) {
+                fail(SUBCOMMAND_FAILED);
             }
         }
-        response.put("success", success);
-        response.put("responses", responses);
-        if (!success) {
-            response.put("reason", "subcommand failed");
-        }
+        response.put(RESPONSES, responses);
     }
 
     @Override
