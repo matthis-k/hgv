@@ -55,6 +55,11 @@ public class CircleNode extends Drawable {
         return this.center;
     }
 
+    public void setCenter (Coordinate coordinate) {
+        this.center = coordinate.toCartesian();
+        this.viewCenter = coordinate.mirroredY().toCartesian();
+    }
+
     /**
      * Returns the Cartesian Coordinate of the Node
      *

@@ -115,7 +115,7 @@ public class CommandController extends Thread implements CommandEventSource {
     public void queueCommand(ICommand c) {
         synchronized (this) {
             commandQ.add(c);
-            notify();
+            notifyAll();
         }
     }
 

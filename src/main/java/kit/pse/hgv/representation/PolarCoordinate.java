@@ -47,11 +47,10 @@ public class PolarCoordinate implements Coordinate{
 
     @Override
     public double hyperbolicDistance(Coordinate coordinate) {
-        double angle1 = coordinate.toPolar().getAngle();
+        if(equals(coordinate)) return 0.0;
         double distance1 = coordinate.toPolar().getDistance();
-        double deltaAngle = Math.min(Math.abs(angle - angle1), MAX_ANGLE - Math.abs(angle - angle1));
+        double deltaAngle = getAngularDistance(coordinate);
         Acosh acosh = new Acosh();
-        //check for division by -1, when it occurs set to -1(invalid distance)
         double temp = Math.cosh(distance) * Math.cosh(distance1) - Math.sinh(distance) * Math.sinh(distance1) * Math.cos(deltaAngle);
         double hyperbolicDistance = acosh.value(temp);
         return hyperbolicDistance;
@@ -67,7 +66,8 @@ public class PolarCoordinate implements Coordinate{
         if(vector.toPolar().getDistance() == 0) {
             return this;
         }
-        return toCartesian().moveCoordinate(vector);
+        CartesianCoordinate cartesianVector = vector.toCartesian();
+        return cartesianVector.moveCoordinate(this);
     }
 
     @Override

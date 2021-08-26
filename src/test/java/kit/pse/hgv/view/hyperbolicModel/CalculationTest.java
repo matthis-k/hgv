@@ -2,16 +2,18 @@ package kit.pse.hgv.view.hyperbolicModel;
 
 import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandController.commands.Command;
-import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
+import kit.pse.hgv.controller.commandController.CommandQListener;
+import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.element.Edge;
+import kit.pse.hgv.graphSystem.element.GraphElement;
+import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.*;
 import org.junit.*;
 
-import java.util.Iterator;
-import java.util.List;
+import javax.sound.sampled.Line;
+import java.util.*;
 
 public class CalculationTest {
     static int id = 1;
@@ -20,17 +22,24 @@ public class CalculationTest {
     static DrawManager drawManager;
     static int edgeId = 0;
 
-    @BeforeClass
-    public static void createEnvironment() {
+    @Before
+    public void createEnvironment(){
         representation = new NativeRepresentation(0.1, Accuracy.HIGH);
+        id = graphSystem.loadGraph("src\\main\\resources\\spiralGraph.graphml");
         drawManager = new DrawManager(id, representation);
-        id = graphSystem.loadGraph("src\\test\\resources\\testGraph.graphml");
-
     }
 
-    @Test
-    public void drawShortestEdge() {
+    @After
+    public void free() {
+        representation = null;
+        drawManager = null;
+        graphSystem.removeGraph(id);
+    }
 
+
+    @Test
+    public void drawShortestHighEdge() {
+        drawManager.setAccuracy(Accuracy.HIGH);
         List<Drawable> rendered = drawManager.getRenderData();
         for (Drawable drawable : rendered) {
             if (drawable instanceof LineStrip) {
@@ -46,41 +55,21 @@ public class CalculationTest {
                     coord1 = coordinates.next();
                     coord2 = coord1;
                 }
+                int i = 0;
                 while (coordinates.hasNext()) {
-                    deltaAprox += coord1.hyperbolicDistance(coord2);
                     coord1 = coord2;
                     coord2 = coordinates.next();
-                    Assert.assertTrue(Math.abs(coord1.hyperbolicDistance(coord2) - (deltaReal / 100.0)) < 0.1);
-
+                    deltaAprox += coord1.hyperbolicDistance(coord2);
+                    if(Math.abs(coord1.hyperbolicDistance(coord2) - (deltaReal /
+                            (lineStrip.getCoords().size() - 1))) > 0.1) {
+                    }
+                    i++;
                 }
-                Assert.assertTrue(Math.abs(deltaAprox - deltaReal) < 0.1);
+               Assert.assertTrue(Math.abs(deltaAprox - deltaReal) < 0.1);
             }
         }
     }
 
-    @Test
-    public void calculateDirect() {
-        drawManager.setAccuracy(Accuracy.DIRECT);
-        List<Drawable> rendered = drawManager.getRenderData();
-        for (Drawable drawable : rendered) {
-            if (drawable instanceof LineStrip) {
-                LineStrip lineStrip = (LineStrip) drawable;
-                int nodes[] = lineStrip.getConnectedNodes();
-                List<CartesianCoordinate> coordinates = lineStrip.getCoords();
-                Coordinate coord1 = graphSystem.getNodeByID(nodes[0]).getCoord();
-                Coordinate coord2 = graphSystem.getNodeByID(nodes[1]).getCoord();
-                boolean goodCoords = (coord1.equals(coordinates.get(0).mirroredY())
-                        || coord1.equals(coordinates.get(1).mirroredY()))
-                        && (coord2.equals(coordinates.get(0).mirroredY())
-                                || coord2.equals(coordinates.get(1).mirroredY()));
-                Assert.assertTrue(goodCoords);
-                System.out.println(goodCoords + " Coord1 " + coord1.toString() + " Coord2 " + coord2.toString()
-                        + " Edge first " + coordinates.get(0).toPolar().mirroredY() + " Edge Second "
-                        + coordinates.get(1).toPolar().mirroredY());
-                Assert.assertTrue(lineStrip.getCoords().size() == 2);
-            }
-        }
-    }
 
     @Test
     public void conversionTest() {
@@ -119,37 +108,204 @@ public class CalculationTest {
     }
 
     @Test
-    public void distanceClose() {
-        for (int j = 1; j < 50; j++) {
-            for (int i = 0; i < 10; i++) {
-                PolarCoordinate coord1 = new PolarCoordinate(0, j);
-                PolarCoordinate coord2 = new PolarCoordinate((1.0 / Math.pow(10, i)), j);
-                System.out.printf("distance %d: angular distance %6.3e: distance %6.3e\n", j,
-                        coord1.getAngularDistance(coord2), coord1.hyperbolicDistance(coord2));
+    public void createsAllElements() {
+        List<Drawable> rendered = drawManager.getRenderData();
+        List<Integer> ids = graphSystem.getIDs(id);
+        for(Drawable drawable: rendered) {
+            Integer id = drawable.getID();
+            Assert.assertTrue(ids.contains(id));
+            ids.remove(id);
+        }
+        Assert.assertTrue(ids.isEmpty());
+    }
+
+    @Test
+    public void changesRightElements() {
+        List<Drawable> firstRender = drawManager.getRenderData();
+        List<double[]> renderedCoords = new ArrayList<>();
+        for(Drawable drawable : firstRender) {
+            double add[] = new double[3];
+            if(drawable instanceof CircleNode) {
+                add[0] = 0;
+                add[1] = ((CircleNode) drawable).getCenter().toPolar().getDistance();
+                add[2] = ((CircleNode) drawable).getCenter().toPolar().getAngle();
+            } else {
+                add[0] = 1;
+                add[1] = ((LineStrip) drawable).getConnectedNodes()[0];
+                add[2] = ((LineStrip) drawable).getConnectedNodes()[1];
             }
-            System.out.println("###");
+            renderedCoords.add(add);
+        }
+        List<Integer> ids = graphSystem.getIDs(id);
+        List<Integer> changedGraph = new ArrayList<>();
+        List<Integer> changedRendered = new ArrayList<>();
+        int smallestID = getSmallestID(id);
+        for(int i = smallestID; i < ((ids.size() > 11)? smallestID + 11 : smallestID + ids.size()); i++) {
+            int elementId = ids.get(i - getSmallestID(id));
+            GraphElement element = graphSystem.getGraphElementByID(id, elementId);
+            if(element instanceof Node) {
+                Node node = (Node) element;
+                PolarCoordinate coord = node.getCoord().moveCoordinate((new CartesianCoordinate(1,1)).toPolar()).toPolar();
+                ICommand command = new MoveNodeCommand(i,coord);
+                command.execute();
+                if(i % 2 == 0) changedRendered.add(elementId);
+            } else {
+                graphSystem.removeElement(elementId);
+            }
+            changedGraph.add(elementId);
+
+        }
+
+        List<Drawable> secondRender = drawManager.getRenderData(changedRendered);
+        for(Integer j: changedGraph){
+            int i = j - smallestID;
+            if(secondRender.contains(j)) {
+                assert !firstRender.get(i).equals(secondRender.get(i));
+            } else {
+                assert firstRender.get(i).equals(secondRender.get(i));
+            }
+
+        }
+        for(int i = 0; i < firstRender.size(); i++) {
+            if(!changedGraph.contains(i)) {
+                try {
+                    assert firstRender.get(i).equals(secondRender.get(i));
+                } catch (AssertionError e) {
+                    if(firstRender.get(i) instanceof CircleNode) {
+
+                    } else {
+
+                    }
+                }
+            }
         }
 
     }
 
     @Ignore
     @Test
-    public void visualGraphTest() {
-        String args[] = new String[1];
-        App.main(args);
-        CommandController commandController = CommandController.getInstance();
-        commandController.queueCommand(new CreateNewGraphCommand());
-        for (int i = 0; i < 50; i++) {
-            Coordinate coordinate = new PolarCoordinate(i, i);
-            Command command = new CreateNodeCommand(0, coordinate);
-            commandController.queueCommand(command);
-        }
-        for (int i = 0; i < 50; i++) {
-            int[] ids = { i, (i + 1) % 50 };
-            Command command = new CreateEdgeCommand(0, ids);
-            commandController.queueCommand(command);
-        }
-        System.out.println("test");
+    public void moveCoordinate() {
+        PolarCoordinate coord = new PolarCoordinate(1.0, 1.0);
+        CartesianCoordinate newCoord = coord.moveCoordinate(new PolarCoordinate(2,0.1)).toCartesian();
+        System.out.println(newCoord + " : " + coord.toCartesian() + ":" + new PolarCoordinate(Math.PI / 2 + 1, 1.0).toCartesian());
     }
 
+    @Test
+    public void testMove(){
+        for(Integer i : graphSystem.getIDs(id)) {
+            if(graphSystem.getGraphElementByID(i) instanceof Node) {
+                Node node = graphSystem.getNodeByID(i);
+                double phi = node.getCoord().toPolar().getAngle();
+                double r = node.getCoord().toPolar().getDistance();
+                int id = node.getId();
+                ICommand command = new MoveNodeCommand(id, (new CartesianCoordinate(1, 1)).toPolar());
+                command.execute();
+                double newPhi = graphSystem.getNodeByID(id).getCoord().toPolar().getAngle();
+                double newR = graphSystem.getNodeByID(id).getCoord().toPolar().getDistance();
+                double dPhi = phi - newPhi < newPhi - phi? phi - newPhi : newPhi - phi;
+
+            }
+        }
+        int smallestID = getSmallestNodeID(id);
+        int largestID = getLargestNodeID(id);
+        for(int i = smallestID; i < largestID; i++) {
+            int j = i >= largestID ? smallestID : i + 1;
+            int[] ids = {i,j};
+            Command command = new CreateEdgeCommand(id,ids);
+            command.execute();
+
+        }
+
+    }
+
+    @Test
+    public void moveCenterTest() {
+        double min = 0;
+        double max = 9;
+        Random r = new Random();
+        double r1 = 2 * Math.PI * r.nextDouble();
+        double r2 = 9 * r.nextDouble();
+        Coordinate center = new PolarCoordinate(r1,r2);
+        drawManager.moveCenter(center);
+        List<Drawable> render = drawManager.getRenderData();
+        for(Drawable drawable: render) {
+            if(drawable instanceof CircleNode) {
+                assert Math.abs(((CircleNode) drawable).getCenter().hyperbolicDistance(drawManager.getCenter()) -
+                        graphSystem.getNodeByID(drawable.getID()).getCoord().toPolar().getDistance()) < 0.01;
+            }
+        }
+
+    }
+
+    @Test
+    public void calculateDirect() {
+        drawManager.setAccuracy(Accuracy.DIRECT);
+        List<Drawable> drawables = drawManager.getRenderData();
+        for(Drawable drawable : drawables) {
+            if(drawable instanceof LineStrip) {
+                Edge edge = graphSystem.getEdgeByID(drawable.getID());
+                LineStrip lineStrip = (LineStrip) drawable;
+                assert ((edge.getNodes()[0].getId() == lineStrip.getConnectedNodes()[0] || edge.getNodes()[0].getId() ==
+                        lineStrip.getConnectedNodes()[1]) && (edge.getNodes()[1].getId() ==
+                        lineStrip.getConnectedNodes()[1] || edge.getNodes()[0].getId() ==
+                        lineStrip.getConnectedNodes()[0]));
+                Coordinate first = lineStrip.getCoords().get(0).mirroredY();
+                Coordinate second = lineStrip.getCoords().get(lineStrip.getCoords().size() - 1).mirroredY();
+                assert (first.equals(edge.getNodes()[0].getCoord()) || first.equals(edge.getNodes()[1].getCoord())) && (second.equals(edge.getNodes()[0].getCoord()) || second.equals(edge.getNodes()[1].getCoord()));
+            }
+        }
+
+    }
+
+    private int getSmallestID(int id) {
+        int smallestID = Integer.MAX_VALUE;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i < smallestID) smallestID = i;
+        }
+        return smallestID;
+    }
+
+    private int getLargestID(int id) {
+        int largestID = 0;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i > largestID) largestID = i;
+        }
+        return largestID;
+    }
+
+    private int getLargestNodeID(int id) {
+        int largestID = 0;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i > largestID && graphSystem.getGraphElementByID(i) instanceof Node) largestID = i;
+        }
+        return largestID;
+    }
+
+    private int getLargestEdgeID(int id) {
+        int largestID = 0;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i > largestID && graphSystem.getGraphElementByID(i) instanceof Edge) largestID = i;
+        }
+        return largestID;
+    }
+
+    private int getSmallestNodeID(int id) {
+        int smallestID = Integer.MAX_VALUE;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i < smallestID && graphSystem.getGraphElementByID(i) instanceof Node) smallestID = i;
+        }
+        return smallestID;
+    }
+
+    private int getSmallestEdgeID(int id) {
+        int smallestID = Integer.MAX_VALUE;
+        for(Integer i: graphSystem.getIDs(id)) {
+            if(i < smallestID && graphSystem.getGraphElementByID(i) instanceof Edge) smallestID = i;
+        }
+        return smallestID;
+    }
+
+
 }
+
+
