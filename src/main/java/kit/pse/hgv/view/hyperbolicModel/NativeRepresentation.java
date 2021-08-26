@@ -64,12 +64,12 @@ public class NativeRepresentation implements Representation {
             approximatedCoordinate = center.toCartesian();
         }
 
-        if(circleNode == null || circleNode.getID() != node.getId()) {
+        //if(circleNode == null || circleNode.getID() != node.getId()) {
             return new CircleNode(approximatedCoordinate, nodeSize, node.getId(), null);
-        } else {
+        /*} else {
             circleNode.setCenter(approximatedCoordinate);
             return circleNode;
-        }
+        }*/
     }
 
     @Override

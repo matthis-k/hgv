@@ -56,6 +56,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
                 this.port++;
             }
         }
+        System.out.println(getPort());
     }
 
     /**

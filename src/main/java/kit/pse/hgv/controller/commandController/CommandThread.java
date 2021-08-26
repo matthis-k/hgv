@@ -8,6 +8,7 @@ public class CommandThread extends Thread {
 
     public CommandThread(ICommand c) {
         this.c = c;
+        setName("CommandThread");
     }
 
     public void run() {
