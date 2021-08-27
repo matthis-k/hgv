@@ -49,12 +49,33 @@ public class DrawManager {
      */
     public List<Drawable> getRenderData(List<Integer> changedElements) {
         Set<Integer> toCalculate = addConnectedEdges(changedElements);
-        for (Integer id : toCalculate) {
-            if (graphSystem.isInGraph(graphId, id)) {
-                Drawable drawable = calculateElement(id);
-                rendered.put(drawable.getID(), drawable);
-            } else {
-                rendered.remove(id);
+        final int numThreads = 16;
+        List<Integer> ids = new ArrayList<>();
+        ids.addAll(toCalculate);
+        int size = ids.size();
+        List<Integer>[] chunks = new List[numThreads];
+        List<Calculator> calculators = new ArrayList<>();
+        for(int i = 0; i < numThreads; i++) {
+            chunks[i] = new ArrayList<>();
+        }
+        for(int i = 0; i < size; i++) {
+            chunks[i % numThreads].add(ids.get(i));
+        }
+        for (List<Integer> chunk : chunks) {
+            if(!chunk.isEmpty()) {
+                Calculator calculator = new Calculator(this, chunk, graphId);
+                calculators.add(calculator);
+            }
+
+        }
+        for(Calculator calculator : calculators) {
+            calculator.start();
+        }
+        for(Calculator calculator : calculators) {
+            try {
+                calculator.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         List<Drawable> res = new Vector<>();
@@ -63,43 +84,37 @@ public class DrawManager {
     }
 
     public List<Drawable> getRenderData() {
-        for (Integer id : graphSystem.getIDs(graphId)) {
-            Drawable drawable = calculateElement(id);
-            rendered.put(drawable.getID(), drawable);
+        final int numThreads = 16;
+        List<Integer> ids = graphSystem.getIDs(graphId);
+        int size = ids.size();
+        List<Integer>[] chunks = new List[numThreads];
+        List<Calculator> calculators = new ArrayList<>();
+        for(int i = 0; i < numThreads; i++) {
+            chunks[i] = new ArrayList<>();
+        }
+        for(int i = 0; i < size; i++) {
+            chunks[i % numThreads].add(ids.get(i));
+        }
+        for (List<Integer> chunk : chunks) {
+            if(!chunk.isEmpty()) {
+                Calculator calculator = new Calculator(this, chunk, graphId);
+                calculators.add(calculator);
+            }
+
+        }
+        for(Calculator calculator : calculators) {
+            calculator.start();
+        }
+        for(Calculator calculator : calculators) {
+            try {
+                calculator.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         List<Drawable> res = new Vector<>();
         res.addAll(rendered.values());
         return res;
-    }
-
-    private Drawable calculateElement(int id) {
-        Drawable d;
-        Node node = graphSystem.getNodeByID(graphId, id);
-        if (node != null) {
-            CircleNode circleNode = (CircleNode) rendered.get(id);
-            d = getRepresentation().calculate(node, circleNode);
-
-        } else {
-            Edge edge = graphSystem.getEdgeByID(graphId, id);
-            LineStrip lineStrip = (LineStrip) rendered.get(id);
-            if(lineStrip != null) {
-                int temp[] = lineStrip.getConnectedNodes();
-                d = getRepresentation().calculate(edge, lineStrip, ((CircleNode) rendered.get(temp[0])).getCenter(), ((CircleNode) rendered.get(temp[1])).getCenter());
-            } else {
-                Node temp[] = edge.getNodes();
-                d = getRepresentation().calculate(edge, lineStrip, temp[0].getCoord(), temp[1].getCoord());
-            }
-        }
-        return d.setColor(getColorOfId(id));
-    }
-
-    private Color getColorOfId(int id) {
-        GraphElement el = GraphSystem.getInstance().getGraphElementByID(id);
-        try {
-            return Color.web(el.getMetadata("color"));
-        } catch (NullPointerException | IllegalArgumentException e) {
-            return el instanceof Node ? DEFAULT_NODE_COLOR : DEFAULT_EDGE_COLOR;
-        }
     }
 
     /**
@@ -126,16 +141,7 @@ public class DrawManager {
 
     public List<Drawable> moveCenter(Coordinate center) {
         representation.setCenter(center);
-        // clear the list of rendered Elements, because every Element has to be rendered
-        // newly
-        rendered.clear();
-        for (Integer id : graphSystem.getIDs(graphId)) {
-            Drawable drawable = calculateElement(id);
-            rendered.put(drawable.getID(), drawable);
-        }
-        List<Drawable> res = new Vector<>();
-        res.addAll(rendered.values());
-        return res;
+        return getRenderData();
     }
 
     public Representation getRepresentation() {
@@ -154,5 +160,17 @@ public class DrawManager {
 
     public void setAccuracy(Accuracy accuracy) {
         representation.setAccuracy(accuracy);
+    }
+
+    synchronized protected void setRendered(Drawable drawable) {
+        rendered.put(drawable.getID(), drawable);
+    }
+
+    synchronized protected Drawable getDrawable(int id) {
+        return rendered.get(id);
+    }
+
+    synchronized protected void removeDrawable(int id) {
+        rendered.remove(id);
     }
 }

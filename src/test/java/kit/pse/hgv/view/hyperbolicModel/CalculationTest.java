@@ -243,6 +243,7 @@ public class CalculationTest {
     @Test
     public void calculateDirect() {
         drawManager.setAccuracy(Accuracy.DIRECT);
+        assert drawManager.getRepresentation().getAccuracy().equals(Accuracy.DIRECT);
         List<Drawable> drawables = drawManager.getRenderData();
         for(Drawable drawable : drawables) {
             if(drawable instanceof LineStrip) {

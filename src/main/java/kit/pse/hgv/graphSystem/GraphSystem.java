@@ -1,5 +1,6 @@
 package kit.pse.hgv.graphSystem;
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
@@ -264,6 +265,17 @@ public class GraphSystem {
             ids.addAll(g.getIds());
         }
         return ids;
+    }
+
+    public Color getColorOfId(int id) {
+        final Color defaultNode = Color.RED;
+        final Color defaultEdge = Color.BLACK;
+        GraphElement el = getGraphElementByID(id);
+        try {
+            return Color.web(el.getMetadata("color"));
+        } catch (NullPointerException | IllegalArgumentException e) {
+            return el instanceof Node ? defaultNode : defaultEdge;
+        }
     }
 
     public boolean newMetadataDefinition(int graphID, MetadataDefinition metadataDefinition) {
