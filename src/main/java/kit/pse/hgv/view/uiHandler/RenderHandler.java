@@ -1,6 +1,8 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
@@ -49,6 +51,8 @@ public class RenderHandler implements UIHandler {
     private static final int CHECKBOX_X_OFFSET = 450;
     private static final int CHECKBOX_Y_OFFSET = 25;
     private static final int CENTER_ID = -1;
+    private Button zoomIn;
+    private Button zoomOut;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -63,16 +67,13 @@ public class RenderHandler implements UIHandler {
 
         enableDragCC(renderCircle, center);
 
-        renderPane.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
-            if (scrollEvent.isControlDown())
-                zoom(scrollEvent.getDeltaY());
-        });
-
         manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(NODE_SIZE, Accuracy.DIRECT));
 
         RenderEngine engine = new DefaultRenderEngine(ONLY_GRAPH, ONLY_GRAPH, manager, this);
         CommandController.getInstance().register(engine);
         renderPane.getChildren().add(center);
+
+        setupZoom();
     }
 
     /**
@@ -85,6 +86,8 @@ public class RenderHandler implements UIHandler {
         // clear the renderPane
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
+        renderPane.getChildren().add(zoomIn);
+        renderPane.getChildren().add(zoomOut);
 
         ArrayList<Circle> nodes = new ArrayList<>();
         ArrayList<Line> lines = new ArrayList<>();
@@ -317,6 +320,28 @@ public class RenderHandler implements UIHandler {
                 DetailHandler.getInstance().updateDisplayData(currentlySelected, strip.getColor());
             });
         }
+    }
+
+    private void setupZoom() {
+        zoomIn = new Button("_+"); //mnemonic
+        zoomIn.setVisible(true);
+        zoomIn.layoutXProperty().bind(centerCheckBox.layoutXProperty().subtract(30));
+        zoomIn.layoutYProperty().bind(centerCheckBox.layoutYProperty().subtract(5));
+
+        zoomIn.setOnAction((event -> {
+            zoom(15);
+        }));
+        renderPane.getChildren().add(zoomIn);
+
+        zoomOut = new Button("_-"); //mnemonic
+        zoomOut.setVisible(true);
+        zoomOut.layoutXProperty().bind(centerCheckBox.layoutXProperty().subtract(60));
+        zoomOut.layoutYProperty().bind(centerCheckBox.layoutYProperty().subtract(5));
+
+        zoomOut.setOnAction((event -> {
+            zoom(-15);
+        }));
+        renderPane.getChildren().add(zoomOut);
     }
 
 }
