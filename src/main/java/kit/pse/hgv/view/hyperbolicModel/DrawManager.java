@@ -19,7 +19,7 @@ public class DrawManager {
 
     /**
      * Constructor to create a new DrawManager with given Center
-     * 
+     *
      * @param graphId
      * @param center
      * @param representation
@@ -32,7 +32,7 @@ public class DrawManager {
 
     /**
      * Constructor to create a new DrawManager
-     * 
+     *
      * @param graphId        the ID of the graph to be represented
      * @param representation the type of representation the graph should be shown in
      */
@@ -43,75 +43,66 @@ public class DrawManager {
 
     /**
      * Method to get the Rendered elements
-     * 
+     *
      * @param changedElements
      * @return
      */
-    public List<Drawable> getRenderData(List<Integer> changedElements) {
-        Set<Integer> toCalculate = addConnectedEdges(changedElements);
-        final int numThreads = 16;
-        List<Integer> ids = new ArrayList<>();
-        ids.addAll(toCalculate);
-        int size = ids.size();
-        List<Integer>[] chunks = new List[numThreads];
-        List<Calculator> calculators = new ArrayList<>();
-        for(int i = 0; i < numThreads; i++) {
-            chunks[i] = new ArrayList<>();
-        }
-        for(int i = 0; i < size; i++) {
-            chunks[i % numThreads].add(ids.get(i));
-        }
-        for (List<Integer> chunk : chunks) {
-            if(!chunk.isEmpty()) {
-                Calculator calculator = new Calculator(this, chunk, graphId);
-                calculators.add(calculator);
-            }
-
-        }
-        for(Calculator calculator : calculators) {
-            calculator.start();
-        }
-        for(Calculator calculator : calculators) {
-            try {
-                calculator.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public List<Drawable> getRenderData(Set<Integer> changedElements) {
+        calculateMixedIds(changedElements);
         List<Drawable> res = new Vector<>();
         res.addAll(rendered.values());
         return res;
     }
 
-    public List<Drawable> getRenderData() {
+    private void calculateMixedIds(Set<Integer> ids) {
+        if (ids.size() == 0) return;
+        Set<Integer> nodes = new HashSet<>();
+        Set<Integer> edges = new HashSet<>();
+        for (Integer id : ids) {
+            if (graphSystem.getNodeByID(graphId, id) != null) {
+                nodes.add(id);
+            } else if (graphSystem.getEdgeByID(graphId, id) != null) {
+                edges.add(id);
+            }
+        }
+        calculateIds(nodes);
+        calculateIds(edges);
+    }
+
+    private void calculateIds(Set<Integer> ids) {
         final int numThreads = 16;
-        List<Integer> ids = graphSystem.getIDs(graphId);
-        int size = ids.size();
-        List<Integer>[] chunks = new List[numThreads];
+        HashSet<Integer>[] chunks = new HashSet[numThreads];
         List<Calculator> calculators = new ArrayList<>();
-        for(int i = 0; i < numThreads; i++) {
-            chunks[i] = new ArrayList<>();
+        for (int i = 0; i < numThreads; i++) {
+            chunks[i] = new HashSet<>();
         }
-        for(int i = 0; i < size; i++) {
-            chunks[i % numThreads].add(ids.get(i));
+        int i = 0;
+        for (Integer id : ids) {
+            chunks[i % numThreads].add(id);
+            i++;
         }
-        for (List<Integer> chunk : chunks) {
-            if(!chunk.isEmpty()) {
+        for (HashSet<Integer> chunk : chunks) {
+            if (!chunk.isEmpty()) {
                 Calculator calculator = new Calculator(this, chunk, graphId);
                 calculators.add(calculator);
             }
 
         }
-        for(Calculator calculator : calculators) {
+        for (Calculator calculator : calculators) {
             calculator.start();
         }
-        for(Calculator calculator : calculators) {
+        for (Calculator calculator : calculators) {
             try {
                 calculator.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Drawable> getRenderData() {
+        HashSet<Integer> ids = graphSystem.getIDs(graphId);
+        calculateMixedIds(ids);
         List<Drawable> res = new Vector<>();
         res.addAll(rendered.values());
         return res;
@@ -120,7 +111,7 @@ public class DrawManager {
     /**
      * Methode that checks the List of changed Elements for changed Nodes and
      * searches all Edges that are based in this Node
-     * 
+     *
      * @param changedElements The List of Elements which have to be newly rendered
      * @return A Set of all Elements that also need to be newly rendered
      */

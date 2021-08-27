@@ -7,15 +7,17 @@ import kit.pse.hgv.representation.CircleNode;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Calculator extends Thread{
 
     private int graphId;
-    private List<Integer> ids;
+    private HashSet<Integer> ids;
     DrawManager drawManager;
 
-    protected Calculator(DrawManager drawManager, List<Integer> ids, int graphId) {
+    protected Calculator(DrawManager drawManager, HashSet<Integer> ids, int graphId) {
         this.drawManager = drawManager;
         this.graphId = graphId;
         this.ids = ids;
@@ -36,8 +38,8 @@ public class Calculator extends Thread{
             } else {
                 Edge edge = GraphSystem.getInstance().getEdgeByID(graphId, id);
                 LineStrip lineStrip = (LineStrip) drawManager.getDrawable(id);
-                Node temp[] = edge.getNodes();
-                d = drawManager.getRepresentation().calculate(edge, lineStrip, temp[0].getCoord(), temp[1].getCoord());
+                Node nodes[] = edge.getNodes();
+                d = drawManager.getRepresentation().calculate(edge, lineStrip, nodes[0].getCoord(), nodes[1].getCoord());
             }
             drawManager.setRendered(d);
         }

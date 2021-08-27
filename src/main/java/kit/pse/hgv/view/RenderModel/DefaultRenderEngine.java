@@ -4,6 +4,7 @@ import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
+import java.util.HashSet;
 import java.util.Vector;
 
 /**
@@ -23,11 +24,8 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        //TODO
-        //Vector<Integer> update = new Vector<>();
-        //update.addAll(toBeUpdated);
-        //this.displayedGraph = drawManager.getRenderData(update);
-        this.displayedGraph = drawManager.getRenderData();
+        this.displayedGraph = drawManager.getRenderData(toBeUpdated);
+        //this.displayedGraph = drawManager.getRenderData();
     }
 
     @Override

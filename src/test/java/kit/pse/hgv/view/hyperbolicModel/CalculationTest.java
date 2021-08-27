@@ -112,7 +112,7 @@ public class CalculationTest {
     @Test
     public void createsAllElements() {
         List<Drawable> rendered = drawManager.getRenderData();
-        List<Integer> ids = graphSystem.getIDs(id);
+        HashSet<Integer> ids = graphSystem.getIDs(id);
         for(Drawable drawable: rendered) {
             Integer id = drawable.getID();
             Assert.assertTrue(ids.contains(id));
@@ -139,9 +139,10 @@ public class CalculationTest {
             }
             renderedCoords.add(add);
         }
-        List<Integer> ids = graphSystem.getIDs(id);
+        List<Integer> ids = new Vector<>();
+        ids.addAll(graphSystem.getIDs(id));
         List<Integer> changedGraph = new ArrayList<>();
-        List<Integer> changedRendered = new ArrayList<>();
+        HashSet<Integer> changedRendered = new HashSet<>();
         int smallestID = getSmallestID(id);
         for(int i = smallestID; i < ((ids.size() > 11)? smallestID + 11 : smallestID + ids.size()); i++) {
             int elementId = ids.get(i - getSmallestID(id));
