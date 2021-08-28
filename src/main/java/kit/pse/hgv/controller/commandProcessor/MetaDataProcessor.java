@@ -14,7 +14,6 @@ public class MetaDataProcessor implements CommandProcessor {
     @Override
     public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
-        CommandController.getInstance().queueCommand(new RenderCommand());
     }
 
     /**

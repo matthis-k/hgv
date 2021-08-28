@@ -39,6 +39,7 @@ public class EditUserMetaCommand extends MetaSystemCommand {
         Node n = GraphSystem.getInstance().getNodeByID(elementId);
         if (e == null) {
             fail(NO_ELEMENT_WITH_ID);
+            return;
         }
         if (key.equals(PHI) && n != null) {
             try {

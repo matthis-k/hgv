@@ -144,8 +144,12 @@ public class RenderHandler implements UIHandler {
     }
 
     private void bindLines(LineStrip strip) {
-        for (Line line : strip.getLines())
-            setupLine(line);
+        if (!strip.isCentered()){
+            strip.setCentered();
+            for (Line line : strip.getLines()) {
+                setupLine(line);
+            }
+        }
     }
 
     /**
