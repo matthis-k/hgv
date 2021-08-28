@@ -31,8 +31,8 @@ public class DefaultRenderEngine extends RenderEngine {
     @Override
     public void onNotify(ICommand c) {
         if (c.isUser()) {
-            if (!c.getResponse().getBoolean("success")) {
-                c.getResponse().get("reason");
+            if (!c.succeeded()) {
+                //TODO: Error message c.getResponse().get("reason");
             }
             toBeUpdated.addAll(c.getModifiedIds());
             render();
