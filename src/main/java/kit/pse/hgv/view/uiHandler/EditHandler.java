@@ -2,6 +2,9 @@ package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
+import kit.pse.hgv.controller.commandProcessor.GraphCommandProcessor;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,18 +22,31 @@ public class EditHandler implements UIHandler {
     private Button addEdgeButton;
     @FXML
     private Button deleteEdgeButton;
+    @FXML
+    private ChoiceBox<String> currentGraph;
 
-    private static final boolean TOGGLE = true;
+    private static EditHandler instance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        addNodeButton.setDisable(TOGGLE);
-        deleteNodeButton.setDisable(TOGGLE);
-        addEdgeButton.setDisable(TOGGLE);
-        deleteEdgeButton.setDisable(TOGGLE);
+        instance = this;
+        currentGraph.setOnAction(actionEvent -> {
+            RenderHandler.getInstance().switchGraph(Integer.valueOf(currentGraph.getValue().toString()));
+        });
     }
 
+    public static EditHandler getInstance() {
+        return instance;
+    }
+
+    public void addGraph(int id) {
+        currentGraph.getItems().add(String.valueOf(id));
+        currentGraph.setValue(String.valueOf(id));
+        RenderHandler.getInstance().switchGraph(id);
+    }
+/*
     public void addNode(String radius, String angle) {
+        processor.addNode(1, angle, radius);
     }
 
     public void deleteNode(int nodeID) {
@@ -41,4 +57,8 @@ public class EditHandler implements UIHandler {
 
     public void deleteEdge(int edgeID) {
     }
+
+    public static EditHandler getEditHandler() {
+        return instance;
+    }*/
 }

@@ -48,4 +48,8 @@ public abstract class RenderEngine implements CommandQListener {
 
     public abstract void render();
 
+    public int getGraphID() {
+        return this.graphID;
+    }
+
 }

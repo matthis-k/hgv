@@ -155,4 +155,5 @@ public class DrawManager {
     public void setAccuracy(Accuracy accuracy) {
         representation.setAccuracy(accuracy);
     }
+
 }
