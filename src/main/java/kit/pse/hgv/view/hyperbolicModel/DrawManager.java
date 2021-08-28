@@ -16,6 +16,7 @@ public class DrawManager {
     private int graphId;
     private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
+    private boolean hideEdges = false;
 
     /**
      * Constructor to create a new DrawManager with given Center
@@ -61,12 +62,12 @@ public class DrawManager {
         for (Integer id : ids) {
             if (graphSystem.getNodeByID(graphId, id) != null) {
                 nodes.add(id);
-            } else if (graphSystem.getEdgeByID(graphId, id) != null) {
+            } else if (graphSystem.getEdgeByID(graphId, id) != null && !hideEdges) {
                 edges.add(id);
             }
         }
         calculateIds(nodes);
-        calculateIds(edges);
+        if(!hideEdges) calculateIds(edges);
     }
 
     private void calculateIds(Set<Integer> ids) {
@@ -159,6 +160,10 @@ public class DrawManager {
 
     synchronized protected Drawable getDrawable(int id) {
         return rendered.get(id);
+    }
+
+    public void setHideEdges(boolean hideEdges) {
+        this.hideEdges = hideEdges;
     }
 
     synchronized protected void removeDrawable(int id) {

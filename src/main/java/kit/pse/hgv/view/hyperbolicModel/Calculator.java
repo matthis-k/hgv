@@ -4,6 +4,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.CircleNode;
+import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
 
@@ -38,8 +39,15 @@ public class Calculator extends Thread{
             } else {
                 Edge edge = GraphSystem.getInstance().getEdgeByID(graphId, id);
                 LineStrip lineStrip = (LineStrip) drawManager.getDrawable(id);
-                Node nodes[] = edge.getNodes();
-                d = drawManager.getRepresentation().calculate(edge, lineStrip, nodes[0].getCoord(), nodes[1].getCoord());
+                Coordinate coordinates[] = new Coordinate[2];
+                if(lineStrip != null) {
+                    coordinates[0] = ((CircleNode)drawManager.getDrawable(lineStrip.getConnectedNodes()[0])).getCenter();
+                    coordinates[1] = ((CircleNode)drawManager.getDrawable(lineStrip.getConnectedNodes()[1])).getCenter();
+                } else {
+                    coordinates[0] = edge.getNodes()[0].getCoord();
+                    coordinates[1] = edge.getNodes()[1].getCoord();
+                }
+                d = drawManager.getRepresentation().calculate(edge, lineStrip, coordinates[0], coordinates[1]);
             }
             drawManager.setRendered(d);
         }
