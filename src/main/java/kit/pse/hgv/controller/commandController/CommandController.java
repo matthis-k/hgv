@@ -122,21 +122,7 @@ public class CommandController extends Thread implements CommandEventSource {
     @Override
     public void notifyAll(ICommand c) {
         for (CommandQListener listener : listeners) {
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    listener.onNotify(c);
-                    return null;
-                }
-            };
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            Platform.runLater(th);
-            try {
-                th.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            listener.onNotify(c);
         }
     }
 

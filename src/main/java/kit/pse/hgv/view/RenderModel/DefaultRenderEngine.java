@@ -1,5 +1,7 @@
 package kit.pse.hgv.view.RenderModel;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
@@ -37,7 +39,21 @@ public class DefaultRenderEngine extends RenderEngine {
                 c.getResponse().get("reason");
             }
             toBeUpdated.addAll(c.getModifiedIds());
-            render();
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    render();
+                    return null;
+                }
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            Platform.runLater(th);
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             toBeUpdated.addAll(c.getModifiedIds());
         }
