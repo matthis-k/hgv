@@ -374,6 +374,13 @@ public class RenderHandler implements UIHandler {
         return instance;
     }
 
+    public void moveDrawManagerCenter(Coordinate transform) {
+        currentEngine.getDrawManager().moveCenter(transform);
+    }
+
+    public void updateAccuracy(Accuracy accuracy) {
+        currentEngine.getDrawManager().setAccuracy(accuracy);
+    }
 }
 
 /**

@@ -21,7 +21,6 @@ public abstract class RenderEngine implements CommandQListener {
     protected List<Drawable> displayedGraph;
     protected final int tabID;
     protected final int graphID;
-    private static RenderEngine instance;
 
     public RenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
         this.tabID = tab;
@@ -30,16 +29,6 @@ public abstract class RenderEngine implements CommandQListener {
         this.drawManager = drawManager;
         displayedGraph = new ArrayList<>();
         this.toBeUpdated = new HashSet<>();
-        instance = this;
-    }
-
-    /**
-     * Creates or gets the only existing TabManager instance.
-     * 
-     * @return Returns the only instance of the graphsystem.
-     */
-    public static RenderEngine getInstance() {
-        return instance;
     }
 
     public DrawManager getDrawManager() {
