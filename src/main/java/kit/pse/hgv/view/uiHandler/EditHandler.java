@@ -30,9 +30,7 @@ public class EditHandler implements UIHandler {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
-        currentGraph.setOnAction(actionEvent -> {
-            RenderHandler.getInstance().switchGraph(Integer.valueOf(currentGraph.getValue().toString()));
-        });
+        setAction();
     }
 
     public static EditHandler getInstance() {
@@ -40,9 +38,16 @@ public class EditHandler implements UIHandler {
     }
 
     public void addGraph(int id) {
+        System.out.println("added checkbox");
+        RenderHandler.getInstance().switchGraph(id);
         currentGraph.getItems().add(String.valueOf(id));
         currentGraph.setValue(String.valueOf(id));
-        RenderHandler.getInstance().switchGraph(id);
+    }
+
+    private void setAction() {
+        currentGraph.setOnAction(actionEvent -> {
+            RenderHandler.getInstance().switchGraph(Integer.valueOf(currentGraph.getValue().toString()));
+        });
     }
 /*
     public void addNode(String radius, String angle) {

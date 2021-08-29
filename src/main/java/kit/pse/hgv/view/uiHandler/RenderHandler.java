@@ -362,12 +362,15 @@ public class RenderHandler implements UIHandler {
     }
 
     public void switchGraph(int id) {
-        engines.add(new DefaultRenderEngine(id, id, this));
-        currentEngine = findEngine(id);
-        CommandController.getInstance().register(currentEngine);
-        currentID = currentEngine.getGraphID();
+        if(id != currentID) {
+            currentEngine = new DefaultRenderEngine(id, id, this);
+            engines.add(currentEngine);
+            CommandController.getInstance().register(currentEngine);
+            currentID = id;
 
-        renderGraph(currentEngine.getDrawManager().getRenderData());
+            renderGraph(currentEngine.getDrawManager().getRenderData());
+            System.out.println("rerender " + id + " " + currentEngine.getGraphID());
+        }
     }
 
     public static RenderHandler getInstance() {
