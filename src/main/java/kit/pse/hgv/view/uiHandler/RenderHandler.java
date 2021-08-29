@@ -371,10 +371,7 @@ public class RenderHandler implements UIHandler {
             engines.add(currentEngine);
             CommandController.getInstance().register(currentEngine);
             currentID = id;
-
             renderGraph(currentEngine.getDrawManager().getRenderData());
-            System.out.println(currentEngine.getGraphID());
-            System.out.println("rerender " + id + " " + currentEngine.getGraphID());
         }
     }
 
