@@ -5,6 +5,7 @@ import javafx.concurrent.Task;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
+import kit.pse.hgv.view.uiHandler.DetailHandler;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
@@ -17,13 +18,13 @@ import java.util.Vector;
 public class DefaultRenderEngine extends RenderEngine {
 
     public DefaultRenderEngine(int tab, int graph, RenderHandler handler) {
-        super(tab, graph, new DrawManager(graph, new NativeRepresentation(3, Accuracy.DIRECT)), handler);
+        super(tab, graph, new DrawManager(graph, new NativeRepresentation(3, DetailHandler.getCurrentAccuracy())), handler);
     }
 
     @Override
     public void render() {
         updateGraph();
-        handler.renderGraph(this.displayedGraph);
+        handler.renderGraph(drawManager.getRenderData());
         this.toBeUpdated.clear();
     }
 

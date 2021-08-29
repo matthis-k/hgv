@@ -373,6 +373,7 @@ public class RenderHandler implements UIHandler {
             currentID = id;
 
             renderGraph(currentEngine.getDrawManager().getRenderData());
+            System.out.println(currentEngine.getGraphID());
             System.out.println("rerender " + id + " " + currentEngine.getGraphID());
         }
     }
@@ -387,6 +388,10 @@ public class RenderHandler implements UIHandler {
 
     public void updateAccuracy(Accuracy accuracy) {
         currentEngine.getDrawManager().setAccuracy(accuracy);
+    }
+
+    public DrawManager getCurrentDrawManager() {
+        return currentEngine.getDrawManager();
     }
 }
 

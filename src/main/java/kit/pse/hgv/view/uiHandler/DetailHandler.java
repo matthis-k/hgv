@@ -12,6 +12,7 @@ import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
+import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 import java.net.URL;
@@ -51,6 +52,7 @@ public class DetailHandler implements UIHandler {
     private ChoiceBox<String> choiceBox;
     @FXML
     private Text accuracyText;
+    private static Accuracy currentAcc = Accuracy.DIRECT;
 
     /**
      * Attributes to store the currently displayed information of a node.
@@ -72,6 +74,10 @@ public class DetailHandler implements UIHandler {
      * Constructor cannot be declared private due to JavaFX issues.
      */
     public DetailHandler() {
+    }
+
+    public static Accuracy getCurrentAccuracy() {
+        return currentAcc;
     }
 
     @Override
@@ -98,8 +104,9 @@ public class DetailHandler implements UIHandler {
         HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
 
         String mode = choiceBox.getValue().toUpperCase();
-        if (!RenderEngine.getInstance().getDrawManager().getRepresentation().getAccuracy().name().equals(mode)) {
+        if (!RenderHandler.getInstance().getCurrentDrawManager().getRepresentation().getAccuracy().name().equals(mode)) {
             hyperProcessor.setAccuracy(mode);
+            currentAcc = Accuracy.valueOf(choiceBox.getValue().toUpperCase());
         }
 
         if (currentRadius == 0 && currentAngle == 0) {
