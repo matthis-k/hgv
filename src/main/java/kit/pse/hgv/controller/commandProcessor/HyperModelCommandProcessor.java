@@ -14,7 +14,6 @@ public class HyperModelCommandProcessor implements CommandProcessor {
     @Override
     public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
-        CommandController.getInstance().queueCommand(new RenderCommand());
     }
 
     /**
