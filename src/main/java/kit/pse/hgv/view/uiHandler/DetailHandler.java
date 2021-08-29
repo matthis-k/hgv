@@ -11,8 +11,12 @@ import javafx.scene.text.Text;
 import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
+import kit.pse.hgv.view.RenderModel.RenderEngine;
+import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 /**
@@ -94,18 +98,19 @@ public class DetailHandler implements UIHandler {
         HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
 
         String mode = choiceBox.getValue().toUpperCase();
-
-        if (idText.getText().equals(NO_ID)) {
+        if (!RenderEngine.getInstance().getDrawManager().getRepresentation().getAccuracy().name().equals(mode)) {
             hyperProcessor.setAccuracy(mode);
-        } else if (currentRadius == 0 && currentAngle == 0) {
+        }
+
+        if (currentRadius == 0 && currentAngle == 0) {
             processor.editMetaData(currentID, COLOR, colorPick.getValue().toString());
             hyperProcessor.setAccuracy(mode);
         } else {
-            processor.editMetaData(currentID, COLOR, colorPick.getValue().toString());
-            processor.editMetaData(currentID, RADIUS, radius.getText());
-            processor.editMetaData(currentID, PHI, angle.getText());
-            hyperProcessor.setAccuracy(mode);
-
+            HashMap<String, String> map = new HashMap<>();
+            map.put(COLOR, colorPick.getValue().toString());
+            map.put(RADIUS, radius.getText());
+            map.put(PHI, angle.getText());
+            processor.editMetaData(currentID, map);
         }
     }
 

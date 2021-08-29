@@ -39,6 +39,7 @@ public class EditUserMetaCommand extends MetaSystemCommand {
         Node n = GraphSystem.getInstance().getNodeByID(elementId);
         if (e == null) {
             fail(NO_ELEMENT_WITH_ID);
+            return;
         }
         if (key.equals(PHI) && n != null) {
             try {
@@ -46,6 +47,7 @@ public class EditUserMetaCommand extends MetaSystemCommand {
                 Double r = n.getCoord().toPolar().getDistance();
                 n.move(new PolarCoordinate(phi, r));
                 modifiedIds.add(elementId);
+                modifiedIds.addAll(GraphSystem.getInstance().getEdgeIdsOfNode(elementId));
             } catch (NumberFormatException ex) {
                 fail(CANNOT_PARSE);
             }
@@ -55,6 +57,7 @@ public class EditUserMetaCommand extends MetaSystemCommand {
                 Double phi = n.getCoord().toPolar().getAngle();
                 n.move(new PolarCoordinate(phi, r));
                 modifiedIds.add(elementId);
+                modifiedIds.addAll(GraphSystem.getInstance().getEdgeIdsOfNode(elementId));
             } catch (NumberFormatException ex) {
                 fail(CANNOT_PARSE);
             }

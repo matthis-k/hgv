@@ -179,8 +179,8 @@ public class Graph {
      *
      * @return List of all ids
      */
-    public List<Integer> getIds() {
-        List<Integer> res = new Vector<>();
+    public HashSet<Integer> getIds() {
+        HashSet<Integer> res = new HashSet<>();
         res.addAll(nodes.keySet());
         res.addAll(edges.keySet());
         return res;
