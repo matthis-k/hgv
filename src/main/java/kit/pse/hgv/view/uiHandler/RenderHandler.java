@@ -18,6 +18,7 @@ import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
@@ -39,12 +40,12 @@ public class RenderHandler implements UIHandler {
     private int currentlySelected;
     private Circle center;
 
-    private DrawManager manager;
+    private RenderEngine currentEngine;
 
     private static final int START_CENTER_X = 640;
     private static final int START_CENTER_Y = 360;
     private static final int START_RADIUS = 300;
-    private static final int ONLY_GRAPH = 1;
+    private static final int FIRST_GRAPH = 1;
     private static final double FACTOR_VIEW = 10;
     private int startRadiusForCenter = 300;
     private static final int NODE_SIZE = 5;
@@ -54,8 +55,16 @@ public class RenderHandler implements UIHandler {
     private Button zoomIn;
     private Button zoomOut;
 
+    private ArrayList<RenderEngine> engines;
+    private int currentID;
+
+    private static RenderHandler instance;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        instance = this;
+        engines = new ArrayList<>();
+        engines.add(new DefaultRenderEngine(FIRST_GRAPH, FIRST_GRAPH, this));
         setupCenter();
 
         renderCircle.setRadius(START_RADIUS);
@@ -67,13 +76,21 @@ public class RenderHandler implements UIHandler {
 
         enableDragCC(renderCircle, center);
 
-        manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(NODE_SIZE, Accuracy.DIRECT));
+        currentEngine = findEngine(FIRST_GRAPH);
+        currentID = currentEngine.getGraphID();
 
-        RenderEngine engine = new DefaultRenderEngine(ONLY_GRAPH, ONLY_GRAPH, manager, this);
-        CommandController.getInstance().register(engine);
+        CommandController.getInstance().register(currentEngine);
         renderPane.getChildren().add(center);
 
         setupZoom();
+    }
+
+    private RenderEngine findEngine(int ID) {
+        for (RenderEngine engine : engines) {
+            if(ID == engine.getGraphID())
+                return engine;
+        }
+        return null;
     }
 
     /**
@@ -161,7 +178,7 @@ public class RenderHandler implements UIHandler {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
-        List<Drawable> list = manager.getRenderData();
+        List<Drawable> list = currentEngine.getDrawManager().getRenderData();
         renderGraph(list);
     }
 
@@ -348,6 +365,29 @@ public class RenderHandler implements UIHandler {
         renderPane.getChildren().add(zoomOut);
     }
 
+    public void switchGraph(int id) {
+        if(id != currentID) {
+            currentEngine = new DefaultRenderEngine(id, id, this);
+            engines.add(currentEngine);
+            CommandController.getInstance().register(currentEngine);
+            currentID = id;
+
+            renderGraph(currentEngine.getDrawManager().getRenderData());
+            System.out.println("rerender " + id + " " + currentEngine.getGraphID());
+        }
+    }
+
+    public static RenderHandler getInstance() {
+        return instance;
+    }
+
+    public void moveDrawManagerCenter(Coordinate transform) {
+        currentEngine.getDrawManager().moveCenter(transform);
+    }
+
+    public void updateAccuracy(Accuracy accuracy) {
+        currentEngine.getDrawManager().setAccuracy(accuracy);
+    }
 }
 
 /**

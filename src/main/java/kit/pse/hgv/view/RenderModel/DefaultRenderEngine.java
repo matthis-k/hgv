@@ -3,6 +3,8 @@ package kit.pse.hgv.view.RenderModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.view.hyperbolicModel.Accuracy;
+import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
@@ -14,8 +16,8 @@ import java.util.Vector;
  */
 public class DefaultRenderEngine extends RenderEngine {
 
-    public DefaultRenderEngine(int tab, int graph, DrawManager drawManager, RenderHandler handler) {
-        super(tab, graph, drawManager, handler);
+    public DefaultRenderEngine(int tab, int graph, RenderHandler handler) {
+        super(tab, graph, new DrawManager(graph, new NativeRepresentation(3, Accuracy.DIRECT)), handler);
     }
 
     @Override
