@@ -159,6 +159,7 @@ public class GraphSystem {
             return false;
         }
         graphs.remove(graphID);
+        graphIDCounter--;
         return true;
     }
 

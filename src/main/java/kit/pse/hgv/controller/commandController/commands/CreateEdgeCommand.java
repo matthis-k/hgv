@@ -9,6 +9,7 @@ import java.util.List;
 
 public class CreateEdgeCommand extends GraphSystemCommand {
     private static final String INVALID_NODES = "can not connect these nodes";
+    private static final String MISSING = "node or graph is not existent";
 
     private int[] nodeIds;
     private final int graphId;
@@ -35,6 +36,8 @@ public class CreateEdgeCommand extends GraphSystemCommand {
         } catch (OverflowException e) {
             fail(INVALID_NODES);
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            fail(MISSING);
         }
     }
 

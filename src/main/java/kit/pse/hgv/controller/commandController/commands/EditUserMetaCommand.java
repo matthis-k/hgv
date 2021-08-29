@@ -14,6 +14,7 @@ public class EditUserMetaCommand extends MetaSystemCommand {
     private static final String R = "r";
     private static final String COLOR = "color";
     private static final String CANNOT_PARSE = "can not parse metadata";
+    private static final String MISSING = "the node or graph is not existent";
     private final String key;
     private final String value;
     private final int elementId;
@@ -35,40 +36,44 @@ public class EditUserMetaCommand extends MetaSystemCommand {
 
     @Override
     public void execute() {
-        GraphElement e = GraphSystem.getInstance().getGraphElementByID(elementId);
-        Node n = GraphSystem.getInstance().getNodeByID(elementId);
-        if (e == null) {
-            fail(NO_ELEMENT_WITH_ID);
-        }
-        if (key.equals(PHI) && n != null) {
-            try {
-                double phi = Double.parseDouble(value);
-                Double r = n.getCoord().toPolar().getDistance();
-                n.move(new PolarCoordinate(phi, r));
+        Node n;
+        GraphElement e;
+        try {
+            e = GraphSystem.getInstance().getGraphElementByID(elementId);
+            n = GraphSystem.getInstance().getNodeByID(elementId);
+            if (key.equals(PHI) && n != null) {
+                try {
+                    double phi = Double.parseDouble(value);
+                    Double r = n.getCoord().toPolar().getDistance();
+                    n.move(new PolarCoordinate(phi, r));
+                    modifiedIds.add(elementId);
+                } catch (NumberFormatException ex) {
+                    fail(CANNOT_PARSE);
+                }
+            } else if (key.equals(R) && n != null) {
+                try {
+                    double r = Double.parseDouble(value);
+                    Double phi = n.getCoord().toPolar().getAngle();
+                    n.move(new PolarCoordinate(phi, r));
+                    modifiedIds.add(elementId);
+                } catch (NumberFormatException ex) {
+                    fail(CANNOT_PARSE);
+                }
+            } else if (key.equals(COLOR)) {
+                try {
+                    Color.web(value);
+                    e.setMetadata(key, value);
+                    modifiedIds.add(elementId);
+                } catch (IllegalArgumentException ex) {
+                    fail(CANNOT_PARSE);
+                }
+            } else {
+                GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
                 modifiedIds.add(elementId);
-            } catch (NumberFormatException ex) {
-                fail(CANNOT_PARSE);
             }
-        } else if (key.equals(R) && n != null) {
-            try {
-                double r = Double.parseDouble(value);
-                Double phi = n.getCoord().toPolar().getAngle();
-                n.move(new PolarCoordinate(phi, r));
-                modifiedIds.add(elementId);
-            } catch (NumberFormatException ex) {
-                fail(CANNOT_PARSE);
-            }
-        } else if (key.equals(COLOR)) {
-            try {
-                Color.web(value);
-                e.setMetadata(key, value);
-                modifiedIds.add(elementId);
-            } catch (IllegalArgumentException ex) {
-                fail(CANNOT_PARSE);
-            }
-        } else {
-            GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
-            modifiedIds.add(elementId);
+        } catch (NullPointerException d) {
+            fail(MISSING);
+            return;
         }
     }
 

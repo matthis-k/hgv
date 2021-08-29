@@ -21,8 +21,7 @@ public class CommandControllerTest {
     public void testAccess() {
         Assert.assertNotNull(commandController = CommandController.getInstance());
     }
-    /**
-    @Ignore
+
     @Test
     public void testExecution() {
         commandController = CommandController.getInstance();
@@ -32,9 +31,9 @@ public class CommandControllerTest {
         commandController.queueCommand(createNewGraphCommand);
         commandController.queueCommand(createNodeCommand);
         commandController.run();
+        commandController.stopController();
         Assert.assertTrue(commandController.getCommandQ().isEmpty());
     }
-     **/
 
     @AfterClass
     public static void free() {
