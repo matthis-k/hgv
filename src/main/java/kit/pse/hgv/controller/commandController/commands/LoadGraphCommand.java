@@ -1,5 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
@@ -30,7 +32,16 @@ public class LoadGraphCommand extends FileSystemCommand {
     public void execute() {
         try {
             int graphId = GraphSystem.getInstance().loadGraph(path);
-            EditHandler.getInstance().addGraph(graphId);
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    EditHandler.getInstance().addGraph(graphId);
+                    return null;
+                }
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            Platform.runLater(th);
             DataGateway.addlastOpened(path);
             modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
         } catch (IllegalFormatException e) {
