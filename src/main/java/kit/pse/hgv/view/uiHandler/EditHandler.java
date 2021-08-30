@@ -1,5 +1,7 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -72,9 +74,23 @@ public class EditHandler implements UIHandler {
     }
 
     public void addGraph(int id) {
-        RenderHandler.getInstance().switchGraph(id);
-        currentGraph.getItems().add(String.valueOf(id));
-        currentGraph.setValue(String.valueOf(id));
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                RenderHandler.getInstance().switchGraph(id);
+                currentGraph.getItems().add(String.valueOf(id));
+                currentGraph.setValue(String.valueOf(id));
+                return null;
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        Platform.runLater(th);
+        try {
+            th.join();
+        } catch (InterruptedException e) {
+        }
+
     }
 
     private void setAction() {

@@ -32,16 +32,7 @@ public class LoadGraphCommand extends FileSystemCommand {
     public void execute() {
         try {
             int graphId = GraphSystem.getInstance().loadGraph(path);
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    EditHandler.getInstance().addGraph(graphId);
-                    return null;
-                }
-            };
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            Platform.runLater(th);
+            EditHandler.getInstance().addGraph(graphId);
             DataGateway.addlastOpened(path);
             modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
         } catch (IllegalFormatException e) {

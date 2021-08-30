@@ -1,5 +1,7 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -371,7 +373,21 @@ public class RenderHandler implements UIHandler {
             engines.add(currentEngine);
             CommandController.getInstance().register(currentEngine);
             currentID = id;
-            renderGraph(currentEngine.getDrawManager().getRenderData());
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    renderGraph(currentEngine.getDrawManager().getRenderData());
+                    return null;
+                }
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            Platform.runLater(th);
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+            }
+
         }
     }
 

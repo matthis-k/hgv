@@ -24,7 +24,7 @@ public class DefaultRenderEngine extends RenderEngine {
     @Override
     public void render() {
         updateGraph();
-        handler.renderGraph(drawManager.getRenderData());
+        handler.renderGraph(displayedGraph);
         this.toBeUpdated.clear();
     }
 
