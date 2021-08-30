@@ -12,9 +12,11 @@ import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import java.util.ArrayList;
 
+@Ignore
 public class RenderHandlerTest extends TestCase {
 
     /*
