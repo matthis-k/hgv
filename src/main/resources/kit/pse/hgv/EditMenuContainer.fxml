@@ -4,7 +4,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 
-<Menu fx:id="editMenu" mnemonicParsing="false" onAction="#show" text="Bearbeiten" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.EditMenuHandler">
+<Menu fx:id="editMenu" mnemonicParsing="false" onAction="#show" text="Bearbeiten" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.EditMenuHandler">
   <items>
     <MenuItem fx:id="redoItem" mnemonicParsing="false" onAction="#redo" text="Rückgängig">
          <accelerator>

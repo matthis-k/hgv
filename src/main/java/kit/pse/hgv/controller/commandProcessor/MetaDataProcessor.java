@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
 
+import java.util.HashMap;
+
 /**
  * This class processes input from the ui that affect the metadata
  */
@@ -12,18 +14,6 @@ public class MetaDataProcessor implements CommandProcessor {
     @Override
     public void queueCommand(ICommand command) {
         CommandController.getInstance().queueCommand(command);
-        CommandController.getInstance().queueCommand(new RenderCommand());
-    }
-
-    /**
-     * This Method creates a new EditColorCommand
-     * 
-     * @param elementId
-     * @param color
-     */
-    public void changeColor(int elementId, Color color) {
-        EditColorCommand command = new EditColorCommand(elementId, color);
-        queueCommand(command);
     }
 
     /**
@@ -36,5 +26,13 @@ public class MetaDataProcessor implements CommandProcessor {
     public void editMetaData(int elementId, String key, String meta) {
         EditUserMetaCommand command = new EditUserMetaCommand(elementId, key, meta);
         queueCommand(command);
+    }
+
+    public void editMetaData(int currentID, HashMap<String, String> map) {
+        CommandComposite c = new CommandComposite();
+        for (String key : map.keySet()) {
+            c.addCommand(new EditUserMetaCommand(currentID, key, map.get(key)));
+        }
+        queueCommand(c);
     }
 }

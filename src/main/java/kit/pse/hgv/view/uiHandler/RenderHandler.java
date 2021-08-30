@@ -1,6 +1,8 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
@@ -16,6 +18,7 @@ import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
@@ -37,21 +40,31 @@ public class RenderHandler implements UIHandler {
     private int currentlySelected;
     private Circle center;
 
-    private DrawManager manager;
+    private RenderEngine currentEngine;
 
     private static final int START_CENTER_X = 640;
     private static final int START_CENTER_Y = 360;
     private static final int START_RADIUS = 300;
-    private static final int ONLY_GRAPH = 1;
+    private static final int FIRST_GRAPH = 1;
     private static final double FACTOR_VIEW = 10;
     private int startRadiusForCenter = 300;
     private static final int NODE_SIZE = 5;
     private static final int CHECKBOX_X_OFFSET = 450;
     private static final int CHECKBOX_Y_OFFSET = 25;
     private static final int CENTER_ID = -1;
+    private Button zoomIn;
+    private Button zoomOut;
+
+    private ArrayList<RenderEngine> engines;
+    private int currentID;
+
+    private static RenderHandler instance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        instance = this;
+        engines = new ArrayList<>();
+        engines.add(new DefaultRenderEngine(FIRST_GRAPH, FIRST_GRAPH, this));
         setupCenter();
 
         renderCircle.setRadius(START_RADIUS);
@@ -63,16 +76,21 @@ public class RenderHandler implements UIHandler {
 
         enableDragCC(renderCircle, center);
 
-        renderPane.addEventHandler(ScrollEvent.SCROLL, scrollEvent -> {
-            if (scrollEvent.isControlDown())
-                zoom(scrollEvent.getDeltaY());
-        });
+        currentEngine = findEngine(FIRST_GRAPH);
+        currentID = currentEngine.getGraphID();
 
-        manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(NODE_SIZE, Accuracy.DIRECT));
-
-        RenderEngine engine = new DefaultRenderEngine(ONLY_GRAPH, ONLY_GRAPH, manager, this);
-        CommandController.getInstance().register(engine);
+        CommandController.getInstance().register(currentEngine);
         renderPane.getChildren().add(center);
+
+        setupZoom();
+    }
+
+    private RenderEngine findEngine(int ID) {
+        for (RenderEngine engine : engines) {
+            if(ID == engine.getGraphID())
+                return engine;
+        }
+        return null;
     }
 
     /**
@@ -85,6 +103,8 @@ public class RenderHandler implements UIHandler {
         // clear the renderPane
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
+        renderPane.getChildren().add(zoomIn);
+        renderPane.getChildren().add(zoomOut);
 
         ArrayList<Circle> nodes = new ArrayList<>();
         ArrayList<Line> lines = new ArrayList<>();
@@ -141,8 +161,12 @@ public class RenderHandler implements UIHandler {
     }
 
     private void bindLines(LineStrip strip) {
-        for (Line line : strip.getLines())
-            setupLine(line);
+        if (!strip.isCentered()){
+            strip.setCentered();
+            for (Line line : strip.getLines()) {
+                setupLine(line);
+            }
+        }
     }
 
     /**
@@ -154,7 +178,7 @@ public class RenderHandler implements UIHandler {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
-        List<Drawable> list = manager.getRenderData();
+        List<Drawable> list = currentEngine.getDrawManager().getRenderData();
         renderGraph(list);
     }
 
@@ -319,6 +343,53 @@ public class RenderHandler implements UIHandler {
         }
     }
 
+    private void setupZoom() {
+        zoomIn = new Button("_+"); //mnemonic
+        zoomIn.setVisible(true);
+        zoomIn.layoutXProperty().bind(centerCheckBox.layoutXProperty().subtract(30));
+        zoomIn.layoutYProperty().bind(centerCheckBox.layoutYProperty().subtract(5));
+
+        zoomIn.setOnAction((event -> {
+            zoom(15);
+        }));
+        renderPane.getChildren().add(zoomIn);
+
+        zoomOut = new Button("_-"); //mnemonic
+        zoomOut.setVisible(true);
+        zoomOut.layoutXProperty().bind(centerCheckBox.layoutXProperty().subtract(60));
+        zoomOut.layoutYProperty().bind(centerCheckBox.layoutYProperty().subtract(5));
+
+        zoomOut.setOnAction((event -> {
+            zoom(-15);
+        }));
+        renderPane.getChildren().add(zoomOut);
+    }
+
+    public void switchGraph(int id) {
+        if(id != currentID) {
+            currentEngine = new DefaultRenderEngine(id, id, this);
+            engines.add(currentEngine);
+            CommandController.getInstance().register(currentEngine);
+            currentID = id;
+            renderGraph(currentEngine.getDrawManager().getRenderData());
+        }
+    }
+
+    public static RenderHandler getInstance() {
+        return instance;
+    }
+
+    public void moveDrawManagerCenter(Coordinate transform) {
+        currentEngine.getDrawManager().moveCenter(transform);
+    }
+
+    public void updateAccuracy(Accuracy accuracy) {
+        currentEngine.getDrawManager().setAccuracy(accuracy);
+    }
+
+    public DrawManager getCurrentDrawManager() {
+        return currentEngine.getDrawManager();
+    }
 }
 
 /**

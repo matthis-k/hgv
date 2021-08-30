@@ -1,5 +1,6 @@
 package kit.pse.hgv.graphSystem;
 
+import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
@@ -8,10 +9,7 @@ import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
 
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Manages the creation an removal of graphs and elements. Also has getter for
@@ -142,15 +140,9 @@ public class GraphSystem {
      * @return Returns the graphID of the loaded graph. The graph can be get by this
      *         id in future.
      */
-    public int loadGraph(String path) {
+    public int loadGraph(String path) throws FileNotFoundException, OverflowException {
         int graphID = newGraph();
-        try {
-            DataGateway.loadGraph(path, graphID);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (OverflowException e) {
-            e.printStackTrace();
-        }
+        DataGateway.loadGraph(path, graphID);
         return graphID;
     }
 
@@ -204,7 +196,7 @@ public class GraphSystem {
      * Removes an element out of the graphsystem.
      *
      * @param elementID is the element ID that should be deleted.
-     * @return Returns true is successful deleted.
+     * @return A List of all element ids that were deleted.
      */
     public List<Integer> removeElement(int elementID) {
         List<Integer> deleted = new Vector<>();
@@ -255,7 +247,7 @@ public class GraphSystem {
      * @param graphID graphId from the graph that should return all Ids
      * @return all existing ids in the graph
      */
-    public List<Integer> getIDs(int graphID) {
+    public HashSet<Integer> getIDs(int graphID) {
         Graph g = getGraphByID(graphID);
         return g == null ? null : g.getIds();
     }
@@ -270,5 +262,20 @@ public class GraphSystem {
             ids.addAll(g.getIds());
         }
         return ids;
+    }
+
+    public Color getColorOfId(int id) {
+        final Color defaultNode = Color.RED;
+        final Color defaultEdge = Color.BLACK;
+        GraphElement el = getGraphElementByID(id);
+        try {
+            return Color.web(el.getMetadata("color"));
+        } catch (NullPointerException | IllegalArgumentException e) {
+            return el instanceof Node ? defaultNode : defaultEdge;
+        }
+    }
+
+    public boolean newMetadataDefinition(int graphID, MetadataDefinition metadataDefinition) {
+        return graphs.get(graphID).newMetadataDefinition(metadataDefinition);
     }
 }

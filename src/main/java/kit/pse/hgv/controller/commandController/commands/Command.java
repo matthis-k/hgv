@@ -1,5 +1,6 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashSet;
@@ -9,11 +10,27 @@ import java.util.Set;
  * This class handles the execution of a command and the undoing of an execution
  */
 public abstract class Command implements ICommand {
+    protected final static String SUCCESS = "success";
+    protected final static String REASON = "reason";
+    protected static final String ID = "id";
+    protected static final String NO_ELEMENT_WITH_ID = "there is no element with that id";
+    protected static final String NO_GRAPH_WITH_ID = "there is no graph with that id";
+
+
+
     protected JSONObject response = new JSONObject();
     protected int client = 0;
     protected HashSet<Integer> modifiedIds = new HashSet<>();
 
     protected Command() {
+        succeed();
+    }
+    protected void succeed() {
+        response.put(SUCCESS, true);
+    }
+    protected void fail(String message) {
+        response.put(SUCCESS, false);
+        response.put(REASON, message);
     }
 
     /**
@@ -59,5 +76,14 @@ public abstract class Command implements ICommand {
      */
     public Set<Integer> getModifiedIds() {
         return modifiedIds;
+    }
+
+    @Override
+    public boolean succeeded() {
+        try {
+            return response.getBoolean(SUCCESS);
+        } catch (JSONException e) {
+            return false;
+        }
     }
 }

@@ -16,6 +16,7 @@ public class Graph {
 
     private HashMap<Integer, Edge> edges = new HashMap<Integer, Edge>();
     private HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
+    private List<MetadataDefinition> metadata = new ArrayList<>();
 
     /**
      * This methods adds an element to the elements list of the graph.
@@ -23,6 +24,11 @@ public class Graph {
      * @param node is the element that should be added.
      */
     protected void addGraphElement(Node node) {
+        for(MetadataDefinition metadataDefinition: metadata) {
+            if(!metadataDefinition.equals(MetadataType.EDGE) && node.getMetadata(metadataDefinition.getName()) == null && metadataDefinition.getDefaultValue() != null) {
+                node.setMetadata(metadataDefinition.getName(), metadataDefinition.getDefaultValue());
+            }
+        }
         nodes.put(node.getId(), node);
     }
 
@@ -33,6 +39,11 @@ public class Graph {
      */
     protected void addGraphElement(Edge edge) {
         if (getNodeById(edge.getNodes()[0].getId()) != null && getNodeById(edge.getNodes()[1].getId()) != null) {
+            for(MetadataDefinition metadataDefinition: metadata) {
+                if(!metadataDefinition.equals(MetadataType.NODE) && edge.getMetadata(metadataDefinition.getName()) == null && metadataDefinition.getDefaultValue() != null) {
+                    edge.setMetadata(metadataDefinition.getName(), metadataDefinition.getDefaultValue());
+                }
+            }
             edges.put(edge.getId(), edge);
         }
     }
@@ -143,6 +154,10 @@ public class Graph {
         return res;
     }
 
+    public List<MetadataDefinition> getMetadata() {
+        return metadata;
+    }
+
     public boolean isInGraph(int id) {
         return nodes.get(id) != null || edges.get(id) != null;
     }
@@ -164,10 +179,20 @@ public class Graph {
      *
      * @return List of all ids
      */
-    public List<Integer> getIds() {
-        List<Integer> res = new Vector<>();
+    public HashSet<Integer> getIds() {
+        HashSet<Integer> res = new HashSet<>();
         res.addAll(nodes.keySet());
         res.addAll(edges.keySet());
         return res;
+    }
+
+    public boolean newMetadataDefinition(MetadataDefinition metadataDefinition) {
+        for(MetadataDefinition meta: metadata) {
+            if(meta.equals(metadataDefinition)) {
+                return false;
+            }
+        }
+        metadata.add(metadataDefinition);
+        return true;
     }
 }

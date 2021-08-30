@@ -2,23 +2,28 @@ package kit.pse.hgv.extensionServer;
 
 import java.io.IOException;
 
-public class PyScript implements Extension {
+public class PyScript extends Thread implements Extension {
     private String path;
     private Process p;
 
     public PyScript(String path) {
         this.path = path;
+        setName("PyScript: " + path);
+    }
+    @Override
+    public void startExtension() {
+        start();
     }
 
     @Override
-    public void startExtension() {
+    public void run() {
         try {
             p = Runtime.getRuntime().exec("python " + path);
-            /* try {
+            try {
                 p.waitFor();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            } */
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,6 +31,9 @@ public class PyScript implements Extension {
 
     @Override
     public void stopExtension() {
-        p.destroy();
+        if (p != null) {
+            p.destroy();
+        }
+        interrupt();
     }
 }

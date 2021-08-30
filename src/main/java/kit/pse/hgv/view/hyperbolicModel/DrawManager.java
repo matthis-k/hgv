@@ -16,10 +16,11 @@ public class DrawManager {
     private int graphId;
     private HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
+    private boolean hideEdges = false;
 
     /**
      * Constructor to create a new DrawManager with given Center
-     * 
+     *
      * @param graphId
      * @param center
      * @param representation
@@ -32,7 +33,7 @@ public class DrawManager {
 
     /**
      * Constructor to create a new DrawManager
-     * 
+     *
      * @param graphId        the ID of the graph to be represented
      * @param representation the type of representation the graph should be shown in
      */
@@ -43,69 +44,75 @@ public class DrawManager {
 
     /**
      * Method to get the Rendered elements
-     * 
+     *
      * @param changedElements
      * @return
      */
-    public List<Drawable> getRenderData(List<Integer> changedElements) {
-        Set<Integer> toCalculate = addConnectedEdges(changedElements);
-        for (Integer id : toCalculate) {
-            if (graphSystem.isInGraph(graphId, id)) {
-                Drawable drawable = calculateElement(id);
-                rendered.put(drawable.getID(), drawable);
-            } else {
-                rendered.remove(id);
-            }
-        }
+    public List<Drawable> getRenderData(Set<Integer> changedElements) {
+        calculateMixedIds(changedElements);
         List<Drawable> res = new Vector<>();
         res.addAll(rendered.values());
         return res;
+    }
+
+    private void calculateMixedIds(Set<Integer> ids) {
+        if (ids.size() == 0) return;
+        Set<Integer> nodes = new HashSet<>();
+        Set<Integer> edges = new HashSet<>();
+        for (Integer id : ids) {
+            if (graphSystem.getNodeByID(graphId, id) != null) {
+                nodes.add(id);
+            } else if (graphSystem.getEdgeByID(graphId, id) != null && !hideEdges) {
+                edges.add(id);
+            }
+        }
+        calculateIds(nodes);
+        if(!hideEdges) calculateIds(edges);
+    }
+
+    private void calculateIds(Set<Integer> ids) {
+        final int numThreads = 16;
+        HashSet<Integer>[] chunks = new HashSet[numThreads];
+        List<Calculator> calculators = new ArrayList<>();
+        for (int i = 0; i < numThreads; i++) {
+            chunks[i] = new HashSet<>();
+        }
+        int i = 0;
+        for (Integer id : ids) {
+            chunks[i % numThreads].add(id);
+            i++;
+        }
+        for (HashSet<Integer> chunk : chunks) {
+            if (!chunk.isEmpty()) {
+                Calculator calculator = new Calculator(this, chunk, graphId);
+                calculators.add(calculator);
+            }
+
+        }
+        for (Calculator calculator : calculators) {
+            calculator.start();
+        }
+        for (Calculator calculator : calculators) {
+            try {
+                calculator.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public List<Drawable> getRenderData() {
-        for (Integer id : graphSystem.getIDs(graphId)) {
-            Drawable drawable = calculateElement(id);
-            rendered.put(drawable.getID(), drawable);
-        }
+        HashSet<Integer> ids = graphSystem.getIDs(graphId);
+        calculateMixedIds(ids);
         List<Drawable> res = new Vector<>();
         res.addAll(rendered.values());
         return res;
-    }
-
-    private Drawable calculateElement(int id) {
-        Drawable d;
-        Node node = graphSystem.getNodeByID(graphId, id);
-        if (node != null) {
-            CircleNode circleNode = (CircleNode) rendered.get(id);
-            d = getRepresentation().calculate(node, circleNode);
-
-        } else {
-            Edge edge = graphSystem.getEdgeByID(graphId, id);
-            LineStrip lineStrip = (LineStrip) rendered.get(id);
-            if(lineStrip != null) {
-                int temp[] = lineStrip.getConnectedNodes();
-                d = getRepresentation().calculate(edge, lineStrip, ((CircleNode) rendered.get(temp[0])).getCenter(), ((CircleNode) rendered.get(temp[1])).getCenter());
-            } else {
-                Node temp[] = edge.getNodes();
-                d = getRepresentation().calculate(edge, lineStrip, temp[0].getCoord(), temp[1].getCoord());
-            }
-        }
-        return d.setColor(getColorOfId(id));
-    }
-
-    private Color getColorOfId(int id) {
-        GraphElement el = GraphSystem.getInstance().getGraphElementByID(id);
-        try {
-            return Color.web(el.getMetadata("color"));
-        } catch (NullPointerException | IllegalArgumentException e) {
-            return el instanceof Node ? DEFAULT_NODE_COLOR : DEFAULT_EDGE_COLOR;
-        }
     }
 
     /**
      * Methode that checks the List of changed Elements for changed Nodes and
      * searches all Edges that are based in this Node
-     * 
+     *
      * @param changedElements The List of Elements which have to be newly rendered
      * @return A Set of all Elements that also need to be newly rendered
      */
@@ -126,16 +133,7 @@ public class DrawManager {
 
     public List<Drawable> moveCenter(Coordinate center) {
         representation.setCenter(center);
-        // clear the list of rendered Elements, because every Element has to be rendered
-        // newly
-        rendered.clear();
-        for (Integer id : graphSystem.getIDs(graphId)) {
-            Drawable drawable = calculateElement(id);
-            rendered.put(drawable.getID(), drawable);
-        }
-        List<Drawable> res = new Vector<>();
-        res.addAll(rendered.values());
-        return res;
+        return getRenderData();
     }
 
     public Representation getRepresentation() {
@@ -154,5 +152,21 @@ public class DrawManager {
 
     public void setAccuracy(Accuracy accuracy) {
         representation.setAccuracy(accuracy);
+    }
+
+    synchronized protected void setRendered(Drawable drawable) {
+        rendered.put(drawable.getID(), drawable);
+    }
+
+    synchronized protected Drawable getDrawable(int id) {
+        return rendered.get(id);
+    }
+
+    public void setHideEdges(boolean hideEdges) {
+        this.hideEdges = hideEdges;
+    }
+
+    synchronized protected void removeDrawable(int id) {
+        rendered.remove(id);
     }
 }

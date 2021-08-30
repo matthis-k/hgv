@@ -3,6 +3,7 @@ package kit.pse.hgv.controller.commandController.commands;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
+import kit.pse.hgv.view.uiHandler.RenderHandler;
 
 /**
  * This class manages the commands that update the center of the hyperbolic
@@ -24,8 +25,7 @@ public class MoveCenterCommand extends HyperModelCommand {
     @Override
     public void execute() {
         modifiedIds.addAll(GraphSystem.getInstance().getAllIds());
-        RenderEngine.getInstance().getDrawManager().moveCenter(transform);
-        response.put("success", true);
+        RenderHandler.getInstance().moveDrawManagerCenter(transform);
     }
 
     @Override

@@ -8,6 +8,7 @@ import kit.pse.hgv.dataGateway.DataGateway;
  * This class handles the commands that save the graph
  */
 public class SaveGraphCommand extends FileSystemCommand {
+    private static final String WRITE_TO_FILE_FAILED = "could not save graph";
     private int id;
     private String path;
 
@@ -26,9 +27,8 @@ public class SaveGraphCommand extends FileSystemCommand {
     public void execute() {
         try {
             DataGateway.saveGraph(id, path);
-            response.put("success", true);
         } catch (IOException e) {
-            response.put("success", false);
+            fail(WRITE_TO_FILE_FAILED);
         }
     }
 

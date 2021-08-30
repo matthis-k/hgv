@@ -1,6 +1,7 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
 import javafx.scene.paint.Color;
+import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.representation.*;
@@ -35,7 +36,7 @@ public class NativeRepresentation implements Representation {
                 approximatedCoordinate = center.toCartesian();
                 double i = 1.0;
                 boolean prematureExit = false;
-                while (Math.abs(approximatedCoordinate.hyperbolicDistance(center) - relativeDistance) > 0.000001 && !prematureExit) {
+                while (Math.abs(approximatedCoordinate.hyperbolicDistance(center) - relativeDistance) > 0.01 && !prematureExit) {
                     PolarCoordinate vector = new PolarCoordinate(relativeAngel, i);
                     boolean passedPoint = false;
                     while (approximatedCoordinate.hyperbolicDistance(center) > relativeDistance && !prematureExit) {
@@ -56,7 +57,6 @@ public class NativeRepresentation implements Representation {
                             prematureExit = true;
                         }
                     }
-
                     i /= 2;
                 }
             }
@@ -64,12 +64,13 @@ public class NativeRepresentation implements Representation {
             approximatedCoordinate = center.toCartesian();
         }
 
-        if(circleNode == null || circleNode.getID() != node.getId()) {
-            return new CircleNode(approximatedCoordinate, nodeSize, node.getId(), null);
-        } else {
+        //TODO
+        //if(circleNode == null || circleNode.getID() != node.getId()) {
+            return new CircleNode(approximatedCoordinate, nodeSize, node.getId(), GraphSystem.getInstance().getColorOfId(node.getId()));
+        /*} else {
             circleNode.setCenter(approximatedCoordinate);
             return circleNode;
-        }
+        }*/
     }
 
     @Override
@@ -79,11 +80,10 @@ public class NativeRepresentation implements Representation {
         PolarCoordinate point1 = po1.toPolar();
         PolarCoordinate point2 = po2.toPolar();
         if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
-                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT || point1.equals(point2)) {
+                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT) {
             coordinates.add(point1.mirroredY().toCartesian());
             coordinates.add(point2.mirroredY().toCartesian());
-            Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
-            return new LineStrip(coordinates, edge.getId(), color, edge.getNodes()[0].getId(),
+            return new LineStrip(coordinates, edge.getId(), GraphSystem.getInstance().getColorOfId(edge.getId()), edge.getNodes()[0].getId(),
                     edge.getNodes()[1].getId());
         }
         double angularDistance = point2.getAngle() - point1.getAngle();
@@ -109,8 +109,7 @@ public class NativeRepresentation implements Representation {
             coordinates.add(point1Temp.mirroredY().toCartesian());
         }
 
-            Color color = edge.getMetadata("color") != null ? Color.web(edge.getMetadata("color")) : Color.BLACK;
-            return new LineStrip(coordinates, edge.getId(), color, edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
+        return new LineStrip(coordinates, edge.getId(), GraphSystem.getInstance().getColorOfId(edge.getId()), edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
 
             //lineStrip.setCoordinates(coordinates);
             //Color color = edge.getMetadata("color") == null || edge.getMetadata("color").equals(lineStrip.getColor()) ? lineStrip.getColor() : Color.web(edge.getMetadata("color"));

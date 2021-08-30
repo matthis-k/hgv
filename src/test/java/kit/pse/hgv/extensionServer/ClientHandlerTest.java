@@ -18,7 +18,7 @@ public class ClientHandlerTest {
     private static ClientHandler handler;
     private static ServerSocket server;
     private static Socket client;
-    private static int port =12345;
+    private static int port = 12345;
 
     @BeforeClass
     public static void init() throws IOException {
@@ -34,7 +34,7 @@ public class ClientHandlerTest {
     }
 
     @Test
-    public void receiveFromClient() throws IOException {
+    public void receiveFromClient() throws IOException, InterruptedException {
         BufferedWriter sender = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
         String message = "testmessage\n";
         sender.write(message);
@@ -46,7 +46,7 @@ public class ClientHandlerTest {
     }
 
     @Test
-    public void sendToClient() throws IOException {
+    public void sendToClient() throws IOException, InterruptedException {
         String message = "testmessage\n";
         handler.send(message);
         BufferedReader receiver = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -63,7 +63,7 @@ public class ClientHandlerTest {
     }
 
     @Test
-    public void pauseResumeHandler() {
+    public void pauseResumeHandler() throws InterruptedException {
         handler.start();
         handler.pauseConnection();
         sleep(100);
@@ -75,22 +75,9 @@ public class ClientHandlerTest {
         sleep(100);
     }
 
-    private static void sleep(int ms) {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    sleep(ms);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private void sleep(int ms) throws InterruptedException {
+        synchronized (this) {
+            wait(ms);
         }
     }
 }

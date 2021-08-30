@@ -19,25 +19,18 @@ public class MoveNodeCommand extends GraphSystemCommand {
     public MoveNodeCommand(int elementId, PolarCoordinate coordinate) {
         this.elementId = elementId;
         this.coordinate = coordinate;
+        extendWorkingArea(elementId);
     }
 
     @Override
     public void execute() {
         if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
-            response.put("success", false);
-            response.put("reason", "No element with that Id exists.");
-            throw new IllegalArgumentException("No Element with that Id exists.");
+            fail(NO_ELEMENT_WITH_ID);
+            return;
         }
         GraphSystem.getInstance().getNodeByID(elementId).move(coordinate);
-        Double phi = coordinate.getAngle();
-        String phiAsString = phi.toString();
-        GraphSystem.getInstance().getNodeByID(elementId).setMetadata("phi", phiAsString);
-        Double r = coordinate.getDistance();
-        String rAsString = r.toString();
-        GraphSystem.getInstance().getNodeByID(elementId).setMetadata("r", rAsString);
         modifiedIds.add(elementId);
         modifiedIds.addAll(GraphSystem.getInstance().getEdgeIdsOfNode(elementId));
-        response.put("success", true);
     }
 
     @Override
