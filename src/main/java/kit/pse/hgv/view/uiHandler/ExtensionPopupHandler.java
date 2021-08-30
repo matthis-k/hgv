@@ -73,7 +73,7 @@ public class ExtensionPopupHandler implements UIHandler {
         for (int key : map.keySet()) {
             TitledPane tobeAdded = new TitledPane();
             tobeAdded.setText(map.get(key).getName());
-            accordion.getPanes().add(tobeAdded);
+            activeAccordion.getPanes().add(tobeAdded);
         }
         // create subsection for available extensions
         TitledPane availableExtensions = new TitledPane();
