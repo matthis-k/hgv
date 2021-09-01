@@ -92,6 +92,11 @@ public class DetailHandler implements UIHandler {
         choiceBox.getItems().add(MEDIUM);
         choiceBox.getItems().add(HIGH);
         choiceBox.setValue(DIRECT);
+        choiceBox.setOnAction(event -> {
+            String mode = choiceBox.getValue().toUpperCase();
+            new HyperModelCommandProcessor().setAccuracy(mode);
+            currentAcc = Accuracy.valueOf(choiceBox.getValue().toUpperCase());
+        });
     }
 
     /**
@@ -101,17 +106,9 @@ public class DetailHandler implements UIHandler {
     @FXML
     private void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
-        HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
-
-        String mode = choiceBox.getValue().toUpperCase();
-        if (!RenderHandler.getInstance().getCurrentDrawManager().getRepresentation().getAccuracy().name().equals(mode)) {
-            hyperProcessor.setAccuracy(mode);
-            currentAcc = Accuracy.valueOf(choiceBox.getValue().toUpperCase());
-        }
 
         if (currentRadius == 0 && currentAngle == 0) {
             processor.editMetaData(currentID, COLOR, colorPick.getValue().toString());
-            hyperProcessor.setAccuracy(mode);
         } else {
             HashMap<String, String> map = new HashMap<>();
             map.put(COLOR, colorPick.getValue().toString());
