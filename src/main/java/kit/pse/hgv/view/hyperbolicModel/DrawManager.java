@@ -60,9 +60,9 @@ public class DrawManager {
         Set<Integer> nodes = new HashSet<>();
         Set<Integer> edges = new HashSet<>();
         for (Integer id : ids) {
-            if (graphSystem.getNodeByID(graphId, id) != null) {
+            if (rendered.get(id) == null || rendered.get(id).isNode()) {
                 nodes.add(id);
-            } else if (graphSystem.getEdgeByID(graphId, id) != null && !hideEdges) {
+            } else if (rendered.get(id) != null || !hideEdges) {
                 edges.add(id);
             }
         }
