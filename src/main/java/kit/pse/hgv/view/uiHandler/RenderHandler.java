@@ -105,6 +105,10 @@ public class RenderHandler implements UIHandler {
      */
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        for(Drawable node : graph) {
+            if(node.getID() == 9)
+                System.out.println("erwischt");
+        }
         // clear the renderPane
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);

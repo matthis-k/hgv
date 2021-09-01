@@ -116,7 +116,7 @@ public class EditHandler implements UIHandler {
     }
 
     public void delete() {
-        hideDelete(); //TODO
+        hideDelete();
         new GraphCommandProcessor().deleteElement(toBeDeleted.getText());
     }
 

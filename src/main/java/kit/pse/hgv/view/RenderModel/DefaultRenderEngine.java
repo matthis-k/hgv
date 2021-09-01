@@ -33,56 +33,41 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        this.displayedGraph = drawManager.getRenderData( updatedMap.get(RenderHandler.getInstance().getCurrentID()));
-        //this.displayedGraph = drawManager.getRenderData();
+        this.displayedGraph = drawManager.getRenderData(updatedMap.get(RenderHandler.getInstance().getCurrentID()));
     }
 
     @Override
     public void onNotify(ICommand c) {
-        if(updatedMap.get(RenderHandler.getInstance().getCurrentID()) != null) {
-            updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
-        } else {
+        if (updatedMap.get(RenderHandler.getInstance().getCurrentID()) == null) {
             updatedMap.put(RenderHandler.getInstance().getCurrentID(), new HashSet<>());
-            updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
         }
+        updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                render();
+                return null;
+            }
+        };
+        Thread runThread = new Thread(task);
+        runThread.setDaemon(true);
+
         if (c.isUser()) {
-            System.out.println(c.isUser());
             if (!c.succeeded()) {
                 //TODO: Error message c.getResponse().get("reason");
             }
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    render();
-                    return null;
-                }
-            };
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            Platform.runLater(th);
-            try {
-                th.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Platform.runLater(runThread);
         } else {
             if(c instanceof RenderCommand) {
-                Task<Void> task = new Task<>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        render();
-                        return null;
-                    }
-                };
-                Thread th = new Thread(task);
-                th.setDaemon(true);
-                Platform.runLater(th);
-                try {
-                    th.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(runThread);
             }
+        }
+
+        try {
+            runThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

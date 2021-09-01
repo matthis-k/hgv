@@ -71,6 +71,7 @@ public class DrawManager {
     }
 
     private void calculateIds(Set<Integer> ids) {
+        System.out.println(ids.size());
         final int numThreads = 16;
         HashSet<Integer>[] chunks = new HashSet[numThreads];
         List<Calculator> calculators = new ArrayList<>();
