@@ -53,7 +53,6 @@ public class RenderHandler implements UIHandler {
     private static final int NODE_SIZE = 5;
     private static final int CHECKBOX_X_OFFSET = 450;
     private static final int CHECKBOX_Y_OFFSET = 25;
-    private static final int CENTER_ID = -1;
     private Button zoomIn;
     private Button zoomOut;
 
@@ -61,6 +60,10 @@ public class RenderHandler implements UIHandler {
     private int currentID;
 
     private static RenderHandler instance;
+
+    public int getCurrentID() {
+        return currentID;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

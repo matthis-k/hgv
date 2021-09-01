@@ -95,33 +95,39 @@ public class EditHandler implements UIHandler {
 
     private void setAction() {
         currentGraph.setOnAction(actionEvent -> {
-            RenderHandler.getInstance().switchGraph(Integer.valueOf(currentGraph.getValue().toString()));
+            RenderHandler.getInstance().switchGraph(Integer.parseInt(currentGraph.getValue()));
         });
     }
     public void activateAddNode() {
+        hideDelete();
+        hideCreateEdge();
         showCreateNode();
     }
     public void activateAddEdge() {
+        hideDelete();
+        hideCreateNode();
         showCreateEdge();
     }
 
     public void activateDelete() {
+        hideCreateEdge();
+        hideCreateNode();
         showDelete();
     }
 
     public void delete() {
         hideDelete(); //TODO
-        //new GraphCommandProcessor().deleteElement(Integer.valueOf(toBeDeleted.getText()));
+        new GraphCommandProcessor().deleteElement(toBeDeleted.getText());
     }
 
     public void addNode() { //ACHTUNG BUG NOCH KEIN GRAPH
         hideCreateNode();
-        new GraphCommandProcessor().addNode(Integer.valueOf(currentGraph.getValue().toString()), angleField.getText(), radiusField.getText());
+        new GraphCommandProcessor().addNode(Integer.parseInt(currentGraph.getValue()), angleField.getText(), radiusField.getText());
     }
 
     public void addEdge() { //TODO
         hideCreateEdge();
-        //new GraphCommandProcessor().addEdge(Integer.valueOf(currentGraph.getValue().toString());
+        new GraphCommandProcessor().addEdge(Integer.parseInt(currentGraph.getValue()), idFirst.getText(), idSecond.getText());
     }
 
     private void showCreateNode() {
