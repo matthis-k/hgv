@@ -14,13 +14,13 @@ public class EditUserMetaCommandTest {
     private static EditUserMetaCommand editUserMetaCommand;
     private static GraphSystem graphSystem;
     private static int nodeID;
+    private static int graphId;
 
     @BeforeClass
     public static void setup() {
-        CreateNewGraphCommand createNewGraphCommand = new CreateNewGraphCommand();
-        createNewGraphCommand.execute();
+        graphId = GraphSystem.getInstance().newGraph();
         Coordinate coordinate = new CartesianCoordinate(1, 1);
-        createNodeCommand = new CreateNodeCommand(1, coordinate);
+        createNodeCommand = new CreateNodeCommand(graphId, coordinate);
         createNodeCommand.execute();
         nodeID = createNodeCommand.getResponse().getInt("id");
         editUserMetaCommand = null;
@@ -78,7 +78,7 @@ public class EditUserMetaCommandTest {
 
     @Test
     public void testNotExistingNode() {
-        editUserMetaCommand = new EditUserMetaCommand(100, "color", "red");
+        editUserMetaCommand = new EditUserMetaCommand(-1, "color", "red");
         editUserMetaCommand.execute();
         Assert.assertFalse(editUserMetaCommand.getResponse().getBoolean("success"));
     }
@@ -90,7 +90,7 @@ public class EditUserMetaCommandTest {
 
     @AfterClass
     public static void free() {
-        graphSystem.removeGraph(1);
+        graphSystem.removeGraph(graphId);
         createNodeCommand = null;
     }
 }

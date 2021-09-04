@@ -4,9 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.EditUserMetaCommand;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 public class MetaDataProcessorTest {
 
@@ -17,10 +15,20 @@ public class MetaDataProcessorTest {
         metaDataProcessor = new MetaDataProcessor();
     }
 
+    @Before
+    public void clearQBefore() {
+        CommandController.getInstance().getCommandQ().clear();
+    }
+
     @Test
     public void testChangeMetadata() {
         metaDataProcessor.editMetaData(1, "color", "red");
         assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof EditUserMetaCommand);
+    }
+
+    @After
+    public void clearQAfter() {
+        CommandController.getInstance().getCommandQ().clear();
     }
 
     @AfterClass
