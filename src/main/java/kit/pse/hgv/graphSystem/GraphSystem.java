@@ -172,6 +172,9 @@ public class GraphSystem {
         if (nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
+        if(getGraphByID(graphID) == null) {
+            throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
+        }
         Node[] nodes = new Node[2];
 
         //For mistakes in using.
@@ -192,7 +195,10 @@ public class GraphSystem {
      * @param graphID is the id of the graph where the new edge should be stored.
      * @param coord   is the Coordinate of the node should be at.
      */
-    public int addElement(int graphID, Coordinate coord) throws OverflowException {
+    public int addElement(int graphID, Coordinate coord) throws OverflowException, IllegalGraphOperation {
+        if(getGraphByID(graphID) == null) {
+            throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
+        }
         Node node = new Node(coord);
         graphs.get(graphID).addGraphElement(node);
         return node.getId();

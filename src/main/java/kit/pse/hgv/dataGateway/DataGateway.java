@@ -203,7 +203,7 @@ public class DataGateway {
      * @param graphID given Graph
      * @throws OverflowException if there are too many added ids
      */
-    private static void readNode(String NodeLine, int graphID) throws OverflowException, NullPointerException {
+    private static void readNode(String NodeLine, int graphID) throws OverflowException, NullPointerException, IllegalGraphOperation {
         Matcher matcher = NODE_PATTERN.matcher(NodeLine);
         int graphMLID = 0;
         if(matcher.find()) {

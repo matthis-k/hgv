@@ -1,6 +1,7 @@
 package kit.pse.hgv.graphSystem;
 
 public enum GraphSystemMessages {
+    NO_GRAPH("Der gesuchte Graph existiert nicht!", "The graph is not existing!"),
     TO_MANY_ELEMENTS("Es wurden zu viele GraphElemente erstellt!", "There are to much elements existing!"),
     EDGE_ONLY_WITH_NODES("Eine Kante kann nur mit Knoten verbunden werden!",
             "An edge can only be connected with nodes!"),
