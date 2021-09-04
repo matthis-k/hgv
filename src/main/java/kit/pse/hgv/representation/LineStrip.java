@@ -19,12 +19,14 @@ public class LineStrip extends Drawable {
         line.setStartY(coordinates.get(index).toCartesian().getY());
         line.setEndX(coordinates.get(index + 1).toCartesian().getX());
         line.setEndY(coordinates.get(index + 1).toCartesian().getY());
-        line.setStroke(color);
+        Color usedColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.5);
+        line.setStroke(usedColor);
+        line.setFill(usedColor);
         lines.add(line);
     }
 
     public LineStrip(List<CartesianCoordinate> coordinates, int id, Color color, int firstID, int secondID) {
-        super(id, color, false);
+        super(id, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.5), false);
         this.coordinates = coordinates;
         for (int i = 0; i < coordinates.size() - 1; i++) {
             addLine(i);
@@ -62,8 +64,5 @@ public class LineStrip extends Drawable {
         this.coordinates = coordinates;
     }
 
-    public void setConecting(int[] connecting) {
-        this.connecting = connecting;
-    }
 
 }
