@@ -8,6 +8,7 @@ import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
 import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
 import kit.pse.hgv.controller.commandController.commands.GraphElementDeleteCommand;
 import kit.pse.hgv.controller.commandController.commands.MoveNodeCommand;
+import kit.pse.hgv.graphSystem.GraphSystem;
 import org.junit.*;
 
 public class GraphCommandProcessorTest {
@@ -19,6 +20,11 @@ public class GraphCommandProcessorTest {
     public static void setup() {
         commandController = CommandController.getInstance();
         graphCommandProcessor = new GraphCommandProcessor();
+    }
+
+    @Before
+    public void clearQb() {
+        commandController.getCommandQ().clear();
     }
 
     @After

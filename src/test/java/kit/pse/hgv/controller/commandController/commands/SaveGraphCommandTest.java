@@ -8,11 +8,11 @@ import org.junit.*;
 public class SaveGraphCommandTest {
 
     private static SaveGraphCommand saveGraphCommand;
+    private static int graphId;
 
     @BeforeClass
     public static void start() {
-        CreateNewGraphCommand createNewGraphCommand = new CreateNewGraphCommand();
-        createNewGraphCommand.execute();
+        graphId = GraphSystem.getInstance().newGraph();
     }
 
     @Before
@@ -22,7 +22,7 @@ public class SaveGraphCommandTest {
 
     @Test
     public void testSaveGraphSuccess() {
-        saveGraphCommand = new SaveGraphCommand(1, "./out.graphml");
+        saveGraphCommand = new SaveGraphCommand(graphId, "./src/test/resources/out.graphml");
         saveGraphCommand.execute();
         Assert.assertTrue(saveGraphCommand.getResponse().getBoolean("success"));
     }

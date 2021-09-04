@@ -46,6 +46,7 @@ public class ExtensionCommandTest {
         Assert.assertTrue(sendGraphCommand.getResponse().getBoolean("success"));
         JSONArray nodes = sendGraphCommand.getResponse().getJSONArray("nodes");
         JSONArray edges = sendGraphCommand.getResponse().getJSONArray("edges");
+        System.out.println(nodes);
         Assert.assertEquals(nodes.getJSONObject(0).getInt("id"), n[0]);
         Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("phi"), coordinate.toPolar().getAngle(), 0.0);
         Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("r"), coordinate.toPolar().getDistance(), 0.0);
@@ -55,18 +56,17 @@ public class ExtensionCommandTest {
         Assert.assertEquals(edges.getJSONObject(0).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
         Assert.assertEquals(edges.getJSONObject(0).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
         Assert.assertEquals(edges.getJSONObject(0).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
-        System.out.println(nodes);
         //Assert.assertEquals(nodes.getJSONObject(0).getString("metadata"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSendGraphFailure() {
-        SendGraphCommand sendGraphCommand = new SendGraphCommand(15);
+        SendGraphCommand sendGraphCommand = new SendGraphCommand(-1);
         sendGraphCommand.execute();
     }
 
     @AfterClass
     public static void free() {
-        GraphSystem.getInstance().removeGraph(1);
+        GraphSystem.getInstance().removeGraph(graphId);
     }
 }
