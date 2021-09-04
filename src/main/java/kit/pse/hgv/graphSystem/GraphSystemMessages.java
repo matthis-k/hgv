@@ -7,7 +7,9 @@ public enum GraphSystemMessages {
     MAX_NODES_EDGE("Eine Kante kann nur mit 2 Knoten verbunden werden!",
             "An edge can only be connected with two nodes!"),
     PATH_ERROR("Der Pfad ist ungültig oder das Format wurde nicht erkannt!",
-            "The path is not existing or the format is not supportet!");
+            "The path is not existing or the format is not supportet!"),
+    NODE_MISSING("Ein Knoten existiert nicht!",
+            "One node is not existing!");
 
     private final String DE;
     private final String EN;

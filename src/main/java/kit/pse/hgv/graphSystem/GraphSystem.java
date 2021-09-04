@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
@@ -167,11 +168,16 @@ public class GraphSystem {
      * @param nodeIDs is an array of 2 node ids which the Edge should be connected
      *                to.
      */
-    public int addElement(int graphID, int[] nodeIDs) throws OverflowException {
+    public int addElement(int graphID, int[] nodeIDs) throws OverflowException, IllegalGraphOperation {
         if (nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
         Node[] nodes = new Node[2];
+
+        //For mistakes in using.
+        if(getNodeByID(nodeIDs[0] == null || nodeIDs[1] == null)) {
+            throw new IllegalGraphOperation(GraphSystemMessages.NODE_MISSING.DE());
+        }
         nodes[0] = getNodeByID(nodeIDs[0]);
         nodes[1] = getNodeByID(nodeIDs[1]);
 
