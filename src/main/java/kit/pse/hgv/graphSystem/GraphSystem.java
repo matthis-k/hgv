@@ -141,7 +141,7 @@ public class GraphSystem {
      * @return Returns the graphID of the loaded graph. The graph can be get by this
      *         id in future.
      */
-    public int loadGraph(String path) throws FileNotFoundException, OverflowException {
+    public int loadGraph(String path) throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         int graphID = newGraph();
         DataGateway.loadGraph(path, graphID);
         return graphID;
@@ -175,7 +175,7 @@ public class GraphSystem {
         Node[] nodes = new Node[2];
 
         //For mistakes in using.
-        if(getNodeByID(nodeIDs[0] == null || nodeIDs[1] == null)) {
+        if(getNodeByID(nodeIDs[0]) == null || getNodeByID(nodeIDs[1]) == null) {
             throw new IllegalGraphOperation(GraphSystemMessages.NODE_MISSING.DE());
         }
         nodes[0] = getNodeByID(nodeIDs[0]);

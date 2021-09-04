@@ -45,8 +45,5 @@ public class CreateEdgeCommand extends GraphSystemCommand {
     public void undo() {
     }
 
-    @Override
-    public boolean succeeded() {
 
-    }
 }

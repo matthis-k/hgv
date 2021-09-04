@@ -6,6 +6,7 @@ import kit.pse.hgv.graphSystem.MetadataDefinition;
 import kit.pse.hgv.graphSystem.MetadataType;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.PolarCoordinate;
@@ -127,7 +128,7 @@ public class DataGateway {
      * @throws FileNotFoundException if the File is non-existent
      * @throws OverflowException if there are too many added ids
      */
-    public static void loadGraph(String path, int graphID) throws IllegalFormatException, FileNotFoundException, OverflowException {
+    public static void loadGraph(String path, int graphID) throws IllegalFormatException, FileNotFoundException, OverflowException, IllegalGraphOperation {
         line = 0;
         if(!path.endsWith(".graphml")) throw new UnknownFormatConversionException("Wrong filename extension, expected .graphml");
         File file = new File(path);
@@ -249,7 +250,7 @@ public class DataGateway {
      * @param graphID given Graph
      * @throws OverflowException if there are too many added ids
      */
-    private static void readEdge(String currentLine, int graphID) throws OverflowException {
+    private static void readEdge(String currentLine, int graphID) throws OverflowException, IllegalGraphOperation {
         Matcher matcher = EDGE_PATTERN.matcher(currentLine);
         if (!matcher.matches()) {
             return;

@@ -2,6 +2,7 @@ package kit.pse.hgv.dataGateway;
 
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,7 +29,7 @@ public class DataGatewayTest {
     }
 
     @Test
-    public void saveGraph() throws FileNotFoundException, OverflowException {
+    public void saveGraph() throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         String path = "src/test/resources/Vorlage.graphml";
         String savePath = "src/test/resources/result.graphml";
         int graphId = GraphSystem.getInstance().loadGraph(path);
@@ -63,7 +64,7 @@ public class DataGatewayTest {
     */
 
     @Test
-    public void loadGraph() throws FileNotFoundException, OverflowException {
+    public void loadGraph() throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         String path = "src/test/resources/Vorlage.graphml";
         GraphSystem.getInstance().loadGraph(path);
     }
@@ -71,7 +72,7 @@ public class DataGatewayTest {
     //TODO: fix element Id
     @Ignore
     @Test
-    public void saveLoadedGraph() throws IOException, OverflowException {
+    public void saveLoadedGraph() throws IOException, OverflowException, IllegalGraphOperation {
         int id = GraphSystem.getInstance().loadGraph("src/main/resources/spiralGraph.graphml");
         GraphSystem.getInstance().getGraphElementByID(id, 51).setMetadata("weight", "3.14159");
         DataGateway.saveGraph(id, "src/test/resources/testOutput");
