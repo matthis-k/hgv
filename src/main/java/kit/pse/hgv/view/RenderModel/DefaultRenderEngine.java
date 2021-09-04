@@ -2,6 +2,11 @@ package kit.pse.hgv.view.RenderModel;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandController.commands.*;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.hyperbolicModel.Accuracy;
@@ -11,6 +16,7 @@ import kit.pse.hgv.view.uiHandler.EditHandler;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -46,42 +52,52 @@ public class DefaultRenderEngine extends RenderEngine {
             updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
         }
         if (c.isUser()) {
-            if (!c.succeeded()) {
-                //TODO: Error message c.getResponse().get("reason");
-            }
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    render();
-                    return null;
-                }
-            };
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            Platform.runLater(th);
-            try {
-                th.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+           renderTask();
         } else {
             if(c instanceof RenderCommand) {
+                renderTask();
+            }
+        }
+        if (!c.succeeded()) {
+                System.out.println(c.getResponse());
                 Task<Void> task = new Task<>() {
                     @Override
                     protected Void call() throws Exception {
-                        render();
+                        Stage popupStage = new Stage();
+                        Parent root = FXMLLoader.load(App.class.getResource("ErrorPopup.fxml"));
+                        popupStage.setScene(new Scene(root));
+                        popupStage.setTitle("Fehlermeldung");
+                        popupStage.show();
                         return null;
                     }
                 };
                 Thread th = new Thread(task);
                 th.setDaemon(true);
+                Platform.setImplicitExit(false);
                 Platform.runLater(th);
                 try {
                     th.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+        }
+    }
+
+    private void renderTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                render();
+                return null;
             }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        Platform.runLater(th);
+        try {
+            th.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
