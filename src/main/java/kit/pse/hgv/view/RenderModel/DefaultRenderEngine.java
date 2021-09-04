@@ -13,6 +13,7 @@ import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import kit.pse.hgv.view.uiHandler.DetailHandler;
 import kit.pse.hgv.view.uiHandler.EditHandler;
+import kit.pse.hgv.view.uiHandler.ErrorPopupHandler;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
@@ -24,11 +25,20 @@ import java.util.*;
  */
 public class DefaultRenderEngine extends RenderEngine {
 
-    HashMap<Integer, Set<Integer>> updatedMap;
+    private HashMap<Integer, Set<Integer>> updatedMap;
+    private static ICommand command;
 
     public DefaultRenderEngine(int tab, int graph, RenderHandler handler) {
         super(tab, graph, new DrawManager(graph, new NativeRepresentation(3, DetailHandler.getCurrentAccuracy())), handler);
         updatedMap = new HashMap<>();
+        command = null;
+    }
+
+    public static String getErrorMessage() {
+        if(command != null)
+            return command.getResponse().get("reason").toString();
+        else
+            return "No command detected";
     }
 
     @Override
@@ -45,6 +55,7 @@ public class DefaultRenderEngine extends RenderEngine {
 
     @Override
     public void onNotify(ICommand c) {
+        command = c;
         if(updatedMap.get(RenderHandler.getInstance().getCurrentID()) != null) {
             updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
         } else {
@@ -59,27 +70,31 @@ public class DefaultRenderEngine extends RenderEngine {
             }
         }
         if (!c.succeeded()) {
-                System.out.println(c.getResponse());
-                Task<Void> task = new Task<>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        Stage popupStage = new Stage();
-                        Parent root = FXMLLoader.load(App.class.getResource("ErrorPopup.fxml"));
-                        popupStage.setScene(new Scene(root));
-                        popupStage.setTitle("Fehlermeldung");
-                        popupStage.show();
-                        return null;
-                    }
-                };
-                Thread th = new Thread(task);
-                th.setDaemon(true);
-                Platform.setImplicitExit(false);
-                Platform.runLater(th);
-                try {
-                    th.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                popupTask(c);
+        }
+    }
+
+    private void popupTask(ICommand c){
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                Stage popupStage = new Stage();
+                Parent root = FXMLLoader.load(App.class.getResource("ErrorPopup.fxml"));
+                popupStage.setScene(new Scene(root));
+                popupStage.setTitle("Fehlermeldung");
+                popupStage.setResizable(false);
+                popupStage.show();
+                return null;
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        Platform.setImplicitExit(false);
+        Platform.runLater(th);
+        try {
+            th.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
