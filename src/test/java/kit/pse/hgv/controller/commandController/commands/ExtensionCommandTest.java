@@ -47,16 +47,27 @@ public class ExtensionCommandTest {
         JSONArray nodes = sendGraphCommand.getResponse().getJSONArray("nodes");
         JSONArray edges = sendGraphCommand.getResponse().getJSONArray("edges");
         System.out.println(nodes);
-        Assert.assertEquals(nodes.getJSONObject(0).getInt("id"), n[0]);
-        Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("phi"), coordinate.toPolar().getAngle(), 0.0);
-        Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("r"), coordinate.toPolar().getDistance(), 0.0);
-        Assert.assertEquals(nodes.getJSONObject(1).getInt("id"), n[1]);
-        Assert.assertEquals(nodes.getJSONObject(1).getJSONObject("coordinate").getDouble("phi"), secondCoordinate.toPolar().getAngle(), 0.0);
-        Assert.assertEquals(nodes.getJSONObject(1).getJSONObject("coordinate").getDouble("r"), secondCoordinate.toPolar().getDistance(), 0.0);
-        Assert.assertEquals(edges.getJSONObject(0).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
-        Assert.assertEquals(edges.getJSONObject(0).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
-        Assert.assertEquals(edges.getJSONObject(0).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
-        //Assert.assertEquals(nodes.getJSONObject(0).getString("metadata"));
+        if (nodes.getJSONObject(0).getInt("id") == n[0]) {
+            Assert.assertEquals(nodes.getJSONObject(0).getInt("id"), n[0]);
+            Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("phi"), coordinate.toPolar().getAngle(), 0.0);
+            Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("r"), coordinate.toPolar().getDistance(), 0.0);
+            Assert.assertEquals(nodes.getJSONObject(1).getInt("id"), n[1]);
+            Assert.assertEquals(nodes.getJSONObject(1).getJSONObject("coordinate").getDouble("phi"), secondCoordinate.toPolar().getAngle(), 0.0);
+            Assert.assertEquals(nodes.getJSONObject(1).getJSONObject("coordinate").getDouble("r"), secondCoordinate.toPolar().getDistance(), 0.0);
+            Assert.assertEquals(edges.getJSONObject(0).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(0).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(0).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
+        } else {
+            Assert.assertEquals(nodes.getJSONObject(1).getInt("id"), n[0]);
+            Assert.assertEquals(nodes.getJSONObject(1).getJSONObject("coordinate").getDouble("phi"), coordinate.toPolar().getAngle(), 0.0);
+            Assert.assertEquals(nodes.getJSONObject(1).getJSONObject("coordinate").getDouble("r"), coordinate.toPolar().getDistance(), 0.0);
+            Assert.assertEquals(nodes.getJSONObject(0).getInt("id"), n[1]);
+            Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("phi"), secondCoordinate.toPolar().getAngle(), 0.0);
+            Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("r"), secondCoordinate.toPolar().getDistance(), 0.0);
+            Assert.assertEquals(edges.getJSONObject(1).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(1).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(1).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
