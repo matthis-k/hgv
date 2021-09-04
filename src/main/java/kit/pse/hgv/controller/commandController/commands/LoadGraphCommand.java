@@ -1,8 +1,11 @@
 package kit.pse.hgv.controller.commandController.commands;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
+import kit.pse.hgv.view.uiHandler.EditHandler;
 
 import java.io.FileNotFoundException;
 import java.util.IllegalFormatException;
@@ -29,6 +32,7 @@ public class LoadGraphCommand extends FileSystemCommand {
     public void execute() {
         try {
             int graphId = GraphSystem.getInstance().loadGraph(path);
+            EditHandler.getInstance().addGraph(graphId);
             DataGateway.addlastOpened(path);
             modifiedIds.addAll(GraphSystem.getInstance().getIDs(graphId));
         } catch (IllegalFormatException e) {

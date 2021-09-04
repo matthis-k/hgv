@@ -12,6 +12,7 @@ import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
+import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 import java.net.URL;
@@ -51,6 +52,7 @@ public class DetailHandler implements UIHandler {
     private ChoiceBox<String> choiceBox;
     @FXML
     private Text accuracyText;
+    private static Accuracy currentAcc = Accuracy.DIRECT;
 
     /**
      * Attributes to store the currently displayed information of a node.
@@ -74,6 +76,10 @@ public class DetailHandler implements UIHandler {
     public DetailHandler() {
     }
 
+    public static Accuracy getCurrentAccuracy() {
+        return currentAcc;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
@@ -86,6 +92,11 @@ public class DetailHandler implements UIHandler {
         choiceBox.getItems().add(MEDIUM);
         choiceBox.getItems().add(HIGH);
         choiceBox.setValue(DIRECT);
+        choiceBox.setOnAction(event -> {
+            String mode = choiceBox.getValue().toUpperCase();
+            new HyperModelCommandProcessor().setAccuracy(mode);
+            currentAcc = Accuracy.valueOf(choiceBox.getValue().toUpperCase());
+        });
     }
 
     /**
@@ -95,16 +106,9 @@ public class DetailHandler implements UIHandler {
     @FXML
     private void updateData() {
         MetaDataProcessor processor = new MetaDataProcessor();
-        HyperModelCommandProcessor hyperProcessor = new HyperModelCommandProcessor();
-
-        String mode = choiceBox.getValue().toUpperCase();
-        if (!RenderEngine.getInstance().getDrawManager().getRepresentation().getAccuracy().name().equals(mode)) {
-            hyperProcessor.setAccuracy(mode);
-        }
 
         if (currentRadius == 0 && currentAngle == 0) {
             processor.editMetaData(currentID, COLOR, colorPick.getValue().toString());
-            hyperProcessor.setAccuracy(mode);
         } else {
             HashMap<String, String> map = new HashMap<>();
             map.put(COLOR, colorPick.getValue().toString());

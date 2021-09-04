@@ -31,6 +31,17 @@ public class GraphCommandProcessor implements CommandProcessor {
         queueCommand(command);
     }
 
+    public void addEdge(int graphId, String id1, String id2) {
+        try {
+            int first = Integer.parseInt(id1);
+            int second = Integer.parseInt(id2);
+
+            addEdge(graphId, first, second);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("TODO");
+        }
+    }
+
     /**
      * This method checks if the coordinate of the node is in the correct format and
      * creates a createNodeCommand
@@ -79,5 +90,14 @@ public class GraphCommandProcessor implements CommandProcessor {
     public void deleteElement(int elementId) {
         GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId);
         queueCommand(command);
+    }
+
+    public void deleteElement(String elementId) {
+        try {
+            int id = Integer.parseInt(elementId);
+            deleteElement(id);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("TODO");
+        }
     }
 }

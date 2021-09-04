@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="320.0" style="-fx-background-color: #D8DEE9;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.EditHandler">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="320.0" style="-fx-background-color: #D8DEE9;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.EditHandler">
    <children>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="320.0" style="-fx-background-color: #81A1C1;">
          <children>
@@ -16,25 +18,66 @@
             </Text>
          </children>
       </Pane>
-      <Button fx:id="addNodeButton" layoutX="14.0" layoutY="73.0" mnemonicParsing="false" text="Knoten hinzufügen" textFill="#2e3440">
+      <Button fx:id="addNodeButton" layoutX="14.0" layoutY="73.0" mnemonicParsing="false" onMouseClicked="#activateAddNode" text="Knoten hinzufügen" textFill="#2e3440">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="deleteNodeButton" layoutX="14.0" layoutY="123.0" mnemonicParsing="false" text="Knoten löschen" textFill="#2e3440">
+      <Button fx:id="addEdgeButton" layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#activateAddEdge" text="Kante hinzufügen" textFill="#2e3440">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="addEdgeButton" layoutX="14.0" layoutY="173.0" mnemonicParsing="false" text="Kante hinzufügen" textFill="#2e3440">
+      <Button fx:id="deleteElementButton" layoutX="14.0" layoutY="173.0" mnemonicParsing="false" onMouseClicked="#activateDelete" text="Element löschen" textFill="#2e3440">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="deleteEdgeButton" layoutX="14.0" layoutY="223.0" mnemonicParsing="false" text="Kante löschen" textFill="#2e3440">
+      <ChoiceBox fx:id="currentGraph" layoutX="14.0" layoutY="233.0" prefWidth="150.0" />
+      <Button fx:id="submitCreateNode" layoutX="14.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#addNode" text="Erstellen" textFill="#2e3440">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Text fx:id="radiusText" fill="#2e3440" layoutX="14.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Radius">
          <font>
             <Font size="18.0" />
          </font>
+      </Text>
+      <Text fx:id="angleText" fill="#2e3440" layoutX="14.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Winkel">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="angleField" layoutX="86.0" layoutY="322.0" />
+      <TextField fx:id="radiusField" layoutX="85.0" layoutY="283.0" />
+      <TextField fx:id="idFirst" layoutX="96.0" layoutY="283.0" />
+      <TextField fx:id="idSecond" layoutX="96.0" layoutY="322.0" />
+      <Text fx:id="firstNode" fill="#2e3440" layoutX="14.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Knoten">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="secondNode" fill="#2e3440" layoutX="14.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Knoten">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="submitCreateEdge" layoutX="14.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#addEdge" text="Erstellen" textFill="#2e3440">
+         <font>
+            <Font size="14.0" />
+         </font>
       </Button>
+      <Button fx:id="deleteElement" layoutX="14.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#delete" text="Löschen" textFill="#2e3440">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Text fx:id="deleteID" fill="#2e3440" layoutX="14.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="toBeDeleted" layoutX="87.0" layoutY="322.0" />
    </children>
 </Pane>

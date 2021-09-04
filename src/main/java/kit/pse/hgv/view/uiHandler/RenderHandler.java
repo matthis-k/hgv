@@ -1,5 +1,7 @@
 package kit.pse.hgv.view.uiHandler;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +20,7 @@ import kit.pse.hgv.view.hyperbolicModel.Accuracy;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
@@ -39,23 +42,37 @@ public class RenderHandler implements UIHandler {
     private int currentlySelected;
     private Circle center;
 
-    private DrawManager manager;
+    private RenderEngine currentEngine;
 
     private static final int START_CENTER_X = 640;
     private static final int START_CENTER_Y = 360;
     private static final int START_RADIUS = 300;
-    private static final int ONLY_GRAPH = 1;
+    private static final int FIRST_GRAPH = 1;
     private static final double FACTOR_VIEW = 10;
     private int startRadiusForCenter = 300;
     private static final int NODE_SIZE = 5;
     private static final int CHECKBOX_X_OFFSET = 450;
     private static final int CHECKBOX_Y_OFFSET = 25;
-    private static final int CENTER_ID = -1;
     private Button zoomIn;
     private Button zoomOut;
 
+    private ArrayList<RenderEngine> engines;
+    private int currentID;
+
+    private static RenderHandler instance;
+
+    private ArrayList<LineStrip> currentLineStrips;
+
+    public int getCurrentID() {
+        return currentID;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        currentLineStrips = new ArrayList<>();
+        instance = this;
+        engines = new ArrayList<>();
+        engines.add(new DefaultRenderEngine(FIRST_GRAPH, FIRST_GRAPH, this));
         setupCenter();
 
         renderCircle.setRadius(START_RADIUS);
@@ -67,13 +84,21 @@ public class RenderHandler implements UIHandler {
 
         enableDragCC(renderCircle, center);
 
-        manager = new DrawManager(ONLY_GRAPH, new NativeRepresentation(NODE_SIZE, Accuracy.DIRECT));
+        currentEngine = findEngine(FIRST_GRAPH);
+        currentID = currentEngine.getGraphID();
 
-        RenderEngine engine = new DefaultRenderEngine(ONLY_GRAPH, ONLY_GRAPH, manager, this);
-        CommandController.getInstance().register(engine);
+        CommandController.getInstance().register(currentEngine);
         renderPane.getChildren().add(center);
 
         setupZoom();
+    }
+
+    private RenderEngine findEngine(int ID) {
+        for (RenderEngine engine : engines) {
+            if(ID == engine.getGraphID())
+                return engine;
+        }
+        return null;
     }
 
     /**
@@ -83,6 +108,7 @@ public class RenderHandler implements UIHandler {
      */
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        currentLineStrips.clear();
         // clear the renderPane
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
@@ -103,7 +129,7 @@ public class RenderHandler implements UIHandler {
                 nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentStrip = (LineStrip) node;
-
+                currentLineStrips.add(currentStrip);
                 bindLines(currentStrip);
                 selectEdge(currentStrip);
 
@@ -152,6 +178,20 @@ public class RenderHandler implements UIHandler {
         }
     }
 
+   /* private void unbindEdges(ArrayList<LineStrip> list) {
+        for(LineStrip strip : list) {
+            for (Line line : strip.getLines()) {
+                line.layoutXProperty().unbind();
+                line.layoutYProperty().unbind();
+
+                line.startXProperty().unbind();
+                line.startYProperty().unbind();
+                line.endXProperty().unbind();
+                line.endYProperty().unbind();
+            }
+        }
+    }*/
+
     /**
      * This method moves the center and rerenders accordingly.
      * 
@@ -161,8 +201,7 @@ public class RenderHandler implements UIHandler {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
-        List<Drawable> list = manager.getRenderData();
-        renderGraph(list);
+        renderGraph(findNodes());
     }
 
     /**
@@ -193,6 +232,10 @@ public class RenderHandler implements UIHandler {
                 Coordinate newCenterCoordinate = new CartesianCoordinate(x, y);
                 moveCenter(newCenterCoordinate);
             }
+        });
+
+        renderPane.setOnMouseReleased(mouseEvent -> {
+            renderGraph(currentEngine.getDrawManager().getRenderData());
         });
     }
 
@@ -348,6 +391,54 @@ public class RenderHandler implements UIHandler {
         renderPane.getChildren().add(zoomOut);
     }
 
+    public void switchGraph(int id) {
+        if(id != currentID) {
+            currentEngine = new DefaultRenderEngine(id, id, this);
+            engines.add(currentEngine);
+            CommandController.getInstance().register(currentEngine);
+            currentID = id;
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    renderGraph(currentEngine.getDrawManager().getRenderData());
+                    return null;
+                }
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            Platform.runLater(th);
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+            }
+
+        }
+    }
+
+    private ArrayList<Drawable> findNodes() {
+        ArrayList<Drawable> out = new ArrayList<>();
+        for(Drawable node : currentEngine.getDrawManager().getRenderData()) {
+            if(node.isNode())
+                out.add(node);
+        }
+        return out;
+    }
+
+    public static RenderHandler getInstance() {
+        return instance;
+    }
+
+    public void moveDrawManagerCenter(Coordinate transform) {
+        currentEngine.getDrawManager().moveCenter(transform);
+    }
+
+    public void updateAccuracy(Accuracy accuracy) {
+        currentEngine.getDrawManager().setAccuracy(accuracy);
+    }
+
+    public DrawManager getCurrentDrawManager() {
+        return currentEngine.getDrawManager();
+    }
 }
 
 /**

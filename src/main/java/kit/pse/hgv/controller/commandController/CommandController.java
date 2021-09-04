@@ -53,7 +53,6 @@ public class CommandController extends Thread implements CommandEventSource {
                     try {
                         wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -82,7 +81,6 @@ public class CommandController extends Thread implements CommandEventSource {
             try {
                 th.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
 
