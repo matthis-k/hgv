@@ -1,4 +1,4 @@
-package kit.pse.hgv.controller.CommandController.commands;
+package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.controller.commandController.commands.Command;
 import kit.pse.hgv.controller.commandController.commands.LoadGraphCommand;

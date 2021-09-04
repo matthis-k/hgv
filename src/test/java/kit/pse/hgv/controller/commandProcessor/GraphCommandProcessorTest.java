@@ -8,29 +8,34 @@ import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
 import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
 import kit.pse.hgv.controller.commandController.commands.GraphElementDeleteCommand;
 import kit.pse.hgv.controller.commandController.commands.MoveNodeCommand;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 public class GraphCommandProcessorTest {
 
     private static GraphCommandProcessor graphCommandProcessor;
+    private static CommandController commandController;
 
     @BeforeClass
     public static void setup() {
+        commandController = CommandController.getInstance();
         graphCommandProcessor = new GraphCommandProcessor();
+    }
+
+    @After
+    public void clearQ() {
+        commandController.getCommandQ().clear();
     }
 
     @Test
     public void testAddEdge() {
         graphCommandProcessor.addEdge(1, 2, 3);
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof CreateEdgeCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof CreateEdgeCommand);
     }
 
     @Test
     public void testAddNode() {
         graphCommandProcessor.addNode(1, "1", "1");
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof CreateNodeCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof CreateNodeCommand);
     }
 
     @Test(expected = NumberFormatException.class)
@@ -41,7 +46,7 @@ public class GraphCommandProcessorTest {
     @Test
     public void testMoveNode() {
         graphCommandProcessor.moveNode(1, "2", "2");
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof MoveNodeCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof MoveNodeCommand);
     }
 
     @Test(expected = NumberFormatException.class)
@@ -52,11 +57,12 @@ public class GraphCommandProcessorTest {
     @Test
     public void testDeleteElement() {
         graphCommandProcessor.deleteElement(1);
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof GraphElementDeleteCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof GraphElementDeleteCommand);
     }
 
     @AfterClass
     public static void free() {
         graphCommandProcessor = null;
+        commandController = null;
     }
 }

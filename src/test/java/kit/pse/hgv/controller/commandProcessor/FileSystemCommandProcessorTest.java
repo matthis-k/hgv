@@ -27,7 +27,7 @@ public class FileSystemCommandProcessorTest {
 
     @Test
     public void testSaveGraph() {
-        fileSystemCommandProcessor.saveGraph("./out.graphml", 1);
+        fileSystemCommandProcessor.saveGraph("./src/test/resources/out.graphml", 1);
         assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof SaveGraphCommand);
     }
 

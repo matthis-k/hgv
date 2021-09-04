@@ -1,4 +1,4 @@
-package kit.pse.hgv.controller.CommandController.commands;
+package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
 import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;

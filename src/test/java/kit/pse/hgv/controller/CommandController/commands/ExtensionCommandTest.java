@@ -1,9 +1,10 @@
-package kit.pse.hgv.controller.CommandController.commands;
+package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
 import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
 import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
 import kit.pse.hgv.controller.commandController.commands.SendGraphCommand;
+import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
@@ -19,11 +20,11 @@ import java.util.IllegalFormatException;
 public class ExtensionCommandTest {
 
     private static GraphSystem graphSystem;
+    private static int graphId;
 
     @BeforeClass
     public static void setup() {
-        CreateNewGraphCommand createNewGraphCommand = new CreateNewGraphCommand();
-        createNewGraphCommand.execute();
+        graphId = GraphSystem.getInstance().newGraph();
         graphSystem = GraphSystem.getInstance();
     }
 
@@ -31,14 +32,16 @@ public class ExtensionCommandTest {
     public void testSendGraphSuccess() {
         Coordinate coordinate =  new CartesianCoordinate(1, 1);
         Coordinate secondCoordinate =  new CartesianCoordinate(2, 2);
-        CreateNodeCommand createNodeCommand = new CreateNodeCommand(1, coordinate);
-        CreateNodeCommand createSecondNodeCommand = new CreateNodeCommand(1, secondCoordinate);
+        CreateNodeCommand createNodeCommand = new CreateNodeCommand(graphId, coordinate);
+        CreateNodeCommand createSecondNodeCommand = new CreateNodeCommand(graphId, secondCoordinate);
         createNodeCommand.execute();
         createSecondNodeCommand.execute();
         int[] n = {createNodeCommand.getResponse().getInt("id"), createSecondNodeCommand.getResponse().getInt("id")};
-        CreateEdgeCommand createEdgeCommand = new CreateEdgeCommand(1, n);
+        CreateEdgeCommand createEdgeCommand = new CreateEdgeCommand(graphId, n);
         createEdgeCommand.execute();
-        SendGraphCommand sendGraphCommand = new SendGraphCommand(1);
+        EditUserMetaCommand editUserMetaCommand = new EditUserMetaCommand(n[0], "color", "red");
+        editUserMetaCommand.execute();
+        SendGraphCommand sendGraphCommand = new SendGraphCommand(graphId);
         sendGraphCommand.execute();
         Assert.assertTrue(sendGraphCommand.getResponse().getBoolean("success"));
         JSONArray nodes = sendGraphCommand.getResponse().getJSONArray("nodes");
@@ -52,7 +55,8 @@ public class ExtensionCommandTest {
         Assert.assertEquals(edges.getJSONObject(0).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
         Assert.assertEquals(edges.getJSONObject(0).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
         Assert.assertEquals(edges.getJSONObject(0).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
-        //TODO after Metadata is added
+        System.out.println(nodes);
+        //Assert.assertEquals(nodes.getJSONObject(0).getString("metadata"));
     }
 
     @Test(expected = IllegalArgumentException.class)
