@@ -37,7 +37,7 @@ public class CreateEdgeCommand extends GraphSystemCommand {
             fail(INVALID_NODES);
             e.printStackTrace();
         } catch (IllegalGraphOperation illegalGraphOperation) {
-            //TODO: Wer auch immer das verkackt hat, fix es. Hurensohn. :-)
+            fail(INVALID_NODES);
         }
     }
 
