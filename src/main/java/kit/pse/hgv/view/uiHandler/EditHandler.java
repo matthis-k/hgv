@@ -24,11 +24,9 @@ public class EditHandler implements UIHandler {
     @FXML
     private Button addNodeButton;
     @FXML
-    private Button deleteNodeButton;
-    @FXML
     private Button addEdgeButton;
     @FXML
-    private Button deleteEdgeButton;
+    private Button deleteElementButton;
     @FXML
     private ChoiceBox<String> currentGraph;
     @FXML
