@@ -32,8 +32,10 @@ public class SendGraphCommand extends ExtensionCommand {
             coord.put("phi", node.getCoord().toPolar().getAngle());
             coord.put("r", node.getCoord().toPolar().getDistance());
             jsonNode.put("coordinate", coord);
-            nodes.put(jsonNode);
-            // TODO: Metadata
+            if(!node.getAllMetadata().equals("{}")) {
+                jsonNode.put("metadata", node.getAllMetaDataAsJSON());
+                nodes.put(jsonNode);
+            }
         }
         JSONArray edges = new JSONArray();
         for (Edge edge : g.getEdges()) {
@@ -41,8 +43,10 @@ public class SendGraphCommand extends ExtensionCommand {
             jsonEdge.put("id", edge.getId());
             jsonEdge.put("node1", edge.getNodes()[0].getId());
             jsonEdge.put("node2", edge.getNodes()[1].getId());
-            edges.put(jsonEdge);
-            // TODO: Metadata
+            if(!edge.getAllMetaDataAsJSON().equals("{}")) {
+                jsonEdge.put("metadata", edge.getAllMetaDataAsJSON());
+                edges.put(jsonEdge);
+            }
         }
         response.put("success", true);
         response.put("nodes", nodes);
