@@ -46,7 +46,6 @@ public class DefaultRenderEngine extends RenderEngine {
             updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
         }
         if (c.isUser()) {
-            System.out.println(c.isUser());
             if (!c.succeeded()) {
                 //TODO: Error message c.getResponse().get("reason");
             }

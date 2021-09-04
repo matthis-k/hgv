@@ -61,12 +61,15 @@ public class RenderHandler implements UIHandler {
 
     private static RenderHandler instance;
 
+    private ArrayList<LineStrip> currentLineStrips;
+
     public int getCurrentID() {
         return currentID;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        currentLineStrips = new ArrayList<>();
         instance = this;
         engines = new ArrayList<>();
         engines.add(new DefaultRenderEngine(FIRST_GRAPH, FIRST_GRAPH, this));
@@ -105,6 +108,7 @@ public class RenderHandler implements UIHandler {
      */
     @FXML
     public void renderGraph(List<Drawable> graph) {
+        currentLineStrips.clear();
         // clear the renderPane
         renderPane.getChildren().clear();
         renderPane.getChildren().add(renderCircle);
@@ -125,7 +129,7 @@ public class RenderHandler implements UIHandler {
                 nodes.add(currentNode.getRepresentation());
             } else {
                 LineStrip currentStrip = (LineStrip) node;
-
+                currentLineStrips.add(currentStrip);
                 bindLines(currentStrip);
                 selectEdge(currentStrip);
 
@@ -174,6 +178,20 @@ public class RenderHandler implements UIHandler {
         }
     }
 
+   /* private void unbindEdges(ArrayList<LineStrip> list) {
+        for(LineStrip strip : list) {
+            for (Line line : strip.getLines()) {
+                line.layoutXProperty().unbind();
+                line.layoutYProperty().unbind();
+
+                line.startXProperty().unbind();
+                line.startYProperty().unbind();
+                line.endXProperty().unbind();
+                line.endYProperty().unbind();
+            }
+        }
+    }*/
+
     /**
      * This method moves the center and rerenders accordingly.
      * 
@@ -183,8 +201,7 @@ public class RenderHandler implements UIHandler {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
-        List<Drawable> list = currentEngine.getDrawManager().getRenderData();
-        renderGraph(list);
+        renderGraph(findNodes());
     }
 
     /**
@@ -215,6 +232,10 @@ public class RenderHandler implements UIHandler {
                 Coordinate newCenterCoordinate = new CartesianCoordinate(x, y);
                 moveCenter(newCenterCoordinate);
             }
+        });
+
+        renderPane.setOnMouseReleased(mouseEvent -> {
+            renderGraph(currentEngine.getDrawManager().getRenderData());
         });
     }
 
@@ -392,6 +413,15 @@ public class RenderHandler implements UIHandler {
             }
 
         }
+    }
+
+    private ArrayList<Drawable> findNodes() {
+        ArrayList<Drawable> out = new ArrayList<>();
+        for(Drawable node : currentEngine.getDrawManager().getRenderData()) {
+            if(node.isNode())
+                out.add(node);
+        }
+        return out;
     }
 
     public static RenderHandler getInstance() {
