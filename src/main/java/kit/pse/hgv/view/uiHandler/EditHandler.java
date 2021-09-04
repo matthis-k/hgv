@@ -120,12 +120,24 @@ public class EditHandler implements UIHandler {
 
     public void addNode() { //ACHTUNG BUG NOCH KEIN GRAPH
         hideCreateNode();
-        new GraphCommandProcessor().addNode(Integer.parseInt(currentGraph.getValue()), angleField.getText(), radiusField.getText());
+        int usedID = -1;
+        try {
+            usedID = Integer.parseInt(currentGraph.getValue());
+        } catch (NumberFormatException e){
+
+        }
+        new GraphCommandProcessor().addNode(usedID, angleField.getText(), radiusField.getText());
     }
 
     public void addEdge() { //TODO
         hideCreateEdge();
-        new GraphCommandProcessor().addEdge(Integer.parseInt(currentGraph.getValue()), idFirst.getText(), idSecond.getText());
+        int usedID = -1;
+        try {
+            usedID = Integer.parseInt(currentGraph.getValue());
+        } catch (NumberFormatException e){
+
+        }
+        new GraphCommandProcessor().addEdge(usedID, idFirst.getText(), idSecond.getText());
     }
 
     private void showCreateNode() {

@@ -178,19 +178,20 @@ public class RenderHandler implements UIHandler {
         }
     }
 
-   /* private void unbindEdges(ArrayList<LineStrip> list) {
+    private void unbindEdges(ArrayList<LineStrip> list) {
         for(LineStrip strip : list) {
             for (Line line : strip.getLines()) {
-                line.layoutXProperty().unbind();
+                line.setVisible(false);
+                /*line.layoutXProperty().unbind();
                 line.layoutYProperty().unbind();
 
                 line.startXProperty().unbind();
                 line.startYProperty().unbind();
                 line.endXProperty().unbind();
-                line.endYProperty().unbind();
+                line.endYProperty().unbind();*/
             }
         }
-    }*/
+    }
 
     /**
      * This method moves the center and rerenders accordingly.
@@ -214,6 +215,7 @@ public class RenderHandler implements UIHandler {
         final Delta dragDeltaCircle = new Delta();
         final Delta dragDeltaCenter = new Delta();
         renderPane.setOnMousePressed(mouseEvent -> {
+            unbindEdges(currentLineStrips);
             dragDeltaCircle.x = circle.getCenterX() - mouseEvent.getX();
             dragDeltaCircle.y = circle.getCenterY() - mouseEvent.getY();
             dragDeltaCenter.x = center.getCenterX() - mouseEvent.getX();
