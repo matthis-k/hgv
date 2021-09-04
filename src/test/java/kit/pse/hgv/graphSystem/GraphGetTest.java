@@ -29,7 +29,7 @@ public class GraphGetTest {
     }
 
     @Test
-    public void getNodeById() throws OverflowException {
+    public void getNodeById() throws OverflowException { //TODO: FAILURE
         Coordinate c = new CartesianCoordinate(0, 0);
         g.newGraph();
         g.addElement(1, c);
@@ -38,7 +38,7 @@ public class GraphGetTest {
     }
 
     @Test
-    public void getEdgeById() throws OverflowException {
+    public void getEdgeById() throws OverflowException { //TODO: FAILURE
         Coordinate c0 = new CartesianCoordinate(0, 0);
         Coordinate c1 = new CartesianCoordinate(1, 1);
         g.newGraph();
@@ -52,7 +52,7 @@ public class GraphGetTest {
     }
 
     @Test
-    public void getAllIds() throws OverflowException {
+    public void getAllIds() throws OverflowException { //TODO: FAILURE
         Coordinate c0 = new CartesianCoordinate(0, 0);
         Coordinate c1 = new CartesianCoordinate(1, 1);
         g.newGraph();
@@ -69,20 +69,20 @@ public class GraphGetTest {
     //TODO
     @Test
     public void getMetaData() {
-
+        assert(true);
     }
 
 
     //TODO
     @Test
     public void setMetaData() {
-
+        assert(true);
     }
 
     //TODO
     @Test
     public void isInGraph() {
-
+        assert(true);
     }
 
 
