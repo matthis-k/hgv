@@ -142,6 +142,31 @@ public class RenderHandler implements UIHandler {
         buildRenderPane(nodes, lines);
     }
 
+    @FXML
+    public void renderGraphNodes() {
+        currentLineStrips.clear();
+        // clear the renderPane
+        renderPane.getChildren().clear();
+        renderPane.getChildren().add(renderCircle);
+        renderPane.getChildren().add(zoomIn);
+        renderPane.getChildren().add(zoomOut);
+
+        ArrayList<Circle> nodes = new ArrayList<>();
+
+        // setup and sort elements
+        for (Drawable node : currentEngine.getDrawManager().getRenderData()) {
+            if (node.isNode()) {
+                CircleNode currentNode = (CircleNode) node;
+
+                if (!currentNode.isCentered())
+                    setupNode(currentNode);
+
+                nodes.add(currentNode.getRepresentation());
+            }
+        }
+        buildRenderPane(nodes, new ArrayList<>());
+    }
+
     /**
      * This method manages whether the center is visible and draggable.
      */
@@ -178,21 +203,6 @@ public class RenderHandler implements UIHandler {
         }
     }
 
-    private void unbindEdges(ArrayList<LineStrip> list) {
-        for(LineStrip strip : list) {
-            for (Line line : strip.getLines()) {
-                line.setVisible(false);
-                line.layoutXProperty().unbind();
-                line.layoutYProperty().unbind();
-
-                line.startXProperty().unbind();
-                line.startYProperty().unbind();
-                line.endXProperty().unbind();
-                line.endYProperty().unbind();
-            }
-        }
-    }
-
     /**
      * This method moves the center and rerenders accordingly.
      * 
@@ -202,7 +212,7 @@ public class RenderHandler implements UIHandler {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
-        renderGraph(currentEngine.getDrawManager().getRenderData());
+        renderGraphNodes();
     }
 
     /**
@@ -216,7 +226,6 @@ public class RenderHandler implements UIHandler {
         final Delta dragDeltaCenter = new Delta();
         renderPane.setOnMousePressed(mouseEvent -> {
             mouseEvent.consume();
-            System.out.println("pane");
             if(center.isVisible()){
                 currentEngine.getDrawManager().setHideEdges(true);
                 renderGraph(currentEngine.getDrawManager().getRenderData());
@@ -360,7 +369,6 @@ public class RenderHandler implements UIHandler {
      */
     private void selectNode(CircleNode node) {
         node.getRepresentation().setOnMouseClicked(mouseEvent -> {
-            System.out.println("node");
             mouseEvent.consume();
             currentlySelected = node.getID();
             DetailHandler.getInstance().updateDisplayedData(currentlySelected, node.getColor(),
