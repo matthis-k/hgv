@@ -437,15 +437,6 @@ public class RenderHandler implements UIHandler {
         }
     }
 
-    private ArrayList<Drawable> findNodes() {
-        ArrayList<Drawable> out = new ArrayList<>();
-        for(Drawable node : currentEngine.getDrawManager().getRenderData()) {
-            if(node.isNode())
-                out.add(node);
-        }
-        return out;
-    }
-
     public static RenderHandler getInstance() {
         return instance;
     }
@@ -458,9 +449,6 @@ public class RenderHandler implements UIHandler {
         currentEngine.getDrawManager().setAccuracy(accuracy);
     }
 
-    public DrawManager getCurrentDrawManager() {
-        return currentEngine.getDrawManager();
-    }
 }
 
 /**

@@ -3,6 +3,8 @@ package kit.pse.hgv.controller.commandController.commands;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
+import kit.pse.hgv.view.uiHandler.EditHandler;
+import kit.pse.hgv.view.uiHandler.RenderHandler;
 
 /**
  * This class handles the commands that delete elements or undo the delete
@@ -29,12 +31,15 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
 
     @Override
     public void execute() {
-        if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+        GraphElement element = GraphSystem.getInstance().getGraphElementByID(elementId);
+        if (element == null) {
             fail(NO_ELEMENT_WITH_ID);
-            return;
+        } else if(!GraphSystem.getInstance().isInGraph(RenderHandler.getInstance().getCurrentID(), elementId)){
+            fail(WRONG_GRAPH);
+        } else {
+            modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
+            modifiedIds.add(elementId);
         }
-        modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
-        modifiedIds.add(elementId);
     }
 
     @Override
