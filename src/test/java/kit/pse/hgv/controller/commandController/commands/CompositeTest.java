@@ -2,6 +2,7 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Node;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class CompositeTest {
     private static int graphId;
 
     @Before
-    public  void init() throws FileNotFoundException, OverflowException {
+    public  void init() throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         graphId = GraphSystem.getInstance().loadGraph("src/test/resources/Vorlage.graphml");
     }
 
