@@ -5,6 +5,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import kit.pse.hgv.App;
 import kit.pse.hgv.controller.commandController.commands.*;
@@ -83,6 +84,7 @@ public class DefaultRenderEngine extends RenderEngine {
                 popupStage.setScene(new Scene(root));
                 popupStage.setTitle("Fehlermeldung");
                 popupStage.setResizable(false);
+                popupStage.getIcons().add(new Image(App.class.getResourceAsStream("/hyperbolicthomas.png")));
                 popupStage.show();
                 return null;
             }

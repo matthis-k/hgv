@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.ShutdownCommand;
@@ -28,6 +29,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.sizeToScene();
         stage.setTitle("HGV");
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("/hyperbolicthomas.png")));
         stage.show();
         stage.setOnCloseRequest(windowEvent -> {
             CommandController.getInstance().queueCommand(new ShutdownCommand());

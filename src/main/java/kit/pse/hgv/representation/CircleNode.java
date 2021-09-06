@@ -24,7 +24,7 @@ public class CircleNode extends Drawable {
         this.viewCenter = center.mirroredY().toCartesian();
         this.radius = radius;
         representation = new Circle(viewCenter.getX(), viewCenter.getY(), radius, color);
-        representation.setStroke(color); // nur um rand zu togglen
+        representation.setStroke(Color.BLACK); // nur um rand zu togglen
     }
 
     @Override
