@@ -21,25 +21,25 @@ public class LoadGraphCommandTest {
     public void testNoPath() {
         loadGraphCommand = new LoadGraphCommand("not existent");
         loadGraphCommand.execute();
-        Assert.assertFalse(loadGraphCommand.getResponse().getBoolean("success"));
+        Assert.assertFalse(loadGraphCommand.succeeded());
     }
 
     @Test
     public void testNonExistentFile() {
         loadGraphCommand = new LoadGraphCommand("./noexistingdir/out.graphml");
         loadGraphCommand.execute();
-        Assert.assertFalse(loadGraphCommand.getResponse().getBoolean("success"));
+        Assert.assertFalse(loadGraphCommand.succeeded());
     }
 
-    /**@Test
+    /**
+     * NOTE: needs javafx to be initialized
+    @Test
     public void testLoadGraph() {
-        //TODO: Welche Datei nehmen?
-        loadGraphCommand = new LoadGraphCommand("./Vorlage.graphml");
+        loadGraphCommand = new LoadGraphCommand("./src/test/resources/Vorlage.graphml");
         loadGraphCommand.execute();
-        Assert.assertTrue(loadGraphCommand.getResponse().getBoolean("success"));
-    }**/
-
-    //TODO: Wie Overflow exception erstellen?
+        Assert.assertTrue(loadGraphCommand.succeeded());
+    }
+     **/
 
     @AfterClass
     public static void free() {

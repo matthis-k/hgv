@@ -46,7 +46,6 @@ public class ExtensionCommandTest {
         Assert.assertTrue(sendGraphCommand.getResponse().getBoolean("success"));
         JSONArray nodes = sendGraphCommand.getResponse().getJSONArray("nodes");
         JSONArray edges = sendGraphCommand.getResponse().getJSONArray("edges");
-        System.out.println(nodes);
         if (nodes.getJSONObject(0).getInt("id") == n[0]) {
             Assert.assertEquals(nodes.getJSONObject(0).getInt("id"), n[0]);
             Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("phi"), coordinate.toPolar().getAngle(), 0.0);
