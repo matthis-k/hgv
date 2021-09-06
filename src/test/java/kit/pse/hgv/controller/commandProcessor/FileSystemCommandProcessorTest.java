@@ -12,40 +12,49 @@ import static org.junit.Assert.assertTrue;
 public class FileSystemCommandProcessorTest {
 
     private static FileSystemCommandProcessor fileSystemCommandProcessor;
+    private static int graphId;
+    private static CommandController commandController;
 
     @Before
     public void setup() {
         fileSystemCommandProcessor = new FileSystemCommandProcessor();
-        CommandController.getInstance().getCommandQ().clear();
+        commandController = CommandController.getInstance();
+        commandController.getCommandQ().clear();
+        graphId = -1;
     }
 
     @Test
     public void testLoadGraph() {
         fileSystemCommandProcessor.loadGraph(new File("test.graphml"));
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof LoadGraphCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof LoadGraphCommand);
     }
 
     @Test
     public void testSaveGraph() {
-        fileSystemCommandProcessor.saveGraph("./src/test/resources/out.graphml", 1);
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof SaveGraphCommand);
+        graphId = GraphSystem.getInstance().newGraph();
+        fileSystemCommandProcessor.saveGraph("./src/test/resources/out.graphml", graphId);
+        assertTrue(commandController.getCommandQ().poll() instanceof SaveGraphCommand);
     }
 
     @Test
     public void testCreateNewGraph() {
         fileSystemCommandProcessor.createNewGraph();
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof CreateNewGraphCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof CreateNewGraphCommand);
     }
 
     @Test
     public void testShutdown() {
         fileSystemCommandProcessor.shutdown();
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof ShutdownCommand);
+        assertTrue(commandController.getCommandQ().poll() instanceof ShutdownCommand);
     }
 
     @After
     public void free() {
         fileSystemCommandProcessor = null;
-        CommandController.getInstance().getCommandQ().clear();
+        if(!(graphId == -1)) {
+            GraphSystem.getInstance().removeGraph(graphId);
+        }
+        commandController.getCommandQ().clear();
+        commandController = null;
     }
 }

@@ -64,9 +64,9 @@ public class ExtensionCommandTest {
             Assert.assertEquals(nodes.getJSONObject(0).getInt("id"), n[1]);
             Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("phi"), secondCoordinate.toPolar().getAngle(), 0.0);
             Assert.assertEquals(nodes.getJSONObject(0).getJSONObject("coordinate").getDouble("r"), secondCoordinate.toPolar().getDistance(), 0.0);
-            Assert.assertEquals(edges.getJSONObject(1).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
-            Assert.assertEquals(edges.getJSONObject(1).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
-            Assert.assertEquals(edges.getJSONObject(1).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(0).getInt("id"), createEdgeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(0).getInt("node1"), createNodeCommand.getResponse().getInt("id"));
+            Assert.assertEquals(edges.getJSONObject(0).getInt("node2"), createSecondNodeCommand.getResponse().getInt("id"));
         }
     }
 

@@ -51,6 +51,15 @@ public class CommandControllerTest {
     @AfterClass
     public static void free() {
         commandController.stopController();
+        commandController.interrupt();
+        Object lock = new Object();
+        synchronized (lock) {
+            try {
+                lock.wait(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         commandController = null;
     }
 }
