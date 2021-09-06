@@ -182,13 +182,13 @@ public class RenderHandler implements UIHandler {
         for(LineStrip strip : list) {
             for (Line line : strip.getLines()) {
                 line.setVisible(false);
-                /*line.layoutXProperty().unbind();
+                line.layoutXProperty().unbind();
                 line.layoutYProperty().unbind();
 
                 line.startXProperty().unbind();
                 line.startYProperty().unbind();
                 line.endXProperty().unbind();
-                line.endYProperty().unbind();*/
+                line.endYProperty().unbind();
             }
         }
     }
@@ -202,7 +202,7 @@ public class RenderHandler implements UIHandler {
         MoveCenterCommand c = new MoveCenterCommand(coordinate);
         c.execute();
 
-        renderGraph(findNodes());
+        renderGraph(currentEngine.getDrawManager().getRenderData());
     }
 
     /**
@@ -215,7 +215,12 @@ public class RenderHandler implements UIHandler {
         final Delta dragDeltaCircle = new Delta();
         final Delta dragDeltaCenter = new Delta();
         renderPane.setOnMousePressed(mouseEvent -> {
-            unbindEdges(currentLineStrips);
+            mouseEvent.consume();
+            System.out.println("pane");
+            if(center.isVisible()){
+                currentEngine.getDrawManager().setHideEdges(true);
+                renderGraph(currentEngine.getDrawManager().getRenderData());
+            }
             dragDeltaCircle.x = circle.getCenterX() - mouseEvent.getX();
             dragDeltaCircle.y = circle.getCenterY() - mouseEvent.getY();
             dragDeltaCenter.x = center.getCenterX() - mouseEvent.getX();
@@ -237,8 +242,13 @@ public class RenderHandler implements UIHandler {
         });
 
         renderPane.setOnMouseReleased(mouseEvent -> {
-            renderGraph(currentEngine.getDrawManager().getRenderData());
+            if(center.isVisible()) {
+                currentEngine.getDrawManager().setHideEdges(false);
+                renderGraph(currentEngine.getDrawManager().getRenderData());
+            }
         });
+
+
     }
 
     /**
@@ -350,6 +360,8 @@ public class RenderHandler implements UIHandler {
      */
     private void selectNode(CircleNode node) {
         node.getRepresentation().setOnMouseClicked(mouseEvent -> {
+            System.out.println("node");
+            mouseEvent.consume();
             currentlySelected = node.getID();
             DetailHandler.getInstance().updateDisplayedData(currentlySelected, node.getColor(),
                     node.getCenter().toPolar());

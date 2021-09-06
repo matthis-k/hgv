@@ -27,7 +27,7 @@ public class GraphTest {
     }
 
     @Test
-    public void addNode() throws OverflowException {
+    public void addNode() throws OverflowException, IllegalGraphOperation {
         graphId = g.newGraph();
         int id = g.addElement(graphId, new CartesianCoordinate(0,0));
         assertNotNull(g.getGraphElementByID(id));
@@ -45,7 +45,7 @@ public class GraphTest {
     }
 
     @Test
-    public void removeElement() throws OverflowException {
+    public void removeElement() throws OverflowException, IllegalGraphOperation {
         graphId = g.newGraph();
         int id = g.addElement(graphId, new CartesianCoordinate(0,0));
         g.removeElement(id);
