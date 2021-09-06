@@ -53,6 +53,15 @@ public class GraphSystem {
         return graphs.get(graphId);
     }
 
+    public Graph getGraphByElementID(int elementId) {
+        for(Graph graph : graphs.values()) {
+            if(graph.isInGraph(elementId)) {
+                return graph;
+            }
+        }
+        return null;
+    }
+
     /**
      * This method gets an element by the id. It searches all graphs.
      *
