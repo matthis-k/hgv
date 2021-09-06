@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.view.uiHandler.EditHandler;
 
@@ -41,6 +42,8 @@ public class LoadGraphCommand extends FileSystemCommand {
             fail(FILE_NOT_FOUND);
         } catch (OverflowException e) {
             fail(GRAPH_TOO_BIG);
+        } catch (IllegalGraphOperation illegalGraphOperation) {
+            illegalGraphOperation.printStackTrace();
         }
     }
 

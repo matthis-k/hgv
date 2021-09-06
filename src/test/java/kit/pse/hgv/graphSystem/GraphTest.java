@@ -1,5 +1,6 @@
 package kit.pse.hgv.graphSystem;
 
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.CartesianCoordinate;
 import org.junit.After;
@@ -26,14 +27,14 @@ public class GraphTest {
     }
 
     @Test
-    public void addNode() throws OverflowException {
+    public void addNode() throws OverflowException, IllegalGraphOperation {
         graphId = g.newGraph();
         int id = g.addElement(graphId, new CartesianCoordinate(0,0));
         assertNotNull(g.getGraphElementByID(id));
     }
 
     @Test
-    public void addEdge() throws OverflowException {
+    public void addEdge() throws OverflowException, IllegalGraphOperation {
         graphId = g.newGraph();
         int id1 = g.addElement(graphId, new CartesianCoordinate(0,0));
         int id2 = g.addElement(graphId, new CartesianCoordinate(0,0));
@@ -44,7 +45,7 @@ public class GraphTest {
     }
 
     @Test
-    public void removeElement() throws OverflowException {
+    public void removeElement() throws OverflowException, IllegalGraphOperation {
         graphId = g.newGraph();
         int id = g.addElement(graphId, new CartesianCoordinate(0,0));
         g.removeElement(id);
@@ -52,7 +53,7 @@ public class GraphTest {
     }
 
     @Test
-    public void removeNodeDelEdges() throws OverflowException {
+    public void removeNodeDelEdges() throws OverflowException, IllegalGraphOperation {
         graphId = g.newGraph();
         int id1 = g.addElement(graphId, new CartesianCoordinate(0,0));
         int id2 = g.addElement(graphId, new CartesianCoordinate(0,0));

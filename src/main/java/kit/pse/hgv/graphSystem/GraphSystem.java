@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
@@ -50,6 +51,15 @@ public class GraphSystem {
      */
     public Graph getGraphByID(int graphId) {
         return graphs.get(graphId);
+    }
+
+    public Graph getGraphByElementID(int elementId) {
+        for(Graph graph : graphs.values()) {
+            if(graph.isInGraph(elementId)) {
+                return graph;
+            }
+        }
+        return null;
     }
 
     /**
@@ -140,7 +150,7 @@ public class GraphSystem {
      * @return Returns the graphID of the loaded graph. The graph can be get by this
      *         id in future.
      */
-    public int loadGraph(String path) throws FileNotFoundException, OverflowException {
+    public int loadGraph(String path) throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         int graphID = newGraph();
         DataGateway.loadGraph(path, graphID);
         return graphID;
@@ -168,11 +178,19 @@ public class GraphSystem {
      * @param nodeIDs is an array of 2 node ids which the Edge should be connected
      *                to.
      */
-    public int addElement(int graphID, int[] nodeIDs) throws OverflowException {
+    public int addElement(int graphID, int[] nodeIDs) throws OverflowException, IllegalGraphOperation {
         if (nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
+        if(getGraphByID(graphID) == null) {
+            throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
+        }
         Node[] nodes = new Node[2];
+
+        //For mistakes in using.
+        if(getNodeByID(nodeIDs[0]) == null || getNodeByID(nodeIDs[1]) == null) {
+            throw new IllegalGraphOperation(GraphSystemMessages.NODE_MISSING.DE());
+        }
         nodes[0] = getNodeByID(nodeIDs[0]);
         nodes[1] = getNodeByID(nodeIDs[1]);
 
@@ -187,7 +205,10 @@ public class GraphSystem {
      * @param graphID is the id of the graph where the new edge should be stored.
      * @param coord   is the Coordinate of the node should be at.
      */
-    public int addElement(int graphID, Coordinate coord) throws OverflowException {
+    public int addElement(int graphID, Coordinate coord) throws OverflowException, IllegalGraphOperation {
+        if(getGraphByID(graphID) == null) {
+            throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
+        }
         Node node = new Node(coord);
         graphs.get(graphID).addGraphElement(node);
         return node.getId();

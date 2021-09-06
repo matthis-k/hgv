@@ -9,6 +9,7 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.*;
 import org.junit.*;
@@ -25,7 +26,7 @@ public class CalculationTest {
     static int edgeId = 0;
 
     @Before
-    public void createEnvironment() throws FileNotFoundException, OverflowException {
+    public void createEnvironment() throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         representation = new NativeRepresentation(0.1, Accuracy.HIGH);
         id = graphSystem.loadGraph("src/main/resources/spiralGraph.graphml");
         drawManager = new DrawManager(id, representation);

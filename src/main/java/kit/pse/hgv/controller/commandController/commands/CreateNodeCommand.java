@@ -1,6 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.Coordinate;
 
@@ -29,8 +30,8 @@ public class CreateNodeCommand extends GraphSystemCommand {
         } catch (OverflowException e) {
             fail(NO_GRAPH_WITH_ID);
             e.printStackTrace();
-        } catch (NullPointerException e) {
-            fail(MISSING_GRAPH);
+        } catch (IllegalGraphOperation illegalGraphOperation) {
+            fail(NO_GRAPH_WITH_ID);
         }
     }
 

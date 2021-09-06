@@ -1,6 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
+import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
 import java.lang.reflect.Array;
@@ -36,12 +37,14 @@ public class CreateEdgeCommand extends GraphSystemCommand {
         } catch (OverflowException e) {
             fail(INVALID_NODES);
             e.printStackTrace();
-        } catch (NullPointerException e) {
-            fail(MISSING);
+        } catch (IllegalGraphOperation illegalGraphOperation) {
+            fail(INVALID_NODES);
         }
     }
 
     @Override
     public void undo() {
     }
+
+
 }
