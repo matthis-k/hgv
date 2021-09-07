@@ -44,8 +44,8 @@ public class Calculator extends Thread{
                     coordinates[0] = ((CircleNode)drawManager.getDrawable(lineStrip.getConnectedNodes()[0])).getCenter();
                     coordinates[1] = ((CircleNode)drawManager.getDrawable(lineStrip.getConnectedNodes()[1])).getCenter();
                 } else {
-                    coordinates[0] = edge.getNodes()[0].getCoord();
-                    coordinates[1] = edge.getNodes()[1].getCoord();
+                    coordinates[0] = ((CircleNode)drawManager.getDrawable(edge.getNodes()[0].getId())).getCenter();
+                    coordinates[1] = ((CircleNode)drawManager.getDrawable(edge.getNodes()[1].getId())).getCenter();
                 }
                 d = drawManager.getRepresentation().calculate(edge, lineStrip, coordinates[0], coordinates[1]);
             }

@@ -1,7 +1,7 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
 public enum Accuracy {
-    DIRECT(1), LOW(10), MEDIUM(50), HIGH(100);
+    DIRECT(1), LOW(10), MEDIUM(25), HIGH(50);
 
     private int accuracy;
 

@@ -37,7 +37,7 @@ public class CartesianCoordinate implements Coordinate {
     public double euclideanDistance(Coordinate coordinate) {
         double tempX = x - coordinate.toCartesian().getX();
         double tempY = y - coordinate.toCartesian().getY();
-        return Math.sqrt(tempX * tempX + tempY + tempY);
+        return Math.sqrt(tempX * tempX + tempY * tempY);
     }
 
     @Override

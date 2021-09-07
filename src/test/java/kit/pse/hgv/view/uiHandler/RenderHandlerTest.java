@@ -65,4 +65,5 @@ public class RenderHandlerTest extends TestCase {
 
     public void testMoveCenter() {
     } */
+
 }

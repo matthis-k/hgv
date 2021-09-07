@@ -58,6 +58,8 @@ public class DrawManager {
                 nodes.add(id);
             } else if (!hideEdges) {
                 edges.add(id);
+            } else {
+                edges.remove(id);
             }
         }
         calculateIds(nodes);

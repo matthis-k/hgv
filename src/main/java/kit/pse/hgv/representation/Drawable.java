@@ -31,7 +31,6 @@ public abstract class Drawable extends Node {
         return this.isNode;
     }
 
-    public abstract Node getRepresentation();
 
     public Drawable setColor(Color c) {
         this.color = c;

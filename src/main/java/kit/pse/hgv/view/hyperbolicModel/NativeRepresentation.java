@@ -64,13 +64,8 @@ public class NativeRepresentation implements Representation {
             approximatedCoordinate = center.toCartesian();
         }
 
-        //TODO
-        //if(circleNode == null || circleNode.getID() != node.getId()) {
-            return new CircleNode(approximatedCoordinate, nodeSize, node.getId(), GraphSystem.getInstance().getColorOfId(node.getId()));
-        /*} else {
-            circleNode.setCenter(approximatedCoordinate);
-            return circleNode;
-        }*/
+        return new CircleNode(approximatedCoordinate, nodeSize, node.getId(), GraphSystem.getInstance().getColorOfId(node.getId()));
+
     }
 
     @Override
@@ -110,15 +105,6 @@ public class NativeRepresentation implements Representation {
         }
 
         return new LineStrip(coordinates, edge.getId(), GraphSystem.getInstance().getColorOfId(edge.getId()), edge.getNodes()[0].getId(), edge.getNodes()[1].getId());
-
-            //lineStrip.setCoordinates(coordinates);
-            //Color color = edge.getMetadata("color") == null || edge.getMetadata("color").equals(lineStrip.getColor()) ? lineStrip.getColor() : Color.web(edge.getMetadata("color"));
-            //lineStrip.setColor(color);
-            //Node[] nodes = edge.getNodes();
-            //int [] ids = {nodes[0].getId(), nodes[1].getId()};
-            //lineStrip.setConecting(ids);
-            //return  lineStrip;
-
 
     }
 
