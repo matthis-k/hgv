@@ -32,14 +32,12 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
     @Override
     public void execute() {
         GraphElement element = GraphSystem.getInstance().getGraphElementByID(elementId);
-        if (element == null) {
+        if (element == null || !GraphSystem.getInstance().isInGraph(RenderHandler.getInstance().getCurrentID(), elementId)) {
             fail(NO_ELEMENT_WITH_ID);
-        } else if(!GraphSystem.getInstance().isInGraph(RenderHandler.getInstance().getCurrentID(), elementId)){
-            fail(WRONG_GRAPH);
-        } else {
-            modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
-            modifiedIds.add(elementId);
+            return;
         }
+        modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
+        modifiedIds.add(elementId);
     }
 
     @Override

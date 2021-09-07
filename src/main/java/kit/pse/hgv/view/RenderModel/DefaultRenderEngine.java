@@ -79,6 +79,7 @@ public class DefaultRenderEngine extends RenderEngine {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
+                System.out.println(c.getResponse());
                 Stage popupStage = new Stage();
                 Parent root = FXMLLoader.load(App.class.getResource("ErrorPopup.fxml"));
                 popupStage.setScene(new Scene(root));
