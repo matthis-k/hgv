@@ -10,11 +10,10 @@ import org.junit.Test;
 
 public class ExtensionCommandTypeTest {
 
-    /*@Test
+    @Test
     public void testCreateNode() {
-        ExtensionCommandType.processCommandString("{ \"type\": \"CreateNode\", \"graphId\": 1, \"coordinate\": {\"phi\": 3, \"r\": 5}}", 1);
-        assertTrue(CommandController.getInstance().getCommandQ().poll() instanceof CreateNodeCommand);
-    }*/
+        assertEquals(ExtensionCommandType.CREATE_NODE,ExtensionCommandType.processCommandString("{ \"type\": \"CreateNode\", \"graphId\": 1, \"coordinate\": {\"phi\": 3, \"r\": 5}}", 1));
+    }
 
     @Test
     public void testCreateEdge() {
@@ -51,6 +50,11 @@ public class ExtensionCommandTypeTest {
     @Test
     public void testChangeMetadata() {
         assertEquals(ExtensionCommandType.CHANGE_METADATA, ExtensionCommandType.processCommandString("{\"type\": \"ChangeMetadata\", \"id\": 1, \"value\": red, \"key\": color}", 1));
+    }
+
+    @Test
+    public void testRender() {
+        assertEquals(ExtensionCommandType.RENDER, ExtensionCommandType.processCommandString("{\"type\": \"Render\"}", 1));
     }
 
     @Test
@@ -96,5 +100,10 @@ public class ExtensionCommandTypeTest {
     @Test(expected = IllegalArgumentException.class)
     public void testSaveGraphFailure() {
         ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"./noexistingdir/out\", \"graphId\": 1}", 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testProcessCommandFailure() {
+        ExtensionCommandType.processCommandString("{\"type\": \"notValid\"}", 1);
     }
 }

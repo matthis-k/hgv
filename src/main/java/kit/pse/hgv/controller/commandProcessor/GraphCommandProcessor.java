@@ -34,10 +34,9 @@ public class GraphCommandProcessor implements CommandProcessor {
         try {
             int first = Integer.parseInt(id1);
             int second = Integer.parseInt(id2);
-
             addEdge(graphId, first, second);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("TODO");
+            throw new NumberFormatException("At least one node hasn't a valid id");
         }
     }
 
@@ -86,24 +85,24 @@ public class GraphCommandProcessor implements CommandProcessor {
      *
      * @param elementId id of the element that should be deleted
      */
-    public void deleteElement(int elementId) {
+    /**public void deleteElement(int elementId) {
         GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId);
         queueCommand(command);
-    }
+    }**/
 
     public void deleteElement(int elementId, int graph) {
         GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId, graph);
         queueCommand(command);
     }
 
-    public void deleteElement(String elementId) {
+    /**public void deleteElement(String elementId) {
         try {
             int id = Integer.parseInt(elementId);
             deleteElement(id);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("TODO");
         }
-    }
+    }**/
 
     public void deleteElement(String elementId, int graphID) {
         try {

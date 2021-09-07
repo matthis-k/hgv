@@ -39,6 +39,17 @@ public class GraphCommandProcessorTest {
     }
 
     @Test
+    public void testAddEdgeString() {
+        graphCommandProcessor.addEdge(1, "2", "3");
+        assertTrue(commandController.getCommandQ().poll() instanceof CreateEdgeCommand);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void testAddEdgeStrinFailure() {
+        graphCommandProcessor.addEdge(1, "notValid", "3");
+    }
+
+    @Test
     public void testAddNode() {
         graphCommandProcessor.addNode(1, "1", "1");
         assertTrue(commandController.getCommandQ().poll() instanceof CreateNodeCommand);
@@ -62,8 +73,19 @@ public class GraphCommandProcessorTest {
 
     @Test
     public void testDeleteElement() {
-        graphCommandProcessor.deleteElement(1);
+        graphCommandProcessor.deleteElement(1, 1);
         assertTrue(commandController.getCommandQ().poll() instanceof GraphElementDeleteCommand);
+    }
+
+    @Test
+    public void testDeleteElementString() {
+        graphCommandProcessor.deleteElement("1", 1);
+        assertTrue(commandController.getCommandQ().poll() instanceof GraphElementDeleteCommand);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void testDeleteElementStringFailure() {
+        graphCommandProcessor.deleteElement("notValid", 1);
     }
 
     @AfterClass

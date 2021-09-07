@@ -29,6 +29,11 @@ public class FileSystemCommandProcessorTest {
         assertTrue(commandController.getCommandQ().poll() instanceof LoadGraphCommand);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testLoadGraphWrongFile() {
+        fileSystemCommandProcessor.loadGraph(new File("test.png"));
+    }
+
     @Test
     public void testSaveGraph() {
         graphId = GraphSystem.getInstance().newGraph();
