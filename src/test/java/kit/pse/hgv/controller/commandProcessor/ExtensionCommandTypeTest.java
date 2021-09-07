@@ -65,17 +65,17 @@ public class ExtensionCommandTypeTest {
 
     @Test
     public void testManualEditEnable() {
-        assertEquals(ExtensionCommandType.SET_MANUAL_EDIT, ExtensionCommandType.processCommandString("{\"type\": \"SetManualEdit\", \"manualedit\": \"enable\"}", 1));
+        assertEquals(ExtensionCommandType.SET_MANUAL_EDIT, ExtensionCommandType.processCommandString("{\"type\": \"SetManualEdit\", \"manualEdit\": true}", 1));
     }
 
     @Test
     public void testManualEditDisable() {
-        assertEquals(ExtensionCommandType.SET_MANUAL_EDIT, ExtensionCommandType.processCommandString("{\"type\": \"SetManualEdit\", \"manualedit\": \"disable\"}", 1));
+        assertEquals(ExtensionCommandType.SET_MANUAL_EDIT, ExtensionCommandType.processCommandString("{\"type\": \"SetManualEdit\", \"manualEdit\": false}", 1));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testManualEditFailure() {
-        ExtensionCommandType.processCommandString("{\"type\": \"SetManualEdit\", \"manualedit\": \"other\"}",1);
+        ExtensionCommandType.processCommandString("{\"type\": \"SetManualEdit\", \"manualEdit\": \"other\"}",1);
     }
 
     @Test

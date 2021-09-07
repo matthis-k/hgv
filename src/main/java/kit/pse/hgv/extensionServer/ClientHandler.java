@@ -146,7 +146,7 @@ public class ClientHandler extends Thread {
 
     void resumeConnection() {
         synchronized (this) {
-            notify();
+            notifyAll();
         }
     }
 
