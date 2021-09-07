@@ -24,7 +24,7 @@ public class DataGateway {
     public static final String RADIUS_REGEX = "[\\s|\\t]*<data\\skey=\"radius\">([0-9]*[.]?[0-9]+)</data>";
     public static final String META_REGEX = "[\\s|\\t]*<data\\skey=\"([0-9a-zA-Z]+)\">(.*)</data>";
     public static final String NODE_REGEX = "[\\s|\\t]*<node\\sid=\"(\\d+)\">";
-    public static final String EDGE_REGEX  = "[\\s|\\t]*<edge\\sid=\"[0-9]+\"\\ssource=\"([0-9]+)\" target=\"([0-9]+)\">";
+    public static final String EDGE_REGEX = "[\\s|\\t]*<edge\\sid=\"[0-9]+\"\\ssource=\"([0-9]+)\" target=\"([0-9]+)\">";
     public static final String KEY_REGEX =
             "[\\s|\\t]*<key\\sid=\"(.+)\"\\sfor=\"(" + METADATA_TYPE + ")\"\\sattr.name=\"(.+)\"\\sattr.type=\"([0-9a-zA-Z]+)\"/>";
     public static final String KEY_DEFAULT_REGEX =
@@ -58,19 +58,20 @@ public class DataGateway {
             "  xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns\n" +
             "  http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n";
     public static GraphSystem graphSystem = GraphSystem.getInstance();
-    public static BidiMap<Integer,Integer> nodeIDs = new DualHashBidiMap<>();
+    public static BidiMap<Integer, Integer> nodeIDs = new DualHashBidiMap<>();
     public static Scanner scanner;
-    private static Locale LOCALE = Locale.ENGLISH;
+    private static final Locale LOCALE = Locale.ENGLISH;
     private static int line;
-    private static String errorMessage = String.format("File does not follow the demanded pattern in line %d", line);
+    private static final String errorMessage = String.format("File does not follow the demanded pattern in line %d", line);
 
     /**
      * Adds the last opened Graph into a file
+     *
      * @param path path of the last opened Graph
      */
-    public static void addlastOpened(String path){
+    public static void addlastOpened(String path) {
         File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
-        try{
+        try {
             FileWriter writer = new FileWriter(lastOpenedFile, true);
             writer.write(path);
             writer.write(System.getProperty("line.separator"));
@@ -86,28 +87,28 @@ public class DataGateway {
      *
      * @return List of the five last opened Graphs
      */
-    public static List<String> getlastOpenedGraphs(){
+    public static List<String> getlastOpenedGraphs() {
         List<String> lastOpened = new ArrayList<>();
         File lastOpenedFile = new File("src/main/resources/lastOpenedFile.txt");
-        if(lastOpenedFile.exists()) {
+        if (lastOpenedFile.exists()) {
             BufferedReader reader = null;
             try {
                 reader = new BufferedReader(new FileReader(lastOpenedFile));
                 String path;
                 path = reader.readLine();
                 while (lastOpened.size() < 5 && path != null) {
-                    for(int i = 0; i < lastOpened.size(); i++) {
-                        if (lastOpened.get(i).equals(path)){
+                    for (int i = 0; i < lastOpened.size(); i++) {
+                        if (lastOpened.get(i).equals(path)) {
                             path = "";
                         }
                     }
-                    if (!(path == null) && !path.equals("")){
+                    if (!(path == null) && !path.equals("")) {
                         lastOpened.add(path);
                     }
                     path = reader.readLine();
                 }
                 reader.close();
-            } catch (IOException e){
+            } catch (IOException e) {
                 //TODO
             }
         }
@@ -122,36 +123,37 @@ public class DataGateway {
     /**
      * Loads a Graph from a file
      *
-     * @param path path of the Graph file
+     * @param path    path of the Graph file
      * @param graphID which graphID
      * @throws IllegalFormatException if the File doesn't have the right format
-     * @throws FileNotFoundException if the File is non-existent
-     * @throws OverflowException if there are too many added ids
+     * @throws FileNotFoundException  if the File is non-existent
+     * @throws OverflowException      if there are too many added ids
      */
     public static void loadGraph(String path, int graphID) throws IllegalFormatException, FileNotFoundException, OverflowException, IllegalGraphOperation {
         line = 0;
-        if(!path.endsWith(".graphml")) throw new UnknownFormatConversionException("Wrong filename extension, expected .graphml");
+        if (!path.endsWith(".graphml"))
+            throw new UnknownFormatConversionException("Wrong filename extension, expected .graphml");
         File file = new File(path);
         scanner = new Scanner(file);
         String currentLine = getNextLine();
-        while(!(currentLine.matches(KEY_REGEX) || currentLine.matches(KEY_DEFAULT_REGEX))) {
+        while (!(currentLine.matches(KEY_REGEX) || currentLine.matches(KEY_DEFAULT_REGEX))) {
             currentLine = getNextLine();
         }
 
-        while(!currentLine.matches("[\\s|\\t]*<graph\\sedgedefault=\"[a-zA-Z]+\">") && scanner.hasNext()) {
+        while (!currentLine.matches("[\\s|\\t]*<graph\\sedgedefault=\"[a-zA-Z]+\">") && scanner.hasNext()) {
             Matcher matcher;
-            if(currentLine.matches(KEY_REGEX) && !currentLine.matches(PHI_REGEX) && !currentLine.matches(RADIUS_REGEX)) {
+            if (currentLine.matches(KEY_REGEX) && !currentLine.matches(PHI_REGEX) && !currentLine.matches(RADIUS_REGEX)) {
                 matcher = KEY_PATTERN.matcher(currentLine);
                 matcher.find();
                 String type = matcher.group(2);
                 String name = matcher.group(3);
                 String dataType = matcher.group(4);
                 MetadataType metadataType = MetadataType.valueOf(type.toUpperCase());
-                if(!(name.equals(PHI) ||name.equals(RADIUS))) {
+                if (!(name.equals(PHI) || name.equals(RADIUS))) {
                     MetadataDefinition metadataDefinition = new MetadataDefinition(name, metadataType, dataType);
                     GraphSystem.getInstance().newMetadataDefinition(graphID, metadataDefinition);
                 }
-            } else if(currentLine.matches(KEY_DEFAULT_REGEX)) {
+            } else if (currentLine.matches(KEY_DEFAULT_REGEX)) {
                 matcher = KEY_DEFAULT_PATTERN.matcher(currentLine);
                 matcher.find();
                 String type = matcher.group(2);
@@ -159,20 +161,20 @@ public class DataGateway {
                 String dataType = matcher.group(4);
                 MetadataType metadataType = MetadataType.valueOf(type.toUpperCase());
                 currentLine = scanner.nextLine();
-                if(!currentLine.matches(DEFAULT)) throw new UnknownFormatConversionException(errorMessage);
+                if (!currentLine.matches(DEFAULT)) throw new UnknownFormatConversionException(errorMessage);
                 matcher = DEFAULT_PATTERN.matcher(currentLine);
                 matcher.find();
                 String defaultValue = matcher.group(1);
-                MetadataDefinition metadataDefinition = new MetadataDefinition(name,defaultValue, metadataType, dataType);
+                MetadataDefinition metadataDefinition = new MetadataDefinition(name, defaultValue, metadataType, dataType);
                 GraphSystem.getInstance().newMetadataDefinition(graphID, metadataDefinition);
                 currentLine = getNextLine();
-                if(!currentLine.matches("[\\s|\\t]*</key>")) throw new UnknownFormatConversionException(errorMessage);
+                if (!currentLine.matches("[\\s|\\t]*</key>")) throw new UnknownFormatConversionException(errorMessage);
             }
             currentLine = getNextLine();
         }
         currentLine = getNextLine();
-        while(!currentLine.matches("[\\s|\\t]*</graph>") && scanner.hasNext()) {
-            if(isNewNode(currentLine)) {
+        while (!currentLine.matches("[\\s|\\t]*</graph>") && scanner.hasNext()) {
+            if (isNewNode(currentLine)) {
                 readNode(currentLine, graphID);
             } else {
                 try {
@@ -200,33 +202,33 @@ public class DataGateway {
      * Reads the Graphml-String and converts it into a node
      *
      * @param NodeLine new Node as a graphml String
-     * @param graphID given Graph
+     * @param graphID  given Graph
      * @throws OverflowException if there are too many added ids
      */
     private static void readNode(String NodeLine, int graphID) throws OverflowException, NullPointerException, IllegalGraphOperation {
         Matcher matcher = NODE_PATTERN.matcher(NodeLine);
         int graphMLID = 0;
-        if(matcher.find()) {
-             graphMLID = Integer.parseInt(matcher.group(1));
+        if (matcher.find()) {
+            graphMLID = Integer.parseInt(matcher.group(1));
         }
         String currentLine = getNextLine();
         double phi = 0;
         double radius = 0;
-        HashMap<String,String> metadata = new HashMap<>();
-        while(scanner.hasNext() && !currentLine.matches("[\\s|\\t]*</node>")) {
-            if(currentLine.matches(PHI_REGEX)) {
+        HashMap<String, String> metadata = new HashMap<>();
+        while (scanner.hasNext() && !currentLine.matches("[\\s|\\t]*</node>")) {
+            if (currentLine.matches(PHI_REGEX)) {
                 matcher = PHI_PATTERN.matcher(currentLine);
-                if(matcher.find()) {
+                if (matcher.find()) {
                     phi = Double.parseDouble(matcher.group(1));
                 }
-            } else if(currentLine.matches(RADIUS_REGEX)) {
+            } else if (currentLine.matches(RADIUS_REGEX)) {
                 matcher = RADIUS_PATTERN.matcher(currentLine);
-                if(matcher.find()) {
+                if (matcher.find()) {
                     radius = Double.parseDouble(matcher.group(1));
                 }
-            } else if(currentLine.matches(META_REGEX)) {
+            } else if (currentLine.matches(META_REGEX)) {
                 matcher = META_PATTERN.matcher(currentLine);
-                if(matcher.find()) {
+                if (matcher.find()) {
                     metadata.put(matcher.group(1), matcher.group(2));
                 }
             } else {
@@ -237,7 +239,7 @@ public class DataGateway {
         Coordinate coord = new PolarCoordinate(phi, radius);
         int nodeID = graphSystem.addElement(graphID, coord);
         Node node = graphSystem.getNodeByID(graphID, nodeID);
-        for(String s : metadata.keySet()) {
+        for (String s : metadata.keySet()) {
             node.setMetadata(s, metadata.get(s));
         }
         nodeIDs.put(graphMLID, nodeID);
@@ -247,7 +249,7 @@ public class DataGateway {
      * Reads the Graphml-String and converts it into an edge
      *
      * @param currentLine new Edge as String
-     * @param graphID given Graph
+     * @param graphID     given Graph
      * @throws OverflowException if there are too many added ids
      */
     private static void readEdge(String currentLine, int graphID) throws OverflowException, IllegalGraphOperation {
@@ -255,20 +257,20 @@ public class DataGateway {
         if (!matcher.matches()) {
             return;
         }
-        int[] nodes = {0,0};
+        int[] nodes = {0, 0};
         matcher.reset();
         boolean found = matcher.find();
-        if(found) {
+        if (found) {
             nodes[0] = nodeIDs.get(Integer.parseInt(matcher.group(1)));
             nodes[1] = nodeIDs.get(Integer.parseInt(matcher.group(2)));
         }
         int edgeID = graphSystem.addElement(graphID, nodes);
-        HashMap<String,String> metadata = new HashMap<>();
+        HashMap<String, String> metadata = new HashMap<>();
         currentLine = getNextLine();
-        while(scanner.hasNext() && !currentLine.matches("[\\s|\\t]*</edge>")) {
-            if(currentLine.matches(META_REGEX)) {
+        while (scanner.hasNext() && !currentLine.matches("[\\s|\\t]*</edge>")) {
+            if (currentLine.matches(META_REGEX)) {
                 matcher = META_PATTERN.matcher(currentLine);
-                if(matcher.find()) {
+                if (matcher.find()) {
                     metadata.put(matcher.group(1), matcher.group(2));
                 }
             } else {
@@ -277,7 +279,7 @@ public class DataGateway {
             currentLine = getNextLine();
         }
         Edge edge = graphSystem.getEdgeByID(graphID, edgeID);
-        for(String s : metadata.keySet()) {
+        for (String s : metadata.keySet()) {
             edge.setMetadata(s, metadata.get(s));
         }
     }
@@ -286,7 +288,7 @@ public class DataGateway {
      * Saves a Graph into a file
      *
      * @param graphId given graph
-     * @param path path where to save
+     * @param path    path where to save
      * @return if the save was successful
      * @throws IOException if writing on the file failed
      */
@@ -308,11 +310,11 @@ public class DataGateway {
         bufferedWriter.append(XML_ENCODING);
         bufferedWriter.append(SCHEMA_REFERENCE);
 
-        bufferedWriter.append(String.format(LOCALE, KEY_FORMAT,PHI,"node",PHI,"Double"));
-        bufferedWriter.append(String.format(LOCALE, KEY_FORMAT,RADIUS,"node",RADIUS,"Double"));
+        bufferedWriter.append(String.format(LOCALE, KEY_FORMAT, PHI, "node", PHI, "Double"));
+        bufferedWriter.append(String.format(LOCALE, KEY_FORMAT, RADIUS, "node", RADIUS, "Double"));
 
-        for(MetadataDefinition m : graphSystem.getGraphByID(graphId).getMetadata()) {
-            if(m.getDefaultValue() != null) {
+        for (MetadataDefinition m : graphSystem.getGraphByID(graphId).getMetadata()) {
+            if (m.getDefaultValue() != null) {
                 bufferedWriter.append(String.format(KEY_FORMAT_DEFAULT, m.getName(),
                         m.getMetadataType().toString().toLowerCase(), m.getName(), m.getDataType(), m.getDefaultValue()));
             } else {
@@ -324,14 +326,14 @@ public class DataGateway {
 
         int id = 0;
         nodeIDs.clear();
-        for(Node node : graphSystem.getGraphByID(graphId).getNodes()) {
-            nodeIDs.put(id,node.getId());
+        for (Node node : graphSystem.getGraphByID(graphId).getNodes()) {
+            nodeIDs.put(id, node.getId());
             PolarCoordinate coord = node.getCoord().toPolar();
-            bufferedWriter.append(String.format(LOCALE, NODE_START_FORMAT,id));
-            bufferedWriter.append(String.format(LOCALE, PHI_FORMAT,coord.getAngle()));
-            bufferedWriter.append(String.format(LOCALE, RADIUS_FORMAT,coord.getDistance()));
-            for(String s : node.getAllMetadata()) {
-                if(!node.getMetadata(s).equals(getDefaultMeta(graphId, s))) {
+            bufferedWriter.append(String.format(LOCALE, NODE_START_FORMAT, id));
+            bufferedWriter.append(String.format(LOCALE, PHI_FORMAT, coord.getAngle()));
+            bufferedWriter.append(String.format(LOCALE, RADIUS_FORMAT, coord.getDistance()));
+            for (String s : node.getAllMetadata()) {
+                if (!node.getMetadata(s).equals(getDefaultMeta(graphId, s))) {
                     bufferedWriter.append(String.format(LOCALE, METADATA_FORMAT, s, node.getMetadata(s)));
                 }
             }
@@ -339,14 +341,14 @@ public class DataGateway {
             id++;
         }
         id = 0;
-        for(Edge edge : graphSystem.getGraphByID(graphId).getEdges()) {
-            Node tempNodes[] = edge.getNodes();
-            int tempIds[] = new int[2];
+        for (Edge edge : graphSystem.getGraphByID(graphId).getEdges()) {
+            Node[] tempNodes = edge.getNodes();
+            int[] tempIds = new int[2];
             tempIds[0] = nodeIDs.getKey(tempNodes[0].getId());
             tempIds[1] = nodeIDs.getKey(tempNodes[1].getId());
-            bufferedWriter.append(String.format(LOCALE, EDGE_START_FORMAT,id,tempIds[0],tempIds[1]));
-            for(String s : edge.getAllMetadata()) {
-                if(!edge.getMetadata(s).equals(getDefaultMeta(graphId, s))) {
+            bufferedWriter.append(String.format(LOCALE, EDGE_START_FORMAT, id, tempIds[0], tempIds[1]));
+            for (String s : edge.getAllMetadata()) {
+                if (!edge.getMetadata(s).equals(getDefaultMeta(graphId, s))) {
                     bufferedWriter.append(String.format(LOCALE, METADATA_FORMAT, s, edge.getMetadata(s)));
                 }
             }
@@ -363,8 +365,8 @@ public class DataGateway {
 
     private static String getDefaultMeta(int graphID, String metadata) {
         Graph graph = graphSystem.getGraphByID(graphID);
-        for(MetadataDefinition m : graphSystem.getGraphByID(graphID).getMetadata()) {
-            if(m.getName().equals(metadata)) return m.getDefaultValue();
+        for (MetadataDefinition m : graphSystem.getGraphByID(graphID).getMetadata()) {
+            if (m.getName().equals(metadata)) return m.getDefaultValue();
         }
         return null;
     }

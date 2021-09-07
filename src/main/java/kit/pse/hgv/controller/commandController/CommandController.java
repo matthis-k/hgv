@@ -1,28 +1,25 @@
 package kit.pse.hgv.controller.commandController;
 
+import kit.pse.hgv.controller.commandController.commands.ICommand;
+import kit.pse.hgv.controller.commandController.commands.WorkingAreaCommand;
+import kit.pse.hgv.controller.commandController.scheduler.IScheduler;
+import kit.pse.hgv.controller.commandController.scheduler.ParallelScheduler;
+import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-import kit.pse.hgv.controller.commandController.commands.*;
-import kit.pse.hgv.controller.commandController.scheduler.IScheduler;
-import kit.pse.hgv.controller.commandController.scheduler.ParallelScheduler;
-import kit.pse.hgv.graphSystem.GraphSystem;
-import kit.pse.hgv.representation.PolarCoordinate;
-import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 
 public class CommandController extends Thread implements CommandEventSource {
     // TODO: undo/redo
     private static CommandController instance;
     private static boolean manualEdit = true;
 
-    private IScheduler scheduler = new ParallelScheduler();
+    private final IScheduler scheduler = new ParallelScheduler();
 
-    private Vector<CommandQListener> listeners = new Vector<>();
-    private ConcurrentLinkedQueue<ICommand> commandQ = new ConcurrentLinkedQueue<ICommand>();
+    private final Vector<CommandQListener> listeners = new Vector<>();
+    private final ConcurrentLinkedQueue<ICommand> commandQ = new ConcurrentLinkedQueue<ICommand>();
 
     /**
      * returns the instance of the CommandController
@@ -72,7 +69,7 @@ public class CommandController extends Thread implements CommandEventSource {
         List<CommandThread> commandThreads = new ArrayList<>();
 
         //Thread creation.
-        for(ICommand c : scheduler.getNextCommand(commandQ)) {
+        for (ICommand c : scheduler.getNextCommand(commandQ)) {
             if (!manualEdit && c.isUser() && c instanceof WorkingAreaCommand) {
                 continue;
             }
@@ -82,7 +79,7 @@ public class CommandController extends Thread implements CommandEventSource {
         }
 
         //Thread joins.
-        for(CommandThread th : commandThreads) {
+        for (CommandThread th : commandThreads) {
             try {
                 th.join();
             } catch (InterruptedException e) {
@@ -90,7 +87,7 @@ public class CommandController extends Thread implements CommandEventSource {
         }
 
         //When thread finished, notifyAll.
-        for(CommandThread th : commandThreads) {
+        for (CommandThread th : commandThreads) {
             notifyAll(th.getCommand());
         }
 
@@ -135,7 +132,7 @@ public class CommandController extends Thread implements CommandEventSource {
         listeners.add(listener);
     }
 
-    public ConcurrentLinkedQueue<ICommand> getCommandQ(){
+    public ConcurrentLinkedQueue<ICommand> getCommandQ() {
         return commandQ;
     }
 

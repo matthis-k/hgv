@@ -7,12 +7,12 @@ import kit.pse.hgv.representation.PolarCoordinate;
  * This class handles the commands that let the user move nodes
  */
 public class MoveNodeCommand extends GraphSystemCommand {
-    private int elementId;
-    private PolarCoordinate coordinate;
+    private final int elementId;
+    private final PolarCoordinate coordinate;
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param elementId  ElementId of the Element that should be moved
      * @param coordinate Coordinate of the new position of the element
      */

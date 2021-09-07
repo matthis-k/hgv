@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class TabManager {
 
-    private HashMap<Integer, RenderEngine> tabs;
+    private final HashMap<Integer, RenderEngine> tabs;
 
     public TabManager() {
         this.tabs = new HashMap<>();

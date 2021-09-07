@@ -5,44 +5,43 @@ import org.json.JSONObject;
 import java.util.Set;
 
 public interface ICommand {
-    public void execute();
+    void execute();
 
-    public void undo();
+    void undo();
 
     /**
      * Returns all changed IDs
      *
      * @return all changed IDs
      */
-    public Set<Integer> getModifiedIds();
+    Set<Integer> getModifiedIds();
 
     /**
      * Returns if the user or the extension wants to change the graph
      *
      * @return true if the user wants to change the graph
      */
-    public boolean isUser();
+    boolean isUser();
 
     /**
      * Checks if the Change is made by the user or the extension. If it's made by
      * the extension, it sends a response message to it
-     *
      */
-    public JSONObject getResponse();
+    JSONObject getResponse();
 
     /**
      * Returns the Client id of the extension
      *
      * @return client-id
      */
-    public int getClientId();
+    int getClientId();
 
     /**
      * Sets the Client id of the extension
      *
      * @param id Client-Id
      */
-    public void setClientId(int id);
+    void setClientId(int id);
 
-    public boolean succeeded();
+    boolean succeeded();
 }

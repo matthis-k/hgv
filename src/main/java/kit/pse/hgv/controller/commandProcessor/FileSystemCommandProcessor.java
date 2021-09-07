@@ -18,7 +18,7 @@ public class FileSystemCommandProcessor implements CommandProcessor {
     /**
      * This class checks if the given file is a graphml file and creates a
      * loadGraphCommand
-     * 
+     *
      * @param file The file that defines the graph
      */
     public void loadGraph(File file) {
@@ -31,7 +31,7 @@ public class FileSystemCommandProcessor implements CommandProcessor {
 
     /**
      * This class creates a saveGraphCommand
-     * 
+     *
      * @param path where to save
      * @param id   which graph to save
      */

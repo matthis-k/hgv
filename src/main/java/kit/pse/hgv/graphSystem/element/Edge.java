@@ -32,7 +32,7 @@ public class Edge extends GraphElement {
 
     /**
      * Gets youthe nodes which the edge is connected to.
-     * 
+     *
      * @return Returns an array of length 2 with the nodes.
      */
     public Node[] getNodes() {
@@ -40,7 +40,7 @@ public class Edge extends GraphElement {
     }
 
     public boolean connectsNodes(int[] connectingNodes) {
-        if(connectingNodes.length != 2) return false;
+        if (connectingNodes.length != 2) return false;
         int firstId = nodes[0].getId();
         int secondId = nodes[1].getId();
         boolean res = ((firstId == connectingNodes[0]) || (firstId == connectingNodes[1])) && ((secondId == connectingNodes[0]) || (secondId == connectingNodes[1]));

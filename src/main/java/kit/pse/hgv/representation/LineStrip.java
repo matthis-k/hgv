@@ -1,6 +1,5 @@
 package kit.pse.hgv.representation;
 
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -9,9 +8,9 @@ import java.util.List;
 import java.util.Vector;
 
 public class LineStrip extends Drawable {
-    private List<CartesianCoordinate> coordinates;
-    private Vector<Line> lines = new Vector<>();
-    private int[] connecting = new int[2];
+    private final List<CartesianCoordinate> coordinates;
+    private final Vector<Line> lines = new Vector<>();
+    private final int[] connecting = new int[2];
 
     private void addLine(int index) {
         Line line = new Line();

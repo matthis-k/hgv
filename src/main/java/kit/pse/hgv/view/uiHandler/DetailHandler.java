@@ -11,13 +11,10 @@ import javafx.scene.text.Text;
 import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 import kit.pse.hgv.controller.commandProcessor.MetaDataProcessor;
 import kit.pse.hgv.representation.PolarCoordinate;
-import kit.pse.hgv.view.RenderModel.RenderEngine;
 import kit.pse.hgv.view.hyperbolicModel.Accuracy;
-import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 
 /**
@@ -125,7 +122,7 @@ public class DetailHandler implements UIHandler {
     /**
      * This method updates the currently displayed information (if the object is a
      * node).
-     * 
+     *
      * @param currentlySelected the ID of the currently selected node
      * @param color
      * @param toPolar           the coordinates of the currently selected nodes.
@@ -144,7 +141,7 @@ public class DetailHandler implements UIHandler {
     /**
      * This method updates the currently displayed information (if the object is an
      * edge).
-     * 
+     *
      * @param currentlySelected the ID of the currently selected edge
      * @param color
      */

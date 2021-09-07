@@ -8,14 +8,12 @@ import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.representation.LineStrip;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
-public class Calculator extends Thread{
+public class Calculator extends Thread {
 
-    private int graphId;
-    private HashSet<Integer> ids;
+    private final int graphId;
+    private final HashSet<Integer> ids;
     DrawManager drawManager;
 
     protected Calculator(DrawManager drawManager, HashSet<Integer> ids, int graphId) {
@@ -26,8 +24,8 @@ public class Calculator extends Thread{
 
     @Override
     public void run() {
-        for(Integer id : ids) {
-            if(GraphSystem.getInstance().getGraphElementByID(graphId, id) == null) {
+        for (Integer id : ids) {
+            if (GraphSystem.getInstance().getGraphElementByID(graphId, id) == null) {
                 drawManager.removeDrawable(id);
                 continue;
             }
@@ -39,13 +37,13 @@ public class Calculator extends Thread{
             } else {
                 Edge edge = GraphSystem.getInstance().getEdgeByID(graphId, id);
                 LineStrip lineStrip = (LineStrip) drawManager.getDrawable(id);
-                Coordinate coordinates[] = new Coordinate[2];
-                if(lineStrip != null) {
-                    coordinates[0] = ((CircleNode)drawManager.getDrawable(lineStrip.getConnectedNodes()[0])).getCenter();
-                    coordinates[1] = ((CircleNode)drawManager.getDrawable(lineStrip.getConnectedNodes()[1])).getCenter();
+                Coordinate[] coordinates = new Coordinate[2];
+                if (lineStrip != null) {
+                    coordinates[0] = ((CircleNode) drawManager.getDrawable(lineStrip.getConnectedNodes()[0])).getCenter();
+                    coordinates[1] = ((CircleNode) drawManager.getDrawable(lineStrip.getConnectedNodes()[1])).getCenter();
                 } else {
-                    coordinates[0] = ((CircleNode)drawManager.getDrawable(edge.getNodes()[0].getId())).getCenter();
-                    coordinates[1] = ((CircleNode)drawManager.getDrawable(edge.getNodes()[1].getId())).getCenter();
+                    coordinates[0] = ((CircleNode) drawManager.getDrawable(edge.getNodes()[0].getId())).getCenter();
+                    coordinates[1] = ((CircleNode) drawManager.getDrawable(edge.getNodes()[1].getId())).getCenter();
                 }
                 d = drawManager.getRepresentation().calculate(edge, lineStrip, coordinates[0], coordinates[1]);
             }

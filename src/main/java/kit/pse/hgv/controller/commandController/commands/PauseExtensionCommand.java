@@ -10,14 +10,15 @@ public class PauseExtensionCommand extends ExtensionCommand {
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param id The id of the extension that should be paused
      */
     public PauseExtensionCommand(int id) {
         this.id = id;
     }
 
-    public PauseExtensionCommand(){}
+    public PauseExtensionCommand() {
+    }
 
     @Override
     public void execute() {

@@ -10,14 +10,16 @@ public class StopExtensionCommand extends ExtensionCommand {
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param id The id of the extension that should stop
      */
     public StopExtensionCommand(int id) {
         this.id = id;
     }
 
-    public StopExtensionCommand(){}
+    public StopExtensionCommand() {
+    }
+
     @Override
     public void execute() {
         ExtensionServer.getInstance().stop(id == -1 ? getClientId() : id);

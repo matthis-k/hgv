@@ -1,7 +1,7 @@
 package kit.pse.hgv.extensionServer;
 
 public interface Extension {
-    public void startExtension();
+    void startExtension();
 
-    public void stopExtension();
+    void stopExtension();
 }

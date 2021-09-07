@@ -1,10 +1,7 @@
 package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
-import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
-import kit.pse.hgv.view.uiHandler.EditHandler;
-import kit.pse.hgv.view.uiHandler.RenderHandler;
 
 /**
  * This class handles the commands that delete elements or undo the delete
@@ -16,7 +13,7 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param elementId ElementId from the Element that should be deleted
      */
     public GraphElementDeleteCommand(int elementId) {
@@ -44,9 +41,9 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
 
     @Override
     public void execute() {
-        if(GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+        if (GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
             fail(NO_ELEMENT_WITH_ID);
-        } else if(graphID != -1 && !GraphSystem.getInstance().isInGraph(graphID, elementId)){
+        } else if (graphID != -1 && !GraphSystem.getInstance().isInGraph(graphID, elementId)) {
             fail(NO_ELEMENT_WITH_ID);
         } else {
             modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));

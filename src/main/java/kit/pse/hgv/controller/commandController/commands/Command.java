@@ -18,7 +18,6 @@ public abstract class Command implements ICommand {
     protected static final String WRONG_GRAPH = "wrong graph";
 
 
-
     protected JSONObject response = new JSONObject();
     protected int client = 0;
     protected HashSet<Integer> modifiedIds = new HashSet<>();
@@ -26,9 +25,11 @@ public abstract class Command implements ICommand {
     protected Command() {
         succeed();
     }
+
     protected void succeed() {
         response.put(SUCCESS, true);
     }
+
     protected void fail(String message) {
         response.put(SUCCESS, false);
         response.put(REASON, message);
@@ -64,7 +65,6 @@ public abstract class Command implements ICommand {
     /**
      * Checks if the Change is made by the user or the extension. If it's made by
      * the extension, it sends a response message to it
-     *
      */
     public JSONObject getResponse() {
         return response;

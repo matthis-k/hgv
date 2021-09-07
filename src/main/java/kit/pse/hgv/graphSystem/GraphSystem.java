@@ -1,12 +1,12 @@
 package kit.pse.hgv.graphSystem;
 
 import javafx.scene.paint.Color;
+import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.GraphElement;
 import kit.pse.hgv.graphSystem.element.Node;
 import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
-import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.representation.Coordinate;
 
 import java.io.FileNotFoundException;
@@ -17,11 +17,15 @@ import java.util.*;
  * graphs and elements (not dependend on the graph!)
  */
 public class GraphSystem {
-    /** Singleton instance */
+    /**
+     * Singleton instance
+     */
     private static GraphSystem instance;
 
-    /** List of graphs that are loaded. */
-    private HashMap<Integer, Graph> graphs = new HashMap<>();
+    /**
+     * List of graphs that are loaded.
+     */
+    private final HashMap<Integer, Graph> graphs = new HashMap<>();
 
     private static int graphIDCounter = 1;
 
@@ -33,7 +37,7 @@ public class GraphSystem {
 
     /**
      * Creates or gets the only existing GraphSystem instance.
-     * 
+     *
      * @return Returns the only instance of the graphsystem.
      */
     public static GraphSystem getInstance() {
@@ -54,8 +58,8 @@ public class GraphSystem {
     }
 
     public Graph getGraphByElementID(int elementId) {
-        for(Graph graph : graphs.values()) {
-            if(graph.isInGraph(elementId)) {
+        for (Graph graph : graphs.values()) {
+            if (graph.isInGraph(elementId)) {
                 return graph;
             }
         }
@@ -90,7 +94,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Node with the id, if possible.
-     * 
+     *
      * @param nodeID is the id of the node you will get.
      * @return Returns the node if found, else null.
      */
@@ -104,7 +108,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Node with the id in the graph with the graphID, if possible.
-     * 
+     *
      * @param nodeID is the id of the node you will get.
      * @return Returns the node if found, else null.
      */
@@ -114,7 +118,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Edge with the id, if possible.
-     * 
+     *
      * @param edgeID is the id of the edge you will get.
      * @return Returns the edge if found, else null.
      */
@@ -128,7 +132,7 @@ public class GraphSystem {
 
     /**
      * Gets you the Edge with the id in the graph with the graphID, if possible.
-     * 
+     *
      * @param edgeID is the id of the edge you will get.
      * @return Returns the edge if found, else null.
      */
@@ -148,7 +152,7 @@ public class GraphSystem {
      *
      * @param path is the pat where the graph should be loaded from.
      * @return Returns the graphID of the loaded graph. The graph can be get by this
-     *         id in future.
+     * id in future.
      */
     public int loadGraph(String path) throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         int graphID = newGraph();
@@ -182,13 +186,13 @@ public class GraphSystem {
         if (nodeIDs.length != 2) {
             throw new IllegalArgumentException(GraphSystemMessages.EDGE_ONLY_WITH_NODES.DE());
         }
-        if(getGraphByID(graphID) == null) {
+        if (getGraphByID(graphID) == null) {
             throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
         }
         Node[] nodes = new Node[2];
 
         //For mistakes in using.
-        if(getNodeByID(nodeIDs[0]) == null || getNodeByID(nodeIDs[1]) == null) {
+        if (getNodeByID(nodeIDs[0]) == null || getNodeByID(nodeIDs[1]) == null) {
             throw new IllegalGraphOperation(GraphSystemMessages.NODE_MISSING.DE());
         }
         nodes[0] = getNodeByID(nodeIDs[0]);
@@ -206,7 +210,7 @@ public class GraphSystem {
      * @param coord   is the Coordinate of the node should be at.
      */
     public int addElement(int graphID, Coordinate coord) throws OverflowException, IllegalGraphOperation {
-        if(getGraphByID(graphID) == null) {
+        if (getGraphByID(graphID) == null) {
             throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
         }
         Node node = new Node(coord);

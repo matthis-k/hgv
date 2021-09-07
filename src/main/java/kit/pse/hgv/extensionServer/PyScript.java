@@ -3,13 +3,14 @@ package kit.pse.hgv.extensionServer;
 import java.io.IOException;
 
 public class PyScript extends Thread implements Extension {
-    private String path;
+    private final String path;
     private Process p;
 
     public PyScript(String path) {
         this.path = path;
         setName("PyScript: " + path);
     }
+
     @Override
     public void startExtension() {
         start();

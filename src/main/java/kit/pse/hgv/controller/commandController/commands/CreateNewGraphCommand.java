@@ -1,6 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.view.uiHandler.EditHandler;
 

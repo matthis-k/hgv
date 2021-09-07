@@ -6,15 +6,15 @@ public interface CommandEventSource {
 
     /**
      * TODO
-     * 
+     *
      * @param c
      */
-    public void notifyAll(ICommand c);
+    void notifyAll(ICommand c);
 
     /**
      * TODO
-     * 
+     *
      * @param listener
      */
-    public void register(CommandQListener listener);
+    void register(CommandQListener listener);
 }

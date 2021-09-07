@@ -1,7 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import kit.pse.hgv.dataGateway.DataGateway;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
@@ -18,11 +16,11 @@ import java.util.IllegalFormatException;
 public class LoadGraphCommand extends FileSystemCommand {
     private static final String FILE_NOT_FOUND = "file not found";
     private static final String GRAPH_TOO_BIG = "graph is too big";
-    private String path;
+    private final String path;
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param path The path of the graph
      */
     public LoadGraphCommand(String path) {

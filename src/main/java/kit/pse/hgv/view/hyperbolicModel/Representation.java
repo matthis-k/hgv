@@ -11,7 +11,7 @@ public interface Representation {
     /**
      * This method is used to get the Drawable object that represents the given
      * node.
-     * 
+     *
      * @param node the Node to be represented
      * @return the Drawable object representing the Node
      */
@@ -20,7 +20,7 @@ public interface Representation {
     /**
      * This method calculates the way the Edge should be represented, depending on
      * the current accuracy in the representation.
-     * 
+     *
      * @param edge the Edge to be represented
      * @return The Drawable object representing the Edge
      */

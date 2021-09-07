@@ -14,6 +14,7 @@ public class CommandThread extends Thread {
     public void run() {
         c.execute();
     }
+
     public ICommand getCommand() {
         return c;
     }

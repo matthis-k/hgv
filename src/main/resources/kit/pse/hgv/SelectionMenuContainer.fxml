@@ -3,20 +3,24 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
-
-<Menu fx:id="selectMenu" mnemonicParsing="false" onAction="#show" text="Auswahl" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.SelectionMenuHandler">
-  <items>
-    <MenuItem fx:id="invertSelectionItem" mnemonicParsing="false" onAction="#invertSelection" text="Auswahl invertieren">
-         <accelerator>
-            <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-         </accelerator></MenuItem>
-      <MenuItem fx:id="selectAllItem" mnemonicParsing="false" onAction="#selectAll" text="Alle Objekte auswählen">
-         <accelerator>
-            <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-         </accelerator></MenuItem>
-      <MenuItem fx:id="dismissItem" mnemonicParsing="false" onAction="#dismissSelection" text="Auswahl verwerfen">
-         <accelerator>
-            <KeyCodeCombination alt="DOWN" code="D" control="UP" meta="UP" shift="UP" shortcut="UP" />
-         </accelerator></MenuItem>
-  </items>
+<Menu fx:id="selectMenu" mnemonicParsing="false" onAction="#show" text="Auswahl" xmlns="http://javafx.com/javafx/15.0.1"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.SelectionMenuHandler">
+    <items>
+        <MenuItem fx:id="invertSelectionItem" mnemonicParsing="false" onAction="#invertSelection"
+                  text="Auswahl invertieren">
+            <accelerator>
+                <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+            </accelerator>
+        </MenuItem>
+        <MenuItem fx:id="selectAllItem" mnemonicParsing="false" onAction="#selectAll" text="Alle Objekte auswählen">
+            <accelerator>
+                <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+            </accelerator>
+        </MenuItem>
+        <MenuItem fx:id="dismissItem" mnemonicParsing="false" onAction="#dismissSelection" text="Auswahl verwerfen">
+            <accelerator>
+                <KeyCodeCombination alt="DOWN" code="D" control="UP" meta="UP" shift="UP" shortcut="UP"/>
+            </accelerator>
+        </MenuItem>
+    </items>
 </Menu>

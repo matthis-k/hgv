@@ -2,15 +2,15 @@ package kit.pse.hgv.representation;
 
 import org.apache.commons.math3.analysis.function.Acosh;
 
-public class PolarCoordinate implements Coordinate{
+public class PolarCoordinate implements Coordinate {
 
     public static final double MAX_ANGLE = 2 * Math.PI;
     private double angle;
-    private double distance;
+    private final double distance;
 
     /**
      * Creates a new polar Coordinate
-     * 
+     *
      * @param angle
      * @param distance
      */
@@ -47,7 +47,7 @@ public class PolarCoordinate implements Coordinate{
 
     @Override
     public double hyperbolicDistance(Coordinate coordinate) {
-        if(equals(coordinate)) return 0.0;
+        if (equals(coordinate)) return 0.0;
         double distance1 = coordinate.toPolar().getDistance();
         double deltaAngle = getAngularDistance(coordinate);
         Acosh acosh = new Acosh();
@@ -63,7 +63,7 @@ public class PolarCoordinate implements Coordinate{
      * @return moved coordinate
      */
     public Coordinate moveCoordinate(Coordinate vector) {
-        if(vector.toPolar().getDistance() == 0) {
+        if (vector.toPolar().getDistance() == 0) {
             return this;
         }
         CartesianCoordinate cartesianVector = vector.toCartesian();
@@ -109,7 +109,7 @@ public class PolarCoordinate implements Coordinate{
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Coordinate)) {
+        if (!(o instanceof Coordinate)) {
             return false;
         }
         PolarCoordinate coordinate = ((Coordinate) o).toPolar();

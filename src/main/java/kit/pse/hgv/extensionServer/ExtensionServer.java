@@ -2,7 +2,6 @@ package kit.pse.hgv.extensionServer;
 
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.CommandQListener;
-
 import kit.pse.hgv.controller.commandController.commands.ICommand;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
@@ -17,8 +16,8 @@ import java.util.HashMap;
  * seperate Thread.
  */
 public class ExtensionServer extends Thread implements CommandQListener {
-    private static int DEFAULT_PORT = 12345;
-    private static ExtensionServer instance = new ExtensionServer(DEFAULT_PORT);
+    private static final int DEFAULT_PORT = 12345;
+    private static final ExtensionServer instance = new ExtensionServer(DEFAULT_PORT);
     /**
      * Stores the Id of the next {@link ClientHandler}.
      */
@@ -34,7 +33,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     /**
      * A Collection of all ClientHandlers that are active.
      */
-    private DualHashBidiMap<Integer, ClientHandler> handlers = new DualHashBidiMap<>();
+    private final DualHashBidiMap<Integer, ClientHandler> handlers = new DualHashBidiMap<>();
 
     public static ExtensionServer getInstance() {
         return instance;
@@ -42,7 +41,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
 
     /**
      * Create A new {@link ExtensionServer} on a specific port.
-     * 
+     *
      * @param port is the port to listen to.
      */
     private ExtensionServer(int port) {
@@ -78,7 +77,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     /**
      * Creates a {@link ClientHandler} and starts the communication of with the
      * client.
-     * 
+     *
      * @param client is the socket of the client
      */
     private void startCommunication(Socket client) {
@@ -110,7 +109,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
 
     /**
      * Sends a message to the client with the specified id.
-     * 
+     *
      * @param clientId is the Id of the client.
      * @param msg      is the message to be sent.
      */
@@ -132,7 +131,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
 
     /**
      * @return A {@link HashMap} that maps an Id of a client to a {@link ClientInfo}
-     *         for each existing client.
+     * for each existing client.
      */
     public HashMap<Integer, ClientInfo> getClients() {
         HashMap<Integer, ClientInfo> clients = new HashMap<>();
@@ -144,7 +143,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
 
     /**
      * Pauses the {@link ClientHandler} with the specified Id.
-     * 
+     *
      * @param clientId is the Id of the {@link ClientHandler} to be paused.
      */
     public void pause(int clientId) {
@@ -157,7 +156,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
 
     /**
      * Resumes the {@link ClientHandler} with the specified Id.
-     * 
+     *
      * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
      */
     public void resume(int clientId) {
@@ -171,7 +170,7 @@ public class ExtensionServer extends Thread implements CommandQListener {
     /**
      * Stops the {@link ClientHandler} with the specified Id. A stopped client can
      * not be resumed in the future.
-     * 
+     *
      * @param clientId is the Id of the {@link ClientHandler} to be resuemed.
      */
     public void stop(int clientId) {

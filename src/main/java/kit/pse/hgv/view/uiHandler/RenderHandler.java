@@ -2,11 +2,9 @@ package kit.pse.hgv.view.uiHandler;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -17,12 +15,11 @@ import kit.pse.hgv.representation.*;
 import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 import kit.pse.hgv.view.RenderModel.RenderEngine;
 import kit.pse.hgv.view.hyperbolicModel.Accuracy;
-import kit.pse.hgv.view.hyperbolicModel.DrawManager;
-import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 
-import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * This class manages the graphic representation of the current graph.
@@ -95,7 +92,7 @@ public class RenderHandler implements UIHandler {
 
     private RenderEngine findEngine(int ID) {
         for (RenderEngine engine : engines) {
-            if(ID == engine.getGraphID())
+            if (ID == engine.getGraphID())
                 return engine;
         }
         return null;
@@ -103,7 +100,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method rerenders the displayed graph.
-     * 
+     *
      * @param graph
      */
     @FXML
@@ -183,7 +180,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method rebuilds the renderPane after a new graph is displayed.
-     * 
+     *
      * @param nodes
      * @param lines
      */
@@ -195,7 +192,7 @@ public class RenderHandler implements UIHandler {
     }
 
     private void bindLines(LineStrip strip) {
-        if (!strip.isCentered()){
+        if (!strip.isCentered()) {
             strip.setCentered();
             for (Line line : strip.getLines()) {
                 setupLine(line);
@@ -205,7 +202,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method moves the center and rerenders accordingly.
-     * 
+     *
      * @param coordinate the new coordinate of the center.
      */
     public void moveCenter(Coordinate coordinate) {
@@ -217,7 +214,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method adds drag events to the graph and the center.
-     * 
+     *
      * @param circle
      * @param center
      */
@@ -226,7 +223,7 @@ public class RenderHandler implements UIHandler {
         final Delta dragDeltaCenter = new Delta();
         renderPane.setOnMousePressed(mouseEvent -> {
             mouseEvent.consume();
-            if(center.isVisible()){
+            if (center.isVisible()) {
                 currentEngine.getDrawManager().setHideEdges(true);
                 renderGraph(currentEngine.getDrawManager().getRenderData());
             }
@@ -251,7 +248,7 @@ public class RenderHandler implements UIHandler {
         });
 
         renderPane.setOnMouseReleased(mouseEvent -> {
-            if(center.isVisible()) {
+            if (center.isVisible()) {
                 currentEngine.getDrawManager().setHideEdges(false);
                 renderGraph(currentEngine.getDrawManager().getRenderData());
             }
@@ -262,7 +259,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method sets up a line (which is a part of a LineStrip).
-     * 
+     *
      * @param line
      */
     private void setupLine(Line line) {
@@ -281,7 +278,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method sets up a node.
-     * 
+     *
      * @param currentNode
      */
     private void setupNode(CircleNode currentNode) {
@@ -307,7 +304,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method implements the zoom function.
-     * 
+     *
      * @param zoom
      */
     private void zoom(double zoom) {
@@ -329,7 +326,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This methods binds the y coordinate of a node to the renderCircle.
-     * 
+     *
      * @param child
      */
     private void bindNodeX(CircleNode child) {
@@ -342,7 +339,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This methods binds the y coordinate of a node to the renderCircle.
-     * 
+     *
      * @param child
      */
     private void bindNodeY(CircleNode child) {
@@ -354,7 +351,7 @@ public class RenderHandler implements UIHandler {
 
     /**
      * This method binds the radius of a node of the graph.
-     * 
+     *
      * @param child
      */
     private void bindRadius(CircleNode child) {
@@ -364,7 +361,7 @@ public class RenderHandler implements UIHandler {
     /**
      * Add a mouseClick event to a node. This is used to display the meta data in
      * the DetailContainer.
-     * 
+     *
      * @param node
      */
     private void selectNode(CircleNode node) {
@@ -379,7 +376,7 @@ public class RenderHandler implements UIHandler {
     /**
      * Add a mouseClick event to an edge. This is used to display the meta data in
      * the DetailContainer.
-     * 
+     *
      * @param strip
      */
     private void selectEdge(LineStrip strip) {
@@ -414,7 +411,7 @@ public class RenderHandler implements UIHandler {
     }
 
     public void switchGraph(int id) {
-        if(id != currentID) {
+        if (id != currentID) {
             currentEngine = new DefaultRenderEngine(id, id, this);
             engines.add(currentEngine);
             CommandController.getInstance().register(currentEngine);
@@ -438,8 +435,8 @@ public class RenderHandler implements UIHandler {
     }
 
     public static RenderHandler getInstance() {
-        if (instance==null){
-            instance=new RenderHandler();
+        if (instance == null) {
+            instance = new RenderHandler();
         }
         return instance;
     }

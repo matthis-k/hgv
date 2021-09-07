@@ -1,20 +1,20 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import java.io.IOException;
-
 import kit.pse.hgv.dataGateway.DataGateway;
+
+import java.io.IOException;
 
 /**
  * This class handles the commands that save the graph
  */
 public class SaveGraphCommand extends FileSystemCommand {
     private static final String WRITE_TO_FILE_FAILED = "could not save graph";
-    private int id;
-    private String path;
+    private final int id;
+    private final String path;
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param id   the id of the graph that should be saved
      * @param path the path that defines where the graph should be saved
      */

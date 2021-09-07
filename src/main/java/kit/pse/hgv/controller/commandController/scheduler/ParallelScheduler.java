@@ -8,7 +8,7 @@ import java.util.Queue;
 
 /**
  * @version 0.2 Not tested yet!
- *
+ * <p>
  * This class is a paralell scheduler.
  * Commands got with the getnextCommands method can be executed
  * at the same time without risk to have issues.
@@ -27,9 +27,9 @@ public class ParallelScheduler implements IScheduler {
         List<ICommand> scheduled = new ArrayList<>();
         scheduled.add(commandQ.poll());
 
-        for(ICommand c : commandQ) {
+        for (ICommand c : commandQ) {
 
-            if(c instanceof WorkingAreaCommand) {
+            if (c instanceof WorkingAreaCommand) {
                 WorkingAreaCommand ac = (WorkingAreaCommand) c;
                 if (!hasWorkingMatch(ac, scheduled)) {
                     scheduled.add(c);
@@ -37,12 +37,12 @@ public class ParallelScheduler implements IScheduler {
                     return scheduled;
                 }
 
-            //This for future scheduling maybe commands can too be handeled!
-            } else if(c instanceof HyperModelCommand) {
+                //This for future scheduling maybe commands can too be handeled!
+            } else if (c instanceof HyperModelCommand) {
                 return scheduled;
-            } else if(c instanceof FileSystemCommand) {
+            } else if (c instanceof FileSystemCommand) {
                 return scheduled;
-            } else if(c instanceof ExtensionCommand) {
+            } else if (c instanceof ExtensionCommand) {
                 return scheduled;
             }
         }
@@ -52,7 +52,8 @@ public class ParallelScheduler implements IScheduler {
 
     /**
      * Controlls that a Command has no overlapping WorkingArea with a given list of GraphElement ids.
-     * @param c is the Command.
+     *
+     * @param c           is the Command.
      * @param workingArea is the given id List.
      * @return Returns true when there is one equal id. False when not.
      */

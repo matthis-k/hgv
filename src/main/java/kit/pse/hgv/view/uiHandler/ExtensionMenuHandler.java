@@ -25,7 +25,7 @@ public class ExtensionMenuHandler implements UIHandler {
 
     /**
      * This method allows the pop up to pop up.
-     * 
+     *
      * @throws IOException
      */
     public void onClick() throws IOException {

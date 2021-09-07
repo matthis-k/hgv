@@ -1,8 +1,8 @@
 package kit.pse.hgv.extensionServer;
 
 public class ClientInfo {
-    private String name = new String();
-    private String desc = new String();
+    private String name = "";
+    private String desc = "";
 
     void setName(String name) {
         this.name = name;

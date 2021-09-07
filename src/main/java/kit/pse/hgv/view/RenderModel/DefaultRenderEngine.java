@@ -8,25 +8,23 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import kit.pse.hgv.App;
-import kit.pse.hgv.controller.commandController.commands.*;
-import kit.pse.hgv.representation.Drawable;
-import kit.pse.hgv.view.hyperbolicModel.Accuracy;
+import kit.pse.hgv.controller.commandController.commands.ICommand;
+import kit.pse.hgv.controller.commandController.commands.RenderCommand;
+import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 import kit.pse.hgv.view.hyperbolicModel.NativeRepresentation;
 import kit.pse.hgv.view.uiHandler.DetailHandler;
-import kit.pse.hgv.view.uiHandler.EditHandler;
-import kit.pse.hgv.view.uiHandler.ErrorPopupHandler;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
-import kit.pse.hgv.view.hyperbolicModel.DrawManager;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class manages the RenderSystem. It decides when to rerender.
  */
 public class DefaultRenderEngine extends RenderEngine {
 
-    private HashMap<Integer, Set<Integer>> updatedMap;
+    private final HashMap<Integer, Set<Integer>> updatedMap;
     private static ICommand command;
     private static boolean errorThrown = false;
 
@@ -37,7 +35,7 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     public static String getErrorMessage() {
-        if(command != null)
+        if (command != null)
             return command.getResponse().get("reason").toString();
         else
             return "No command detected";
@@ -51,29 +49,29 @@ public class DefaultRenderEngine extends RenderEngine {
     }
 
     private void updateGraph() {
-        this.displayedGraph = drawManager.getRenderData( updatedMap.get(RenderHandler.getInstance().getCurrentID()));
+        this.displayedGraph = drawManager.getRenderData(updatedMap.get(RenderHandler.getInstance().getCurrentID()));
         //this.displayedGraph = drawManager.getRenderData();
     }
 
     @Override
     public void onNotify(ICommand c) {
         command = c;
-        if(updatedMap.get(RenderHandler.getInstance().getCurrentID()) != null) {
+        if (updatedMap.get(RenderHandler.getInstance().getCurrentID()) != null) {
             updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
         } else {
             updatedMap.put(RenderHandler.getInstance().getCurrentID(), new HashSet<>());
             updatedMap.get(RenderHandler.getInstance().getCurrentID()).addAll(c.getModifiedIds());
         }
         if (c.isUser()) {
-           renderTask();
+            renderTask();
         } else {
-            if(c instanceof RenderCommand) {
+            if (c instanceof RenderCommand) {
                 renderTask();
             }
         }
         if (!c.succeeded() && !errorThrown) {
             errorThrown = true;
-                popupTask(c);
+            popupTask(c);
         }
     }
 
@@ -81,7 +79,7 @@ public class DefaultRenderEngine extends RenderEngine {
         errorThrown = false;
     }
 
-    private void popupTask(ICommand c){
+    private void popupTask(ICommand c) {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {

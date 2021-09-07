@@ -6,10 +6,10 @@ import javafx.scene.shape.Circle;
 import kit.pse.hgv.graphSystem.GraphSystem;
 
 public class CircleNode extends Drawable {
-    private CartesianCoordinate center;
-    private CartesianCoordinate viewCenter;
-    private double radius;
-    private Circle representation;
+    private final CartesianCoordinate center;
+    private final CartesianCoordinate viewCenter;
+    private final double radius;
+    private final Circle representation;
 
     /**
      * Creates an element of CircleNode

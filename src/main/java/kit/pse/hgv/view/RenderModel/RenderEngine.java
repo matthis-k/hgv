@@ -1,9 +1,9 @@
 package kit.pse.hgv.view.RenderModel;
 
 import kit.pse.hgv.controller.commandController.CommandQListener;
-import kit.pse.hgv.view.uiHandler.RenderHandler;
 import kit.pse.hgv.representation.Drawable;
 import kit.pse.hgv.view.hyperbolicModel.DrawManager;
+import kit.pse.hgv.view.uiHandler.RenderHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;

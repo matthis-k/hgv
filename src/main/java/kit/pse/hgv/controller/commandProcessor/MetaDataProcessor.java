@@ -1,8 +1,9 @@
 package kit.pse.hgv.controller.commandProcessor;
 
-import javafx.scene.paint.Color;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.controller.commandController.commands.CommandComposite;
+import kit.pse.hgv.controller.commandController.commands.EditUserMetaCommand;
+import kit.pse.hgv.controller.commandController.commands.ICommand;
 
 import java.util.HashMap;
 
@@ -18,7 +19,7 @@ public class MetaDataProcessor implements CommandProcessor {
 
     /**
      * This Method creates an EditUserMetaCommand
-     * 
+     *
      * @param elementId which Element should be edited
      * @param meta      concrete meta information
      * @param key       which MetaData-Type should be edited

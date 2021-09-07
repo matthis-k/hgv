@@ -1,20 +1,18 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
 import javafx.scene.paint.Color;
-import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.GraphSystem;
-import kit.pse.hgv.graphSystem.element.GraphElement;
-import kit.pse.hgv.graphSystem.element.Node;
-import kit.pse.hgv.representation.*;
+import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.Drawable;
 
 import java.util.*;
 
 public class DrawManager {
-    private static Color DEFAULT_NODE_COLOR = Color.RED;
-    private static Color DEFAULT_EDGE_COLOR = Color.BLACK;
-    private GraphSystem graphSystem = GraphSystem.getInstance();
-    private int graphId;
-    private HashMap<Integer, Drawable> rendered = new HashMap<>();
+    private static final Color DEFAULT_NODE_COLOR = Color.RED;
+    private static final Color DEFAULT_EDGE_COLOR = Color.BLACK;
+    private final GraphSystem graphSystem = GraphSystem.getInstance();
+    private final int graphId;
+    private final HashMap<Integer, Drawable> rendered = new HashMap<>();
     private Representation representation;
     private boolean hideEdges = false;
 

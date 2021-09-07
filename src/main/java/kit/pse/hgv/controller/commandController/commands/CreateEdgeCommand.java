@@ -4,20 +4,16 @@ import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 public class CreateEdgeCommand extends GraphSystemCommand {
     private static final String INVALID_NODES = "can not connect these nodes";
     private static final String MISSING = "node or graph is not existent";
 
-    private int[] nodeIds;
+    private final int[] nodeIds;
     private final int graphId;
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param graphId the graphId from the graph where the edge should be created
      * @param nodeIds the nodeIds from the Nodes which should be connected
      */

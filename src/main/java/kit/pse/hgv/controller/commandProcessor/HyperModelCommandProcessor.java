@@ -1,9 +1,10 @@
 package kit.pse.hgv.controller.commandProcessor;
 
-import kit.pse.hgv.controller.commandController.commands.ICommand;
-import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.controller.commandController.commands.ICommand;
+import kit.pse.hgv.controller.commandController.commands.MoveCenterCommand;
+import kit.pse.hgv.controller.commandController.commands.SetAccuracyCommand;
+import kit.pse.hgv.representation.Coordinate;
 
 /**
  * This class handles the input from the ui affecting the hyperbolic model
@@ -18,7 +19,7 @@ public class HyperModelCommandProcessor implements CommandProcessor {
 
     /**
      * This method creates a moveCenterCommand
-     * 
+     *
      * @param coordinate where to move the center
      */
     public void moveCenter(Coordinate coordinate) {

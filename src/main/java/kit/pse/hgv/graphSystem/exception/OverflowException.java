@@ -7,7 +7,7 @@ import kit.pse.hgv.exception.HGVException;
  * detailt message how to fix the error.
  */
 public class OverflowException extends HGVException {
-    private String mes;
+    private final String mes;
 
     public OverflowException(String mes) {
         this.mes = mes;

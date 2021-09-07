@@ -3,7 +3,6 @@ package kit.pse.hgv.extensionServer;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 
 /**
  * An instance of this class manages the communication with one specific client.

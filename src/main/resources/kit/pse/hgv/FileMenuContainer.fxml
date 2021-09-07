@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
-
-<Menu fx:id="fileMenu" mnemonicParsing="false" onAction="#show" text="Datei" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.FileMenuHandler">
-  <items>
-    <MenuItem fx:id="fileOpenItem" mnemonicParsing="false" onAction="#openFile" text="Datei öffnen" />
-      <MenuItem fx:id="fileSaveItem" mnemonicParsing="false" onAction="#saveFile" text="Datei speichern">
-         <accelerator>
-            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-         </accelerator></MenuItem>
-      <Menu fx:id="lastOpened" mnemonicParsing="false" onAction="#updateLastOpened" text="Zuletzt geöffnete Dateien..." />
-      <MenuItem fx:id="newGraphItem" mnemonicParsing="false" onAction="#createNewGraph" text="Neuen Graph erstellen" />
-  </items>
+<Menu fx:id="fileMenu" mnemonicParsing="false" onAction="#show" text="Datei" xmlns="http://javafx.com/javafx/15.0.1"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="kit.pse.hgv.view.uiHandler.FileMenuHandler">
+    <items>
+        <MenuItem fx:id="fileOpenItem" mnemonicParsing="false" onAction="#openFile" text="Datei öffnen"/>
+        <MenuItem fx:id="fileSaveItem" mnemonicParsing="false" onAction="#saveFile" text="Datei speichern">
+            <accelerator>
+                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+            </accelerator>
+        </MenuItem>
+        <Menu fx:id="lastOpened" mnemonicParsing="false" onAction="#updateLastOpened"
+              text="Zuletzt geöffnete Dateien..."/>
+        <MenuItem fx:id="newGraphItem" mnemonicParsing="false" onAction="#createNewGraph" text="Neuen Graph erstellen"/>
+    </items>
 </Menu>

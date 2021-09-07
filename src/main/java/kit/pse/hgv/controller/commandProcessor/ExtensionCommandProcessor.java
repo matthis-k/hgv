@@ -1,7 +1,9 @@
 package kit.pse.hgv.controller.commandProcessor;
 
 import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.controller.commandController.commands.ICommand;
+import kit.pse.hgv.controller.commandController.commands.RegisterExtensionCommand;
+import kit.pse.hgv.controller.commandController.commands.StartExtensionCommand;
 
 /**
  * This class processes the commands coming from the extension and the commands
@@ -17,7 +19,7 @@ public class ExtensionCommandProcessor implements CommandProcessor {
 
     /**
      * Processes the command to register the extension.
-     * 
+     *
      * @param path Path of the extension
      */
     public void registerExtension(String path) {
@@ -27,7 +29,7 @@ public class ExtensionCommandProcessor implements CommandProcessor {
 
     /**
      * Processes the command to start the extension
-     * 
+     *
      * @param path of the extension to be executed
      */
     public void startExtension(String path) {

@@ -1,10 +1,9 @@
 package kit.pse.hgv.controller.commandProcessor;
 
-import kit.pse.hgv.controller.commandController.commands.ICommand;
-import kit.pse.hgv.representation.Coordinate;
-import kit.pse.hgv.representation.PolarCoordinate;
 import kit.pse.hgv.controller.commandController.CommandController;
 import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.PolarCoordinate;
 
 /**
  * This class processes the input from the ui that affects the graph itself
@@ -18,7 +17,7 @@ public class GraphCommandProcessor implements CommandProcessor {
 
     /**
      * This method creates an createEdgeCommand
-     * 
+     *
      * @param graphId where to create an edge
      * @param id1     first nodeId that should be connected
      * @param id2     second nodeId that should be connected
@@ -45,7 +44,7 @@ public class GraphCommandProcessor implements CommandProcessor {
     /**
      * This method checks if the coordinate of the node is in the correct format and
      * creates a createNodeCommand
-     * 
+     *
      * @param graphId     where to create a node
      * @param phiAsString phi-Coordinate as string
      * @param rAsString   r-Coordinate as string
@@ -65,7 +64,7 @@ public class GraphCommandProcessor implements CommandProcessor {
     /**
      * This method checks if the coordinate (where to move) is in the correct format
      * and creates a moveNodeCommand
-     * 
+     *
      * @param elementId   id of the node
      * @param phiAsString x-Coordinate as string
      * @param rAsString   y-Coordinate as string
@@ -84,7 +83,7 @@ public class GraphCommandProcessor implements CommandProcessor {
 
     /**
      * This method creates a deleteCommand
-     * 
+     *
      * @param elementId id of the element that should be deleted
      */
     public void deleteElement(int elementId) {

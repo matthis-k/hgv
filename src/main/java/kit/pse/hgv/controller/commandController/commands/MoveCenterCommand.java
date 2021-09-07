@@ -2,7 +2,6 @@ package kit.pse.hgv.controller.commandController.commands;
 
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.Coordinate;
-import kit.pse.hgv.view.RenderModel.RenderEngine;
 import kit.pse.hgv.view.uiHandler.RenderHandler;
 
 /**
@@ -11,7 +10,7 @@ import kit.pse.hgv.view.uiHandler.RenderHandler;
  */
 public class MoveCenterCommand extends HyperModelCommand {
 
-    private Coordinate transform;
+    private final Coordinate transform;
 
     /**
      * The constructor creates an element of this class

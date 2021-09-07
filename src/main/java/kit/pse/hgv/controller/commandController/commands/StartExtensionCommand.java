@@ -9,11 +9,11 @@ import kit.pse.hgv.extensionServer.PyScript;
 public class StartExtensionCommand extends ExtensionCommand {
     private static final String FILE_NOT_FOUND = "file not found";
     private static final String PY_FILE_SUFFIX = ".py";
-    private String path;
+    private final String path;
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param path The id of the extension that should start
      */
     public StartExtensionCommand(String path) {

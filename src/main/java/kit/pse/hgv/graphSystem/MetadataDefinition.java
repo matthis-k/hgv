@@ -4,7 +4,7 @@ public class MetadataDefinition {
 
     private String name;
     private String defaultValue;
-    private String dataType;
+    private final String dataType;
     private MetadataType metadataType;
 
     public MetadataDefinition(String name, String defaultValue, MetadataType metadataType, String dataType) {

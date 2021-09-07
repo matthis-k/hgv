@@ -7,12 +7,12 @@ public interface ClientState {
     /**
      * @return the next state
      */
-    public ClientState nextState();
+    ClientState nextState();
 
     /**
      * Decides what the handler should do in that state.
-     * 
+     *
      * @param handler is the handler
      */
-    public void work(ClientHandler handler);
+    void work(ClientHandler handler);
 }

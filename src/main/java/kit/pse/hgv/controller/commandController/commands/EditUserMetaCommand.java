@@ -21,7 +21,7 @@ public class EditUserMetaCommand extends MetaSystemCommand {
 
     /**
      * The constructor creates an element of this class
-     * 
+     *
      * @param elementId The elementId from the element wich metadata should be
      *                  changed
      * @param key       Key represents the type of the Metadata (e.g. weight)

@@ -8,7 +8,7 @@ import java.util.Vector;
  * This class handles the execution of various commands
  */
 public class CommandComposite extends WorkingAreaCommand {
-    private Vector<ICommand> commands = new Vector<>();
+    private final Vector<ICommand> commands = new Vector<>();
     private static final String RESPONSES = "responses";
     private static final String SUBCOMMAND_FAILED = "subcommand failed";
 
@@ -23,7 +23,7 @@ public class CommandComposite extends WorkingAreaCommand {
 
     /**
      * This method adds the command to be executed in a Vector class
-     * 
+     *
      * @param c command to be executed
      */
     public void addCommand(WorkingAreaCommand c) {

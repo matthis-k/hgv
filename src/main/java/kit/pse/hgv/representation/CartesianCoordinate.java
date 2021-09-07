@@ -2,8 +2,8 @@ package kit.pse.hgv.representation;
 
 public class CartesianCoordinate implements Coordinate {
 
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
 
     /**
      * Creates a new Cartesian Coordinate
@@ -75,7 +75,7 @@ public class CartesianCoordinate implements Coordinate {
     @Override
     public Coordinate moveCoordinate(Coordinate vector) {
         CartesianCoordinate coordinate = vector.toCartesian();
-        if(coordinate.getX() == 0 && coordinate.getY() == 0) {
+        if (coordinate.getX() == 0 && coordinate.getY() == 0) {
             return this;
         }
         return new CartesianCoordinate(x + coordinate.getX(), y + coordinate.getY());
@@ -88,18 +88,18 @@ public class CartesianCoordinate implements Coordinate {
 
     @Override
     public String toString() {
-        return String.format("x: %f, y: %f", x , y);
+        return String.format("x: %f, y: %f", x, y);
     }
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Coordinate)) {
+        if (!(o instanceof Coordinate)) {
             return false;
         }
         CartesianCoordinate coordinate = ((Coordinate) o).toCartesian();
         double deltaX = Math.abs(x - coordinate.getX());
         double deltaY = Math.abs(y - coordinate.getY());
-        double conversionError = 1.0/1000000.0;
+        double conversionError = 1.0 / 1000000.0;
         boolean res = deltaX < conversionError & deltaY < conversionError;
         return res;
     }

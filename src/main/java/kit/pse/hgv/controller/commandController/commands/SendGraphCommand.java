@@ -11,7 +11,7 @@ import org.json.JSONObject;
  * TODO
  */
 public class SendGraphCommand extends ExtensionCommand {
-    private int graphId;
+    private final int graphId;
     private int clientId;
 
     public SendGraphCommand(int graphId) {
@@ -32,7 +32,7 @@ public class SendGraphCommand extends ExtensionCommand {
             coord.put("phi", node.getCoord().toPolar().getAngle());
             coord.put("r", node.getCoord().toPolar().getDistance());
             jsonNode.put("coordinate", coord);
-            if(!node.getAllMetadata().isEmpty()) {
+            if (!node.getAllMetadata().isEmpty()) {
                 jsonNode.put("metadata", node.getAllMetaDataAsJSON());
             }
             nodes.put(jsonNode);
@@ -43,7 +43,7 @@ public class SendGraphCommand extends ExtensionCommand {
             jsonEdge.put("id", edge.getId());
             jsonEdge.put("node1", edge.getNodes()[0].getId());
             jsonEdge.put("node2", edge.getNodes()[1].getId());
-            if(!edge.getAllMetadata().isEmpty()) {
+            if (!edge.getAllMetadata().isEmpty()) {
                 jsonEdge.put("metadata", edge.getAllMetaDataAsJSON());
             }
             edges.put(jsonEdge);

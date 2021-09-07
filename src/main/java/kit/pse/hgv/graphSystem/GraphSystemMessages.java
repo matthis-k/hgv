@@ -15,7 +15,7 @@ public enum GraphSystemMessages {
     private final String DE;
     private final String EN;
 
-    private GraphSystemMessages(String de, String en) {
+    GraphSystemMessages(String de, String en) {
         EN = en;
         this.DE = de;
     }

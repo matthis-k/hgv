@@ -5,15 +5,11 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
 import kit.pse.hgv.controller.commandProcessor.GraphCommandProcessor;
-import kit.pse.hgv.controller.commandProcessor.HyperModelCommandProcessor;
 
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -96,11 +92,13 @@ public class EditHandler implements UIHandler {
             RenderHandler.getInstance().switchGraph(Integer.parseInt(currentGraph.getValue()));
         });
     }
+
     public void activateAddNode() {
         hideDelete();
         hideCreateEdge();
         showCreateNode();
     }
+
     public void activateAddEdge() {
         hideDelete();
         hideCreateNode();
@@ -116,7 +114,7 @@ public class EditHandler implements UIHandler {
     public void delete() {
         hideDelete(); //TODO
         int graphID = -1;
-        if(currentGraph.getValue() != (null))
+        if (currentGraph.getValue() != (null))
             graphID = Integer.parseInt(currentGraph.getValue());
         new GraphCommandProcessor().deleteElement(toBeDeleted.getText(), graphID);
     }
@@ -126,7 +124,7 @@ public class EditHandler implements UIHandler {
         int usedID = -1;
         try {
             usedID = Integer.parseInt(currentGraph.getValue());
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
 
         }
         new GraphCommandProcessor().addNode(usedID, angleField.getText(), radiusField.getText());
@@ -137,7 +135,7 @@ public class EditHandler implements UIHandler {
         int usedID = -1;
         try {
             usedID = Integer.parseInt(currentGraph.getValue());
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
 
         }
         new GraphCommandProcessor().addEdge(usedID, idFirst.getText(), idSecond.getText());
@@ -166,6 +164,7 @@ public class EditHandler implements UIHandler {
         idSecond.setVisible(false);
         submitCreateEdge.setVisible(false);
     }
+
     private void showCreateEdge() {
         firstNode.setVisible(true);
         secondNode.setVisible(true);
@@ -179,6 +178,7 @@ public class EditHandler implements UIHandler {
         deleteID.setVisible(false);
         deleteElement.setVisible(false);
     }
+
     private void showDelete() {
         toBeDeleted.setVisible(true);
         deleteID.setVisible(true);

@@ -1,6 +1,5 @@
 package kit.pse.hgv.view.hyperbolicModel;
 
-import javafx.scene.paint.Color;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.graphSystem.element.Edge;
 import kit.pse.hgv.graphSystem.element.Node;
@@ -13,7 +12,7 @@ import java.util.List;
 public class NativeRepresentation implements Representation {
 
     private Coordinate center = new PolarCoordinate(0, 0);
-    private double nodeSize;
+    private final double nodeSize;
     /**
      * this is the number of lines that is used to demonstrate one edge, any value
      * below 1 is invalid, the value 1 is for a direct line
@@ -28,7 +27,7 @@ public class NativeRepresentation implements Representation {
     @Override
     public CircleNode calculate(Node node, CircleNode circleNode) {
         CartesianCoordinate approximatedCoordinate = node.getCoord().toCartesian();
-        if(!node.getCoord().equals(new PolarCoordinate(0,0))) {
+        if (!node.getCoord().equals(new PolarCoordinate(0, 0))) {
 
             if (!center.equals(new PolarCoordinate(0, 0))) {
                 double relativeAngel = node.getCoord().toPolar().getAngle();
@@ -41,7 +40,7 @@ public class NativeRepresentation implements Representation {
                     boolean passedPoint = false;
                     while (approximatedCoordinate.hyperbolicDistance(center) > relativeDistance && !prematureExit) {
                         CartesianCoordinate temp = approximatedCoordinate.moveCoordinate(vector.mirroredThroughCenter()).toCartesian();
-                        if(!Double.isNaN(temp.toPolar().getDistance()) && !Double.isNaN(temp.toPolar().getAngle())) {
+                        if (!Double.isNaN(temp.toPolar().getDistance()) && !Double.isNaN(temp.toPolar().getAngle())) {
                             approximatedCoordinate = temp;
                         } else {
                             prematureExit = true;
@@ -51,7 +50,7 @@ public class NativeRepresentation implements Representation {
 
                     while (approximatedCoordinate.hyperbolicDistance(center) < relativeDistance && !passedPoint && !prematureExit) {
                         CartesianCoordinate temp = approximatedCoordinate.moveCoordinate(vector).toCartesian();
-                        if(!Double.isNaN(temp.toPolar().getDistance()) && !Double.isNaN(temp.toPolar().getAngle())) {
+                        if (!Double.isNaN(temp.toPolar().getDistance()) && !Double.isNaN(temp.toPolar().getAngle())) {
                             approximatedCoordinate = temp;
                         } else {
                             prematureExit = true;
@@ -69,13 +68,13 @@ public class NativeRepresentation implements Representation {
     }
 
     @Override
-    public LineStrip calculate(Edge edge, LineStrip lineStrip,Coordinate po1, Coordinate po2) {
+    public LineStrip calculate(Edge edge, LineStrip lineStrip, Coordinate po1, Coordinate po2) {
         List<CartesianCoordinate> coordinates = new ArrayList<>();
         Coordinate vector = center.mirroredThroughCenter();
         PolarCoordinate point1 = po1.toPolar();
         PolarCoordinate point2 = po2.toPolar();
-        if(point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
-                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() ||accuracy == Accuracy.DIRECT) {
+        if (point1.getDistance() == 0 || point2.getDistance() == 0 || point1.getAngle() == point2.getAngle()
+                || point1.getAngle() == point2.mirroredThroughCenter().getAngle() || accuracy == Accuracy.DIRECT) {
             coordinates.add(point1.mirroredY().toCartesian());
             coordinates.add(point2.mirroredY().toCartesian());
             return new LineStrip(coordinates, edge.getId(), GraphSystem.getInstance().getColorOfId(edge.getId()), edge.getNodes()[0].getId(),
@@ -165,7 +164,7 @@ public class NativeRepresentation implements Representation {
             PolarCoordinate nativeLinePoint = new PolarCoordinate(phi, r);
             coordinates.add(nativeLinePoint.mirroredY().toCartesian());
         }
-        if(!coordinates.get(coordinates.size() - 1).equals(point1.mirroredY())) {
+        if (!coordinates.get(coordinates.size() - 1).equals(point1.mirroredY())) {
             coordinates.add(point1.mirroredY().toCartesian());
         }
         return coordinates;

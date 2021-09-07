@@ -1,20 +1,18 @@
 package kit.pse.hgv.controller.commandProcessor;
 
+import kit.pse.hgv.controller.commandController.CommandController;
+import kit.pse.hgv.controller.commandController.commands.*;
+import kit.pse.hgv.representation.Coordinate;
+import kit.pse.hgv.representation.PolarCoordinate;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javafx.scene.paint.Color;
-import kit.pse.hgv.controller.commandController.CommandController;
-import kit.pse.hgv.representation.Coordinate;
-import kit.pse.hgv.representation.PolarCoordinate;
-
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
-import kit.pse.hgv.controller.commandController.commands.*;
 
 /**
  * This class processes the string command from the extension server and
@@ -47,7 +45,7 @@ public enum ExtensionCommandType {
             int graphId = inputAsJson.getInt("graphId");
             int firstNode = inputAsJson.getInt("id1");
             int secondNode = inputAsJson.getInt("id2");
-            int[] nodeIds = { firstNode, secondNode };
+            int[] nodeIds = {firstNode, secondNode};
             CreateEdgeCommand command = new CreateEdgeCommand(graphId, nodeIds);
             return new ParseResult(command, this);
         }
@@ -257,7 +255,7 @@ public enum ExtensionCommandType {
     /**
      * This method decides which command should be executed and calls the
      * parseCommand Method
-     * 
+     *
      * @param json the command as JSONObject
      * @return the command and the enum united in one class
      * @throws JSONException         if the JSONObject doesn't contain the correct

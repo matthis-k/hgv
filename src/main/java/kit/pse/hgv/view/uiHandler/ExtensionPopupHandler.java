@@ -1,7 +1,9 @@
 package kit.pse.hgv.view.uiHandler;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -97,7 +99,7 @@ public class ExtensionPopupHandler implements UIHandler {
 
     /**
      * Adds a client to the UI section of activeExcentions.
-     * 
+     *
      * @param id   the id of the extension
      * @param info the client info
      * @return
@@ -117,7 +119,7 @@ public class ExtensionPopupHandler implements UIHandler {
 
     /**
      * Add needed buttons for a client.
-     * 
+     *
      * @param pane
      */
     private void addButtons(AnchorPane pane, int id) {
@@ -152,7 +154,7 @@ public class ExtensionPopupHandler implements UIHandler {
 
     /**
      * Add an extension the the available accordion.
-     * 
+     *
      * @param path the path of the extension
      * @param name the extensions's name
      * @return
