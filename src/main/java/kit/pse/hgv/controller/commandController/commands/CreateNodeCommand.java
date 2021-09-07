@@ -6,6 +6,7 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.Coordinate;
 
 public class CreateNodeCommand extends GraphSystemCommand {
+    private static final String MISSING_GRAPH = "this graphid is not existent";
     private final Coordinate coord;
     private final int graphId;
     

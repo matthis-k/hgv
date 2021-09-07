@@ -2,9 +2,12 @@ package kit.pse.hgv.graphSystem.element;
 
 import kit.pse.hgv.graphSystem.GraphSystemMessages;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * This is an superclass fo an element of a graph. It manages id and metadata.
@@ -64,5 +67,15 @@ public abstract class GraphElement {
 
     public Collection<String> getAllMetadata() {
         return metadata.keySet();
+    }
+
+    public JSONObject getAllMetaDataAsJSON() {
+        JSONObject meta = new JSONObject();
+        for(String key : metadata.keySet()) {
+            if (!(key.equals("r") || key.equals("phi"))) {
+                meta.put(key, getMetadata(key));
+            }
+        }
+        return meta;
     }
 }

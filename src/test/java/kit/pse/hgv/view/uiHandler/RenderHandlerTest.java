@@ -26,7 +26,7 @@ public class RenderHandlerTest extends TestCase {
 
     @Before
     public void setUp() throws Exception {
-        CommandController cmdController = CommandController.getInstance();
+        commandController cmdController = commandController.getInstance();
         cmdController.start();
         ExtensionServer server = ExtensionServer.getInstance();
         server.start();
@@ -36,7 +36,7 @@ public class RenderHandlerTest extends TestCase {
         stage.setTitle("HGV");
         stage.show();
         stage.setOnCloseRequest(windowEvent -> {
-            CommandController.getInstance().queueCommand(new ShutdownCommand());
+            commandController.getInstance().queueCommand(new ShutdownCommand());
         });
 
 

@@ -447,6 +447,9 @@ public class RenderHandler implements UIHandler {
     }
 
     public static RenderHandler getInstance() {
+        if (instance==null){
+            instance=new RenderHandler();
+        }
         return instance;
     }
 
