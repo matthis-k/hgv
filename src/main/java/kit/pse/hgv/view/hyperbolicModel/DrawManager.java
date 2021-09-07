@@ -18,18 +18,6 @@ public class DrawManager {
     private Representation representation;
     private boolean hideEdges = false;
 
-    /**
-     * Constructor to create a new DrawManager with given Center
-     *
-     * @param graphId
-     * @param center
-     * @param representation
-     */
-    public DrawManager(int graphId, Coordinate center, Representation representation) {
-        this.graphId = graphId;
-        this.representation = representation;
-        representation.setCenter(center);
-    }
 
     /**
      * Constructor to create a new DrawManager
@@ -115,27 +103,6 @@ public class DrawManager {
         return res;
     }
 
-    /**
-     * Methode that checks the List of changed Elements for changed Nodes and
-     * searches all Edges that are based in this Node
-     *
-     * @param changedElements The List of Elements which have to be newly rendered
-     * @return A Set of all Elements that also need to be newly rendered
-     */
-    private Set<Integer> addConnectedEdges(List<Integer> changedElements) {
-        Set<Integer> allChangedElements = new HashSet<>();
-        allChangedElements.addAll(changedElements);
-        for (Integer id : changedElements) {
-            if (graphSystem.getNodeByID(graphId, id) != null) {
-                for (Edge edge : graphSystem.getGraphByID(graphId)
-                        .getEdgesOfNode(graphSystem.getNodeByID(graphId, id))) {
-                    allChangedElements.add(edge.getId());
-                }
-            }
-        }
-
-        return allChangedElements;
-    }
 
     public List<Drawable> moveCenter(Coordinate center) {
         representation.setCenter(center);

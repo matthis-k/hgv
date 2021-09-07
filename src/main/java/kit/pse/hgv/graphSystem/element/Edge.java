@@ -38,4 +38,12 @@ public class Edge extends GraphElement {
     public Node[] getNodes() {
         return nodes;
     }
+
+    public boolean connectsNodes(int[] connectingNodes) {
+        if(connectingNodes.length != 2) return false;
+        int firstId = nodes[0].getId();
+        int secondId = nodes[1].getId();
+        boolean res = ((firstId == connectingNodes[0]) || (firstId == connectingNodes[1])) && ((secondId == connectingNodes[0]) || (secondId == connectingNodes[1]));
+        return res;
+    }
 }

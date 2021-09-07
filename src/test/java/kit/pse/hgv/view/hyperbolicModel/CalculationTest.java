@@ -39,6 +39,13 @@ public class CalculationTest {
         graphSystem.removeGraph(id);
     }
 
+    @Test
+    public void setRepresentation() {
+        Representation temp = new NativeRepresentation(1, Accuracy.DIRECT);
+        drawManager.setRepresentation(temp);
+        assert drawManager.getRepresentation().getAccuracy().equals(Accuracy.DIRECT);
+    }
+
 
     @Test
     public void drawShortestHighEdge() {
@@ -122,7 +129,6 @@ public class CalculationTest {
         Assert.assertTrue(ids.isEmpty());
     }
 
-    @Ignore
     @Test
     public void changesRightElements() {
         List<Drawable> firstRender = drawManager.getRenderData();
@@ -140,46 +146,50 @@ public class CalculationTest {
             }
             renderedCoords.add(add);
         }
-        List<Integer> ids = new Vector<>();
-        ids.addAll(graphSystem.getIDs(id));
-        List<Integer> changedGraph = new ArrayList<>();
-        HashSet<Integer> changedRendered = new HashSet<>();
-        int smallestID = getSmallestID(id);
-        for(int i = smallestID; i < ((ids.size() > 11)? smallestID + 11 : smallestID + ids.size()); i++) {
-            int elementId = ids.get(i - getSmallestID(id));
-            GraphElement element = graphSystem.getGraphElementByID(id, elementId);
-            if(element instanceof Node) {
+        List<Integer> changedElements = new ArrayList<>();
+        Set<Integer> newCalculated = new HashSet<>();
+        int countNode = 0;
+        int countEdge = 0;
+        List<Object> oldCoordsEdges = new ArrayList<>();
+        for(Integer elementId: graphSystem.getIDs(id)) {
+            GraphElement element = graphSystem.getGraphElementByID(elementId);
+            if(countNode < 4 && element instanceof Node) {
+                Coordinate coordinate = new CartesianCoordinate(1,1);
                 Node node = (Node) element;
-                PolarCoordinate coord = node.getCoord().moveCoordinate((new CartesianCoordinate(1,1)).toPolar()).toPolar();
-                ICommand command = new MoveNodeCommand(i,coord);
-                command.execute();
-                if(i % 2 == 0) changedRendered.add(elementId);
-            } else {
-                graphSystem.removeElement(elementId);
+                oldCoordsEdges.add(node.getCoord());
+                ((Node) element).move(coordinate);
+                changedElements.add(elementId);
+                if(elementId % 2 == 0) newCalculated.add(elementId);
+            } else if(countEdge < 4 && element instanceof Edge) {
+                oldCoordsEdges.add((Edge) element);
+                graphSystem.removeElement(element.getId());
+                changedElements.add(elementId);
+                if(elementId % 2 == 0) newCalculated.add(elementId);
             }
-            changedGraph.add(elementId);
-
         }
+        List<Drawable> secondRender = drawManager.getRenderData(newCalculated);
 
-        List<Drawable> secondRender = drawManager.getRenderData(changedRendered);
-        for(Integer j: changedGraph){
-            int i = j - smallestID;
-            if(secondRender.contains(j)) {
-                assert !firstRender.get(i).equals(secondRender.get(i));
+        for(int i = 0; i < changedElements.size(); i++) {
+            if(newCalculated.contains(changedElements.get(i))) {
+                boolean edgeContained = false;
+                for(Drawable drawable : secondRender) {
+                    if(drawable.getID() == changedElements.get(i) && drawable.isNode()) {
+                        boolean temp = !((CircleNode) drawable).getCenter().equals(oldCoordsEdges.get(i));
+                        assert temp;
+                    } else if(drawable.getID() == changedElements.get(i)) {
+                        edgeContained = true;
+                    }
+                }
+                assert !edgeContained;
             } else {
-                assert firstRender.get(i).equals(secondRender.get(i));
-            }
-
-        }
-        for(int i = 0; i < firstRender.size(); i++) {
-            if(!changedGraph.contains(i)) {
-                try {
-                    assert firstRender.get(i).equals(secondRender.get(i));
-                } catch (AssertionError e) {
-                    if(firstRender.get(i) instanceof CircleNode) {
-
-                    } else {
-
+                for(Drawable drawable : secondRender) {
+                    if(drawable.getID() == changedElements.get(i) && drawable.isNode()) {
+                        boolean temp = ((CircleNode) drawable).getCenter().equals(oldCoordsEdges.get(i));
+                        assert temp;
+                    } else if(drawable.getID() == changedElements.get(i)) {
+                        Edge edge = (Edge) oldCoordsEdges.get(i);
+                        boolean res = edge.connectsNodes(((LineStrip) drawable).getConnectedNodes());
+                        assert res;
                     }
                 }
             }
@@ -263,34 +273,10 @@ public class CalculationTest {
 
     }
 
-    private int getSmallestID(int id) {
-        int smallestID = Integer.MAX_VALUE;
-        for(Integer i: graphSystem.getIDs(id)) {
-            if(i < smallestID) smallestID = i;
-        }
-        return smallestID;
-    }
-
-    private int getLargestID(int id) {
-        int largestID = 0;
-        for(Integer i: graphSystem.getIDs(id)) {
-            if(i > largestID) largestID = i;
-        }
-        return largestID;
-    }
-
     private int getLargestNodeID(int id) {
         int largestID = 0;
         for(Integer i: graphSystem.getIDs(id)) {
             if(i > largestID && graphSystem.getGraphElementByID(i) instanceof Node) largestID = i;
-        }
-        return largestID;
-    }
-
-    private int getLargestEdgeID(int id) {
-        int largestID = 0;
-        for(Integer i: graphSystem.getIDs(id)) {
-            if(i > largestID && graphSystem.getGraphElementByID(i) instanceof Edge) largestID = i;
         }
         return largestID;
     }
@@ -302,16 +288,6 @@ public class CalculationTest {
         }
         return smallestID;
     }
-
-    private int getSmallestEdgeID(int id) {
-        int smallestID = Integer.MAX_VALUE;
-        for(Integer i: graphSystem.getIDs(id)) {
-            if(i < smallestID && graphSystem.getGraphElementByID(i) instanceof Edge) smallestID = i;
-        }
-        return smallestID;
-    }
-
-
 }
 
 

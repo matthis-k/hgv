@@ -154,7 +154,6 @@ public class NativeRepresentation implements Representation {
         double tempr = 0;
         double tempGamma = 0;
         for (int i = 0; i <= renderDetail; i++) {
-            List<Double> dist = distribution(p1r, p2r);
             double partialDistance = distance * (i / renderDetail);
             double r = 0.0;
             r = acosh.value((Math.cosh(p2r) * Math.cosh(partialDistance)
@@ -184,25 +183,6 @@ public class NativeRepresentation implements Representation {
             coordinates.add(point1.mirroredY().toCartesian());
         }
         return coordinates;
-    }
-
-    private List<Double> distribution(double rad1, double rad2) {
-        int factor = 100 / accuracy.getAccuracy();
-        List<Double> res = new ArrayList<>();
-        for (int i = 0; i <= accuracy.getAccuracy(); i++) {
-            res.add(distributionValue(rad1, rad2, i * factor));
-        }
-        return res;
-    }
-
-    private double distributionValue(double rad1, double rad2, int part) {
-        if (rad2 == 0 || rad1 == 0) {
-            return 1 / (part + 1);
-        }
-        double moveCenter = rad1 / rad2 > 1 ? -50 * (1 + rad2 / rad1) : 50 * (1 + rad1 / rad2);
-        double toPower = (part / accuracy.getAccuracy()) * Math.PI / 2;
-        double res = Math.sin(toPower);
-        return res;
     }
 
     @Override
