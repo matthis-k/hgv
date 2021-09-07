@@ -372,7 +372,7 @@ public class RenderHandler implements UIHandler {
             mouseEvent.consume();
             currentlySelected = node.getID();
             DetailHandler.getInstance().updateDisplayedData(currentlySelected, node.getColor(),
-                    node.getCenter().toPolar());
+                    node.getGraphPosition().toPolar());
         });
     }
 

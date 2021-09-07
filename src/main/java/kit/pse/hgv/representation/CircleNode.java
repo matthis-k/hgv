@@ -3,6 +3,7 @@ package kit.pse.hgv.representation;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import kit.pse.hgv.graphSystem.GraphSystem;
 
 public class CircleNode extends Drawable {
     private CartesianCoordinate center;
@@ -44,6 +45,10 @@ public class CircleNode extends Drawable {
      */
     public Circle getRepresentation() {
         return this.representation;
+    }
+
+    public CartesianCoordinate getGraphPosition() {
+        return GraphSystem.getInstance().getNodeByID(id).getCoord().toCartesian();
     }
 
     /**
