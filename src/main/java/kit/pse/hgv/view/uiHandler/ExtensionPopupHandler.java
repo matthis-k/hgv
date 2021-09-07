@@ -134,15 +134,15 @@ public class ExtensionPopupHandler implements UIHandler {
 
 
         start.setOnMouseClicked(mouseEvent -> {
-            new ResumeExtensionCommand(id).execute();
+            new ExtensionCommandProcessor().queueCommand(new ResumeExtensionCommand(id));
         });
 
         pause.setOnMouseClicked(mouseEvent -> {
-            new PauseExtensionCommand(id).execute();
+            new ExtensionCommandProcessor().queueCommand(new PauseExtensionCommand(id));
         });
 
         stop.setOnMouseClicked(mouseEvent -> {
-            new StopExtensionCommand(id).execute();
+            new ExtensionCommandProcessor().queueCommand(new StopExtensionCommand(id));
         });
 
         pane.getChildren().add(start);

@@ -6,7 +6,7 @@ import kit.pse.hgv.extensionServer.ExtensionServer;
  * This class handles the stop of an extension
  */
 public class StopExtensionCommand extends ExtensionCommand {
-    private int id;
+    private int id = -1;
 
     /**
      * The constructor creates an element of this class
@@ -17,9 +17,10 @@ public class StopExtensionCommand extends ExtensionCommand {
         this.id = id;
     }
 
+    public StopExtensionCommand(){}
     @Override
     public void execute() {
-        ExtensionServer.getInstance().stop(id);
+        ExtensionServer.getInstance().stop(id == -1 ? getClientId() : id);
     }
 
     @Override

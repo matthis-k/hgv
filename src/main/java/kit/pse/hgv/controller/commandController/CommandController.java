@@ -17,6 +17,7 @@ import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 public class CommandController extends Thread implements CommandEventSource {
     // TODO: undo/redo
     private static CommandController instance;
+    private static boolean manualEdit = true;
 
     private IScheduler scheduler = new ParallelScheduler();
 
@@ -72,6 +73,9 @@ public class CommandController extends Thread implements CommandEventSource {
 
         //Thread creation.
         for(ICommand c : scheduler.getNextCommand(commandQ)) {
+            if (!manualEdit && c.isUser() && c instanceof WorkingAreaCommand) {
+                continue;
+            }
             CommandThread th = new CommandThread(c);
             commandThreads.add(th);
             th.start();
@@ -137,5 +141,9 @@ public class CommandController extends Thread implements CommandEventSource {
 
     public void stopController() {
         interrupt();
+    }
+
+    public void setManualEdit(boolean edit) {
+        manualEdit = edit;
     }
 }

@@ -6,7 +6,7 @@ import kit.pse.hgv.extensionServer.ExtensionServer;
  * This class handles the commands that pauses an extension
  */
 public class PauseExtensionCommand extends ExtensionCommand {
-    private int id;
+    private int id = -1;
 
     /**
      * The constructor creates an element of this class
@@ -17,9 +17,11 @@ public class PauseExtensionCommand extends ExtensionCommand {
         this.id = id;
     }
 
+    public PauseExtensionCommand(){}
+
     @Override
     public void execute() {
-        ExtensionServer.getInstance().pause(id);
+        ExtensionServer.getInstance().pause(id == -1 ? getClientId() : id);
     }
 
     @Override

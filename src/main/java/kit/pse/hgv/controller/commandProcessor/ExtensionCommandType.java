@@ -156,16 +156,9 @@ public enum ExtensionCommandType {
     SET_MANUAL_EDIT(ExtensionCommandType.START + "SetManualEdit" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException {
-            String booleanString = inputAsJson.getString("manualedit");
-            if (booleanString.equals("enable")) {
-                SetManualEditCommand command = new SetManualEditCommand(true);
-                return new ParseResult(command, this);
-            } else if (booleanString.equals("disable")) {
-                SetManualEditCommand command = new SetManualEditCommand(false);
-                return new ParseResult(command, this);
-            } else {
-                throw new IllegalArgumentException("The manualEdit can only be enabled or disabled");
-            }
+            boolean manualEdit = inputAsJson.getBoolean("manualEdit");
+            SetManualEditCommand command = new SetManualEditCommand(manualEdit);
+            return new ParseResult(command, this);
         }
     },
 
@@ -175,10 +168,8 @@ public enum ExtensionCommandType {
     PAUSE(ExtensionCommandType.START + "Pause" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            // int id = inputAsJson.getInt("id");
-            ICommand ICommand = null;
-            // PauseExtensionCommand command = new PauseExtensionCommand(id);
-            return new ParseResult(ICommand, this);
+            PauseExtensionCommand command = new PauseExtensionCommand();
+            return new ParseResult(command, this);
         }
     },
 
@@ -188,10 +179,8 @@ public enum ExtensionCommandType {
     STOP(ExtensionCommandType.START + "Stop" + ExtensionCommandType.END) {
         @Override
         protected ParseResult parseCommand(JSONObject inputAsJson) throws JSONException, NumberFormatException {
-            // int id = inputAsJson.getInt("id");
-            // StopExtensionCommand command = new StopExtensionCommand(id);
-            ICommand ICommand = null;
-            return new ParseResult(ICommand, this);
+            ICommand command = new StopExtensionCommand();
+            return new ParseResult(command, this);
         }
     },
 

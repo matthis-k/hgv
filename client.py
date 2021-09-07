@@ -21,7 +21,7 @@ class HGV:
     def moveNode(self, nodeId, phi, r):
         self.sendCommand(self.moveNodeCmd(nodeId, phi, r))
     def renderCmd(self, graphId):
-        return '{type: "Render", graphId: ' + str(graphId) + '}n'
+        return '{type: "Render", graphId: ' + str(graphId) + '}'
     def render(self, graphId):
         self.sendCommand(self.renderCmd(graphId))
     def editMetaCmd(self, nodeId, key, val):
@@ -59,25 +59,32 @@ class HGV:
     def getGraph(self, graphId):
         self.sendCommand(self.getGraphCmd(graphId))
     def pauseCmd(self):
-        return '{type: "PauseExtension"}'
+        return '{type: "Pause"}'
     def pause(self):
         self.sendCommand(self.pauseCmd())
     def stopCmd(self):
-        return '{type: "StopExtension"}'
+        return '{type: "Stop"}'
     def stop(self):
         self.sendCommand(self.stopCmd())
+        self.s.close()
+    def setManualEditCmd(self, edit):
+        return '{type: "SetManualEdit", manualEdit: ' + str(edit) + '}'
+    def setManualEdit(self, edit):
+        self.sendCommand(self.setManualEditCmd(edit))
 
         
 
 
 hgv = HGV()
 
+hgv.setManualEdit(False)
+hgv.moveNode(1, 0, 4)
+hgv.render(1)
+hgv.pause()
+time.sleep(1)
+hgv.moveNode(1, 0, 7)
+hgv.render(1)
+hgv.setManualEdit(True)
+time.sleep(100)
 
-while 1==1:
-    hgv.moveNode(1, 0, 3)
-    hgv.render(1)
-    time.sleep(1)
-    hgv.moveNode(1, 0, 5)
-    hgv.render(1)
-    time.sleep(1)
-s.close ()
+hgv.stop()
