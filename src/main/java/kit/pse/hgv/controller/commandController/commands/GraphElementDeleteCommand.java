@@ -12,7 +12,7 @@ import kit.pse.hgv.view.uiHandler.RenderHandler;
  */
 public class GraphElementDeleteCommand extends GraphSystemCommand {
     private final int elementId;
-    private int graphID;
+    private int graphID = -1;
 
     /**
      * The constructor creates an element of this class
@@ -28,7 +28,6 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
                 extendWorkingArea(e);
             }
         }
-        graphID = -1;
     }
 
     public GraphElementDeleteCommand(int elementId, int graphID) {
@@ -45,17 +44,13 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
 
     @Override
     public void execute() {
-        if(graphID == -1){
+        if(GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+            fail(NO_ELEMENT_WITH_ID);
+        } else if(graphID != -1 && !GraphSystem.getInstance().isInGraph(graphID, elementId)){
             fail(NO_ELEMENT_WITH_ID);
         } else {
-            if(GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
-                fail(NO_ELEMENT_WITH_ID);
-            } else if(!GraphSystem.getInstance().isInGraph(graphID, elementId)){
-                fail(NO_ELEMENT_WITH_ID);
-            } else {
-                modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
-                modifiedIds.add(elementId);
-            }
+            modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
+            modifiedIds.add(elementId);
         }
     }
 
