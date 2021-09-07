@@ -12,6 +12,7 @@ import kit.pse.hgv.controller.commandController.scheduler.IScheduler;
 import kit.pse.hgv.controller.commandController.scheduler.ParallelScheduler;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.PolarCoordinate;
+import kit.pse.hgv.view.RenderModel.DefaultRenderEngine;
 
 public class CommandController extends Thread implements CommandEventSource {
     // TODO: undo/redo
@@ -122,6 +123,7 @@ public class CommandController extends Thread implements CommandEventSource {
         for (CommandQListener listener : listeners) {
             listener.onNotify(c);
         }
+        DefaultRenderEngine.resetError();
     }
 
     @Override

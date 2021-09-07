@@ -12,6 +12,7 @@ import kit.pse.hgv.view.uiHandler.RenderHandler;
  */
 public class GraphElementDeleteCommand extends GraphSystemCommand {
     private final int elementId;
+    private int graphID;
 
     /**
      * The constructor creates an element of this class
@@ -27,17 +28,35 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
                 extendWorkingArea(e);
             }
         }
+        graphID = -1;
+    }
+
+    public GraphElementDeleteCommand(int elementId, int graphID) {
+        this.elementId = elementId;
+        extendWorkingArea(elementId);
+        Node n = GraphSystem.getInstance().getNodeByID(elementId);
+        if (n != null) {
+            for (int e : GraphSystem.getInstance().getEdgeIdsOfNode(elementId)) {
+                extendWorkingArea(e);
+            }
+        }
+        this.graphID = graphID;
     }
 
     @Override
     public void execute() {
-        GraphElement element = GraphSystem.getInstance().getGraphElementByID(elementId);
-        if (element == null || !GraphSystem.getInstance().isInGraph(RenderHandler.getInstance().getCurrentID(), elementId)) {
+        if(graphID == -1){
             fail(NO_ELEMENT_WITH_ID);
-            return;
+        } else {
+            if(GraphSystem.getInstance().getGraphElementByID(elementId) == null) {
+                fail(NO_ELEMENT_WITH_ID);
+            } else if(!GraphSystem.getInstance().isInGraph(graphID, elementId)){
+                fail(NO_ELEMENT_WITH_ID);
+            } else {
+                modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
+                modifiedIds.add(elementId);
+            }
         }
-        modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
-        modifiedIds.add(elementId);
     }
 
     @Override
