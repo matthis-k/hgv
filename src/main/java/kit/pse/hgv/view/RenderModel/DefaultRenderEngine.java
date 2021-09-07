@@ -28,6 +28,7 @@ public class DefaultRenderEngine extends RenderEngine {
 
     private HashMap<Integer, Set<Integer>> updatedMap;
     private static ICommand command;
+    private static boolean errorThrown = false;
 
     public DefaultRenderEngine(int tab, int graph, RenderHandler handler) {
         super(tab, graph, new DrawManager(graph, new NativeRepresentation(3, DetailHandler.getCurrentAccuracy())), handler);
@@ -70,15 +71,21 @@ public class DefaultRenderEngine extends RenderEngine {
                 renderTask();
             }
         }
-        if (!c.succeeded()) {
+        if (!c.succeeded() && !errorThrown) {
+            errorThrown = true;
                 popupTask(c);
         }
+    }
+
+    public static void resetError() {
+        errorThrown = false;
     }
 
     private void popupTask(ICommand c){
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
+                System.out.println(c.getResponse());
                 Stage popupStage = new Stage();
                 Parent root = FXMLLoader.load(App.class.getResource("ErrorPopup.fxml"));
                 popupStage.setScene(new Scene(root));

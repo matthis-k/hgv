@@ -208,7 +208,7 @@ public enum ExtensionCommandType {
                 SaveGraphCommand command = new SaveGraphCommand(id, path);
                 return new ParseResult(command, this);
             } else {
-                throw new IllegalArgumentException("This Directory is non-existent.");
+                throw new IllegalArgumentException("Es existiert kein solches Verzeichnis");
             }
         }
     };

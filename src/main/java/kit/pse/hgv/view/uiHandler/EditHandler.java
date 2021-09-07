@@ -115,7 +115,10 @@ public class EditHandler implements UIHandler {
 
     public void delete() {
         hideDelete(); //TODO
-        new GraphCommandProcessor().deleteElement(toBeDeleted.getText());
+        int graphID = -1;
+        if(currentGraph.getValue() != (null))
+            graphID = Integer.parseInt(currentGraph.getValue());
+        new GraphCommandProcessor().deleteElement(toBeDeleted.getText(), graphID);
     }
 
     public void addNode() { //ACHTUNG BUG NOCH KEIN GRAPH

@@ -13,8 +13,9 @@ public abstract class Command implements ICommand {
     protected final static String SUCCESS = "success";
     protected final static String REASON = "reason";
     protected static final String ID = "id";
-    protected static final String NO_ELEMENT_WITH_ID = "there is no element with that id";
-    protected static final String NO_GRAPH_WITH_ID = "there is no graph with that id";
+    protected static final String NO_ELEMENT_WITH_ID = "Es existiert kein Element (in diesem Graphen) mit der gewünschten ID.";
+    protected static final String NO_GRAPH_WITH_ID = "Es existiert kein Graph mit dieser ID.";
+    protected static final String WRONG_GRAPH = "wrong graph";
 
 
 

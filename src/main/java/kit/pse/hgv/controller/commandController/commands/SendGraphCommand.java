@@ -21,7 +21,7 @@ public class SendGraphCommand extends ExtensionCommand {
     @Override
     public void execute() {
         if (GraphSystem.getInstance().getGraphByID(graphId) == null) {
-            throw new IllegalArgumentException("No Graph with that Id exists.");
+            throw new IllegalArgumentException("Es existiert kein Graph mit dieser ID.");
         }
         Graph g = GraphSystem.getInstance().getGraphByID(graphId);
         JSONArray nodes = new JSONArray();

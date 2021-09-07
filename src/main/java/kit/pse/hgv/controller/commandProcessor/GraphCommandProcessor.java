@@ -92,10 +92,24 @@ public class GraphCommandProcessor implements CommandProcessor {
         queueCommand(command);
     }
 
+    public void deleteElement(int elementId, int graph) {
+        GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId, graph);
+        queueCommand(command);
+    }
+
     public void deleteElement(String elementId) {
         try {
             int id = Integer.parseInt(elementId);
             deleteElement(id);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("TODO");
+        }
+    }
+
+    public void deleteElement(String elementId, int graphID) {
+        try {
+            int id = Integer.parseInt(elementId);
+            deleteElement(id, graphID);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("TODO");
         }
