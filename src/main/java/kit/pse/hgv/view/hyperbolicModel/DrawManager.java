@@ -49,7 +49,7 @@ public class DrawManager {
             if (rendered.get(id) == null) {
                 if (graphSystem.getNodeByID(id) != null) {
                     nodes.add(id);
-                } else {
+                } else if(!hideEdges){
                     edges.add(id);
                 }
             } else if (rendered.get(id).isNode()) {
@@ -57,7 +57,7 @@ public class DrawManager {
             } else if (!hideEdges) {
                 edges.add(id);
             } else {
-                edges.remove(id);
+                rendered.remove(id);
             }
         }
         calculateIds(nodes);
