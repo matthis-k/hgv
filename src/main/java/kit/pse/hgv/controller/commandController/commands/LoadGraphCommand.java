@@ -45,9 +45,4 @@ public class LoadGraphCommand extends FileSystemCommand {
         }
     }
 
-    @Override
-    public void undo() {
-
-    }
-
 }

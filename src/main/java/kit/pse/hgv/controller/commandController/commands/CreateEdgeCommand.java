@@ -6,7 +6,6 @@ import kit.pse.hgv.graphSystem.exception.OverflowException;
 
 public class CreateEdgeCommand extends GraphSystemCommand {
     private static final String INVALID_NODES = "can not connect these nodes";
-    private static final String MISSING = "node or graph is not existent";
 
     private final int[] nodeIds;
     private final int graphId;
@@ -36,10 +35,6 @@ public class CreateEdgeCommand extends GraphSystemCommand {
         } catch (IllegalGraphOperation illegalGraphOperation) {
             fail(INVALID_NODES);
         }
-    }
-
-    @Override
-    public void undo() {
     }
 
 

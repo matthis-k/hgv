@@ -8,6 +8,10 @@ import kit.pse.hgv.controller.commandController.CommandController;
 public class SetManualEditCommand extends ExtensionCommand {
     boolean manualEditEnabled;
 
+    /**
+     * Creates an element of this class
+     * @param manualEditEnabled if the manual edit of the user should be possible
+     */
     public SetManualEditCommand(boolean manualEditEnabled) {
         this.manualEditEnabled = manualEditEnabled;
     }
@@ -15,10 +19,5 @@ public class SetManualEditCommand extends ExtensionCommand {
     @Override
     public void execute() {
         CommandController.getInstance().setManualEdit(manualEditEnabled);
-    }
-
-    @Override
-    public void undo() {
-
     }
 }

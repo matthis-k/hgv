@@ -32,9 +32,4 @@ public class StartExtensionCommand extends ExtensionCommand {
             fail(FILE_NOT_FOUND);
         }
     }
-
-    @Override
-    public void undo() {
-
-    }
 }

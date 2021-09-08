@@ -31,11 +31,4 @@ public class SaveGraphCommand extends FileSystemCommand {
             fail(WRITE_TO_FILE_FAILED);
         }
     }
-
-    @Override
-    public void undo() {
-        // TODO Auto-generated method stub
-
-    }
-
 }

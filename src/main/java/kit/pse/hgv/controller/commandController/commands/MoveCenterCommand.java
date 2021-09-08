@@ -26,14 +26,4 @@ public class MoveCenterCommand extends HyperModelCommand {
         modifiedIds.addAll(GraphSystem.getInstance().getAllIds());
         RenderHandler.getInstance().moveDrawManagerCenter(transform);
     }
-
-    @Override
-    public void undo() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public Coordinate getTransform() {
-        return this.transform;
-    }
 }

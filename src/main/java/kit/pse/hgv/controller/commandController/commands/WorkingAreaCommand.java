@@ -14,11 +14,14 @@ public abstract class WorkingAreaCommand extends Command {
         return workingArea;
     }
 
+    /**
+     * Adds an element which will be changed in execution
+     * @param elementID element of which should be changed
+     */
     protected void extendWorkingArea(int elementID) {
         if (!workingArea.contains(elementID)) {
             workingArea.add(elementID);
         }
-        return;
     }
 
 }

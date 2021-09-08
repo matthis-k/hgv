@@ -22,8 +22,4 @@ public class ResumeExtensionCommand extends ExtensionCommand {
         ExtensionServer.getInstance().resume(id);
     }
 
-    @Override
-    public void undo() {
-
-    }
 }

@@ -58,10 +58,6 @@ public class CommandController extends Thread implements CommandEventSource {
         }
     }
 
-    private List<ICommand> getNextCommands() {
-        return null;
-    }
-
     /**
      * Executes the next Commands in the CommandQ that are possible to execute parallel.
      */
@@ -90,21 +86,6 @@ public class CommandController extends Thread implements CommandEventSource {
         for (CommandThread th : commandThreads) {
             notifyAll(th.getCommand());
         }
-
-
-        /*
-        synchronized (this) {
-            ICommand c = commandQ.poll();
-            if (c != null) {
-                c.execute();
-                notifyAll(c);
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
     }
 
     /**
@@ -136,6 +117,9 @@ public class CommandController extends Thread implements CommandEventSource {
         return commandQ;
     }
 
+    /**
+     * Stops the Controller
+     */
     public void stopController() {
         interrupt();
     }

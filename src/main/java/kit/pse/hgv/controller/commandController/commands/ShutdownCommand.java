@@ -14,8 +14,4 @@ public class ShutdownCommand extends Command {
         CommandController.getInstance().stopController();
         System.exit(0);
     }
-
-    @Override
-    public void undo() {
-    }
 }

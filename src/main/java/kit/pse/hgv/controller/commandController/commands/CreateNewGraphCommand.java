@@ -15,10 +15,4 @@ public class CreateNewGraphCommand extends FileSystemCommand {
         EditHandler.getInstance().addGraph(id);
         modifiedIds.addAll(GraphSystem.getInstance().getIDs(id));
     }
-
-    @Override
-    public void undo() {
-
-    }
-
 }

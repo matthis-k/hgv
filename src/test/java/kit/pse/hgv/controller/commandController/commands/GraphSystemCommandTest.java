@@ -1,10 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
-import kit.pse.hgv.controller.commandController.commands.MoveNodeCommand;
-import kit.pse.hgv.controller.commandController.commands.GraphElementDeleteCommand;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.Coordinate;
@@ -20,11 +15,17 @@ public class GraphSystemCommandTest {
     private static Coordinate coordinate;
     private static int graphId;
 
+    /**
+     * creates a new graph
+     */
     @Before
     public void startup() {
         graphId = GraphSystem.getInstance().newGraph();
     }
 
+    /**
+     * Tests if the CreateEdgeCommand works correctly and if it returns true then it suceeds
+     */
     @Test
     public void testCreateEdgeSuccess() {
         coordinate = new CartesianCoordinate(1, 1);
@@ -39,6 +40,9 @@ public class GraphSystemCommandTest {
         Assert.assertTrue(createEdgeCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the createEdgeCommands success is false when the nodeIds are not existent
+     */
     @Test
     public void testCreateEdgeFailure() {
         int[] nodeIds = {14, 19};
@@ -47,6 +51,9 @@ public class GraphSystemCommandTest {
         Assert.assertFalse(createEdgeCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the CreateNodeCommand works correctly and if it returns true then it suceeds
+     */
     @Test
     public void testCreateNodeSuccess() {
         coordinate = new CartesianCoordinate(1, 2);
@@ -55,6 +62,9 @@ public class GraphSystemCommandTest {
         Assert.assertTrue(createNodeCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the CreateNodeCommand returns false on success when the graphId is not existent
+     */
     @Test
     public void testCreateNodeFailure() {
         coordinate = new CartesianCoordinate(4, 10);
@@ -63,6 +73,9 @@ public class GraphSystemCommandTest {
         Assert.assertFalse(createNodeCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the MoveNodeCommand works correctly and if it returns true then it suceeds
+     */
     @Test
     public void testMoveNodeSuccess() {
         coordinate = new CartesianCoordinate(3, 4);
@@ -74,6 +87,9 @@ public class GraphSystemCommandTest {
         Assert.assertTrue(moveNodeCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the moveNodeCommand returns false if the elementId is not existent
+     */
     @Test
     public void testMoveNodeFailure() {
         PolarCoordinate coordinateToMove = new PolarCoordinate(2, 5);
@@ -82,24 +98,33 @@ public class GraphSystemCommandTest {
         Assert.assertFalse(moveNodeCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the DeleteNodeCommand works correctly and if it returns true then it suceeds
+     */
     @Test
     public void testDeleteNodeSuccess() {
         Coordinate coordinate = new CartesianCoordinate(2, 6);
         createNodeCommand = new CreateNodeCommand(graphId, coordinate);
         createNodeCommand.execute();
-        graphElementDeleteCommand = new GraphElementDeleteCommand(createNodeCommand.getResponse().getInt("id"));
+        graphElementDeleteCommand = new GraphElementDeleteCommand(createNodeCommand.getResponse().getInt("id"), graphId);
         graphElementDeleteCommand.execute();
         Assert.assertTrue(graphElementDeleteCommand.getResponse().getBoolean("success"));
     }
 
+    /**
+     * Tests if the DeleteNodeCommand returns false when the elementId is not existent
+     */
     @Test
     public void testDeleteNodeFailure() {
-        graphElementDeleteCommand = new GraphElementDeleteCommand(-1);
+        graphElementDeleteCommand = new GraphElementDeleteCommand(-1, graphId);
         graphElementDeleteCommand.execute();
         Assert.assertFalse(graphElementDeleteCommand.getResponse().getBoolean("success"));
 
     }
 
+    /**
+     * clears all Commands and removes the Graph
+     */
     @After
     public void terminate() {
         graphElementDeleteCommand = null;
@@ -108,9 +133,5 @@ public class GraphSystemCommandTest {
         createNodeCommand = null;
         coordinate = null;
         GraphSystem.getInstance().removeGraph(graphId);
-    }
-
-    @AfterClass
-    public static void free() {
     }
 }

@@ -15,6 +15,9 @@ public class FileSystemCommandProcessorTest {
     private static int graphId;
     private static CommandController commandController;
 
+    /**
+     * Initializes all necessary classes for the tests
+     */
     @Before
     public void setup() {
         fileSystemCommandProcessor = new FileSystemCommandProcessor();
@@ -23,17 +26,26 @@ public class FileSystemCommandProcessorTest {
         graphId = -1;
     }
 
+    /**
+     * Tests if the LoadGraphCommand is created and queued if the loadGraph method is called from the UI
+     */
     @Test
     public void testLoadGraph() {
         fileSystemCommandProcessor.loadGraph(new File("test.graphml"));
         assertTrue(commandController.getCommandQ().poll() instanceof LoadGraphCommand);
     }
 
+    /**
+     * Tests if the loadGraph Method throws an IllegalArgumentException if the file is not in the .graphml format
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testLoadGraphWrongFile() {
         fileSystemCommandProcessor.loadGraph(new File("test.png"));
     }
 
+    /**
+     * Tests if the SaveGraphCommand is created and queued if the saveGraph method is called from the UI
+     */
     @Test
     public void testSaveGraph() {
         graphId = GraphSystem.getInstance().newGraph();
@@ -41,18 +53,27 @@ public class FileSystemCommandProcessorTest {
         assertTrue(commandController.getCommandQ().poll() instanceof SaveGraphCommand);
     }
 
+    /**
+     * Tests if the CreateNewGraph is created and queued if the createNewGraph method is called from the UI
+     */
     @Test
     public void testCreateNewGraph() {
         fileSystemCommandProcessor.createNewGraph();
         assertTrue(commandController.getCommandQ().poll() instanceof CreateNewGraphCommand);
     }
 
+    /**
+     * Tests if the ShutdownCommand is created and queued if the shutdown method is called from the UI
+     */
     @Test
     public void testShutdown() {
         fileSystemCommandProcessor.shutdown();
         assertTrue(commandController.getCommandQ().poll() instanceof ShutdownCommand);
     }
 
+    /**
+     * Clears the necessary classes from the tests
+     */
     @After
     public void free() {
         fileSystemCommandProcessor = null;

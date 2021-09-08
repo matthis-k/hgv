@@ -10,7 +10,7 @@ import java.util.Vector;
 public class CommandComposite extends WorkingAreaCommand {
     private final Vector<ICommand> commands = new Vector<>();
     private static final String RESPONSES = "responses";
-    private static final String SUBCOMMAND_FAILED = "subcommand failed";
+    private static final String SUBCOMMAND_FAILED = "Diese Aktion ist fehlgeschlagen.";
 
     /**
      * This method adds the command to be executed in a Vector class
@@ -45,12 +45,5 @@ public class CommandComposite extends WorkingAreaCommand {
             }
         }
         response.put(RESPONSES, responses);
-    }
-
-    @Override
-    public void undo() {
-        for (int i = commands.size() - 1; i >= 0; i--) {
-            commands.elementAt(i).undo();
-        }
     }
 }

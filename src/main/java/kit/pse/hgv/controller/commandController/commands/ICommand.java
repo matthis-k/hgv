@@ -5,9 +5,10 @@ import org.json.JSONObject;
 import java.util.Set;
 
 public interface ICommand {
+    /**
+     * executes the given command
+     */
     void execute();
-
-    void undo();
 
     /**
      * Returns all changed IDs
@@ -43,5 +44,9 @@ public interface ICommand {
      */
     void setClientId(int id);
 
+    /**
+     * returns, if the execution of the command was successful
+     * @return if the execution was successful
+     */
     boolean succeeded();
 }

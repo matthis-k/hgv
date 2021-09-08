@@ -112,7 +112,7 @@ public class EditHandler implements UIHandler {
     }
 
     public void delete() {
-        hideDelete(); //TODO
+        hideDelete();
         int graphID = -1;
         if (currentGraph.getValue() != (null))
             graphID = Integer.parseInt(currentGraph.getValue());
@@ -130,7 +130,7 @@ public class EditHandler implements UIHandler {
         new GraphCommandProcessor().addNode(usedID, angleField.getText(), radiusField.getText());
     }
 
-    public void addEdge() { //TODO
+    public void addEdge() {
         hideCreateEdge();
         int usedID = -1;
         try {

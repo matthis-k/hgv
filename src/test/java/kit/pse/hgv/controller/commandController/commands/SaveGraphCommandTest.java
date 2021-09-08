@@ -1,7 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
-import kit.pse.hgv.controller.commandController.commands.SaveGraphCommand;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import org.junit.*;
 
@@ -10,16 +8,25 @@ public class SaveGraphCommandTest {
     private static SaveGraphCommand saveGraphCommand;
     private static int graphId;
 
+    /**
+     * creates a new Graph for the tests
+     */
     @BeforeClass
     public static void start() {
         graphId = GraphSystem.getInstance().newGraph();
     }
 
+    /**
+     * clears the saveGraphCommand
+     */
     @Before
     public void setup() {
         saveGraphCommand = null;
     }
 
+    /**
+     * Tests if the SaveGraphCommand works correctly and if it returns true then it suceeds
+     */
     @Test
     public void testSaveGraphSuccess() {
         saveGraphCommand = new SaveGraphCommand(graphId, "./src/test/resources/out.graphml");
@@ -28,17 +35,11 @@ public class SaveGraphCommandTest {
     }
 
     /**
-    @Test
-    public void testSaveGraphFailure() {
-        saveGraphCommand = new SaveGraphCommand(2, "not existent");
-        saveGraphCommand.execute();
-        System.out.println(saveGraphCommand.getResponse().toString());
-        //Assert.assertFalse(saveGraphCommand.getResponse().getBoolean("success"));
-    }**/
-
+     * removes the created graph and clears the saveGraphCommand
+     */
     @AfterClass
     public static void free() {
-        GraphSystem.getInstance().removeGraph(1);
+        GraphSystem.getInstance().removeGraph(graphId);
         saveGraphCommand = null;
     }
 }

@@ -240,7 +240,7 @@ public enum ExtensionCommandType {
             JSONObject inputAsJson = new JSONObject(extensionInput);
             ParseResult res = parseJson(inputAsJson);
             if (res == null) {
-                throw new IllegalArgumentException("Not a valid extension command");
+                throw new IllegalArgumentException("Dies ist kein valider Extension Befehl.");
             }
             if (res.cmd != null) {
                 res.cmd.setClientId(clientId);
@@ -248,7 +248,7 @@ public enum ExtensionCommandType {
             }
             return res.type;
         } catch (JSONException | NumberFormatException e) {
-            throw new IllegalArgumentException("Command is not in the correct format.");
+            throw new IllegalArgumentException("Der Befehl hat nicht das korrekte Format.");
         }
     }
 
