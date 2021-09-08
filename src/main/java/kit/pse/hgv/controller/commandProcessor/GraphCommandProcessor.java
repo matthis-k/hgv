@@ -30,13 +30,19 @@ public class GraphCommandProcessor implements CommandProcessor {
         queueCommand(command);
     }
 
+    /**
+     * This method checks if the Strings id1 and id2 are Integers
+     * @param graphId where to create an edge
+     * @param id1 first nodeId that should be connected
+     * @param id2 second nodeId that should be connected
+     */
     public void addEdge(int graphId, String id1, String id2) {
         try {
             int first = Integer.parseInt(id1);
             int second = Integer.parseInt(id2);
             addEdge(graphId, first, second);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("At least one node hasn't a valid id");
+            throw new NumberFormatException("Mindestens eine der Knoten-Ids ist nicht gültig.");
         }
     }
 
@@ -56,7 +62,7 @@ public class GraphCommandProcessor implements CommandProcessor {
             CreateNodeCommand command = new CreateNodeCommand(graphId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("TODO");
+            throw new NumberFormatException("Diese Koordinate ist nicht gültig.");
         }
     }
 
@@ -76,40 +82,31 @@ public class GraphCommandProcessor implements CommandProcessor {
             MoveNodeCommand command = new MoveNodeCommand(elementId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("TODO");
+            throw new NumberFormatException("Diese Koordinate is nicht gültig.");
         }
     }
 
     /**
      * This method creates a deleteCommand
-     *
      * @param elementId id of the element that should be deleted
+     * @param graph where to delete the element
      */
-    /**public void deleteElement(int elementId) {
-        GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId);
-        queueCommand(command);
-    }**/
-
     public void deleteElement(int elementId, int graph) {
         GraphElementDeleteCommand command = new GraphElementDeleteCommand(elementId, graph);
         queueCommand(command);
     }
 
-    /**public void deleteElement(String elementId) {
-        try {
-            int id = Integer.parseInt(elementId);
-            deleteElement(id);
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("TODO");
-        }
-    }**/
-
+    /**
+     * This method creates a deleteCommand
+     * @param elementId id of the element that should be deleted
+     * @param graphID where to delete the element
+     */
     public void deleteElement(String elementId, int graphID) {
         try {
             int id = Integer.parseInt(elementId);
             deleteElement(id, graphID);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("TODO");
+            throw new NumberFormatException("Diese ElementId ist nicht gültid.");
         }
     }
 }

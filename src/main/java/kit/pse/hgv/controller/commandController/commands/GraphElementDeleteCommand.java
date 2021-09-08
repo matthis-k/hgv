@@ -27,6 +27,12 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
         }
     }
 
+    /**
+     * The constructor creates an element of this class with a graphId
+     *
+     * @param elementId ElementId from the Element that should be deleted
+     * @param graphID graphId from the graph having the element
+     */
     public GraphElementDeleteCommand(int elementId, int graphID) {
         this.elementId = elementId;
         extendWorkingArea(elementId);
@@ -49,9 +55,5 @@ public class GraphElementDeleteCommand extends GraphSystemCommand {
             modifiedIds.addAll(GraphSystem.getInstance().removeElement(elementId));
             modifiedIds.add(elementId);
         }
-    }
-
-    @Override
-    public void undo() {
     }
 }

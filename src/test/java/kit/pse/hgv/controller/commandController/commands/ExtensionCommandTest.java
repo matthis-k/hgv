@@ -1,33 +1,29 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.controller.commandController.commands.CreateEdgeCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
-import kit.pse.hgv.controller.commandController.commands.CreateNodeCommand;
-import kit.pse.hgv.controller.commandController.commands.SendGraphCommand;
-import kit.pse.hgv.graphSystem.Graph;
 import kit.pse.hgv.graphSystem.GraphSystem;
-import kit.pse.hgv.graphSystem.element.Edge;
-import kit.pse.hgv.graphSystem.element.Node;
-import kit.pse.hgv.graphSystem.exception.OverflowException;
 import kit.pse.hgv.representation.CartesianCoordinate;
 import kit.pse.hgv.representation.Coordinate;
 import org.json.JSONArray;
 import org.junit.*;
 
-import java.util.Collection;
-import java.util.IllegalFormatException;
 
 public class ExtensionCommandTest {
 
     private static GraphSystem graphSystem;
     private static int graphId;
 
+    /**
+     * Creates a new graph and gets the instance of the graphSystem
+     */
     @BeforeClass
     public static void setup() {
         graphId = GraphSystem.getInstance().newGraph();
         graphSystem = GraphSystem.getInstance();
     }
 
+    /**
+     * Tests if the SendGraphCommand returns the right edges and nodes and if it returns true when it succeeds
+     */
     @Test
     public void testSendGraphSuccess() {
         Coordinate coordinate =  new CartesianCoordinate(1, 1);
@@ -69,12 +65,18 @@ public class ExtensionCommandTest {
         }
     }
 
+    /**
+     * Tests if an exception is thrown when the graph doesn't exist
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testSendGraphFailure() {
         SendGraphCommand sendGraphCommand = new SendGraphCommand(-1);
         sendGraphCommand.execute();
     }
 
+    /**
+     * removes the created graph
+     */
     @AfterClass
     public static void free() {
         GraphSystem.getInstance().removeGraph(graphId);

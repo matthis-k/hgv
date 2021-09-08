@@ -1,9 +1,5 @@
 package kit.pse.hgv.controller.commandController.commands;
 
-import kit.pse.hgv.controller.commandController.commands.CreateNewGraphCommand;
-import kit.pse.hgv.controller.commandController.commands.ICommand;
-import kit.pse.hgv.controller.commandController.commands.MoveCenterCommand;
-import kit.pse.hgv.controller.commandController.commands.SetAccuracyCommand;
 import kit.pse.hgv.graphSystem.GraphSystem;
 import kit.pse.hgv.representation.Coordinate;
 import kit.pse.hgv.representation.PolarCoordinate;
@@ -23,6 +19,9 @@ public class HyperModelCommandTest {
     static RenderHandler renderHandler;
     static RenderEngine renderEngine;
 
+    /**
+     * initializes all necessary classes for the tests
+     */
     @BeforeClass
     public static void setup() {
         representation = new NativeRepresentation(0.1, Accuracy.DIRECT);
@@ -33,6 +32,9 @@ public class HyperModelCommandTest {
         renderEngine = new DefaultRenderEngine(1, 1, renderHandler);
     }
 
+    /**
+     * Tests if the SetAccuracyCommand works correctly and if it returns true then it suceeds
+     */
     @Ignore
     @Test
     public void testAccuracy() {
@@ -41,6 +43,9 @@ public class HyperModelCommandTest {
         Assert.assertTrue(setAccuracyCommand.getResponse().getBoolean("success") && (representation.getAccuracy().equals(Accuracy.HIGH)));
     }
 
+    /**
+     * Tests if the MoveCenterCommand works correctly and if it returns true then it suceeds
+     */
     @Ignore
     @Test
     public void testMoveCenter() {
@@ -50,6 +55,9 @@ public class HyperModelCommandTest {
         Assert.assertTrue(moveCenterCommand.getResponse().getBoolean("success") && (representation.getCenter().equals(coordinate)));
     }
 
+    /**
+     * clears all classes that were necessary for the tests
+     */
     @AfterClass
     public static void free() {
         GraphSystem.getInstance().removeGraph(1);

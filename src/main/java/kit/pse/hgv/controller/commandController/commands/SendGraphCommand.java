@@ -12,7 +12,6 @@ import org.json.JSONObject;
  */
 public class SendGraphCommand extends ExtensionCommand {
     private final int graphId;
-    private int clientId;
 
     public SendGraphCommand(int graphId) {
         this.graphId = graphId;
@@ -51,10 +50,5 @@ public class SendGraphCommand extends ExtensionCommand {
         response.put("success", true);
         response.put("nodes", nodes);
         response.put("edges", edges);
-    }
-
-    @Override
-    public void undo() {
-
     }
 }

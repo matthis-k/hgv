@@ -27,7 +27,7 @@ public class FileSystemCommandProcessor implements CommandProcessor {
             LoadGraphCommand command = new LoadGraphCommand(path);
             queueCommand(command);
         } else {
-            throw new IllegalArgumentException("the existing file isn't in the graphml format");
+            throw new IllegalArgumentException("Die gegebene Datei endet nicht auf .graphml.");
         }
     }
 

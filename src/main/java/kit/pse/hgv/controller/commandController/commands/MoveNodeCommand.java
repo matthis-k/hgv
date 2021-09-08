@@ -32,10 +32,4 @@ public class MoveNodeCommand extends GraphSystemCommand {
         modifiedIds.add(elementId);
         modifiedIds.addAll(GraphSystem.getInstance().getEdgeIdsOfNode(elementId));
     }
-
-    @Override
-    public void undo() {
-        // TODO Auto-generated method stub
-
-    }
 }

@@ -17,16 +17,15 @@ public class PauseExtensionCommand extends ExtensionCommand {
         this.id = id;
     }
 
+
+    /**
+     * The constructor creates an element of this class without an id
+     */
     public PauseExtensionCommand() {
     }
 
     @Override
     public void execute() {
         ExtensionServer.getInstance().pause(id == -1 ? getClientId() : id);
-    }
-
-    @Override
-    public void undo() {
-
     }
 }

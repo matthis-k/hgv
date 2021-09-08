@@ -46,11 +46,4 @@ public class CommandComposite extends WorkingAreaCommand {
         }
         response.put(RESPONSES, responses);
     }
-
-    @Override
-    public void undo() {
-        for (int i = commands.size() - 1; i >= 0; i--) {
-            commands.elementAt(i).undo();
-        }
-    }
 }

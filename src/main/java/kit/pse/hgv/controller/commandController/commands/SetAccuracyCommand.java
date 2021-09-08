@@ -16,9 +16,4 @@ public class SetAccuracyCommand extends HyperModelCommand {
         RenderHandler.getInstance().updateAccuracy(accuracy);
         modifiedIds.addAll(GraphSystem.getInstance().getAllIds());
     }
-
-    @Override
-    public void undo() {
-
-    }
 }

@@ -14,7 +14,6 @@ public class EditUserMetaCommand extends MetaSystemCommand {
     private static final String R = "r";
     private static final String COLOR = "color";
     private static final String CANNOT_PARSE = "can not parse metadata";
-    private static final String MISSING = "the node or graph is not existent";
     private final String key;
     private final String value;
     private final int elementId;
@@ -74,11 +73,6 @@ public class EditUserMetaCommand extends MetaSystemCommand {
             GraphSystem.getInstance().getGraphElementByID(elementId).setMetadata(key, value);
             modifiedIds.add(elementId);
         }
-    }
-
-    @Override
-    public void undo() {
-
     }
 
 }

@@ -18,7 +18,7 @@ public class MetaDataProcessor implements CommandProcessor {
     }
 
     /**
-     * This Method creates an EditUserMetaCommand
+     * This method creates an EditUserMetaCommand
      *
      * @param elementId which Element should be edited
      * @param meta      concrete meta information
@@ -29,6 +29,11 @@ public class MetaDataProcessor implements CommandProcessor {
         queueCommand(command);
     }
 
+    /**
+     * This method creates an CommandComposite with EditUserMetaCommands
+     * @param currentID which element should be edited
+     * @param map which metadata should be edited
+     */
     public void editMetaData(int currentID, HashMap<String, String> map) {
         CommandComposite c = new CommandComposite();
         for (String key : map.keySet()) {

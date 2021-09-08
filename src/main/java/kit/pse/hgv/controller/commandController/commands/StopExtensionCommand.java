@@ -17,6 +17,9 @@ public class StopExtensionCommand extends ExtensionCommand {
         this.id = id;
     }
 
+    /**
+     * The constructor creates an element of this class without an id
+     */
     public StopExtensionCommand() {
     }
 
@@ -25,8 +28,4 @@ public class StopExtensionCommand extends ExtensionCommand {
         ExtensionServer.getInstance().stop(id == -1 ? getClientId() : id);
     }
 
-    @Override
-    public void undo() {
-
-    }
 }

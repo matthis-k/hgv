@@ -27,6 +27,10 @@ public class HyperModelCommandProcessor implements CommandProcessor {
         queueCommand(command);
     }
 
+    /**
+     * This method creates a setAccuracyCommand
+     * @param accuracy which accuracy should be used
+     */
     public void setAccuracy(String accuracy) {
         SetAccuracyCommand command = new SetAccuracyCommand(accuracy);
         queueCommand(command);

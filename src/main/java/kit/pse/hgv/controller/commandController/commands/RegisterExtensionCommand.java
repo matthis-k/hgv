@@ -19,9 +19,4 @@ public class RegisterExtensionCommand extends ExtensionCommand {
     public void execute() {
 
     }
-
-    @Override
-    public void undo() {
-
-    }
 }
