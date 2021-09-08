@@ -25,9 +25,6 @@ public class TabManager {
     public void addTab(int tabID, RenderEngine engine) { // was wenn gleiche enginge für verschiedene tabs?
         if (!tabs.containsKey(tabID))
             tabs.put(tabID, engine);
-        else
-            return;
-        // TODO error
     }
 
     public void removeTab(int tabID) {
