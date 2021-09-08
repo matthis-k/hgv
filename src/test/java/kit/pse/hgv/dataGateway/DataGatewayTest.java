@@ -73,11 +73,11 @@ public class DataGatewayTest {
     @Ignore
     @Test
     public void saveLoadedGraph() throws IOException, OverflowException, IllegalGraphOperation {
-        int id = GraphSystem.getInstance().loadGraph("src/main/resources/spiralGraph.graphml");
+        int id = GraphSystem.getInstance().loadGraph("src/test/resources/spiralGraph.graphml");
         GraphSystem.getInstance().getGraphElementByID(id, 51).setMetadata("weight", "3.14159");
         DataGateway.saveGraph(id, "src/test/resources/testOutput");
-        File file1 = new File("src/main/resources/spiralGraph.graphml");
-        File file2 = new File("src/main/resources/testOutput");
+        File file1 = new File("src/test/resources/spiralGraph.graphml");
+        File file2 = new File("src/test/resources/testOutput");
 
     }
 
