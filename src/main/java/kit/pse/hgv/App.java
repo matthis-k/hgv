@@ -1,5 +1,6 @@
 package kit.pse.hgv;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +31,8 @@ public class App extends Application {
         stage.sizeToScene();
         stage.setTitle("HGV");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/hyperbolicthomas.png")));
+        Timer timer = new Timer();
+        timer.start();
         stage.show();
         stage.setOnCloseRequest(windowEvent -> {
             CommandController.getInstance().queueCommand(new ShutdownCommand());
@@ -48,4 +51,28 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    private class Timer extends AnimationTimer {
+
+        private final long[] frameTimes = new long[1000];
+        private int frameTimeIndex = 0 ;
+        private boolean arrayFilled = false;
+
+        @Override
+        public void handle(long now) {
+            long oldFrameTime = frameTimes[frameTimeIndex] ;
+            frameTimes[frameTimeIndex] = now ;
+            frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length ;
+            if (frameTimeIndex == 0) {
+                arrayFilled = true ;
+            }
+            if (arrayFilled) {
+                long elapsedNanos = now - oldFrameTime ;
+                long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
+                double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
+                System.out.println("Current frame rate: " + frameRate);
+            }
+        }
+    };
 }
+
