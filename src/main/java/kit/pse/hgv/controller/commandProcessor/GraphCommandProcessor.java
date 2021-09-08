@@ -65,7 +65,6 @@ public class GraphCommandProcessor implements CommandProcessor {
         } catch (NumberFormatException e) {
             CreateNodeCommand command = new CreateNodeCommand(-1, new PolarCoordinate(-1, -1));
             queueCommand(command);
-            //throw new NumberFormatException("Diese Koordinate ist nicht gültig.");
         }
     }
 
