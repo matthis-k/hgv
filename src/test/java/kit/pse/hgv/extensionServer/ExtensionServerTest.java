@@ -69,43 +69,6 @@ public class ExtensionServerTest {
         server.send(8, "");
     }
 
-    // TODO: FIX
-    @Ignore
-    @Test(expected = SocketTimeoutException.class)
-    public void onNotify() throws UnknownHostException, IOException, InterruptedException {
-        CommandEventSource emitter = new CommandEventSource() {
-            private Vector<CommandQListener> listeners = new Vector<>();
-
-            @Override
-            public void register(CommandQListener listener) {
-                listeners.add(listener);
-            }
-
-            @Override
-            public void notifyAll(ICommand c) {
-                for (CommandQListener listener : listeners) {
-                    listener.onNotify(c);
-                }
-            }
-        };
-        emitter.register(server);
-        Socket client = new Socket("localhost", server.getPort());
-        client.setSoTimeout(100);
-        ICommand c = new SendGraphCommand(1);
-        c.setClientId(1);
-        emitter.notifyAll(c);
-        sleep(100);
-        try {
-            String received = new BufferedReader(new InputStreamReader(client.getInputStream())).readLine();
-            assertEquals("{}", received);
-        } catch (SocketTimeoutException e) {
-            assertTrue("timeout ocuured", false);
-        }
-        c.setClientId(0);
-        emitter.notifyAll(c);
-        String received = new BufferedReader(new InputStreamReader(client.getInputStream())).readLine();
-        client.close();
-    }
 
     @After
     public void resetServer() {
