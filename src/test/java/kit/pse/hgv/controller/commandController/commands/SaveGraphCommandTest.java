@@ -29,7 +29,7 @@ public class SaveGraphCommandTest {
      */
     @Test
     public void testSaveGraphSuccess() {
-        saveGraphCommand = new SaveGraphCommand(graphId, "./src/test/resources/out.graphml");
+        saveGraphCommand = new SaveGraphCommand(graphId, "./src/test/resources/out");
         saveGraphCommand.execute();
         Assert.assertTrue(saveGraphCommand.getResponse().getBoolean("success"));
     }

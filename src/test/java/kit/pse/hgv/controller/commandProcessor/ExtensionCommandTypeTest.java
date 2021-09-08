@@ -145,7 +145,7 @@ public class ExtensionCommandTypeTest {
      */
     @Test
     public void testSaveGraph() {
-        assertEquals(ExtensionCommandType.SAVE_GRAPH, ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"./out.graphml\", \"graphId\": 1}", 1));
+        assertEquals(ExtensionCommandType.SAVE_GRAPH, ExtensionCommandType.processCommandString("{\"type\": \"SaveGraph\", \"path\": \"./out\", \"graphId\": 1}", 1));
     }
 
     /**

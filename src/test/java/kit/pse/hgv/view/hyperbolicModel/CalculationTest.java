@@ -197,14 +197,6 @@ public class CalculationTest {
 
     }
 
-    @Ignore
-    @Test
-    public void moveCoordinate() {
-        PolarCoordinate coord = new PolarCoordinate(1.0, 1.0);
-        CartesianCoordinate newCoord = coord.moveCoordinate(new PolarCoordinate(2,0.1)).toCartesian();
-        System.out.println(newCoord + " : " + coord.toCartesian() + ":" + new PolarCoordinate(Math.PI / 2 + 1, 1.0).toCartesian());
-    }
-
     @Test
     public void testMove(){
         for(Integer i : graphSystem.getIDs(id)) {

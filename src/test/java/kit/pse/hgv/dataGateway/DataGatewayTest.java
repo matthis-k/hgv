@@ -31,7 +31,7 @@ public class DataGatewayTest {
     @Test
     public void saveGraph() throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         String path = "src/test/resources/Vorlage.graphml";
-        String savePath = "src/test/resources/result.graphml";
+        String savePath = "src/test/resources/result";
         int graphId = GraphSystem.getInstance().loadGraph(path);
         try {
             dataGateway.saveGraph(graphId, savePath);
@@ -40,28 +40,6 @@ public class DataGatewayTest {
         }
     }
 
-    /*
-    @Test
-    public void addLastGraphPath() {
-        String path = "src/test/resources/Vorlage.graphml";
-        dataGateway.addlastOpened(path);
-        File lastOpened = new File("src/main/resources/lastOpenedFile.txt");
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(lastOpened));
-            assertEquals(reader.readLine(), path);
-        } catch (IOException e) {
-
-        }
-    }
-
-    @Test
-    public void getLastGraphs() {
-        String path = "src/test/resources/Vorlage.graphml";
-        dataGateway.addlastOpened(path);
-        List lastOpened = dataGateway.getlastOpenedGraphs();
-        assertEquals(lastOpened.get(0), path);
-    }
-    */
 
     @Test
     public void loadGraph() throws FileNotFoundException, OverflowException, IllegalGraphOperation {

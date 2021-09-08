@@ -180,7 +180,6 @@ public class DataGateway {
                 try {
                     readEdge(currentLine, graphID);
                 } catch (NullPointerException e) {
-                    System.out.println("Edge nicht gefunden: " + currentLine);
                 }
             }
             currentLine = getNextLine();
@@ -294,11 +293,6 @@ public class DataGateway {
      */
     public static boolean saveGraph(int graphId, String path) throws IOException {
         File file = new File(path + ".graphml");
-        //try {
-        //    file.createNewFile();
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
         FileWriter fileWriter = new FileWriter(file, false);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         bufferedWriter.write("");

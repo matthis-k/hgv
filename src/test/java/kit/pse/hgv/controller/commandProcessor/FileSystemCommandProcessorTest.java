@@ -49,7 +49,7 @@ public class FileSystemCommandProcessorTest {
     @Test
     public void testSaveGraph() {
         graphId = GraphSystem.getInstance().newGraph();
-        fileSystemCommandProcessor.saveGraph("./src/test/resources/out.graphml", graphId);
+        fileSystemCommandProcessor.saveGraph("./src/test/resources/out", graphId);
         assertTrue(commandController.getCommandQ().poll() instanceof SaveGraphCommand);
     }
 
