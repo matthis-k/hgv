@@ -104,9 +104,8 @@ public class DrawManager {
     }
 
 
-    public List<Drawable> moveCenter(Coordinate center) {
+    public void moveCenter(Coordinate center) {
         representation.setCenter(center);
-        return getRenderData();
     }
 
     public Representation getRepresentation() {
