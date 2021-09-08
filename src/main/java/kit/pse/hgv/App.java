@@ -12,6 +12,8 @@ import kit.pse.hgv.controller.commandController.commands.ShutdownCommand;
 import kit.pse.hgv.extensionServer.ExtensionServer;
 
 import java.io.IOException;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * JavaFX App
@@ -31,8 +33,6 @@ public class App extends Application {
         stage.sizeToScene();
         stage.setTitle("HGV");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/hyperbolicthomas.png")));
-        Timer timer = new Timer();
-        timer.start();
         stage.show();
         stage.setOnCloseRequest(windowEvent -> {
             CommandController.getInstance().queueCommand(new ShutdownCommand());
@@ -52,26 +52,5 @@ public class App extends Application {
         launch();
     }
 
-    private class Timer extends AnimationTimer {
-
-        private final long[] frameTimes = new long[1000];
-        private int frameTimeIndex = 0 ;
-        private boolean arrayFilled = false;
-
-        @Override
-        public void handle(long now) {
-            long oldFrameTime = frameTimes[frameTimeIndex] ;
-            frameTimes[frameTimeIndex] = now ;
-            frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length ;
-            if (frameTimeIndex == 0) {
-                arrayFilled = true ;
-            }
-            if (arrayFilled) {
-                long elapsedNanos = now - oldFrameTime ;
-                long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
-                double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
-            }
-        }
-    };
 }
 
