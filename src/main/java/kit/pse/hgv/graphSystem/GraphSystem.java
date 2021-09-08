@@ -210,6 +210,7 @@ public class GraphSystem {
      * @param coord   is the Coordinate of the node should be at.
      */
     public int addElement(int graphID, Coordinate coord) throws OverflowException, IllegalGraphOperation {
+        System.out.println(getGraphByID(graphID));
         if (getGraphByID(graphID) == null) {
             throw new IllegalGraphOperation(GraphSystemMessages.NO_GRAPH.DE());
         }

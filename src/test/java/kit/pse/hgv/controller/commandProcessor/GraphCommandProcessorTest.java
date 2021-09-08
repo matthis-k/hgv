@@ -59,11 +59,12 @@ public class GraphCommandProcessorTest {
     }
 
     /**
-     * Tests if a NumberFormatException is thrown when an id is not valid
+     * Tests if a CreateEdgeCommand is created even when an id is not valid
      */
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void testAddEdgeStringFailure() {
         graphCommandProcessor.addEdge(1, "notValid", "3");
+        assertTrue(commandController.getCommandQ().poll() instanceof CreateEdgeCommand);
     }
 
     /**
@@ -76,11 +77,12 @@ public class GraphCommandProcessorTest {
     }
 
     /**
-     * Tests if a NumberFormatException is thrown when an id is not valid
+     * Tests if a CreateNodeCommand is created even when an id is not valid
      */
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void testAddNodeFailure() {
         graphCommandProcessor.addNode(1, "NoNumber", "2");
+        assertTrue(commandController.getCommandQ().poll() instanceof CreateNodeCommand);
     }
 
     /**
@@ -119,11 +121,12 @@ public class GraphCommandProcessorTest {
     }
 
     /**
-     * Tests if a NumberFormatException is thrown when the elementId is not a valid number
+     * Tests if a DeleteElementCommand is created even when an id is not valid
      */
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void testDeleteElementStringFailure() {
         graphCommandProcessor.deleteElement("notValid", 1);
+        assertTrue(commandController.getCommandQ().poll() instanceof GraphElementDeleteCommand);
     }
 
     /**

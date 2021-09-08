@@ -30,7 +30,7 @@ public class CreateNodeCommand extends GraphSystemCommand {
             fail(NO_GRAPH_WITH_ID);
             e.printStackTrace();
         } catch (IllegalGraphOperation illegalGraphOperation) {
-            fail(NO_GRAPH_WITH_ID);
+            fail("Diese Aktion ist nicht möglich.");
         }
     }
 
