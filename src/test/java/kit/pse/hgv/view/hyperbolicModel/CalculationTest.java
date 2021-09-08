@@ -273,6 +273,26 @@ public class CalculationTest {
 
     }
 
+    @Test
+    public void hideLinesFirstRender() {
+        drawManager.setHideEdges(true);
+        List<Drawable> rendered = drawManager.getRenderData();
+        for(Drawable drawable: rendered) {
+            assert drawable instanceof CircleNode;
+        }
+    }
+
+
+    @Test
+    public void hideLinesSecondRender() {
+        List<Drawable> firstRender = drawManager.getRenderData();
+        drawManager.setHideEdges(true);
+        List<Drawable> rendered = drawManager.getRenderData();
+        for(Drawable drawable: rendered) {
+            assert drawable instanceof CircleNode;
+        }
+    }
+
     private int getLargestNodeID(int id) {
         int largestID = 0;
         for(Integer i: graphSystem.getIDs(id)) {
