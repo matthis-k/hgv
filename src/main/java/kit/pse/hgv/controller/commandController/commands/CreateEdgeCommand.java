@@ -5,7 +5,7 @@ import kit.pse.hgv.graphSystem.exception.IllegalGraphOperation;
 import kit.pse.hgv.graphSystem.exception.OverflowException;
 
 public class CreateEdgeCommand extends GraphSystemCommand {
-    private static final String INVALID_NODES = "can not connect these nodes";
+    private static final String INVALID_NODES = "Diese Knoten können nicht verbunden werden.";
 
     private final int[] nodeIds;
     private final int graphId;

@@ -70,7 +70,6 @@ public class App extends Application {
                 long elapsedNanos = now - oldFrameTime ;
                 long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
                 double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
-                System.out.println("Current frame rate: " + frameRate);
             }
         }
     };

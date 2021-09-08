@@ -42,7 +42,8 @@ public class GraphCommandProcessor implements CommandProcessor {
             int second = Integer.parseInt(id2);
             addEdge(graphId, first, second);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Mindestens eine der Knoten-Ids ist nicht gültig.");
+            addEdge(graphId, -1, -1);
+            //throw new NumberFormatException("Mindestens eine der Knoten-Ids ist nicht gültig.");
         }
     }
 
@@ -62,7 +63,9 @@ public class GraphCommandProcessor implements CommandProcessor {
             CreateNodeCommand command = new CreateNodeCommand(graphId, coordinate);
             queueCommand(command);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Diese Koordinate ist nicht gültig.");
+            CreateNodeCommand command = new CreateNodeCommand(-1, new PolarCoordinate(-1, -1));
+            queueCommand(command);
+            //throw new NumberFormatException("Diese Koordinate ist nicht gültig.");
         }
     }
 
@@ -106,7 +109,7 @@ public class GraphCommandProcessor implements CommandProcessor {
             int id = Integer.parseInt(elementId);
             deleteElement(id, graphID);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Diese ElementId ist nicht gültid.");
+            deleteElement(-1, graphID);
         }
     }
 }
