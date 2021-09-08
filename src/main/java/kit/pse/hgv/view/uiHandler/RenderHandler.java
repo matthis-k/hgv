@@ -410,27 +410,42 @@ public class RenderHandler implements UIHandler {
         renderPane.getChildren().add(zoomOut);
     }
 
+    private boolean existsID(int id) {
+        for (RenderEngine engine : engines) {
+            if(engine.getGraphID() == id)
+                return true;
+        }
+        return  false;
+    }
+
     public void switchGraph(int id) {
-        if (id != currentID) {
+        if(existsID(id)) {
+            currentEngine = findEngine(id);
+            currentID = id;
+            renderTask();
+        } else if (id != currentID) {
             currentEngine = new DefaultRenderEngine(id, id, this);
             engines.add(currentEngine);
             CommandController.getInstance().register(currentEngine);
             currentID = id;
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    renderGraph(currentEngine.getDrawManager().getRenderData());
-                    return null;
-                }
-            };
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            Platform.runLater(th);
-            try {
-                th.join();
-            } catch (InterruptedException e) {
-            }
+            renderTask();
+        }
+    }
 
+    private void renderTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                renderGraph(currentEngine.getDrawManager().getRenderData());
+                return null;
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        Platform.runLater(th);
+        try {
+            th.join();
+        } catch (InterruptedException e) {
         }
     }
 
