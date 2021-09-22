@@ -156,7 +156,21 @@ public class GraphSystem {
      */
     public int loadGraph(String path) throws FileNotFoundException, OverflowException, IllegalGraphOperation {
         int graphID = newGraph();
-        DataGateway.loadGraph(path, graphID);
+        try {
+            DataGateway.loadGraph(path, graphID);
+        } catch (FileNotFoundException e) {
+            removeGraph(graphID);
+            throw e;
+        } catch (OverflowException e) {
+            removeGraph(graphID);
+            throw e;
+        } catch (IllegalGraphOperation e) {
+            removeGraph(graphID);
+            throw e;
+        } catch (IllegalFormatException e) {
+            removeGraph(graphID);
+            throw e;
+        }
         return graphID;
     }
 
