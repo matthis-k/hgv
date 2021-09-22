@@ -35,7 +35,7 @@ public class NativeRepresentation implements Representation {
                 approximatedCoordinate = center.toCartesian();
                 double i = 1.0;
                 boolean prematureExit = false;
-                while (Math.abs(approximatedCoordinate.hyperbolicDistance(center) - relativeDistance) > 0.01 && !prematureExit) {
+                while (Math.abs(approximatedCoordinate.hyperbolicDistance(center) - relativeDistance) > 0.01 && !prematureExit && i > 0.001) {
                     PolarCoordinate vector = new PolarCoordinate(relativeAngel, i);
                     boolean passedPoint = false;
                     while (approximatedCoordinate.hyperbolicDistance(center) > relativeDistance && !prematureExit) {
