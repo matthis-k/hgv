@@ -23,12 +23,8 @@ public class FileSystemCommandProcessor implements CommandProcessor {
      */
     public void loadGraph(File file) {
         String path = file.getAbsolutePath();
-        if (path.endsWith(".graphml")) {
-            LoadGraphCommand command = new LoadGraphCommand(path);
-            queueCommand(command);
-        } else {
-            throw new IllegalArgumentException("Die gegebene Datei endet nicht auf .graphml.");
-        }
+        LoadGraphCommand command = new LoadGraphCommand(path);
+        queueCommand(command);
     }
 
     /**
