@@ -227,11 +227,10 @@ public class CalculationTest {
 
     @Test
     public void moveCenterTest() {
-        double min = 0;
-        double max = 9;
         Random r = new Random();
         double r1 = 2 * Math.PI * r.nextDouble();
-        double r2 = 9 * r.nextDouble();
+        double r2 = 4 * r.nextDouble();
+        System.out.printf("%f : %f", r1, r2);
         Coordinate center = new PolarCoordinate(r1,r2);
         drawManager.moveCenter(center);
         List<Drawable> render = drawManager.getRenderData();

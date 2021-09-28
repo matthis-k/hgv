@@ -292,7 +292,8 @@ public class DataGateway {
      * @throws IOException if writing on the file failed
      */
     public static boolean saveGraph(int graphId, String path) throws IOException {
-        File file = new File(path + ".graphml");
+        String pathWithEnding = path.endsWith(".graphml") ? path : path + ".graphml";
+        File file = new File(pathWithEnding);
         FileWriter fileWriter = new FileWriter(file, false);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         bufferedWriter.write("");
